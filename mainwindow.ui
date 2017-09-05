@@ -75,7 +75,7 @@
    </palette>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Code Inspector</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1">
@@ -97,23 +97,42 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="QPushButton" name="pushButton">
-        <property name="font">
-         <font>
-          <family>Segoe UI Symbol</family>
-          <pointsize>24</pointsize>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color:#FFFFFF;
-border: 0;
-color:0;
-padding:5px;
-border-radius: 4;</string>
-        </property>
-        <property name="text">
-         <string>A</string>
-        </property>
+       <widget class="QComboBox" name="cbProgrammingLanguageList">
+        <item>
+         <property name="text">
+          <string>C++</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>D</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Rust</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Go</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>ispc</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Haskell</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Swift</string>
+         </property>
+        </item>
        </widget>
       </item>
       <item>
@@ -123,6 +142,37 @@ border-radius: 4;</string>
           <family>Segoe UI Symbol</family>
           <pointsize>16</pointsize>
          </font>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="edtCompilerOptions">
+        <property name="placeholderText">
+         <string>Compiler Options</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnLoadExample">
+        <property name="styleSheet">
+         <string notr="true">background-color:#FFFFFF;
+border: 0;
+color:0;
+padding:5px;
+border-radius: 4;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="ci.qrc">
+          <normaloff>:/resource/image/loadexample.png</normaloff>:/resource/image/loadexample.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>32</width>
+          <height>32</height>
+         </size>
         </property>
        </widget>
       </item>
@@ -139,6 +189,36 @@ border-radius: 4;</string>
         </property>
        </spacer>
       </item>
+      <item>
+       <widget class="QPushButton" name="btnConfiguration">
+        <property name="font">
+         <font>
+          <family>Segoe UI Symbol</family>
+          <pointsize>24</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color:#FFFFFF;
+border: 0;
+color:0;
+padding:5px;
+border-radius: 4;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="ci.qrc">
+          <normaloff>:/resource/image/configuration.png</normaloff>:/resource/image/configuration.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>32</width>
+          <height>32</height>
+         </size>
+        </property>
+       </widget>
+      </item>
      </layout>
     </item>
     <item>
@@ -148,6 +228,8 @@ border-radius: 4;</string>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="ci.qrc"/>
+ </resources>
  <connections/>
 </ui>

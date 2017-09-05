@@ -46,3 +46,6 @@ FORMS += \
 CONFIG += mobility
 MOBILITY = 
 
+RESOURCES += \
+    ci.qrc
+
