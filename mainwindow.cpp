@@ -9,8 +9,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    sourceEditor = new ScintillaEdit(ui->sourceEditorContainer);
-    codeInspector = new ScintillaEdit(ui->inspectorContainer);
+    QSplitter* splitter = new QSplitter(this);
+    ui->editorLayout->addWidget(splitter);
+    codeEditor = new ScintillaEdit(splitter);
+    codeInspector = new ScintillaEdit(splitter);
+    splitter->addWidget(codeEditor);
+    splitter->addWidget(codeInspector);
 }
 
 MainWindow::~MainWindow()

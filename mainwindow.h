@@ -21,7 +21,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    ScintillaEdit* sourceEditor;
+    ScintillaEdit* codeEditor;
     ScintillaEdit* codeInspector;
 };
 

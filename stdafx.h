@@ -11,8 +11,6 @@
 #include <Shlobj.h>
 #include <strsafe.h>
 #include <PSapi.h>
-#include <Everything.h>
-#include <everything_ipc.h>
 #endif
 
 #if defined (__cplusplus)
@@ -83,13 +81,6 @@
 #include <QDropEvent>
 #include <QDragEnterEvent>
 #include <QHBoxLayout>
-
-#if defined(Q_OS_WIN)
-#include <QWinThumbnailToolBar>
-#include <QWinThumbnailToolButton>
-#include <QWinTaskbarButton>
-#include <QWinTaskbarProgress>
-#endif
 
 #endif
 
