@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui widgets xml network concurrent sql
+QT       += core gui widgets xml network concurrent sql qml quickwidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -27,14 +27,17 @@ DEFINES += QT_DEPRECATED_WARNINGS SCINTILLA_QT=1 SCI_LEXER=1 _CRT_SECURE_NO_DEPR
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+    configdialog.cpp
 
 HEADERS += \
         stdafx.h \
-        mainwindow.h
+        mainwindow.h \
+    configdialog.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+    configdialog.ui
 
 CONFIG += mobility
 MOBILITY = 
