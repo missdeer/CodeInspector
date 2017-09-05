@@ -28,12 +28,16 @@ DEFINES += QT_DEPRECATED_WARNINGS SCINTILLA_QT=1 SCI_LEXER=1 _CRT_SECURE_NO_DEPR
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    configdialog.cpp
+    configdialog.cpp \
+    scintillaconfig.cpp \
+    settings.cpp
 
 HEADERS += \
         stdafx.h \
         mainwindow.h \
-    configdialog.h
+    configdialog.h \
+    scintillaconfig.h \
+    settings.h
 
 FORMS += \
         mainwindow.ui \
