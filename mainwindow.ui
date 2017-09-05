@@ -95,7 +95,7 @@
      <number>0</number>
     </property>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
+     <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,1,0,0">
       <item>
        <widget class="QComboBox" name="cbProgrammingLanguageList">
         <item>
@@ -137,18 +137,27 @@
       </item>
       <item>
        <widget class="QComboBox" name="cbCompilerList">
-        <property name="font">
-         <font>
-          <family>Segoe UI Symbol</family>
-          <pointsize>16</pointsize>
-         </font>
-        </property>
+        <item>
+         <property name="text">
+          <string>GCC</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>MSVC</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Clang</string>
+         </property>
+        </item>
        </widget>
       </item>
       <item>
        <widget class="QLineEdit" name="edtCompilerOptions">
         <property name="placeholderText">
-         <string>Compiler Options</string>
+         <string>Compiler Options...</string>
         </property>
        </widget>
       </item>
@@ -175,19 +184,6 @@ border-radius: 4;</string>
          </size>
         </property>
        </widget>
-      </item>
-      <item>
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
       </item>
       <item>
        <widget class="QPushButton" name="btnConfiguration">
