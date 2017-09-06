@@ -32,7 +32,8 @@ SOURCES += \
     scintillaconfig.cpp \
     settings.cpp \
     codeeditor.cpp \
-    codeinspector.cpp
+    codeinspector.cpp \
+    godboltagent.cpp
 
 HEADERS += \
         stdafx.h \
@@ -41,7 +42,8 @@ HEADERS += \
     scintillaconfig.h \
     settings.h \
     codeeditor.h \
-    codeinspector.h
+    codeinspector.h \
+    godboltagent.h
 
 FORMS += \
         mainwindow.ui \
