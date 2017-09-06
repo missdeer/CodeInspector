@@ -30,14 +30,18 @@ SOURCES += \
         mainwindow.cpp \
     configdialog.cpp \
     scintillaconfig.cpp \
-    settings.cpp
+    settings.cpp \
+    codeeditor.cpp \
+    codeinspector.cpp
 
 HEADERS += \
         stdafx.h \
         mainwindow.h \
     configdialog.h \
     scintillaconfig.h \
-    settings.h
+    settings.h \
+    codeeditor.h \
+    codeinspector.h
 
 FORMS += \
         mainwindow.ui \
@@ -49,3 +53,8 @@ MOBILITY =
 RESOURCES += \
     ci.qrc
 
+win32-msvc* {
+    QMAKE_LFLAGS += "/LTCG"
+    QMAKE_CXXFLAGS_RELEASE += /Zi
+    QMAKE_LFLAGS_RELEASE += /DEBUG
+}

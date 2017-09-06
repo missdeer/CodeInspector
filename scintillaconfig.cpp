@@ -101,15 +101,8 @@ void ScintillaConfig::initScintilla(ScintillaEdit* sci)
     sci->setSavePoint();
     sci->setFontQuality( SC_EFF_QUALITY_ANTIALIASED);
 
-    QString appDirPath = QApplication::applicationDirPath();
-    QDir configDir(appDirPath);
-#if defined(Q_OS_MAC)
-    configDir.cdUp();
-    configDir.cd("Resources");
-#endif
-    //QString themePath = configDir.absolutePath() % "/themes/Default.asTheme";
-    QString themePath = ":/resource/themes/" % g_settings->codeEditorTheme() % ".asTheme";
-    applyThemeStyle(sci, themePath % "/global_style.xml");
+    QString themePath = ":/resource/sci/themes/" % g_settings->codeEditorTheme() % ".xml";
+    applyThemeStyle(sci, themePath);
 }
 
 void ScintillaConfig::initFolderStyle(ScintillaEdit *sci)
@@ -155,8 +148,8 @@ void ScintillaConfig::initEditorStyle(ScintillaEdit *sci, const QString& lang)
 {
     sci->setLexerLanguage(lang.toStdString().c_str());
 
-    QString themePath = ":/resource/themes/" % g_settings->codeEditorTheme() % ".asTheme";
-    applyThemeStyle(sci, themePath % "/global_style.xml");
+    QString themePath = ":/resource/sci/themes/" % g_settings->codeEditorTheme() % ".xml";
+    applyThemeStyle(sci, themePath);
     themePath.append("/");
     themePath.append(lang);
     themePath.append(".xml");
@@ -284,7 +277,7 @@ void ScintillaConfig::applyThemeStyle(ScintillaEdit *sci, const QString &themePa
 
 QString ScintillaConfig::matchPatternLanguage(const QString &filename)
 {
-    QString langMapPath = ":/resource/langmap.xml";
+    QString langMapPath = ":/resource/sci/langmap.xml";
     QDomDocument doc;
     QFile file(langMapPath);
     if (!file.open(QIODevice::ReadOnly))

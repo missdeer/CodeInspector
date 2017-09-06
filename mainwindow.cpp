@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "configdialog.h"
-#include "ScintillaEdit.h"
+#include "codeinspector.h"
+#include "codeeditor.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -11,8 +12,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     QSplitter* splitter = new QSplitter(this);
     ui->editorLayout->addWidget(splitter);
-    codeEditor = new ScintillaEdit(splitter);
-    codeInspector = new ScintillaEdit(splitter);
+    codeEditor = new CodeEditor(splitter);
+    codeEditor->initialize();
+    codeInspector = new CodeInspector(splitter);
+    codeInspector->initialize();
     splitter->addWidget(codeEditor);
     splitter->addWidget(codeInspector);
 }

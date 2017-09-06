@@ -2,5 +2,34 @@
     <qresource prefix="/">
         <file>resource/image/configuration.png</file>
         <file>resource/image/loadexample.png</file>
+        <file>resource/sci/functionList.xml</file>
+        <file>resource/sci/langs.model.xml</file>
+        <file>resource/sci/stylers.model.xml</file>
+        <file>resource/sci/themes/Bespin.xml</file>
+        <file>resource/sci/themes/Black board.xml</file>
+        <file>resource/sci/themes/Choco.xml</file>
+        <file>resource/sci/themes/Deep Black.xml</file>
+        <file>resource/sci/themes/Hello Kitty.xml</file>
+        <file>resource/sci/themes/HotFudgeSundae.xml</file>
+        <file>resource/sci/themes/khaki.xml</file>
+        <file>resource/sci/themes/Mono Industrial.xml</file>
+        <file>resource/sci/themes/Monokai.xml</file>
+        <file>resource/sci/themes/MossyLawn.xml</file>
+        <file>resource/sci/themes/Navajo.xml</file>
+        <file>resource/sci/themes/Obsidian.xml</file>
+        <file>resource/sci/themes/Plastic Code Wrap.xml</file>
+        <file>resource/sci/themes/Ruby Blue.xml</file>
+        <file>resource/sci/themes/Solarized.xml</file>
+        <file>resource/sci/themes/Solarized-light.xml</file>
+        <file>resource/sci/themes/Twilight.xml</file>
+        <file>resource/sci/themes/Vibrant Ink.xml</file>
+        <file>resource/sci/themes/vim Dark Blue.xml</file>
+        <file>resource/sci/themes/Zenburn.xml</file>
+        <file>resource/sci/themes/Dracula.xml</file>
+        <file>resource/sci/themes/Girly.xml</file>
+        <file>resource/sci/themes/Material-Dark.xml</file>
+        <file>resource/sci/themes/NauticalButNice.xml</file>
+        <file>resource/sci/themes/Neon.xml</file>
+        <file>resource/sci/themes/VS2015-Dark.xml</file>
     </qresource>
 </RCC>

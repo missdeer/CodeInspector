@@ -7,7 +7,8 @@ namespace Ui {
 class MainWindow;
 }
 
-class ScintillaEdit;
+class CodeEditor;
+class CodeInspector;
 
 class MainWindow : public QMainWindow
 {
@@ -21,8 +22,8 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    ScintillaEdit* codeEditor;
-    ScintillaEdit* codeInspector;
+    CodeEditor* codeEditor;
+    CodeInspector* codeInspector;
 };
 
 #endif // MAINWINDOW_H
