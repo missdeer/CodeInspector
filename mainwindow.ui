@@ -139,17 +139,7 @@
        <widget class="QComboBox" name="cbCompilerList">
         <item>
          <property name="text">
-          <string>GCC</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>MSVC</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Clang</string>
+          <string>Compilers</string>
          </property>
         </item>
        </widget>

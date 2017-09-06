@@ -17,8 +17,8 @@ class GodboltAgent : public QObject
     Q_OBJECT
 public:
     explicit GodboltAgent(QObject *parent = nullptr);
-
-    const CompilerList& getCompilerList() { return m_compilerList; }
+    ~GodboltAgent();
+    const CompilerList &getCompilerList(int index);
 signals:
     void compilerListRetrieved();
 public slots:
@@ -29,7 +29,7 @@ private slots:
     void onCompilerListRequestReadyRead();
     void onCompilerListRequestError(QNetworkReply::NetworkError e);
 private:
-    CompilerList m_compilerList;
+    QMap<int, CompilerList*> m_compilerLists;
     QNetworkAccessManager m_nam;
     QByteArray m_response;
 };

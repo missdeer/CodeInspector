@@ -31,7 +31,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::onCompilerListRetrieved()
 {
-    auto cl = m_backend.getCompilerList();
+    auto cl = m_backend.getCompilerList(ui->cbProgrammingLanguageList->currentIndex());
     ui->cbCompilerList->clear();
     for (const auto & c : cl)
     {
