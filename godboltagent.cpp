@@ -84,7 +84,7 @@ void GodboltAgent::compile(const CompileInfo &ci)
     connect(replyHelper, SIGNAL(done()), this, SLOT(onCompileRequestFinished()));
 }
 
-void GodboltAgent::switchCompiler(int index)
+void GodboltAgent::switchProgrammingLanguage(int index)
 {
     auto it = m_compilerLists.find(index);
     if (m_compilerLists.end() == it)

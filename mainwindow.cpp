@@ -23,9 +23,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(&m_backend, &GodboltAgent::compilerListRetrieved, this, &MainWindow::onCompilerListRetrieved);
     connect(&m_backend, &GodboltAgent::compiled, this, &MainWindow::onCompiled);
-    connect(ui->cbProgrammingLanguageList, SIGNAL(currentIndexChanged(int)), &m_backend, SLOT(switchCompiler(int)));
+    connect(ui->cbProgrammingLanguageList, SIGNAL(currentIndexChanged(int)), this, SLOT(onSwitchProgrammingLanguage(int)));
     connect(m_codeEditor, &CodeEditor::contentModified, this, &MainWindow::onSourceCodeEdited);
-    m_backend.switchCompiler(0);
+    m_backend.switchProgrammingLanguage(0);
 }
 
 MainWindow::~MainWindow()
@@ -72,5 +72,20 @@ void MainWindow::onCompiled()
 
     auto output = m_backend.getCompileOutput();
     auto asmItems = m_backend.getAsmItems();
+}
+
+void MainWindow::onSwitchProgrammingLanguage(int index)
+{
+    m_backend.switchProgrammingLanguage(index);
+    QStringList lexers = {
+        "cpp",
+        "d",
+        "rust",
+        "cpp",
+        "cpp",
+        "cpp",
+    };
+    Q_ASSERT(m_codeEditor);
+    m_codeEditor->setLanguage(lexers[index]);
 }
 

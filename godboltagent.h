@@ -73,7 +73,7 @@ signals:
     void compilerListRetrieved();
     void compiled();
 public slots:
-    void switchCompiler(int index);
+    void switchProgrammingLanguage(int index);
 
 private slots:
     void onCompilerListRequestFinished();

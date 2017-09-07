@@ -23,6 +23,7 @@ private slots:
     void onCompilerListRetrieved();
     void onSourceCodeEdited();
     void onCompiled();
+    void onSwitchProgrammingLanguage(int);
 private:
     Ui::MainWindow *ui;
     CodeEditor* m_codeEditor;
