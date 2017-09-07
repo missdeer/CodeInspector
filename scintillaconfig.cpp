@@ -171,8 +171,11 @@ void ScintillaConfig::applyLanguageStyle(ScintillaEdit *sci, const QString &conf
     QFile file(configPath);
     if (!file.open(QIODevice::ReadOnly))
         return;
-    if (!doc.setContent(&file))
+    QString errMsg;
+    int errLine;
+    if (!doc.setContent(&file, &errMsg, &errLine))
     {
+        qDebug() << "parsing xml document failed:" << configPath << errMsg << errLine;
         file.close();
         return;
     }
@@ -208,8 +211,11 @@ void ScintillaConfig::applyThemeStyle(ScintillaEdit *sci, const QString &themePa
     QFile file(themePath);
     if (!file.open(QIODevice::ReadOnly))
         return;
-    if (!doc.setContent(&file))
+    QString errMsg;
+    int errLine;
+    if (!doc.setContent(&file, &errMsg, &errLine))
     {
+        qDebug() << "parsing xml document failed:" << themePath << errMsg << errLine;
         file.close();
         return;
     }
@@ -306,7 +312,7 @@ bool ScintillaConfig::matchSuffix(const QString &filename, const QString &suffix
 void ScintillaConfig::applyStyle(ScintillaEdit *sci, const QDomElement &styleElem)
 {
     int id = styleElem.attribute("styleID").toInt();
-    if (id == 0 && styleElem.attribute("name") != "Global override")
+    if (id == 0 /*&& styleElem.attribute("name") != "Global override"*/)
     {
         return;
     }
