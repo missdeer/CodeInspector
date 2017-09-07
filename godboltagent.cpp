@@ -29,6 +29,55 @@ const CompilerList &GodboltAgent::getCompilerList(int index)
     return *it.value();
 }
 
+void GodboltAgent::compile(const CompileInfo &ci)
+{
+    const CompilerList& compilerList = *m_compilerLists[ci.programmingLanguageIndex];
+
+    QJsonObject compilerOptionsObj;
+    compilerOptionsObj.insert("produceOptInfo", false);
+
+    QJsonObject filtersObj;
+    if (ci.binary)
+        filtersObj.insert("binary", true);
+    if (ci.labels)
+        filtersObj.insert("labels", true);
+    if (ci.trim)
+        filtersObj.insert("trim", true);
+    if (ci.directives)
+        filtersObj.insert("directives", true);
+    if (ci.intel)
+        filtersObj.insert("intel", true);
+    if (ci.commentOnly)
+        filtersObj.insert("commentOnly", true);
+
+    QJsonObject optionsObj;
+    optionsObj.insert("userArguments", ci.userArguments);
+    optionsObj.insert("compilerOptions", QJsonValue::fromVariant(compilerOptionsObj));
+    optionsObj.insert("filters", QJsonValue::fromVariant(filtersObj));
+
+    QJsonObject rootObj;
+    rootObj.insert("source", QString(ci.source));
+    rootObj.insert("compiler", compilerList[ci.compilerIndex].id);
+    rootObj.insert("options", QJsonValue::fromVariant(optionsObj));
+
+    QString requestUrl = m_backendUrls[ci.programmingLanguageIndex] + "/api/compiler/" + compilerList[ci.compilerIndex].id + "/compile";
+    QNetworkRequest request(requestUrl);
+    request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    request.setRawHeader("Referer", m_backendUrls[ci.programmingLanguageIndex].toUtf8());
+    request.setRawHeader("Accept", "application/json, text/javascript, */*; q=0.01");
+    request.setRawHeader("X-Requested-With", "XMLHttpRequest");
+
+    QJsonDocument doc;
+    doc.setObject(rootObj);
+    QByteArray postBody = doc.toJson();
+    qDebug() << "post body: " << QString(postBody);
+    QNetworkReply* reply = m_nam.post(request, postBody);
+
+    NetworkReplyHelper* replyHelper = new NetworkReplyHelper(reply);
+    connect(replyHelper, SIGNAL(done()), this, SLOT(onCompileRequestFinished()));
+}
+
 void GodboltAgent::switchCompiler(int index)
 {
     auto it = m_compilerLists.find(index);
@@ -40,17 +89,7 @@ void GodboltAgent::switchCompiler(int index)
         return;
     }
 
-    QStringList urls = {
-        "https://gcc.godbolt.org",
-        "https://d.godbolt.org",
-        "https://rust.godbolt.org",
-        "https://go.godbolt.org",
-        "https://ispc.godbolt.org",
-        "https://haskell.godbolt.org",
-        "https://swift.godbolt.org",
-    };
-
-    QString requestUrl = urls[index] + "/api/compilers";
+    QString requestUrl = m_backendUrls[index] + "/api/compilers";
     QNetworkRequest request(requestUrl);
     request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
     request.setRawHeader("Accept", "application/json, text/javascript, */*; q=0.01");
@@ -94,4 +133,12 @@ void GodboltAgent::onCompilerListRequestFinished()
     }
 
     emit compilerListRetrieved();
+}
+
+void GodboltAgent::onCompileRequestFinished()
+{
+    NetworkReplyHelper* reply = qobject_cast<NetworkReplyHelper*>(sender());
+    reply->deleteLater();
+
+
 }

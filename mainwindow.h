@@ -21,7 +21,9 @@ public:
 
 private slots:
     void onCompilerListRetrieved();
-
+    void onSourceCodeEdited();
+    void onCompilingFailed();
+    void onCompiled();
 private:
     Ui::MainWindow *ui;
     CodeEditor* m_codeEditor;

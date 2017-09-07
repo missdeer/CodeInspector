@@ -22,7 +22,10 @@ MainWindow::MainWindow(QWidget *parent) :
     splitter->addWidget(m_codeInspector);
 
     connect(&m_backend, &GodboltAgent::compilerListRetrieved, this, &MainWindow::onCompilerListRetrieved);
+    connect(&m_backend, &GodboltAgent::compilingFailed, this, &MainWindow::onCompilingFailed);
+    connect(&m_backend, &GodboltAgent::compiled, this, &MainWindow::onCompiled);
     connect(ui->cbProgrammingLanguageList, SIGNAL(currentIndexChanged(int)), &m_backend, SLOT(switchCompiler(int)));
+    connect(m_codeEditor, &CodeEditor::contentModified, this, &MainWindow::onSourceCodeEdited);
     m_backend.switchCompiler(0);
 }
 
@@ -39,5 +42,37 @@ void MainWindow::onCompilerListRetrieved()
     {
         ui->cbCompilerList->addItem(c.name);
     }
+}
+
+void MainWindow::onSourceCodeEdited()
+{
+    Q_ASSERT(m_codeEditor);
+    CompileInfo ci;
+    ci.binary = false;
+    ci.commentOnly = true;
+    ci.labels = true;
+    ci.trim = true;
+    ci.directives = true;
+    ci.intel = false;
+    ci.programmingLanguageIndex = ui->cbProgrammingLanguageList->currentIndex();
+    ci.compilerIndex = ui->cbCompilerList->currentIndex();
+    ci.source = m_codeEditor->getText(m_codeEditor->textLength() + 1);
+    ci.userArguments = ui->edtCompilerOptions->text();
+    m_backend.compile(ci);
+
+    m_codeEditor->setSavePoint();
+    Q_ASSERT(m_codeInspector);
+    m_codeInspector->setContent(tr("<Compiling...>"));
+}
+
+void MainWindow::onCompilingFailed()
+{
+    Q_ASSERT(m_codeInspector);
+    m_codeInspector->setContent(tr("<Compiling failed...>"));
+}
+
+void MainWindow::onCompiled()
+{
+
 }
 
