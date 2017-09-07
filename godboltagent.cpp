@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "networkreplyhelper.h"
 #include "godboltagent.h"
 
 GodboltAgent::GodboltAgent(QObject *parent)
@@ -56,19 +57,17 @@ void GodboltAgent::switchCompiler(int index)
     request.setRawHeader("Index", QString("%1").arg(index).toUtf8());
 
     QNetworkReply* reply = m_nam.get(request);
-    m_response.clear();
-    connect(reply, SIGNAL(readyRead()), this, SLOT(onCompilerListRequestReadyRead()));
-    connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
-            this, SLOT(onCompilerListRequestError(QNetworkReply::NetworkError)));
-    connect(reply, SIGNAL(finished()), this, SLOT(onCompilerListRequestFinished()));
+    NetworkReplyHelper* replyHelper = new NetworkReplyHelper(reply);
+    connect(replyHelper, SIGNAL(done()), this, SLOT(onCompilerListRequestFinished()));
 }
 
 void GodboltAgent::onCompilerListRequestFinished()
 {
-    QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
+    NetworkReplyHelper* reply = qobject_cast<NetworkReplyHelper*>(sender());
     reply->deleteLater();
 
-    QJsonDocument doc = QJsonDocument::fromJson(m_response);
+    QByteArray& content = reply->content();
+    QJsonDocument doc = QJsonDocument::fromJson(content);
 
     if (!doc.isArray())
     {
@@ -78,7 +77,7 @@ void GodboltAgent::onCompilerListRequestFinished()
 
     QJsonArray cl = doc.array();
 
-    QByteArray rawIndex = reply->request().rawHeader("Index");
+    QByteArray rawIndex = reply->reply()->request().rawHeader("Index");
     int index = rawIndex.toInt();
     CompilerList* compilerList = m_compilerLists.find(index).value();
     for ( auto a : cl)
@@ -96,21 +95,4 @@ void GodboltAgent::onCompilerListRequestFinished()
     }
 
     emit compilerListRetrieved();
-}
-
-void GodboltAgent::onCompilerListRequestReadyRead()
-{
-    QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
-    int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    if (statusCode >= 200 && statusCode < 300)
-    {
-        m_response.append(reply->readAll());
-    }
-}
-
-void GodboltAgent::onCompilerListRequestError(QNetworkReply::NetworkError e)
-{
-    QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
-
-    qDebug() << "network error:" << e << reply->errorString();
 }

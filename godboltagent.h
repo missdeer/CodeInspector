@@ -26,8 +26,6 @@ public slots:
 
 private slots:
     void onCompilerListRequestFinished();
-    void onCompilerListRequestReadyRead();
-    void onCompilerListRequestError(QNetworkReply::NetworkError e);
 private:
     QMap<int, CompilerList*> m_compilerLists;
     QNetworkAccessManager m_nam;

@@ -26,27 +26,29 @@ DEFINES += QT_DEPRECATED_WARNINGS SCINTILLA_QT=1 SCI_LEXER=1 _CRT_SECURE_NO_DEPR
 
 
 SOURCES += \
-        main.cpp \
-        mainwindow.cpp \
+    main.cpp \
+    mainwindow.cpp \
     configdialog.cpp \
     scintillaconfig.cpp \
     settings.cpp \
     codeeditor.cpp \
     codeinspector.cpp \
-    godboltagent.cpp
+    godboltagent.cpp \
+    networkreplyhelper.cpp
 
 HEADERS += \
-        stdafx.h \
-        mainwindow.h \
+    stdafx.h \
+    mainwindow.h \
     configdialog.h \
     scintillaconfig.h \
     settings.h \
     codeeditor.h \
     codeinspector.h \
-    godboltagent.h
+    godboltagent.h \
+    networkreplyhelper.h
 
 FORMS += \
-        mainwindow.ui \
+    mainwindow.ui \
     configdialog.ui
 
 CONFIG += mobility
