@@ -155,7 +155,7 @@ void GodboltAgent::onCompileRequestFinished()
 
     if (!doc.isObject())
     {
-        qDebug() << "compiliation result is expected to be an object";
+        qDebug() << "compilation result is expected to be an object";
         return;
     }
 
@@ -164,28 +164,42 @@ void GodboltAgent::onCompileRequestFinished()
     QJsonValue codeVal = docObj["code"];
     if (!codeVal.isDouble())
     {
-        qDebug() << "compiliation result code is expected to be an integer";
+        qDebug() << "compilation result code is expected to be an integer";
         return;
     }
 
     QJsonValue stdoutVal = docObj["stdout"];
     if (!stdoutVal.isArray())
     {
-        qDebug() << "compiliation result stdout is expected to be an integer";
+        qDebug() << "compilation result stdout is expected to be an integer";
         return;
+    }
+
+    QJsonArray stdoutArray = stdoutVal.toArray();
+    for (auto se : stdoutArray)
+    {
+        QJsonObject soo = se.toObject();
+        m_compileOutput.append(soo["text"].toString() + "\n");
     }
 
     QJsonValue stderrVal = docObj["stderr"];
     if (!stderrVal.isArray())
     {
-        qDebug() << "compiliation result stderr is expected to be an integer";
+        qDebug() << "compilation result stderr is expected to be an integer";
         return;
+    }
+
+    QJsonArray stderrArray = stderrVal.toArray();
+    for (auto se : stderrArray)
+    {
+        QJsonObject seo = se.toObject();
+        m_compileOutput.append(seo["text"].toString() + "\n");
     }
 
     QJsonValue asmVal = docObj["asm"];
     if (!asmVal.isArray())
     {
-        qDebug() << "compiliation result asm is expected to be an integer";
+        qDebug() << "compilation result asm is expected to be an integer";
         return;
     }
     QJsonArray asmArray = asmVal.toArray();
