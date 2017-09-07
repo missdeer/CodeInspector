@@ -60,7 +60,11 @@ void CodeEditor::modified(int /*type*/, int /*position*/, int /*length*/, int /*
         m_timer->stop();
 
     m_timer->setSingleShot(true);
-    m_timer->start(3000);
+#if defined(Q_OS_IOS) || defined(Q_OS_ANDROID)
+    m_timer->start(2000);
+#else
+    m_timer->start(750);
+#endif
 }
 
 void CodeEditor::setLanguage(const QString &lang)

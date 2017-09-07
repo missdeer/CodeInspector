@@ -37,18 +37,24 @@ void GodboltAgent::compile(const CompileInfo &ci)
     compilerOptionsObj.insert("produceOptInfo", false);
 
     QJsonObject filtersObj;
-    if (ci.binary)
-        filtersObj.insert("binary", true);
-    if (ci.labels)
-        filtersObj.insert("labels", true);
-    if (ci.trim)
-        filtersObj.insert("trim", true);
-    if (ci.directives)
-        filtersObj.insert("directives", true);
-    if (ci.intel)
-        filtersObj.insert("intel", true);
-    if (ci.commentOnly)
-        filtersObj.insert("commentOnly", true);
+    struct {
+        QString key;
+        const bool& value;
+    }
+    filterMap [] =
+    {
+        { "binary", ci.binary},
+        { "labels", ci.labels},
+        { "trim", ci.trim},
+        { "directives", ci.directives},
+        { "intel", ci.intel},
+        { "commentOnly", ci.commentOnly},
+    };
+    for (const auto& f : filterMap)
+    {
+        if (f.value)
+            filtersObj.insert(f.key, true);
+    }
 
     QJsonObject optionsObj;
     optionsObj.insert("userArguments", ci.userArguments);
