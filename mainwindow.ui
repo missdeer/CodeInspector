@@ -159,6 +159,9 @@
         <property name="placeholderText">
          <string>Compiler Options...</string>
         </property>
+        <property name="clearButtonEnabled">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
       <item>
@@ -187,12 +190,6 @@ border-radius: 4;</string>
       </item>
       <item>
        <widget class="QPushButton" name="btnConfiguration">
-        <property name="font">
-         <font>
-          <family>Segoe UI Symbol</family>
-          <pointsize>24</pointsize>
-         </font>
-        </property>
         <property name="styleSheet">
          <string notr="true">background-color:#FFFFFF;
 border: 0;

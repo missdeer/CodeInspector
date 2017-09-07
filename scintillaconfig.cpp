@@ -101,7 +101,10 @@ void ScintillaConfig::initScintilla(ScintillaEdit* sci)
     sci->setSavePoint();
     sci->setFontQuality( SC_EFF_QUALITY_ANTIALIASED);
 
+    // apply global settings
     QString themePath = ":/resource/sci/themes/" % g_settings->codeEditorTheme() % ".xml";
+    if (!QFile::exists(themePath))
+        themePath = ":/resource/sci/stylers.model.xml";
     applyThemeStyle(sci, themePath);
 }
 
@@ -146,16 +149,17 @@ void ScintillaConfig::initFolderStyle(ScintillaEdit *sci)
 
 void ScintillaConfig::initEditorStyle(ScintillaEdit *sci, const QString& lang)
 {
-    sci->setLexerLanguage(lang.toStdString().c_str());
+    auto l = lang.toUtf8();
+    sci->setLexerLanguage(l.data());
 
+    // apply language specified settings
     QString themePath = ":/resource/sci/themes/" % g_settings->codeEditorTheme() % ".xml";
-    applyThemeStyle(sci, themePath);
-    themePath.append("/");
-    themePath.append(lang);
-    themePath.append(".xml");
+    if (!QFile::exists(themePath))
+        themePath = ":/resource/sci/stylers.model.xml";
     applyThemeStyle(sci, themePath);
 
-    QString langPath = ":/resource/language/" % lang % ".xml";
+    // read configurations from langs.model.xml
+    QString langPath = ":/resource/sci/langs.model.xml";
     applyLanguageStyle(sci, langPath);
 
     initFolderStyle(sci);
@@ -241,7 +245,7 @@ void ScintillaConfig::applyThemeStyle(ScintillaEdit *sci, const QString &themePa
             if (families.contains(g_settings->codeEditorFontFamily()))
                 sci->styleSetFont(id, g_settings->codeEditorFontFamily().toStdString().c_str());
             else
-#if defined(Q_OS_MAC)
+#if defined(Q_OS_MAC) || defined (Q_OS_IOS)
                 sci->styleSetFont(id, "Menlo");
 #elif defined(Q_OS_WIN)
                 sci->styleSetFont(id, "Consolas");

@@ -9,7 +9,7 @@ CodeInspector::CodeInspector(QWidget *parent)
 void CodeInspector::initialize()
 {
     m_sc.initScintilla(this);
-    m_sc.initEditorStyle(this);
+    m_sc.initEditorStyle(this, "asm");
 
     connect(this, &ScintillaEdit::linesAdded, this, &CodeInspector::linesAdded);
     connect(this, &ScintillaEdit::marginClicked, this, &CodeInspector::marginClicked);
@@ -30,17 +30,12 @@ void CodeInspector::marginClicked(int /*position*/, int /*modifiers*/, int /*mar
 {
 }
 
-void CodeInspector::setLanguage(const QString &lang)
-{
-    m_sc.initEditorStyle(this, lang);
-}
-
 void CodeInspector::setContent(const QString &content)
 {
     auto b = content.toUtf8();
     setText(b.data());
 
     emptyUndoBuffer();
-    m_sc.initEditorStyle(this);
+    m_sc.initEditorStyle(this, "asm");
     colourise(0, -1);
 }

@@ -10,7 +10,6 @@ class CodeInspector : public ScintillaEdit
 public:
     explicit CodeInspector(QWidget *parent = 0);
     void initialize();
-    void setLanguage(const QString& lang);
     void setContent(const QString& content);
 private slots:
     void linesAdded(int linesAdded);

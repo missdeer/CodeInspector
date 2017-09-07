@@ -9,7 +9,7 @@ CodeEditor::CodeEditor(QWidget *parent)
 void CodeEditor::initialize()
 {
     m_sc.initScintilla(this);
-    m_sc.initEditorStyle(this);
+    m_sc.initEditorStyle(this, "cpp");
 
     connect(this, &ScintillaEdit::linesAdded, this, &CodeEditor::linesAdded);
     connect(this, &ScintillaEdit::marginClicked, this, &CodeEditor::marginClicked);
@@ -47,6 +47,7 @@ void CodeEditor::marginClicked(int position, int /*modifiers*/, int margin)
 void CodeEditor::setLanguage(const QString &lang)
 {
     m_sc.initEditorStyle(this, lang);
+    colourise(0, -1);
 }
 
 void CodeEditor::setContent(const QString &content)
@@ -55,6 +56,4 @@ void CodeEditor::setContent(const QString &content)
     setText(b.data());
 
     emptyUndoBuffer();
-    m_sc.initEditorStyle(this);
-    colourise(0, -1);
 }
