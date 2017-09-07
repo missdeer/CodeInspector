@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "godboltagent.h"
 
 namespace Ui {
 class MainWindow;
@@ -19,11 +20,13 @@ public:
     ~MainWindow();
 
 private slots:
+    void onCompilerListRetrieved();
 
 private:
     Ui::MainWindow *ui;
-    CodeEditor* codeEditor;
-    CodeInspector* codeInspector;
+    CodeEditor* m_codeEditor;
+    CodeInspector* m_codeInspector;
+    GodboltAgent m_backend;
 };
 
 #endif // MAINWINDOW_H
