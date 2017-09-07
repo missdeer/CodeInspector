@@ -81,3 +81,13 @@ void NetworkReplyHelper::readyRead()
     }
 }
 
+QVariant NetworkReplyHelper::data() const
+{
+    return m_data;
+}
+
+void NetworkReplyHelper::setData(const QVariant &data)
+{
+    m_data = data;
+}
+

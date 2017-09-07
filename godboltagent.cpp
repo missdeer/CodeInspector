@@ -54,10 +54,10 @@ void GodboltAgent::switchCompiler(int index)
     QNetworkRequest request(requestUrl);
     request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
     request.setRawHeader("Accept", "application/json, text/javascript, */*; q=0.01");
-    request.setRawHeader("Index", QString("%1").arg(index).toUtf8());
 
     QNetworkReply* reply = m_nam.get(request);
     NetworkReplyHelper* replyHelper = new NetworkReplyHelper(reply);
+    replyHelper->setData(index);
     connect(replyHelper, SIGNAL(done()), this, SLOT(onCompilerListRequestFinished()));
 }
 
@@ -71,14 +71,13 @@ void GodboltAgent::onCompilerListRequestFinished()
 
     if (!doc.isArray())
     {
-        qDebug() << "compiler list is expected to be an array" << QString(m_response);
+        qDebug() << "compiler list is expected to be an array";
         return;
     }
 
     QJsonArray cl = doc.array();
 
-    QByteArray rawIndex = reply->reply()->request().rawHeader("Index");
-    int index = rawIndex.toInt();
+    int index = reply->data().toInt();
     CompilerList* compilerList = m_compilerLists.find(index).value();
     for ( auto a : cl)
     {

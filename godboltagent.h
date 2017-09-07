@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QList>
+#include <QNetworkAccessManager>
 
 struct Compiler
 {
@@ -29,7 +30,6 @@ private slots:
 private:
     QMap<int, CompilerList*> m_compilerLists;
     QNetworkAccessManager m_nam;
-    QByteArray m_response;
 };
 
 #endif // GODBOLTAGENT_H

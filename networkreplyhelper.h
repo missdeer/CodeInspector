@@ -12,6 +12,10 @@ public:
     ~NetworkReplyHelper();
     QByteArray& content() { return m_content; }
     QNetworkReply* reply() { return m_reply; }
+
+    QVariant data() const;
+    void setData(const QVariant &data);
+
 signals:
     void done();
     void cancel();
@@ -25,7 +29,7 @@ public slots:
     void readyRead();
 private:
     QNetworkReply* m_reply;
-
+    QVariant m_data;
     QByteArray m_content;
 };
 
