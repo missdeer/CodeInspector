@@ -143,8 +143,103 @@ void GodboltAgent::onCompilerListRequestFinished()
 
 void GodboltAgent::onCompileRequestFinished()
 {
+    m_compileOutput.clear();
+    m_asmContent.clear();
+    m_asmItems.clear();
+
     NetworkReplyHelper* reply = qobject_cast<NetworkReplyHelper*>(sender());
     reply->deleteLater();
 
+    QByteArray& content = reply->content();
+    QJsonDocument doc = QJsonDocument::fromJson(content);
 
+    if (!doc.isObject())
+    {
+        qDebug() << "compiliation result is expected to be an object";
+        return;
+    }
+
+    QJsonObject docObj = doc.object();
+
+    QJsonValue codeVal = docObj["code"];
+    if (!codeVal.isDouble())
+    {
+        qDebug() << "compiliation result code is expected to be an integer";
+        return;
+    }
+
+    QJsonValue stdoutVal = docObj["stdout"];
+    if (!stdoutVal.isArray())
+    {
+        qDebug() << "compiliation result stdout is expected to be an integer";
+        return;
+    }
+
+    QJsonValue stderrVal = docObj["stderr"];
+    if (!stderrVal.isArray())
+    {
+        qDebug() << "compiliation result stderr is expected to be an integer";
+        return;
+    }
+
+    QJsonValue asmVal = docObj["asm"];
+    if (!asmVal.isArray())
+    {
+        qDebug() << "compiliation result asm is expected to be an integer";
+        return;
+    }
+    QJsonArray asmArray = asmVal.toArray();
+    for (auto a : asmArray)
+    {
+        QJsonObject o = a.toObject();
+        AsmItem asmItem;
+        asmItem.text = o["text"].toString();
+        if (o["source"].isDouble())
+            asmItem.source = o["source"].toDouble();
+        if (o["address"].isDouble())
+            asmItem.address = o["address"].toDouble();
+        if (o["opcodes"].isArray())
+        {
+            QJsonArray opcodes = o["opcodes"].toArray();
+            for ( auto opcode : opcodes)
+            {
+                QString op = opcode.toString();
+                bool ok = false;
+                asmItem.opcodes.append(op.toInt(&ok, 16));
+            }
+        }
+        if (o["links"].isArray())
+        {
+            QJsonArray links = o["links"].toArray();
+            for (auto link : links)
+            {
+                QJsonObject l = link.toObject();
+                AsmLink asmLink;
+                asmLink.offset = l["offset"].toInt();
+                asmLink.length = l["length"].toInt();
+                asmLink.to = l["to"].toInt();
+                asmItem.links.push_back(asmLink);
+            }
+        }
+
+        m_asmItems.push_back(asmItem);
+        m_asmContent.append(asmItem.text + "\n");
+    }
+
+    emit compiled();
+}
+
+const QVector<AsmItem> &GodboltAgent::getAsmItems() const
+{
+    return m_asmItems;
+}
+
+const QString &GodboltAgent::getAsmContent() const
+{
+    return m_asmContent;
+}
+
+const QString &GodboltAgent::getCompileOutput() const
+{
+    return m_compileOutput;
 }

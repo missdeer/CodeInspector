@@ -13,6 +13,16 @@ struct Compiler
 
 struct CompileInfo
 {
+    CompileInfo()
+        : programmingLanguageIndex(0)
+        , compilerIndex(0)
+        , labels(false)
+        , directives(false)
+        , commentOnly(false)
+        , trim(false)
+        , binary(false)
+        , intel(false)
+    {}
     QByteArray source;
     int programmingLanguageIndex;
     int compilerIndex;
@@ -25,6 +35,24 @@ struct CompileInfo
     bool intel;
 };
 
+struct AsmLink
+{
+    AsmLink() : offset(0), length(0), to(0) {}
+    int offset;
+    int length;
+    unsigned long long to;
+};
+
+struct AsmItem
+{
+    AsmItem() : address(0), source(-1) {}
+    QVector<char> opcodes;
+    unsigned long long address;
+    QString text;
+    int source;
+    QList<AsmLink> links;
+};
+
 typedef QList<Compiler> CompilerList;
 
 class GodboltAgent : public QObject
@@ -35,9 +63,14 @@ public:
     ~GodboltAgent();
     const CompilerList &getCompilerList(int index);
     void compile(const CompileInfo& ci);
+    const QString& getCompileOutput() const;
+
+    const QString& getAsmContent() const;
+
+    const QVector<AsmItem>& getAsmItems() const;
+
 signals:
     void compilerListRetrieved();
-    void compilingFailed();
     void compiled();
 public slots:
     void switchCompiler(int index);
@@ -58,6 +91,10 @@ private:
         "https://haskell.godbolt.org",
         "https://swift.godbolt.org",
     };
+
+    QString m_compileOutput;
+    QString m_asmContent;
+    QVector<AsmItem> m_asmItems;
 };
 
 #endif // GODBOLTAGENT_H

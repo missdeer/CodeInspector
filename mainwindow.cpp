@@ -22,7 +22,6 @@ MainWindow::MainWindow(QWidget *parent) :
     splitter->addWidget(m_codeInspector);
 
     connect(&m_backend, &GodboltAgent::compilerListRetrieved, this, &MainWindow::onCompilerListRetrieved);
-    connect(&m_backend, &GodboltAgent::compilingFailed, this, &MainWindow::onCompilingFailed);
     connect(&m_backend, &GodboltAgent::compiled, this, &MainWindow::onCompiled);
     connect(ui->cbProgrammingLanguageList, SIGNAL(currentIndexChanged(int)), &m_backend, SLOT(switchCompiler(int)));
     connect(m_codeEditor, &CodeEditor::contentModified, this, &MainWindow::onSourceCodeEdited);
@@ -65,14 +64,13 @@ void MainWindow::onSourceCodeEdited()
     m_codeInspector->setContent(tr("<Compiling...>"));
 }
 
-void MainWindow::onCompilingFailed()
-{
-    Q_ASSERT(m_codeInspector);
-    m_codeInspector->setContent(tr("<Compiling failed...>"));
-}
-
 void MainWindow::onCompiled()
 {
+    auto content = m_backend.getAsmContent();
+    Q_ASSERT(m_codeInspector);
+    m_codeInspector->setContent(content);
 
+    auto output = m_backend.getCompileOutput();
+    auto asmItems = m_backend.getAsmItems();
 }
 
