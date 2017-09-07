@@ -34,7 +34,10 @@ void GodboltAgent::switchCompiler(int index)
     if (m_compilerLists.end() == it)
         m_compilerLists.insert(index, new CompilerList);
     else
+    {
         emit compilerListRetrieved();
+        return;
+    }
 
     QStringList urls = {
         "https://gcc.godbolt.org",
