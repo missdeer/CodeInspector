@@ -24,6 +24,7 @@ DEFINES += QT_DEPRECATED_WARNINGS SCINTILLA_QT=1 SCI_LEXER=1 _CRT_SECURE_NO_DEPR
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+RC_FILE = codeinspector.rc
 
 SOURCES += \
     main.cpp \
@@ -61,4 +62,9 @@ win32-msvc* {
     QMAKE_LFLAGS += "/LTCG"
     QMAKE_CXXFLAGS_RELEASE += /Zi
     QMAKE_LFLAGS_RELEASE += /DEBUG
+}
+macx: {
+    ICON = codeinspector.icns
+    icon.path = $$PWD
+    INSTALLS += icon
 }

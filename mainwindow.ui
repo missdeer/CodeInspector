@@ -77,6 +77,10 @@
   <property name="windowTitle">
    <string>Code Inspector</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="ci.qrc">
+    <normaloff>:/codeinspector.png</normaloff>:/codeinspector.png</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1">
     <property name="spacing">
