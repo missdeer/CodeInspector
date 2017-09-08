@@ -13,6 +13,8 @@ void CodeInspector::initialize()
 
     connect(this, &ScintillaEdit::linesAdded, this, &CodeInspector::linesAdded);
     connect(this, &ScintillaEdit::marginClicked, this, &CodeInspector::marginClicked);
+
+    setReadOnly(true);
 }
 
 void CodeInspector::linesAdded(int /*linesAdded*/)
@@ -33,7 +35,9 @@ void CodeInspector::marginClicked(int /*position*/, int /*modifiers*/, int /*mar
 void CodeInspector::setContent(const QString &content)
 {
     auto b = content.toUtf8();
+    setReadOnly(false);
     setText(b.data());
+    setReadOnly(true);
 
     emptyUndoBuffer();
     m_sc.initEditorStyle(this, "asm");
