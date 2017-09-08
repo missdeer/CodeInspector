@@ -22,7 +22,6 @@ private slots:
                   const QByteArray &text, int line, int foldNow, int foldPrev);
 private:
     ScintillaConfig m_sc;
-    QTimer *m_timer;
 };
 
 #endif // CODEEDITOR_H

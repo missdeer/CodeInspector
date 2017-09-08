@@ -24,8 +24,10 @@ private slots:
     void onNeedCompile();
     void onCompiled();
     void onSwitchProgrammingLanguage(int);
+    void onDelayCompile();
 private:
     Ui::MainWindow *ui;
+    QTimer *m_timer;
     CodeEditor* m_codeEditor;
     CodeInspector* m_codeInspector;
     GodboltAgent m_backend;

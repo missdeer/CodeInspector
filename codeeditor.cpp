@@ -3,16 +3,12 @@
 
 CodeEditor::CodeEditor(QWidget *parent)
     : ScintillaEdit (parent)
-    , m_timer(new QTimer)
 {
-    connect(m_timer, &QTimer::timeout, this, &CodeEditor::contentModified);
 }
 
 CodeEditor::~CodeEditor()
 {
-    if (m_timer->isActive())
-        m_timer->stop();
-    delete m_timer;
+
 }
 
 void CodeEditor::initialize()
@@ -56,15 +52,7 @@ void CodeEditor::marginClicked(int position, int /*modifiers*/, int margin)
 
 void CodeEditor::modified(int /*type*/, int /*position*/, int /*length*/, int /*linesAdded*/, const QByteArray &/*text*/, int /*line*/, int /*foldNow*/, int /*foldPrev*/)
 {
-    if (m_timer->isActive())
-        m_timer->stop();
-
-    m_timer->setSingleShot(true);
-#if defined(Q_OS_IOS) || defined(Q_OS_ANDROID)
-    m_timer->start(2000);
-#else
-    m_timer->start(750);
-#endif
+    emit contentModified();
 }
 
 void CodeEditor::setLanguage(const QString &lang)

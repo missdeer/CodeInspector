@@ -7,7 +7,8 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    m_timer(new QTimer)
 {
     ui->setupUi(this);
     ui->edtCompilerOptions->setClearButtonEnabled(true);
@@ -21,17 +22,21 @@ MainWindow::MainWindow(QWidget *parent) :
     splitter->addWidget(m_codeEditor);
     splitter->addWidget(m_codeInspector);
 
+    connect(m_timer, &QTimer::timeout, this, &MainWindow::onNeedCompile);
     connect(&m_backend, &GodboltAgent::compilerListRetrieved, this, &MainWindow::onCompilerListRetrieved);
     connect(&m_backend, &GodboltAgent::compiled, this, &MainWindow::onCompiled);
     connect(ui->cbProgrammingLanguageList, SIGNAL(currentIndexChanged(int)), this, SLOT(onSwitchProgrammingLanguage(int)));
-    connect(m_codeEditor, &CodeEditor::contentModified, this, &MainWindow::onNeedCompile);
-    connect(ui->edtCompilerOptions, &QLineEdit::textEdited, this, &MainWindow::onNeedCompile);
+    connect(m_codeEditor, &CodeEditor::contentModified, this, &MainWindow::onDelayCompile);
+    connect(ui->edtCompilerOptions, &QLineEdit::textChanged, this, &MainWindow::onDelayCompile);
     connect(ui->cbCompilerList, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), [&](){this->onNeedCompile();});
     m_backend.switchProgrammingLanguage(0);
 }
 
 MainWindow::~MainWindow()
 {
+    if (m_timer->isActive())
+        m_timer->stop();
+    delete m_timer;
     delete ui;
 }
 
@@ -92,5 +97,18 @@ void MainWindow::onSwitchProgrammingLanguage(int index)
     };
     Q_ASSERT(m_codeEditor);
     m_codeEditor->setLanguage(lexers[index]);
+}
+
+void MainWindow::onDelayCompile()
+{
+    if (m_timer->isActive())
+        m_timer->stop();
+
+    m_timer->setSingleShot(true);
+#if defined(Q_OS_IOS) || defined(Q_OS_ANDROID)
+    m_timer->start(1500);
+#else
+    m_timer->start(750);
+#endif
 }
 
