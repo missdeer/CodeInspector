@@ -17,10 +17,33 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->editorLayout->addWidget(splitter);
     m_codeEditor = new CodeEditor(splitter);
     m_codeEditor->initialize();
+
+    splitter->addWidget(m_codeEditor);
+
+    QWidget* inspectorPanel = new QWidget(splitter);
+    QVBoxLayout* inspectoerPanelLayout = new QVBoxLayout(inspectorPanel);
+    inspectorPanel->setLayout(inspectoerPanelLayout);
+
+    QHBoxLayout* toolButtonLayout = new QHBoxLayout(inspectorPanel);
+    toolButtonLayout->setContentsMargins(0,0,0,0);
+    toolButtonLayout->setSpacing(2);
+    QPushButton* btnBinary = new QPushButton("Binary", inspectorPanel);
+    btnBinary->setFlat(true);
+    toolButtonLayout->addWidget(btnBinary);
+    QPushButton* btnLabels = new QPushButton("Labels", inspectorPanel);
+    btnLabels->setFlat(true);
+    toolButtonLayout->addWidget(btnLabels);
+    toolButtonLayout->addStretch();
+
     m_codeInspector = new CodeInspector(splitter);
     m_codeInspector->initialize();
-    splitter->addWidget(m_codeEditor);
-    splitter->addWidget(m_codeInspector);
+
+    inspectoerPanelLayout->addLayout(toolButtonLayout);
+    inspectoerPanelLayout->addWidget(m_codeInspector);
+    inspectoerPanelLayout->setContentsMargins(0,0,0,0);
+    inspectoerPanelLayout->setSpacing(2);
+
+    splitter->addWidget(inspectorPanel);
 
     connect(m_timer, &QTimer::timeout, this, &MainWindow::onNeedCompile);
     connect(&m_backend, &GodboltAgent::compilerListRetrieved, this, &MainWindow::onCompilerListRetrieved);
