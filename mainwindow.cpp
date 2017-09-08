@@ -24,7 +24,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(&m_backend, &GodboltAgent::compilerListRetrieved, this, &MainWindow::onCompilerListRetrieved);
     connect(&m_backend, &GodboltAgent::compiled, this, &MainWindow::onCompiled);
     connect(ui->cbProgrammingLanguageList, SIGNAL(currentIndexChanged(int)), this, SLOT(onSwitchProgrammingLanguage(int)));
-    connect(m_codeEditor, &CodeEditor::contentModified, this, &MainWindow::onSourceCodeEdited);
+    connect(m_codeEditor, &CodeEditor::contentModified, this, &MainWindow::onNeedCompile);
+    connect(ui->edtCompilerOptions, &QLineEdit::textEdited, this, &MainWindow::onNeedCompile);
+    connect(ui->cbCompilerList, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), [&](){this->onNeedCompile();});
     m_backend.switchProgrammingLanguage(0);
 }
 
@@ -43,10 +45,15 @@ void MainWindow::onCompilerListRetrieved()
     }
 }
 
-void MainWindow::onSourceCodeEdited()
+void MainWindow::onNeedCompile()
 {
     Q_ASSERT(m_codeEditor);
     CompileInfo ci;
+    ci.source = m_codeEditor->getText(m_codeEditor->textLength() + 1);
+    if (ci.source.isEmpty())
+        return;
+
+    ci.userArguments = ui->edtCompilerOptions->text();
     ci.binary = false;
     ci.commentOnly = true;
     ci.labels = true;
@@ -55,8 +62,6 @@ void MainWindow::onSourceCodeEdited()
     ci.intel = false;
     ci.programmingLanguageIndex = ui->cbProgrammingLanguageList->currentIndex();
     ci.compilerIndex = ui->cbCompilerList->currentIndex();
-    ci.source = m_codeEditor->getText(m_codeEditor->textLength() + 1);
-    ci.userArguments = ui->edtCompilerOptions->text();
     m_backend.compile(ci);
 
     m_codeEditor->setSavePoint();

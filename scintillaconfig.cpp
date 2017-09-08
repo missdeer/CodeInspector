@@ -191,9 +191,9 @@ void ScintillaConfig::applyLanguageStyle(ScintillaEdit *sci, const QString &conf
     if (langElem.isNull())
         return;
 
-    QString commentLine = langElem.attribute("comment_line");
-    QString commentStart = langElem.attribute("comment_start");
-    QString commentEnd = langElem.attribute("comment_end");
+    QString commentLine = langElem.attribute("commentLine");
+    QString commentStart = langElem.attribute("commentStart");
+    QString commentEnd = langElem.attribute("commentEnd");
 
     QDomElement keywordElem = langElem.firstChildElement("Keywords");
     int keywordSet = 0;
@@ -312,24 +312,28 @@ bool ScintillaConfig::matchSuffix(const QString &filename, const QString &suffix
 void ScintillaConfig::applyStyle(ScintillaEdit *sci, const QDomElement &styleElem)
 {
     int id = styleElem.attribute("styleID").toInt();
-    if (id == 0 /*&& styleElem.attribute("name") != "Global override"*/)
+    if (id != 0)
+    {
+        QString foreColor = styleElem.attribute("fgColor");
+        if (!foreColor.isEmpty())
+        {
+            int color = foreColor.toLong(NULL, 16);
+            color = ((color & 0xFF0000) >> 16) | (color & 0xFF00) | ((color & 0xFF) << 16);
+            sci->styleSetFore(id, color);
+        }
+        QString backColor = styleElem.attribute("bgColor");
+        if (!backColor.isEmpty())
+        {
+            int color = backColor.toLong(NULL, 16);
+            color = ((color & 0xFF0000) >> 16) | (color & 0xFF00) | ((color & 0xFF) << 16);
+            sci->styleSetBack(id, color);
+        }
+    }
+    else if (styleElem.attribute("name") != "Global override")
     {
         return;
     }
-    QString foreColor = styleElem.attribute("fgColor");
-    if (!foreColor.isEmpty())
-    {
-        int color = foreColor.toLong(NULL, 16);
-        color = ((color & 0xFF0000) >> 16) | (color & 0xFF00) | ((color & 0xFF) << 16);
-        sci->styleSetFore(id, color);
-    }
-    QString backColor = styleElem.attribute("bgColor");
-    if (!backColor.isEmpty())
-    {
-        int color = backColor.toLong(NULL, 16);
-        color = ((color & 0xFF0000) >> 16) | (color & 0xFF00) | ((color & 0xFF) << 16);
-        sci->styleSetBack(id, color);
-    }
+
     QString fontName = styleElem.attribute("fontName");
     QFontDatabase database;
     QStringList families = database.families();

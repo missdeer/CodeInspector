@@ -21,7 +21,7 @@ public:
 
 private slots:
     void onCompilerListRetrieved();
-    void onSourceCodeEdited();
+    void onNeedCompile();
     void onCompiled();
     void onSwitchProgrammingLanguage(int);
 private:
