@@ -27,12 +27,56 @@ MainWindow::MainWindow(QWidget *parent) :
     QHBoxLayout* toolButtonLayout = new QHBoxLayout(inspectorPanel);
     toolButtonLayout->setContentsMargins(0,0,0,0);
     toolButtonLayout->setSpacing(2);
-    QPushButton* btnBinary = new QPushButton("Binary", inspectorPanel);
-    btnBinary->setFlat(true);
+
+    QPushButton* btnBinary = new QPushButton(QIcon(":/resource/image/binary.png"), "", inspectorPanel);
+    //btnBinary->setFlat(true);
+    btnBinary->setCheckable(true);
+    btnBinary->setChecked(false);
+    btnBinary->setIconSize(QSize(32, 32));
+    btnBinary->setToolTip(tr("Binary"));
     toolButtonLayout->addWidget(btnBinary);
-    QPushButton* btnLabels = new QPushButton("Labels", inspectorPanel);
-    btnLabels->setFlat(true);
+
+    QPushButton* btnLabels = new QPushButton(QIcon(":/resource/image/label.png"), "", inspectorPanel);
+    //btnLabels->setFlat(true);
+    btnLabels->setCheckable(true);
+    btnLabels->setChecked(true);
+    btnLabels->setIconSize(QSize(32, 32));
+    btnLabels->setToolTip(tr("Labels"));
     toolButtonLayout->addWidget(btnLabels);
+
+    QPushButton* btnTrim = new QPushButton(QIcon(":/resource/image/trim.png"), "", inspectorPanel);
+    //btnTrim->setFlat(true);
+    btnTrim->setCheckable(true);
+    btnTrim->setChecked(true);
+    btnTrim->setIconSize(QSize(32, 32));
+    btnTrim->setToolTip(tr("Trim"));
+    toolButtonLayout->addWidget(btnTrim);
+
+    QPushButton* btnDirectives = new QPushButton(QIcon(":/resource/image/detectives.png"), "", inspectorPanel);
+    //btnDirectives->setFlat(true);
+    btnDirectives->setCheckable(true);
+    btnDirectives->setChecked(true);
+    btnDirectives->setIconSize(QSize(32, 32));
+    btnDirectives->setToolTip(tr("Directives"));
+    toolButtonLayout->addWidget(btnDirectives);
+
+    QPushButton* btnIntel = new QPushButton(QIcon(":/resource/image/intel.png"), "", inspectorPanel);
+    //btnIntel->setFlat(true);
+    btnIntel->setCheckable(true);
+    btnIntel->setChecked(true);
+    btnIntel->setIconSize(QSize(32, 32));
+    btnIntel->setToolTip(tr("Intel"));
+    toolButtonLayout->addWidget(btnIntel);
+
+
+    QPushButton* btnCommentOnly = new QPushButton(QIcon(":/resource/image/comment.png"), "", inspectorPanel);
+    //btnCommentOnly->setFlat(true);
+    btnCommentOnly->setCheckable(true);
+    btnCommentOnly->setChecked(true);
+    btnCommentOnly->setIconSize(QSize(32, 32));
+    btnCommentOnly->setToolTip(tr("Comment Only"));
+    toolButtonLayout->addWidget(btnCommentOnly);
+
     toolButtonLayout->addStretch();
 
     m_codeInspector = new CodeInspector(splitter);

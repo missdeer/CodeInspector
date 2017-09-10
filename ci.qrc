@@ -32,5 +32,11 @@
         <file>resource/sci/themes/Neon.xml</file>
         <file>resource/sci/themes/VS2015-Dark.xml</file>
         <file>codeinspector.png</file>
+        <file>resource/image/binary.png</file>
+        <file>resource/image/label.png</file>
+        <file>resource/image/trim.png</file>
+        <file>resource/image/comment.png</file>
+        <file>resource/image/intel.png</file>
+        <file>resource/image/detectives.png</file>
     </qresource>
 </RCC>
