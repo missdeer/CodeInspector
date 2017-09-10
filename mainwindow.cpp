@@ -28,54 +28,31 @@ MainWindow::MainWindow(QWidget *parent) :
     toolButtonLayout->setContentsMargins(0,0,0,0);
     toolButtonLayout->setSpacing(2);
 
-    QPushButton* btnBinary = new QPushButton(QIcon(":/resource/image/binary.png"), "", inspectorPanel);
-    //btnBinary->setFlat(true);
-    btnBinary->setCheckable(true);
-    btnBinary->setChecked(false);
-    btnBinary->setIconSize(QSize(32, 32));
-    btnBinary->setToolTip(tr("Binary"));
-    toolButtonLayout->addWidget(btnBinary);
+    struct {
+        QPushButton*& btn;
+        QString icon;
+        QString text;
+        bool checked;
+    } buttons[] = {
+    {m_btnBinary, ":/resource/image/binary.png", tr("Binary"), false},
+    {m_btnLabels, ":/resource/image/label.png", tr("Labels"), true},
+    {m_btnTrim, ":/resource/image/trim.png", tr("Trim"), true},
+    {m_btnDirectives, ":/resource/image/detectives.png", tr("Directives"), true},
+    {m_btnIntel, ":/resource/image/intel.png", tr("Intel"), true},
+    {m_btnCommentOnly, ":/resource/image/comment.png", tr("Comment Only"), true},
+    };
 
-    QPushButton* btnLabels = new QPushButton(QIcon(":/resource/image/label.png"), "", inspectorPanel);
-    //btnLabels->setFlat(true);
-    btnLabels->setCheckable(true);
-    btnLabels->setChecked(true);
-    btnLabels->setIconSize(QSize(32, 32));
-    btnLabels->setToolTip(tr("Labels"));
-    toolButtonLayout->addWidget(btnLabels);
-
-    QPushButton* btnTrim = new QPushButton(QIcon(":/resource/image/trim.png"), "", inspectorPanel);
-    //btnTrim->setFlat(true);
-    btnTrim->setCheckable(true);
-    btnTrim->setChecked(true);
-    btnTrim->setIconSize(QSize(32, 32));
-    btnTrim->setToolTip(tr("Trim"));
-    toolButtonLayout->addWidget(btnTrim);
-
-    QPushButton* btnDirectives = new QPushButton(QIcon(":/resource/image/detectives.png"), "", inspectorPanel);
-    //btnDirectives->setFlat(true);
-    btnDirectives->setCheckable(true);
-    btnDirectives->setChecked(true);
-    btnDirectives->setIconSize(QSize(32, 32));
-    btnDirectives->setToolTip(tr("Directives"));
-    toolButtonLayout->addWidget(btnDirectives);
-
-    QPushButton* btnIntel = new QPushButton(QIcon(":/resource/image/intel.png"), "", inspectorPanel);
-    //btnIntel->setFlat(true);
-    btnIntel->setCheckable(true);
-    btnIntel->setChecked(true);
-    btnIntel->setIconSize(QSize(32, 32));
-    btnIntel->setToolTip(tr("Intel"));
-    toolButtonLayout->addWidget(btnIntel);
-
-
-    QPushButton* btnCommentOnly = new QPushButton(QIcon(":/resource/image/comment.png"), "", inspectorPanel);
-    //btnCommentOnly->setFlat(true);
-    btnCommentOnly->setCheckable(true);
-    btnCommentOnly->setChecked(true);
-    btnCommentOnly->setIconSize(QSize(32, 32));
-    btnCommentOnly->setToolTip(tr("Comment Only"));
-    toolButtonLayout->addWidget(btnCommentOnly);
+    for (const auto & b : buttons)
+    {
+        b.btn = new QPushButton(QIcon(b.icon), "", inspectorPanel);
+        b.btn->setCheckable(true);
+        b.btn->setChecked(b.checked);
+        b.btn->setIconSize(QSize(32, 32));
+        b.btn->setToolTip(b.text);
+        b.btn->setFlat(true);
+        connect(b.btn, &QPushButton::clicked, this, &MainWindow::onDelayCompile);
+        toolButtonLayout->addWidget(b.btn);
+    }
 
     toolButtonLayout->addStretch();
 
@@ -126,12 +103,12 @@ void MainWindow::onNeedCompile()
         return;
 
     ci.userArguments = ui->edtCompilerOptions->text();
-    ci.binary = false;
-    ci.commentOnly = true;
-    ci.labels = true;
-    ci.trim = true;
-    ci.directives = true;
-    ci.intel = false;
+    ci.binary = m_btnBinary->isChecked();
+    ci.commentOnly = m_btnCommentOnly->isChecked();
+    ci.labels = m_btnLabels->isChecked();
+    ci.trim = m_btnTrim->isChecked();
+    ci.directives = m_btnDirectives->isChecked();
+    ci.intel = m_btnIntel->isChecked();
     ci.programmingLanguageIndex = ui->cbProgrammingLanguageList->currentIndex();
     ci.compilerIndex = ui->cbCompilerList->currentIndex();
     m_backend.compile(ci);

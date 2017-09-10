@@ -30,6 +30,12 @@ private:
     QTimer *m_timer;
     CodeEditor* m_codeEditor;
     CodeInspector* m_codeInspector;
+    QPushButton* m_btnBinary;
+    QPushButton* m_btnLabels;
+    QPushButton* m_btnTrim;
+    QPushButton* m_btnDirectives;
+    QPushButton* m_btnIntel;
+    QPushButton* m_btnCommentOnly;
     GodboltAgent m_backend;
 };
 
