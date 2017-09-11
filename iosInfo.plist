@@ -50,7 +50,7 @@
         </dict>
     </dict>
     <key>UILaunchImageFile</key>
-    <string>codeinspector</string>
+    <string>Default</string>
     <key>MinimumOSVersion</key>
     <string>8.0</string>
     <key>UIBackgroundModes</key>
