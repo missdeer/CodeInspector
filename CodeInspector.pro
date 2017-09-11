@@ -68,3 +68,32 @@ macx: {
     icon.path = $$PWD
     INSTALLS += icon
 }
+
+ios {
+    AppIcons.files=$$system("find $$PWD/appicon/ios/ -name '*.png'")
+    AppIcons.path=./
+    LaunchImages.files=$$system("find $$PWD/launchimage/ios/ -name '*.png'")
+    LaunchImages.path=./
+    QMAKE_BUNDLE_DATA += AppIcons LaunchImages
+    QMAKE_INFO_PLIST = iosInfo.plist
+}
+
+android: {
+    QT += androidextras
+    ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
+    #ANDROID_EXTRA_LIBS = $$NDK_ROOT/sources/crystax/libs/$$ANDROID_TARGET_ARCH/libcrystax.so
+    LIBS += -L$$NDK_ROOT/sources/crystax/libs/$$ANDROID_TARGET_ARCH/
+    OTHER_FILES += $$PWD/android/AndroidManifest.xml \
+        $$PWD/android/res/values/strings.xml \
+        $$PWD/android/res/values/styles.xml
+    DISTFILES += \
+        $$PWD/android/src/com/dfordsoft/codeinspector/QtPushActivity.java \
+        $$PWD/android/src/com/dfordsoft/codeinspector/ExtendQtNative.java \
+        $$PWD/android/src/com/dfordsoft/codeinspector/codeinspectorApp.java
+    # prebuilt OpenSSL binaries from http://doc.qt.io/qt-5/opensslsupport.html
+    contains(ANDROID_TARGET_ARCH,armeabi-v7a) {
+        ANDROID_EXTRA_LIBS = \
+            $$PWD/android/libs/armeabi-v7a/libcrypto.so \
+            $$PWD/android/libs/armeabi-v7a/libssl.so
+    }
+}
