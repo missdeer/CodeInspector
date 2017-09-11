@@ -87,13 +87,12 @@ void GodboltAgent::compile(const CompileInfo &ci)
 void GodboltAgent::switchProgrammingLanguage(int index)
 {
     auto it = m_compilerLists.find(index);
-    if (m_compilerLists.end() == it)
-        m_compilerLists.insert(index, new CompilerList);
-    else
+    if (m_compilerLists.end() != it && !it.value()->isEmpty())
     {
         emit compilerListRetrieved();
         return;
     }
+    m_compilerLists.insert(index, new CompilerList);
 
     QString requestUrl = m_backendUrls[index] + "/api/compilers";
     QNetworkRequest request(requestUrl);
