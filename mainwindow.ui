@@ -143,13 +143,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QComboBox" name="cbCompilerList">
-        <item>
-         <property name="text">
-          <string>Compilers</string>
-         </property>
-        </item>
-       </widget>
+       <widget class="QComboBox" name="cbCompilerList"/>
       </item>
       <item>
        <widget class="QLineEdit" name="edtCompilerOptions">

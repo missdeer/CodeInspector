@@ -63,6 +63,7 @@ public:
     ~GodboltAgent();
     const CompilerList &getCompilerList(int index);
     void compile(const CompileInfo& ci);
+    bool canCompile(int programmingLanguageIndex, int compilerIndex);
     const QString& getCompileOutput() const;
 
     const QString& getAsmContent() const;

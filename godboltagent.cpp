@@ -84,6 +84,15 @@ void GodboltAgent::compile(const CompileInfo &ci)
     connect(replyHelper, SIGNAL(done()), this, SLOT(onCompileRequestFinished()));
 }
 
+bool GodboltAgent::canCompile(int programmingLanguageIndex, int compilerIndex)
+{
+    if (programmingLanguageIndex >= m_compilerLists.size())
+        return false;
+
+    const CompilerList& compilerList = *m_compilerLists[programmingLanguageIndex];
+    return (compilerIndex >= 0 && compilerIndex < compilerList.length());
+}
+
 void GodboltAgent::switchProgrammingLanguage(int index)
 {
     auto it = m_compilerLists.find(index);

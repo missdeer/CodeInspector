@@ -96,6 +96,9 @@ void MainWindow::onCompilerListRetrieved()
 
 void MainWindow::onNeedCompile()
 {
+    if (!m_backend.canCompile(ui->cbProgrammingLanguageList->currentIndex(), ui->cbCompilerList->currentIndex()))
+        return;
+
     Q_ASSERT(m_codeEditor);
     CompileInfo ci;
     ci.source = m_codeEditor->getText(m_codeEditor->textLength() + 1);
