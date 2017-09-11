@@ -11,6 +11,10 @@ class MainWindow;
 class CodeEditor;
 class CodeInspector;
 
+QT_BEGIN_NAMESPACE
+class QPushButton;
+QT_END_NAMESPACE
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -18,7 +22,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-
+    void postInitialize();
 private slots:
     void onCompilerListRetrieved();
     void onNeedCompile();
@@ -37,6 +41,7 @@ private:
     QPushButton* m_btnIntel;
     QPushButton* m_btnCommentOnly;
     GodboltAgent m_backend;
+    QMap<int, CompileInfo> m_cache;
 };
 
 #endif // MAINWINDOW_H

@@ -72,7 +72,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->cbProgrammingLanguageList, SIGNAL(currentIndexChanged(int)), this, SLOT(onSwitchProgrammingLanguage(int)));
     connect(m_codeEditor, &CodeEditor::contentModified, this, &MainWindow::onDelayCompile);
     connect(ui->edtCompilerOptions, &QLineEdit::textChanged, this, &MainWindow::onDelayCompile);
-    connect(ui->cbCompilerList, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), [&](){this->onNeedCompile();});
+    connect(ui->cbCompilerList, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), [&](){this->onDelayCompile();});
     m_backend.switchProgrammingLanguage(0);
 }
 
@@ -82,6 +82,11 @@ MainWindow::~MainWindow()
         m_timer->stop();
     delete m_timer;
     delete ui;
+}
+
+void MainWindow::postInitialize()
+{
+    onSwitchProgrammingLanguage(0);
 }
 
 void MainWindow::onCompilerListRetrieved()
@@ -119,6 +124,9 @@ void MainWindow::onNeedCompile()
     m_codeEditor->setSavePoint();
     Q_ASSERT(m_codeInspector);
     m_codeInspector->setContent(tr("<Compiling...>"));
+
+    m_cache.insert(ci.programmingLanguageIndex, ci);
+    qDebug() << "store:" << ci.compilerIndex;
 }
 
 void MainWindow::onCompiled()
@@ -133,6 +141,7 @@ void MainWindow::onCompiled()
 
 void MainWindow::onSwitchProgrammingLanguage(int index)
 {
+    m_codeEditor->setContent("");
     m_backend.switchProgrammingLanguage(index);
     QStringList lexers = {
         "cpp",
@@ -144,6 +153,35 @@ void MainWindow::onSwitchProgrammingLanguage(int index)
     };
     Q_ASSERT(m_codeEditor);
     m_codeEditor->setLanguage(lexers[index]);
+
+    auto it = m_cache.find(index);
+    qDebug() <<  ( m_cache.end() != it);
+    if ( m_cache.end() != it)
+    {
+        const auto& ci = it.value();
+        qDebug() << "restore:" << ci.compilerIndex;
+        m_codeEditor->setContent(ci.source);
+        ui->edtCompilerOptions->setText(ci.userArguments);
+        m_btnBinary->setChecked(ci.binary);
+        m_btnCommentOnly->setChecked(ci.commentOnly);
+        m_btnLabels->setChecked( ci.labels);
+        m_btnTrim->setChecked(ci.trim);
+        m_btnDirectives->setChecked(ci.directives);
+        m_btnIntel->setChecked(ci.intel);
+        ui->cbCompilerList->setCurrentIndex(ci.compilerIndex);
+        return;
+    }
+
+    QStringList examples = {
+        "// Type your code here, or load an example.\nint square(int num) {\n    return num * num;\n}",
+        "// Type your code here, or load an example.\nint square(int num) {\n    return num * num;\n}",
+        "// Type your code here, or load an example.\npub fn square(num: i32) -> i32 \n{\n    num * num;\n}",
+        "// Type your code here, or load an example.\n// Your function name should start with a capital letter.\npackage main\n\nfunc Square(x int) int {\n  return x * x\n}\n\nfunc main() {}",
+        "// Type your code here, or load an example.\nuniform int square(uniform int num) {\n    return num * num;\n}",
+        "module Example where\n\nsumOverArray :: [Int] -> Int\nsumOverArray (x:xs) = x + sumOverArray xs\nsumOverArray [] =  0",
+        "// Type your code here, or load an example.\nfunc square(n: Int) -> Int {\n    return n * n;\n}",
+    };
+    m_codeEditor->setContent(examples[index]);
 }
 
 void MainWindow::onDelayCompile()
