@@ -32,14 +32,15 @@ MainWindow::MainWindow(QWidget *parent) :
         QPushButton*& btn;
         QString icon;
         QString text;
+        QString tooltip;
         bool checked;
     } buttons[] = {
-    {m_btnBinary, ":/resource/image/binary.png", tr("Binary"), false},
-    {m_btnLabels, ":/resource/image/label.png", tr("Labels"), true},
-    {m_btnTrim, ":/resource/image/trim.png", tr("Trim"), true},
-    {m_btnDirectives, ":/resource/image/detectives.png", tr("Directives"), true},
-    {m_btnIntel, ":/resource/image/intel.png", tr("Intel"), true},
-    {m_btnCommentOnly, ":/resource/image/comment.png", tr("Comment Only"), true},
+    {m_btnBinary, ":/resource/image/binary.png", tr("Binary"), tr("Compile to binary and disassemble the output"), false},
+    {m_btnLabels, ":/resource/image/label.png", tr("Labels"), tr("Filter unused labels from the output"), true},
+    {m_btnTrim, ":/resource/image/trim.png", tr("Trim"), tr("Trim intra-line whitespace"), true},
+    {m_btnDirectives, ":/resource/image/detectives.png", tr("Directives"), tr("Filter all assembler directives from the output"), true},
+    {m_btnIntel, ":/resource/image/intel.png", tr("Intel"), tr("Output disassembly in Intel syntax"), true},
+    {m_btnCommentOnly, ":/resource/image/comment.png", tr("Comment Only"), tr("Remove all line which are only comments from the output"), true},
     };
 
     for (const auto & b : buttons)
@@ -48,7 +49,10 @@ MainWindow::MainWindow(QWidget *parent) :
         b.btn->setCheckable(true);
         b.btn->setChecked(b.checked);
         b.btn->setIconSize(QSize(32, 32));
-        b.btn->setToolTip(b.text);
+#if !defined(Q_OS_IOS) && !defined(Q_OS_ANDROID)
+        b.btn->setText(b.text);
+        b.btn->setToolTip(b.tooltip);
+#endif
         b.btn->setFlat(true);
         connect(b.btn, &QPushButton::clicked, this, &MainWindow::onDelayCompile);
         toolButtonLayout->addWidget(b.btn);
