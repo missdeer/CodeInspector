@@ -154,7 +154,7 @@ void ScintillaConfig::initEditorMargins(ScintillaEdit *sci)
     sci->setMarginSensitiveN(0, false);
     sci->setMarginTypeN(1, SC_MARGIN_SYMBOL);
     sci->setMarginWidthN(1, 16);
-    sci->setMarginMaskN(1, 33554431); //~SC_MASK_FOLDERS or 0x1FFFFFF or 33554431
+    sci->setMarginMaskN(1, ~SC_MASK_FOLDERS); //~SC_MASK_FOLDERS or 0x1FFFFFF or 33554431
     sci->setMarginSensitiveN(1, true);
     sci->setMarginTypeN(2, SC_MARGIN_SYMBOL);
     sci->setMarginWidthN(2, 16);
@@ -173,10 +173,17 @@ void ScintillaConfig::initInspectorMargins(ScintillaEdit *sci)
     sci->setMarginWidthN(0, 32);
     sci->setMarginMaskN(0, 0);
     sci->setMarginSensitiveN(0, false);
+
     sci->setMarginTypeN(1, SC_MARGIN_SYMBOL);
     sci->setMarginWidthN(1, 64);
-    sci->setMarginMaskN(1, 33554431); //~SC_MASK_FOLDERS or 0x1FFFFFF or 33554431
+    sci->setMarginMaskN(1, ~SC_MASK_FOLDERS); //~SC_MASK_FOLDERS or 0x1FFFFFF or 33554431
     sci->setMarginSensitiveN(1, false);
+    sci->setMarginBackN(1, 0xF9F9F9);
+
+    sci->setMarginTypeN(2, SC_MARGIN_SYMBOL);
+    sci->setMarginWidthN(2, 64);
+    sci->setMarginMaskN(2, ~SC_MASK_FOLDERS); //~SC_MASK_FOLDERS or 0x1FFFFFF or 33554431
+    sci->setMarginSensitiveN(2, false);
 }
 
 void ScintillaConfig::applyLanguageStyle(ScintillaEdit *sci, const QString &configPath, const QString& lang)
