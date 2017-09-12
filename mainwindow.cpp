@@ -151,10 +151,10 @@ void MainWindow::onSwitchProgrammingLanguage(int index)
         "cpp",
         "d",
         "rust",
-        "cpp",
-        "cpp",
-        "cpp",
-        "cpp",
+        "go",
+        "ispc",
+        "haskell",
+        "swift",
     };
     Q_ASSERT(m_codeEditor);
     m_codeEditor->setLanguage(lexers[index]);
