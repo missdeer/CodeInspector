@@ -22,7 +22,6 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    void postInitialize();
 private slots:
     void onCompilerListRetrieved();
     void onNeedCompile();
@@ -31,6 +30,7 @@ private slots:
     void onDelayCompile();
 private:
     Ui::MainWindow *ui;
+    bool m_postInitialized;
     QTimer *m_timer;
     CodeEditor* m_codeEditor;
     CodeInspector* m_codeInspector;

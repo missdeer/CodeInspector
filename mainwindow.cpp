@@ -8,6 +8,7 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
+    m_postInitialized(false),
     m_timer(new QTimer)
 {
     ui->setupUi(this);
@@ -89,11 +90,6 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::postInitialize()
-{
-    onSwitchProgrammingLanguage(0);
-}
-
 void MainWindow::onCompilerListRetrieved()
 {
     auto cl = m_backend.getCompilerList(ui->cbProgrammingLanguageList->currentIndex());
@@ -101,6 +97,12 @@ void MainWindow::onCompilerListRetrieved()
     for (const auto & c : cl)
     {
         ui->cbCompilerList->addItem(c.name);
+    }
+
+    if (!m_postInitialized)
+    {
+        m_postInitialized = true;
+        onSwitchProgrammingLanguage(0);
     }
 }
 
