@@ -29,7 +29,7 @@ MainWindow::MainWindow(QWidget *parent) :
     toolButtonLayout->setSpacing(2);
 
     struct {
-        QPushButton*& btn;
+        QToolButton*& btn;
         QString icon;
         QString text;
         QString tooltip;
@@ -45,15 +45,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
     for (const auto & b : buttons)
     {
-        b.btn = new QPushButton(QIcon(b.icon), "", inspectorPanel);
+        b.btn = new QToolButton(inspectorPanel);
+        b.btn->setIcon(QIcon(b.icon));
         b.btn->setCheckable(true);
         b.btn->setChecked(b.checked);
         b.btn->setIconSize(QSize(32, 32));
-#if !defined(Q_OS_IOS) && !defined(Q_OS_ANDROID)
         b.btn->setText(b.text);
         b.btn->setToolTip(b.tooltip);
+#if !defined(Q_OS_IOS) && !defined(Q_OS_ANDROID)
+        //b.btn->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 #endif
-        b.btn->setFlat(true);
         connect(b.btn, &QPushButton::clicked, this, &MainWindow::onDelayCompile);
         toolButtonLayout->addWidget(b.btn);
     }
@@ -129,7 +130,7 @@ void MainWindow::onNeedCompile()
     Q_ASSERT(m_codeInspector);
     m_codeInspector->setContent(tr("<Compiling...>"));
 
-    m_cache.insert(ci.programmingLanguageIndex, ci);
+    storeToCache(ci.programmingLanguageIndex, ci);
     qDebug() << "store:" << ci.compilerIndex;
 }
 
@@ -159,11 +160,9 @@ void MainWindow::onSwitchProgrammingLanguage(int index)
     Q_ASSERT(m_codeEditor);
     m_codeEditor->setLanguage(lexers[index]);
 
-    auto it = m_cache.find(index);
-    qDebug() <<  ( m_cache.end() != it);
-    if ( m_cache.end() != it)
+    CompileInfo ci;
+    if (restoreFromCache(index, ci))
     {
-        const auto& ci = it.value();
         qDebug() << "restore:" << ci.compilerIndex;
         m_codeEditor->setContent(ci.source);
         ui->edtCompilerOptions->setText(ci.userArguments);
@@ -204,5 +203,65 @@ void MainWindow::onDelayCompile()
 #else
     m_timer->start(750);
 #endif
+}
+
+void MainWindow::storeToCache(int index, const CompileInfo &ci)
+{
+    QString d = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+    QDir dir(d);
+    if (!dir.exists())
+        dir.mkpath(d);
+    QString path = QString("%1/%2").arg(d).arg(index);
+    QFile f(path);
+    if (!f.open(QIODevice::WriteOnly))
+    {
+        qDebug() << "open file " << path << " for writting failed";
+        return;
+    }
+
+    QDataStream stream(&f);
+    stream.startTransaction();
+    stream.setVersion(QDataStream::Qt_4_5);
+
+    stream << ci.binary
+           << ci.commentOnly
+           << ci.compilerIndex
+           << ci.directives
+           << ci.intel
+           << ci.labels
+           << ci.programmingLanguageIndex
+           << ci.source
+           << ci.trim
+           << ci.userArguments;
+    stream.commitTransaction();
+    qDebug() << "commit transaction";
+    f.close();
+}
+
+bool MainWindow::restoreFromCache(int index, CompileInfo &ci)
+{
+    QString d = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+    QString path = QString("%1/%2").arg(d).arg(index);
+    if (!QFile::exists(path))
+        return false;
+    QFile f(path);
+    if (!f.open(QIODevice::ReadOnly))
+        return false;
+
+    QDataStream stream(&f);
+    stream.setVersion(QDataStream::Qt_4_5);
+
+    stream >> ci.binary
+           >> ci.commentOnly
+           >> ci.compilerIndex
+           >> ci.directives
+           >> ci.intel
+           >> ci.labels
+           >> ci.programmingLanguageIndex
+           >> ci.source
+           >> ci.trim
+           >> ci.userArguments;
+
+    return true;
 }
 

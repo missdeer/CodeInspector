@@ -50,6 +50,7 @@
 #include <QMainWindow>
 #include <QTableView>
 #include <QShortcut>
+#include <QToolButton>
 
 #include <QTimer>
 #include <QProcess>
