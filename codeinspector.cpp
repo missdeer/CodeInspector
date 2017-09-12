@@ -9,6 +9,8 @@ CodeInspector::CodeInspector(QWidget *parent)
 void CodeInspector::initialize()
 {
     m_sc.initScintilla(this);
+    m_sc.initMargins( this );
+    m_sc.initFolderStyle( this );
     m_sc.initEditorStyle(this, "asm");
 
     connect(this, &ScintillaEdit::linesAdded, this, &CodeInspector::linesAdded);

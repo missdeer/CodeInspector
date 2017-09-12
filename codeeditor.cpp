@@ -14,6 +14,8 @@ CodeEditor::~CodeEditor()
 void CodeEditor::initialize()
 {
     m_sc.initScintilla(this);
+    m_sc.initMargins( this );
+    m_sc.initFolderStyle( this );
     m_sc.initEditorStyle(this, "cpp");
 
     connect(this, &ScintillaEdit::linesAdded, this, &CodeEditor::linesAdded);
@@ -58,6 +60,8 @@ void CodeEditor::modified(int /*type*/, int /*position*/, int /*length*/, int /*
 void CodeEditor::setLanguage(const QString &lang)
 {
     m_sc.initScintilla(this);
+    m_sc.initMargins( this );
+    m_sc.initFolderStyle( this );
     m_sc.initEditorStyle(this, lang);
     colourise(0, -1);
 }

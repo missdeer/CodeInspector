@@ -43,23 +43,6 @@ void ScintillaConfig::initScintilla(ScintillaEdit* sci)
     sci->setHotspotActiveUnderline(true);
     sci->setHotspotSingleLine(false);
     sci->setControlCharSymbol(0);
-    sci->setMarginLeft(4);
-    //sci->setMarginRight(4);
-    sci->setMarginTypeN(0, SC_MARGIN_NUMBER);
-    sci->setMarginWidthN(0, 32);
-    sci->setMarginMaskN(0, 0);
-    sci->setMarginSensitiveN(0, false);
-    sci->setMarginTypeN(1, SC_MARGIN_SYMBOL);
-    sci->setMarginWidthN(1, 16);
-    sci->setMarginMaskN(1, 33554431); //~SC_MASK_FOLDERS or 0x1FFFFFF or 33554431
-    sci->setMarginSensitiveN(1, true);
-    sci->setMarginTypeN(2, SC_MARGIN_SYMBOL);
-    sci->setMarginWidthN(2, 16);
-    sci->setMarginMaskN(2, SC_MASK_FOLDERS);// 0xFE000000 or -33554432
-    sci->setMarginSensitiveN(2, true);
-
-    sci->setFoldMarginColour(true, 0xE9E9E9);
-    sci->setFoldMarginHiColour(true, 0xFFFFFF);
 
     sci->setTabWidth(4);
     sci->setUseTabs(false);
@@ -71,8 +54,6 @@ void ScintillaConfig::initScintilla(ScintillaEdit* sci)
     sci->setPrintMagnification(1);
     sci->setPrintColourMode(0);
     sci->setPrintWrapMode(1);
-
-    initFolderStyle( sci );
 
     sci->setWrapMode(SC_WRAP_NONE);
     sci->setWrapVisualFlags(SC_WRAPVISUALFLAG_END);
@@ -163,6 +144,27 @@ void ScintillaConfig::initEditorStyle(ScintillaEdit *sci, const QString& lang)
     applyLanguageStyle(sci, configPath, lang);
 
     initFolderStyle(sci);
+}
+
+void ScintillaConfig::initMargins(ScintillaEdit *sci)
+{
+    sci->setMarginLeft(4);
+    //sci->setMarginRight(4);
+    sci->setMarginTypeN(0, SC_MARGIN_NUMBER);
+    sci->setMarginWidthN(0, 32);
+    sci->setMarginMaskN(0, 0);
+    sci->setMarginSensitiveN(0, false);
+    sci->setMarginTypeN(1, SC_MARGIN_SYMBOL);
+    sci->setMarginWidthN(1, 16);
+    sci->setMarginMaskN(1, 33554431); //~SC_MASK_FOLDERS or 0x1FFFFFF or 33554431
+    sci->setMarginSensitiveN(1, true);
+    sci->setMarginTypeN(2, SC_MARGIN_SYMBOL);
+    sci->setMarginWidthN(2, 16);
+    sci->setMarginMaskN(2, SC_MASK_FOLDERS);// 0xFE000000 or -33554432
+    sci->setMarginSensitiveN(2, true);
+
+    sci->setFoldMarginColour(true, 0xE9E9E9);
+    sci->setFoldMarginHiColour(true, 0xFFFFFF);
 }
 
 void ScintillaConfig::applyLanguageStyle(ScintillaEdit *sci, const QString &configPath, const QString& lang)
