@@ -145,12 +145,13 @@ void MainWindow::onCompiled()
 
 void MainWindow::onSwitchProgrammingLanguage(int index)
 {
-    m_codeEditor->setContent("");
+    m_codeEditor->clearContent();
     m_backend.switchProgrammingLanguage(index);
     QStringList lexers = {
         "cpp",
         "d",
         "rust",
+        "cpp",
         "cpp",
         "cpp",
         "cpp",
@@ -177,15 +178,19 @@ void MainWindow::onSwitchProgrammingLanguage(int index)
     }
 
     QStringList examples = {
-        "// Type your code here, or load an example.\nint square(int num) {\n    return num * num;\n}",
-        "// Type your code here, or load an example.\nint square(int num) {\n    return num * num;\n}",
-        "// Type your code here, or load an example.\npub fn square(num: i32) -> i32 \n{\n    num * num;\n}",
-        "// Type your code here, or load an example.\n// Your function name should start with a capital letter.\npackage main\n\nfunc Square(x int) int {\n  return x * x\n}\n\nfunc main() {}",
-        "// Type your code here, or load an example.\nuniform int square(uniform int num) {\n    return num * num;\n}",
-        "module Example where\n\nsumOverArray :: [Int] -> Int\nsumOverArray (x:xs) = x + sumOverArray xs\nsumOverArray [] =  0",
-        "// Type your code here, or load an example.\nfunc square(n: Int) -> Int {\n    return n * n;\n}",
+        ":/resource/example/cpp/square.cpp",
+        ":/resource/example/d/square.d",
+        ":/resource/example/rust/square.rs",
+        ":/resource/example/go/square.go",
+        ":/resource/example/ispc/square.ispc",
+        ":/resource/example/haskell/sumoverarray.hs",
+        ":/resource/example/swift/square.swift",
     };
-    m_codeEditor->setContent(examples[index]);
+    QFile f(examples[index]);
+    if (!f.open(QIODevice::ReadOnly))
+        return;
+    m_codeEditor->setContent(f.readAll());
+    f.close();
 }
 
 void MainWindow::onDelayCompile()

@@ -13,6 +13,8 @@ public:
     void initialize();
     void setLanguage(const QString& lang);
     void setContent(const QString& content);
+    void setContent(const QByteArray& content);
+    void clearContent();
 signals:
     void contentModified();
 private slots:

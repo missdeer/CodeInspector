@@ -65,7 +65,19 @@ void CodeEditor::setLanguage(const QString &lang)
 void CodeEditor::setContent(const QString &content)
 {
     auto b = content.toUtf8();
-    setText(b.data());
+    setContent(b);
+}
+
+void CodeEditor::setContent(const QByteArray &content)
+{
+    setText(content.data());
+
+    emptyUndoBuffer();
+}
+
+void CodeEditor::clearContent()
+{
+    setText("");
 
     emptyUndoBuffer();
 }

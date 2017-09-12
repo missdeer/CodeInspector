@@ -38,5 +38,27 @@
         <file>resource/image/comment.png</file>
         <file>resource/image/intel.png</file>
         <file>resource/image/detectives.png</file>
+        <file>resource/example/cpp/maxarray.cpp</file>
+        <file>resource/example/cpp/maxarrayopt.cpp</file>
+        <file>resource/example/cpp/square.cpp</file>
+        <file>resource/example/cpp/sumoverarray.cpp</file>
+        <file>resource/example/cpp/sumoverarrayopt.cpp</file>
+        <file>resource/example/d/maxarray.d</file>
+        <file>resource/example/d/maxarrayopt.d</file>
+        <file>resource/example/d/square.d</file>
+        <file>resource/example/d/sumoverarray.d</file>
+        <file>resource/example/d/sumoverarrayopt.d</file>
+        <file>resource/example/go/maxarray.go</file>
+        <file>resource/example/go/square.go</file>
+        <file>resource/example/haskell/sumoverarray.hs</file>
+        <file>resource/example/ispc/maxarray.ispc</file>
+        <file>resource/example/ispc/square.ispc</file>
+        <file>resource/example/ispc/sumarray.ispc</file>
+        <file>resource/example/rust/maxarray.rs</file>
+        <file>resource/example/rust/maxarrayopt.rs</file>
+        <file>resource/example/rust/square.rs</file>
+        <file>resource/example/rust/sumoverarray.rs</file>
+        <file>resource/example/rust/sumoverarrayopt.rs</file>
+        <file>resource/example/swift/square.swift</file>
     </qresource>
 </RCC>
