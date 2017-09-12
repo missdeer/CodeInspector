@@ -10,9 +10,10 @@ class ScintillaConfig
 {
 public:
     void initScintilla(ScintillaEdit* sci);
-    void initFolderStyle(ScintillaEdit* sci);
-    void initEditorStyle(ScintillaEdit* sci, const QString &lang);
-    void initMargins(ScintillaEdit* sci);
+    void initEditorFolderStyle(ScintillaEdit* sci);
+    void initLexerStyle(ScintillaEdit* sci, const QString &lang);
+    void initEditorMargins(ScintillaEdit* sci);
+    void initInspectorMargins(ScintillaEdit* sci);
 
     void applyLanguageStyle(ScintillaEdit* sci, const QString& configPath, const QString& lang);
     void applyThemeStyle(ScintillaEdit* sci, const QString& themePath, const QString &lang);

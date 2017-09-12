@@ -89,7 +89,7 @@ void ScintillaConfig::initScintilla(ScintillaEdit* sci)
     applyThemeStyle(sci, themePath, "cpp");
 }
 
-void ScintillaConfig::initFolderStyle(ScintillaEdit *sci)
+void ScintillaConfig::initEditorFolderStyle(ScintillaEdit *sci)
 {
     sci->setFoldFlags(SC_FOLDFLAG_LINEAFTER_CONTRACTED );
 
@@ -128,7 +128,7 @@ void ScintillaConfig::initFolderStyle(ScintillaEdit *sci)
     sci->setProperty( "fold.quotes.python", "1");
 }
 
-void ScintillaConfig::initEditorStyle(ScintillaEdit *sci, const QString& lang)
+void ScintillaConfig::initLexerStyle(ScintillaEdit *sci, const QString& lang)
 {
     auto l = lang.toUtf8();
     sci->setLexerLanguage(l.data());
@@ -142,11 +142,9 @@ void ScintillaConfig::initEditorStyle(ScintillaEdit *sci, const QString& lang)
     // read configurations from langs.model.xml
     QString configPath = ":/resource/sci/langs.model.xml";
     applyLanguageStyle(sci, configPath, lang);
-
-    initFolderStyle(sci);
 }
 
-void ScintillaConfig::initMargins(ScintillaEdit *sci)
+void ScintillaConfig::initEditorMargins(ScintillaEdit *sci)
 {
     sci->setMarginLeft(4);
     //sci->setMarginRight(4);
@@ -165,6 +163,20 @@ void ScintillaConfig::initMargins(ScintillaEdit *sci)
 
     sci->setFoldMarginColour(true, 0xE9E9E9);
     sci->setFoldMarginHiColour(true, 0xFFFFFF);
+}
+
+void ScintillaConfig::initInspectorMargins(ScintillaEdit *sci)
+{
+    sci->setMarginLeft(4);
+    //sci->setMarginRight(4);
+    sci->setMarginTypeN(0, SC_MARGIN_NUMBER);
+    sci->setMarginWidthN(0, 32);
+    sci->setMarginMaskN(0, 0);
+    sci->setMarginSensitiveN(0, false);
+    sci->setMarginTypeN(1, SC_MARGIN_SYMBOL);
+    sci->setMarginWidthN(1, 64);
+    sci->setMarginMaskN(1, 33554431); //~SC_MASK_FOLDERS or 0x1FFFFFF or 33554431
+    sci->setMarginSensitiveN(1, false);
 }
 
 void ScintillaConfig::applyLanguageStyle(ScintillaEdit *sci, const QString &configPath, const QString& lang)

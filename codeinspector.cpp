@@ -9,9 +9,8 @@ CodeInspector::CodeInspector(QWidget *parent)
 void CodeInspector::initialize()
 {
     m_sc.initScintilla(this);
-    m_sc.initMargins( this );
-    m_sc.initFolderStyle( this );
-    m_sc.initEditorStyle(this, "asm");
+    m_sc.initInspectorMargins( this );
+    m_sc.initLexerStyle(this, "asm");
 
     connect(this, &ScintillaEdit::linesAdded, this, &CodeInspector::linesAdded);
     connect(this, &ScintillaEdit::marginClicked, this, &CodeInspector::marginClicked);
@@ -42,6 +41,6 @@ void CodeInspector::setContent(const QString &content)
     setReadOnly(true);
 
     emptyUndoBuffer();
-    m_sc.initEditorStyle(this, "asm");
+    m_sc.initLexerStyle(this, "asm");
     colourise(0, -1);
 }
