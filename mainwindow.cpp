@@ -133,7 +133,7 @@ void MainWindow::onNeedCompile()
 
     m_codeEditor->setSavePoint();
     Q_ASSERT(m_codeInspector);
-    m_codeInspector->setContent(tr("<Compiling...>"));
+    m_codeInspector->setContent(tr("<Compiling...>"), m_btnBinary->isChecked());
 
     storeToCache(ci.programmingLanguageIndex, ci);
     qDebug() << "store:" << ci.compilerIndex;
@@ -143,8 +143,7 @@ void MainWindow::onCompiled()
 {
     auto content = m_backend.getAsmContent();
     Q_ASSERT(m_codeInspector);
-    m_codeInspector->setContent(content);
-    m_codeInspector->setBinaryMode(m_btnBinary->isChecked());
+    m_codeInspector->setContent(content, m_btnBinary->isChecked());
     if (m_btnBinary->isChecked())
     {
         auto items = m_backend.getAsmItems();

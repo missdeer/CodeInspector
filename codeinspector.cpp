@@ -33,7 +33,7 @@ void CodeInspector::marginClicked(int /*position*/, int /*modifiers*/, int /*mar
 {
 }
 
-void CodeInspector::setContent(const QString &content)
+void CodeInspector::setContent(const QString &content, bool binary)
 {
     auto b = content.toUtf8();
     setReadOnly(false);
@@ -42,18 +42,15 @@ void CodeInspector::setContent(const QString &content)
 
     emptyUndoBuffer();
     m_sc.initLexerStyle(this, "asm");
-    colourise(0, -1);
-}
-
-void CodeInspector::setBinaryMode(bool binary)
-{
     m_sc.initInspectorMargins( this, binary );
+    colourise(0, -1);
 }
 
 void CodeInspector::setAsmItems(const QVector<AsmItem> &items)
 {
     styleSetBack(15, 0xE4E4E4);
     styleSetFore(15, 0x808080);
+    styleSetSize(15, 9);
 
     for (int i = 0; i < items.length(); i++)
     {
@@ -70,6 +67,8 @@ void CodeInspector::setAsmItems(const QVector<AsmItem> &items)
 
         if (!text.isEmpty())
             text.append(":");
+        else
+            text.append("00:");
         if (!item.opcodes.isEmpty())
         {
             for (const auto& opcode : item.opcodes)
@@ -78,7 +77,10 @@ void CodeInspector::setAsmItems(const QVector<AsmItem> &items)
             }
         }
         qDebug() << "binary: " << i << text;
-        marginSetStyle(i, 15);
-        marginSetText(i, text.toStdString().c_str());
+        if (text.length() > 3)
+        {
+            marginSetStyle(i, 15);
+            marginSetText(i, text.toStdString().c_str());
+        }
     }
 }

@@ -11,8 +11,7 @@ class CodeInspector : public ScintillaEdit
 public:
     explicit CodeInspector(QWidget *parent = 0);
     void initialize();
-    void setContent(const QString& content);
-    void setBinaryMode(bool binary);
+    void setContent(const QString& content, bool binary);
     void setAsmItems(const QVector<AsmItem>& items);
 private slots:
     void linesAdded(int linesAdded);
