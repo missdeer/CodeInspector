@@ -141,6 +141,7 @@ void MainWindow::onCompiled()
     auto content = m_backend.getAsmContent();
     Q_ASSERT(m_codeInspector);
     m_codeInspector->setContent(content);
+    m_codeInspector->setBinaryMode(m_btnBinary->isChecked());
 
     auto output = m_backend.getCompileOutput();
     auto asmItems = m_backend.getAsmItems();

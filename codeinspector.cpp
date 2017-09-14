@@ -9,7 +9,7 @@ CodeInspector::CodeInspector(QWidget *parent)
 void CodeInspector::initialize()
 {
     m_sc.initScintilla(this);
-    m_sc.initInspectorMargins( this );
+    m_sc.initInspectorMargins( this, false );
     m_sc.initLexerStyle(this, "asm");
 
     connect(this, &ScintillaEdit::linesAdded, this, &CodeInspector::linesAdded);
@@ -43,4 +43,9 @@ void CodeInspector::setContent(const QString &content)
     emptyUndoBuffer();
     m_sc.initLexerStyle(this, "asm");
     colourise(0, -1);
+}
+
+void CodeInspector::setBinaryMode(bool binary)
+{
+    m_sc.initInspectorMargins( this, binary );
 }

@@ -13,7 +13,7 @@ public:
     void initEditorFolderStyle(ScintillaEdit* sci);
     void initLexerStyle(ScintillaEdit* sci, const QString &lang);
     void initEditorMargins(ScintillaEdit* sci);
-    void initInspectorMargins(ScintillaEdit* sci);
+    void initInspectorMargins(ScintillaEdit* sci, bool binary);
 
     void applyLanguageStyle(ScintillaEdit* sci, const QString& configPath, const QString& lang);
     void applyThemeStyle(ScintillaEdit* sci, const QString& themePath, const QString &lang);

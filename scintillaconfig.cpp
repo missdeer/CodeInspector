@@ -165,23 +165,23 @@ void ScintillaConfig::initEditorMargins(ScintillaEdit *sci)
     sci->setFoldMarginHiColour(true, 0xFFFFFF);
 }
 
-void ScintillaConfig::initInspectorMargins(ScintillaEdit *sci)
+void ScintillaConfig::initInspectorMargins(ScintillaEdit *sci, bool binary)
 {
     sci->setMarginLeft(4);
     //sci->setMarginRight(4);
     sci->setMarginTypeN(0, SC_MARGIN_NUMBER);
-    sci->setMarginWidthN(0, 32);
+    sci->setMarginWidthN(0, binary ? 0 : 32);
     sci->setMarginMaskN(0, 0);
     sci->setMarginSensitiveN(0, false);
 
     sci->setMarginTypeN(1, SC_MARGIN_SYMBOL);
-    sci->setMarginWidthN(1, 64);
+    sci->setMarginWidthN(1, binary ? 64 : 0);
     sci->setMarginMaskN(1, ~SC_MASK_FOLDERS); //~SC_MASK_FOLDERS or 0x1FFFFFF or 33554431
     sci->setMarginSensitiveN(1, false);
     sci->setMarginBackN(1, 0xF9F9F9);
 
     sci->setMarginTypeN(2, SC_MARGIN_SYMBOL);
-    sci->setMarginWidthN(2, 64);
+    sci->setMarginWidthN(2, binary ? 64 : 0);
     sci->setMarginMaskN(2, ~SC_MASK_FOLDERS); //~SC_MASK_FOLDERS or 0x1FFFFFF or 33554431
     sci->setMarginSensitiveN(2, false);
 }

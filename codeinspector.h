@@ -11,6 +11,8 @@ public:
     explicit CodeInspector(QWidget *parent = 0);
     void initialize();
     void setContent(const QString& content);
+    void setBinaryMode(bool binary);
+
 private slots:
     void linesAdded(int linesAdded);
     void marginClicked(int position, int modifiers, int margin);
