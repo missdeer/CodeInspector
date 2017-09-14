@@ -49,3 +49,32 @@ void CodeInspector::setBinaryMode(bool binary)
 {
     m_sc.initInspectorMargins( this, binary );
 }
+
+void CodeInspector::setAsmItems(const QVector<AsmItem> &items)
+{
+    for (int i = 0; i < items.length(); i++)
+    {
+        const AsmItem& item  = items.at(i);
+        QString text;
+        QTextStream ts(&text) ;
+        ts.setFieldWidth(2);
+        ts.setIntegerBase(16);
+        ts.setPadChar('0');
+        if (item.address > 0)
+        {
+            ts << item.address;
+        }
+
+        if (!text.isEmpty())
+            text.append(":");
+        if (!item.opcodes.isEmpty())
+        {
+            for (const auto& opcode : item.opcodes)
+            {
+                ts << opcode;
+            }
+        }
+        qDebug() << "binary: " << i << text;
+        marginSetText(i, text.toStdString().c_str());
+    }
+}

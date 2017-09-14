@@ -3,6 +3,7 @@
 
 #include "ScintillaEdit.h"
 #include "scintillaconfig.h"
+#include "godboltagent.h"
 
 class CodeInspector : public ScintillaEdit
 {
@@ -12,7 +13,7 @@ public:
     void initialize();
     void setContent(const QString& content);
     void setBinaryMode(bool binary);
-
+    void setAsmItems(const QVector<AsmItem>& items);
 private slots:
     void linesAdded(int linesAdded);
     void marginClicked(int position, int modifiers, int margin);

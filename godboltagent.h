@@ -46,7 +46,7 @@ struct AsmLink
 struct AsmItem
 {
     AsmItem() : address(0), source(-1) {}
-    QVector<char> opcodes;
+    QVector<unsigned char> opcodes;
     unsigned long long address;
     QString text;
     int source;
