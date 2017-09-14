@@ -52,6 +52,9 @@ void CodeInspector::setBinaryMode(bool binary)
 
 void CodeInspector::setAsmItems(const QVector<AsmItem> &items)
 {
+    styleSetBack(15, 0xE4E4E4);
+    styleSetFore(15, 0x808080);
+
     for (int i = 0; i < items.length(); i++)
     {
         const AsmItem& item  = items.at(i);
@@ -75,6 +78,7 @@ void CodeInspector::setAsmItems(const QVector<AsmItem> &items)
             }
         }
         qDebug() << "binary: " << i << text;
+        marginSetStyle(i, 15);
         marginSetText(i, text.toStdString().c_str());
     }
 }

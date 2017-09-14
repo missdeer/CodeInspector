@@ -15,6 +15,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->edtCompilerOptions->setClearButtonEnabled(true);
 
     QSplitter* splitter = new QSplitter(this);
+#if defined(Q_OS_IOS) || defined(Q_OS_ANDROID)
+    splitter->setHandleWidth(10);
+#endif
     ui->editorLayout->addWidget(splitter);
     m_codeEditor = new CodeEditor(splitter);
     m_codeEditor->initialize();

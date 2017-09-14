@@ -153,7 +153,7 @@ void ScintillaConfig::initEditorMargins(ScintillaEdit *sci)
     sci->setMarginMaskN(0, 0);
     sci->setMarginSensitiveN(0, false);
     sci->setMarginTypeN(1, SC_MARGIN_SYMBOL);
-    sci->setMarginWidthN(1, 16);
+    sci->setMarginWidthN(1, 0);
     sci->setMarginMaskN(1, ~SC_MASK_FOLDERS); //~SC_MASK_FOLDERS or 0x1FFFFFF or 33554431
     sci->setMarginSensitiveN(1, true);
     sci->setMarginTypeN(2, SC_MARGIN_SYMBOL);
