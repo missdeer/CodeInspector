@@ -9,6 +9,10 @@ struct Compiler
 {
     QString id;
     QString name;
+    QString version;
+    bool supportsBinary;
+    bool supportsExecute;
+    bool supportsIntel;
 };
 
 struct CompileInfo

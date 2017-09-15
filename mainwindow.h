@@ -27,6 +27,7 @@ private slots:
     void onNeedCompile();
     void onCompiled();
     void onSwitchProgrammingLanguage(int);
+    void onSwitchCompiler(int index);
     void onDelayCompile();
 private:
     Ui::MainWindow *ui;
@@ -34,12 +35,12 @@ private:
     QTimer *m_timer;
     CodeEditor* m_codeEditor;
     CodeInspector* m_codeInspector;
-    QToolButton* m_btnBinary;
-    QToolButton* m_btnLabels;
-    QToolButton* m_btnTrim;
-    QToolButton* m_btnDirectives;
-    QToolButton* m_btnIntel;
-    QToolButton* m_btnCommentOnly;
+    QPushButton* m_btnBinary;
+    QPushButton* m_btnLabels;
+    QPushButton* m_btnTrim;
+    QPushButton* m_btnDirectives;
+    QPushButton* m_btnIntel;
+    QPushButton* m_btnCommentOnly;
     GodboltAgent m_backend;
 
     void storeToCache(int index, const CompileInfo& ci);

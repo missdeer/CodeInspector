@@ -143,6 +143,10 @@ void GodboltAgent::onCompilerListRequestFinished()
         Compiler c;
         c.id = o["id"].toString();
         c.name = o["name"].toString();
+        c.version = o["version"].toString();
+        c.supportsBinary = o["supportsBinary"].toBool();
+        c.supportsExecute = o["supportsExecute"].toBool();
+        c.supportsIntel = o["supportsIntel"].toBool();
         compilerList->push_back(c);
     }
 

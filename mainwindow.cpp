@@ -33,7 +33,7 @@ MainWindow::MainWindow(QWidget *parent) :
     toolButtonLayout->setSpacing(2);
 
     struct {
-        QToolButton*& btn;
+        QPushButton*& btn;
         QString icon;
         QString text;
         QString tooltip;
@@ -49,16 +49,13 @@ MainWindow::MainWindow(QWidget *parent) :
 
     for (const auto & b : buttons)
     {
-        b.btn = new QToolButton(inspectorPanel);
+        b.btn = new QPushButton(QIcon(b.icon), "", inspectorPanel);
         b.btn->setIcon(QIcon(b.icon));
         b.btn->setCheckable(true);
         b.btn->setChecked(b.checked);
-        b.btn->setIconSize(QSize(32, 32));
-        b.btn->setText(b.text);
+        b.btn->setIconSize(QSize(24, 24));
         b.btn->setToolTip(b.tooltip);
-#if !defined(Q_OS_IOS) && !defined(Q_OS_ANDROID)
-        //b.btn->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-#endif
+        b.btn->setFlat(true);
         connect(b.btn, &QPushButton::clicked, this, &MainWindow::onDelayCompile);
         toolButtonLayout->addWidget(b.btn);
     }
@@ -81,7 +78,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->cbProgrammingLanguageList, SIGNAL(currentIndexChanged(int)), this, SLOT(onSwitchProgrammingLanguage(int)));
     connect(m_codeEditor, &CodeEditor::contentModified, this, &MainWindow::onDelayCompile);
     connect(ui->edtCompilerOptions, &QLineEdit::textChanged, this, &MainWindow::onDelayCompile);
-    connect(ui->cbCompilerList, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), [&](){this->onDelayCompile();});
+    connect(ui->cbCompilerList, SIGNAL(currentIndexChanged(int)), this, SLOT(onSwitchCompiler(int)));
     m_backend.switchProgrammingLanguage(0);
 }
 
@@ -200,6 +197,19 @@ void MainWindow::onSwitchProgrammingLanguage(int index)
         return;
     m_codeEditor->setContent(f.readAll());
     f.close();
+}
+
+void MainWindow::onSwitchCompiler(int index)
+{
+    auto cl = m_backend.getCompilerList(ui->cbProgrammingLanguageList->currentIndex());
+    if(index >=0 && index < cl.length())
+    {
+        const auto& compiler = cl[index];
+        m_btnBinary->setEnabled(compiler.supportsBinary);
+        m_btnIntel->setEnabled(compiler.supportsIntel);
+
+        onDelayCompile();
+    }
 }
 
 void MainWindow::onDelayCompile()
