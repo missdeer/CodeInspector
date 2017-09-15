@@ -103,6 +103,12 @@ void GodboltAgent::switchProgrammingLanguage(int index)
     }
     m_compilerLists.insert(index, new CompilerList);
 
+    QByteArray content;
+    if (loadCompilerList(index, content))
+    {
+        parseCompilerListFromJSON(index, content);
+    }
+
     QString requestUrl = m_backendUrls[index] + "/api/compilers";
     QNetworkRequest request(requestUrl);
     request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
@@ -120,37 +126,10 @@ void GodboltAgent::onCompilerListRequestFinished()
     reply->deleteLater();
 
     QByteArray& content = reply->content();
-    QJsonDocument doc = QJsonDocument::fromJson(content);
-
-    if (!doc.isArray())
-    {
-        qDebug() << "compiler list is expected to be an array";
-        return;
-    }
-
-    QJsonArray cl = doc.array();
-
     int index = reply->data().toInt();
-    CompilerList* compilerList = m_compilerLists.find(index).value();
-    for ( auto a : cl)
-    {
-        if (!a.isObject())
-        {
-            qDebug() << "compiler list item is expected to be an object";
-            return;
-        }
-        QJsonObject o = a.toObject();
-        Compiler c;
-        c.id = o["id"].toString();
-        c.name = o["name"].toString();
-        c.version = o["version"].toString();
-        c.supportsBinary = o["supportsBinary"].toBool();
-        c.supportsExecute = o["supportsExecute"].toBool();
-        c.supportsIntel = o["supportsIntel"].toBool();
-        compilerList->push_back(c);
-    }
+    storeCompilerList(index, content);
 
-    emit compilerListRetrieved();
+    parseCompilerListFromJSON(index, content);
 }
 
 void GodboltAgent::onCompileRequestFinished()
@@ -253,6 +232,99 @@ void GodboltAgent::onCompileRequestFinished()
     }
 
     emit compiled();
+}
+
+bool GodboltAgent::storeCompilerList(int index, const QByteArray &content)
+{
+    QString d = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/compilerlist";
+    QDir dir(d);
+    if (!dir.exists())
+        dir.mkpath(d);
+    QString path = QString("%1/%2").arg(d).arg(index);
+    QFile f(path);
+    if (!f.open(QIODevice::WriteOnly))
+    {
+        qDebug() << "open file " << path << " for writting failed";
+        return false;
+    }
+    f.write(content);
+    f.close();
+    return true;
+}
+
+bool GodboltAgent::loadCompilerList(int index, QByteArray &content)
+{
+    QString d = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+    QString path = QString("%1/compilerlist/%2").arg(d).arg(index);
+    if (!QFile::exists(path))
+        return false;
+    QFile f(path);
+    if (!f.open(QIODevice::ReadOnly))
+        return false;
+    content = f.readAll();
+    f.close();
+    return true;
+}
+
+void GodboltAgent::parseCompilerListFromJSON(int index, const QByteArray &content)
+{
+    QJsonDocument doc = QJsonDocument::fromJson(content);
+
+    if (!doc.isArray())
+    {
+        qDebug() << "compiler list is expected to be an array";
+        return;
+    }
+
+    QJsonArray cl = doc.array();
+
+    CompilerList *compilerList = m_compilerLists.find(index).value();
+    CompilerList newCompilerList;
+    bool changed = false;
+    for ( auto a : cl)
+    {
+        if (!a.isObject())
+        {
+            qDebug() << "compiler list item is expected to be an object";
+            return;
+        }
+        QJsonObject o = a.toObject();
+        Compiler c;
+        c.id = o["id"].toString();
+        c.name = o["name"].toString();
+        c.version = o["version"].toString();
+        c.supportsBinary = o["supportsBinary"].toBool();
+        c.supportsExecute = o["supportsExecute"].toBool();
+        c.supportsIntel = o["supportsIntel"].toBool();
+        newCompilerList.push_back(c);
+        auto it = std::find_if(compilerList->begin(), compilerList->end(),
+                               [&c](const Compiler& compiler){
+            return compiler.id == c.id && compiler.name == c.name;
+        });
+        if (compilerList->end() == it)
+        {
+            changed = true;
+            compilerList->push_back(c);
+        }
+    }
+
+    for (auto it = compilerList->begin();it != compilerList->end();)
+    {
+        auto findIt = std::find_if(newCompilerList.begin(), newCompilerList.end(),
+                                   [&it](const Compiler& compiler){
+            return compiler.id == it->id && compiler.name == it->name;
+        });
+        if (findIt == newCompilerList.end())
+        {
+            changed = true;
+            it = compilerList->erase(it);
+        }
+        else
+            ++it;
+    }
+
+    if (changed)
+        emit compilerListRetrieved();
 }
 
 const QVector<AsmItem> &GodboltAgent::getAsmItems() const
