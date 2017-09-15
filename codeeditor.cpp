@@ -3,6 +3,7 @@
 
 CodeEditor::CodeEditor(QWidget *parent)
     : ScintillaEdit (parent)
+    , m_sc(this)
 {
 }
 
@@ -13,10 +14,10 @@ CodeEditor::~CodeEditor()
 
 void CodeEditor::initialize()
 {
-    m_sc.initScintilla(this);
-    m_sc.initEditorMargins( this );
-    m_sc.initLexerStyle(this, "cpp");
-    m_sc.initEditorFolderStyle( this );
+    m_sc.initScintilla();
+    m_sc.initEditorMargins();
+    m_sc.initLexerStyle("cpp");
+    m_sc.initEditorFolderStyle();
 
     connect(this, &ScintillaEdit::linesAdded, this, &CodeEditor::linesAdded);
     connect(this, &ScintillaEdit::marginClicked, this, &CodeEditor::marginClicked);
@@ -59,10 +60,10 @@ void CodeEditor::modified(int /*type*/, int /*position*/, int /*length*/, int /*
 
 void CodeEditor::setLanguage(const QString &lang)
 {
-    m_sc.initScintilla(this);
-    m_sc.initEditorMargins( this );
-    m_sc.initLexerStyle(this, lang);
-    m_sc.initEditorFolderStyle( this );
+    m_sc.initScintilla();
+    m_sc.initEditorMargins();
+    m_sc.initLexerStyle(lang);
+    m_sc.initEditorFolderStyle();
     colourise(0, -1);
 }
 

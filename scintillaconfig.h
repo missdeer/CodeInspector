@@ -9,19 +9,18 @@ class QDomElement;
 class ScintillaConfig
 {
 public:
-    void initScintilla(ScintillaEdit* sci);
-    void initEditorFolderStyle(ScintillaEdit* sci);
-    void initLexerStyle(ScintillaEdit* sci, const QString &lang);
-    void initEditorMargins(ScintillaEdit* sci);
-    void initInspectorMargins(ScintillaEdit* sci, bool binary);
-
-    void applyLanguageStyle(ScintillaEdit* sci, const QString& configPath, const QString& lang);
-    void applyThemeStyle(ScintillaEdit* sci, const QString& themePath, const QString &lang);
-    QString matchPatternLanguage(const QString &filename);
+    explicit ScintillaConfig(ScintillaEdit* sci) : m_sci(sci) {}
+    void initScintilla();
+    void initEditorFolderStyle();
+    void initLexerStyle(const QString &lang);
+    void initEditorMargins();
+    void initInspectorMargins(bool binary);
 private:
-    bool matchPattern(const QString &filename, const QString &pattern);
-    bool matchSuffix(const QString &filename, const QString &suffix);
-    void applyStyle(ScintillaEdit* sci, const QDomElement& styleElem);
+    ScintillaEdit* m_sci;
+    void applyStyle(const QDomElement& styleElem);
+
+    void applyLanguageStyle(const QString& configPath, const QString& lang);
+    void applyThemeStyle(const QString& themePath, const QString &lang);
 };
 
 #endif // SCINTILLACONFIG_H
