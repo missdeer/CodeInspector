@@ -141,14 +141,12 @@ void MainWindow::onCompiled()
     auto content = m_backend.getAsmContent();
     Q_ASSERT(m_codeInspector);
     m_codeInspector->setContent(content, m_btnBinary->isChecked());
-    if (m_btnBinary->isChecked())
-    {
-        auto items = m_backend.getAsmItems();
-        m_codeInspector->setAsmItems(items);
-    }
+    auto asmItems = m_backend.getAsmItems();
+    auto markerMap = m_codeInspector->setAsmItems(asmItems,m_btnBinary->isChecked());
+    Q_ASSERT(m_codeEditor);
+    m_codeEditor->setMarkerColor(markerMap);
 
     auto output = m_backend.getCompileOutput();
-    auto asmItems = m_backend.getAsmItems();
 }
 
 void MainWindow::onSwitchProgrammingLanguage(int index)

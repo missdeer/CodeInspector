@@ -47,41 +47,71 @@ void CodeInspector::setContent(const QString &content, bool binary)
     colourise(0, -1);
 }
 
-void CodeInspector::setAsmItems(const QVector<AsmItem> &items)
+QMap<int, sptr_t> CodeInspector::setAsmItems(const QVector<AsmItem> &items, bool binary)
 {
     styleSetBack(15, 0xE4E4E4);
     styleSetFore(15, 0x808080);
     styleSetSize(15, 9);
 
+    QMap<int, sptr_t> markerMap;
+    int markerIndex = 0;
+    m_sc.initMarkers();
+
     for (int i = 0; i < items.length(); i++)
     {
         const AsmItem& item  = items.at(i);
-        QString text;
-        QTextStream ts(&text) ;
-        ts.setFieldWidth(2);
-        ts.setIntegerBase(16);
-        ts.setPadChar('0');
-        if (item.address > 0)
-        {
-            ts << item.address;
-        }
 
-        if (!text.isEmpty())
-            text.append(":");
-        else
-            text.append("00:");
-        if (!item.opcodes.isEmpty())
+        if (item.source != -1)
         {
-            for (const auto& opcode : item.opcodes)
+            auto it = markerMap.find(item.source);
+            if (markerMap.end() == it)
             {
-                ts << opcode;
+                // pick a color
+                markerMap.insert(item.source, markerIndex);
+                markerAdd(i, markerIndex);
+
+                markerIndex++;
+                if (markerIndex == 12)
+                    markerIndex = 0;
+            }
+            else
+            {
+                markerAdd(i, it.value());
             }
         }
-        qDebug() << "binary: " << i << text;
-        if (text.length() > 3)
+
+        if (binary)
         {
-            marginSetStyle(i, 15);
-            marginSetText(i, text.toStdString().c_str());
+            QString text;
+            QTextStream ts(&text) ;
+            ts.setFieldWidth(2);
+            ts.setIntegerBase(16);
+            ts.setPadChar('0');
+            if (item.address > 0)
+            {
+                ts << item.address;
+            }
+
+            if (!text.isEmpty())
+                text.append(":");
+            else
+                text.append("00:");
+            if (!item.opcodes.isEmpty())
+            {
+                for (const auto& opcode : item.opcodes)
+                {
+                    ts << opcode;
+                }
+            }
+
+            qDebug() << "binary: " << i << text;
+            if (text.length() > 3)
+            {
+                marginSetStyle(i, 15);
+                marginSetText(i, text.toStdString().c_str());
+            }
         }
     }
+
+    return markerMap;
 }

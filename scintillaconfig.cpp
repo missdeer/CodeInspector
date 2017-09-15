@@ -177,6 +177,32 @@ void ScintillaConfig::initInspectorMargins(bool binary)
     m_sci->setMarginSensitiveN(1, false);
 }
 
+void ScintillaConfig::initMarkers()
+{
+    const int lineBackgroundColorCount = 12;
+    sptr_t lineBackgroundColors[lineBackgroundColorCount] = {
+        0xD3E4EF,
+        0xD7F0EB,
+        0xE4F3CA,
+        0xE8D3E7,
+        0xE8E7F1,
+        0xEDF8EA,
+        0xF2F2F1,
+        0xFED3CD,
+        0xFEE5C8,
+        0xFEEEF5,
+        0xFFF9CC,
+        0xFFFFE4,
+    };
+
+    for ( size_t i = 0; i < lineBackgroundColorCount; i++)
+    {
+        m_sci->markerDefine(static_cast<sptr_t>(i), SC_MARK_BACKGROUND);
+        m_sci->markerSetBack(static_cast<sptr_t>(i), lineBackgroundColors[i]);
+        m_sci->markerDeleteAll(static_cast<sptr_t>(i));
+    }
+}
+
 void ScintillaConfig::applyLanguageStyle(const QString &configPath, const QString& lang)
 {
     QDomDocument doc;

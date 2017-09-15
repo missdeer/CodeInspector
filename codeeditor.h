@@ -15,6 +15,7 @@ public:
     void setContent(const QString& content);
     void setContent(const QByteArray& content);
     void clearContent();
+    void setMarkerColor(const QMap<int, sptr_t>& markerColor);
 signals:
     void contentModified();
 private slots:

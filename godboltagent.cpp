@@ -201,6 +201,11 @@ void GodboltAgent::onCompileRequestFinished()
         asmItem.text = o["text"].toString();
         if (o["source"].isDouble())
             asmItem.source = o["source"].toDouble();
+        else if (o["source"].isObject())
+        {
+            QJsonObject srcObj = o["source"].toObject();
+            asmItem.source = srcObj["line"].toDouble();
+        }
         if (o["address"].isDouble())
             asmItem.address = o["address"].toDouble();
         if (o["opcodes"].isArray())

@@ -53,9 +53,10 @@ void CodeEditor::marginClicked(int position, int /*modifiers*/, int margin)
     }
 }
 
-void CodeEditor::modified(int /*type*/, int /*position*/, int /*length*/, int /*linesAdded*/, const QByteArray &/*text*/, int /*line*/, int /*foldNow*/, int /*foldPrev*/)
+void CodeEditor::modified(int type, int position, int /*length*/, int /*linesAdded*/, const QByteArray &/*text*/, int /*line*/, int /*foldNow*/, int /*foldPrev*/)
 {
-    emit contentModified();
+    if (type & (SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT))
+        emit contentModified();
 }
 
 void CodeEditor::setLanguage(const QString &lang)
@@ -85,4 +86,15 @@ void CodeEditor::clearContent()
     setText("");
 
     emptyUndoBuffer();
+}
+
+void CodeEditor::setMarkerColor(const QMap<int, sptr_t> &markerColor)
+{
+    m_sc.initMarkers();
+
+    QMapIterator<int, sptr_t> it(markerColor);
+    while (it.hasNext()) {
+        it.next();
+        markerAdd(it.key()-1, it.value() );
+    }
 }

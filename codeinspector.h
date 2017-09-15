@@ -12,7 +12,7 @@ public:
     explicit CodeInspector(QWidget *parent = 0);
     void initialize();
     void setContent(const QString& content, bool binary);
-    void setAsmItems(const QVector<AsmItem>& items);
+    QMap<int, sptr_t> setAsmItems(const QVector<AsmItem>& items, bool binary);
 private slots:
     void linesAdded(int linesAdded);
     void marginClicked(int position, int modifiers, int margin);
