@@ -53,6 +53,8 @@ QMap<int, sptr_t> CodeInspector::setAsmItems(const QVector<AsmItem> &items, bool
     styleSetFore(15, 0x808080);
     styleSetSize(15, 9);
 
+    int textLength = 0;
+
     QMap<int, sptr_t> markerMap;
     int markerIndex = 0;
     m_sc.initMarkers();
@@ -109,9 +111,13 @@ QMap<int, sptr_t> CodeInspector::setAsmItems(const QVector<AsmItem> &items, bool
             {
                 marginSetStyle(i, 15);
                 marginSetText(i, text.toStdString().c_str());
+                int tl = this->textWidth(15, text.toStdString().c_str());
+                textLength = std::max(tl, textLength);
             }
         }
     }
+    if (textLength)
+        setMarginWidthN(1, textLength);
 
     return markerMap;
 }

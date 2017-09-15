@@ -172,7 +172,7 @@ void ScintillaConfig::initInspectorMargins(bool binary)
     m_sci->setMarginSensitiveN(0, false);
 
     m_sci->setMarginTypeN(1, SC_MARGIN_TEXT);
-    m_sci->setMarginWidthN(1, binary ? 160 : 0);
+    m_sci->setMarginWidthN(1, binary ? 32 : 0);
     m_sci->setMarginMaskN(1, ~SC_MASK_FOLDERS); //~SC_MASK_FOLDERS or 0x1FFFFFF or 33554431
     m_sci->setMarginSensitiveN(1, false);
 }
