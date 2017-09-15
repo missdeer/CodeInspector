@@ -207,6 +207,7 @@ void MainWindow::onSwitchCompiler(int index)
         const auto& compiler = cl[index];
         m_btnBinary->setEnabled(compiler.supportsBinary);
         m_btnIntel->setEnabled(compiler.supportsIntel);
+        ui->cbCompilerList->setToolTip(compiler.version);
 
         onDelayCompile();
     }
