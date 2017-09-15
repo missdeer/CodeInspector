@@ -49,7 +49,7 @@ void CodeInspector::setContent(const QString &content, bool binary)
 
 QMap<int, sptr_t> CodeInspector::setAsmItems(const QVector<AsmItem> &items, bool binary)
 {
-    const sptr_t marginStyleId = 151;
+    const sptr_t marginStyleId = STYLE_LASTPREDEFINED + 1;
     styleSetBack(marginStyleId, 0xE4E4E4);
     styleSetFore(marginStyleId, 0x808080);
     styleSetSize(marginStyleId, 9);
