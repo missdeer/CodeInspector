@@ -182,17 +182,17 @@ void ScintillaConfig::initMarkers()
     const int lineBackgroundColorCount = 12;
     sptr_t lineBackgroundColors[lineBackgroundColorCount] = {
         0xD3E4EF,
-        0xD7F0EB,
-        0xE4F3CA,
-        0xE8D3E7,
-        0xE8E7F1,
-        0xEDF8EA,
-        0xF2F2F1,
-        0xFED3CD,
         0xFEE5C8,
+        0xE8E7F1,
+        0xD7F0EB,
         0xFEEEF5,
+        0xEDF8EA,
+        0xE4F3CA,
         0xFFF9CC,
+        0xF2F2F1,
+        0xE8D3E7,
         0xFFFFE4,
+        0xFED3CD,
     };
 
     for ( size_t i = 0; i < lineBackgroundColorCount; i++)
