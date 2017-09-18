@@ -22,6 +22,13 @@ void CodeEditor::initialize()
     connect(this, &ScintillaEdit::linesAdded, this, &CodeEditor::linesAdded);
     connect(this, &ScintillaEdit::marginClicked, this, &CodeEditor::marginClicked);
     connect(this, &ScintillaEdit::modified, this, &CodeEditor::modified);
+#if defined(Q_OS_ANDROID)
+    connect(this, &ScintillaEdit::textAreaClicked, [=]{
+        auto im = qApp->inputMethod();
+        if (!im->isVisible())
+            im->show();
+    });
+#endif
 }
 
 void CodeEditor::linesAdded(int /*linesAdded*/)

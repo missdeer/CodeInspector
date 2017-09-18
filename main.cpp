@@ -6,7 +6,7 @@ int main(int argc, char *argv[])
 {
     QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps, true);
 
-    QApplication::setApplicationName("Code Inspector");
+    QApplication::setApplicationName("CodeInspector");
     QApplication::setApplicationVersion("1.0");
 
     QApplication a(argc, argv);
