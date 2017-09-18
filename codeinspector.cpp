@@ -45,9 +45,10 @@ void CodeInspector::setContent(const QString &content, bool binary)
 
 QMap<int, sptr_t> CodeInspector::setAsmItems(const QVector<AsmItem> &items, bool binary)
 {
-    styleSetBack(15, 0xE4E4E4);
-    styleSetFore(15, 0x808080);
-    styleSetSize(15, 9);
+    const sptr_t marginStyleId = STYLE_LASTPREDEFINED + 1;
+    styleSetBack(marginStyleId, 0xE4E4E4);
+    styleSetFore(marginStyleId, 0x808080);
+    styleSetSize(marginStyleId, 9);
 
     int textLength = 0;
 
@@ -102,19 +103,23 @@ QMap<int, sptr_t> CodeInspector::setAsmItems(const QVector<AsmItem> &items, bool
                 }
             }
 
-            qDebug() << "binary: " << i << text;
+            //qDebug() << "binary: " << i << text;
             if (text.length() > 3)
             {
-                marginSetStyle(i, 15);
-                marginSetText(i, text.toStdString().c_str());
-                int tl = this->textWidth(15, text.toStdString().c_str());
+                marginSetStyle(i, marginStyleId);
+                auto t = text.toUtf8();
+                marginSetText(i, t.data());
+                int tl = this->textWidth(marginStyleId, t.data());
                 textLength = std::max(tl, textLength);
             }
         }
     }
     if (textLength)
         setMarginWidthN(1, textLength);
-
+    for ( auto it = markerMap.begin(); it != markerMap.end(); ++it)
+    {
+        qDebug() << "source:" << it.key() << ", marker:" << it.value();
+    }
     return markerMap;
 }
 
