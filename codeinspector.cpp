@@ -13,21 +13,9 @@ void CodeInspector::initialize()
     m_sc.initInspectorMargins(false );
     m_sc.initLexerStyle("asm");
 
-    connect(this, &ScintillaEdit::linesAdded, this, &CodeInspector::linesAdded);
     connect(this, &ScintillaEdit::marginClicked, this, &CodeInspector::marginClicked);
 
     setReadOnly(true);
-}
-
-void CodeInspector::linesAdded(int /*linesAdded*/)
-{
-    ScintillaEdit* sci = qobject_cast<ScintillaEdit*>(sender());
-    sptr_t line_count = sci->lineCount();
-    sptr_t left = sci->marginLeft() + 2;
-    sptr_t right = sci->marginRight() + 2;
-    sptr_t width = left + right + sci->textWidth(STYLE_LINENUMBER, QString("%1").arg(line_count).toStdString().c_str());
-    if (width > sci->marginWidthN(0))
-        sci->setMarginWidthN(0, width);
 }
 
 void CodeInspector::setContent(const QString &content, bool binary)
@@ -46,10 +34,6 @@ void CodeInspector::setContent(const QString &content, bool binary)
 QMap<int, sptr_t> CodeInspector::setAsmItems(const QVector<AsmItem> &items, bool binary)
 {
     const sptr_t marginStyleId = STYLE_LASTPREDEFINED + 1;
-    styleSetBack(marginStyleId, 0xE4E4E4);
-    styleSetFore(marginStyleId, 0x808080);
-    styleSetSize(marginStyleId, 9);
-
     int textLength = 0;
 
     QMap<int, sptr_t> markerMap;
@@ -117,6 +101,17 @@ QMap<int, sptr_t> CodeInspector::setAsmItems(const QVector<AsmItem> &items, bool
 
     if (textLength)
         setMarginWidthN(1, textLength);
+
+    if (!binary)
+    {
+        int linesAdded = lineCount();
+        sptr_t left = marginLeft() + 2;
+        sptr_t right = marginRight() + 2;
+        auto b = QString("%1").arg(linesAdded).toUtf8();
+        sptr_t width = left + right + textWidth(STYLE_LINENUMBER, b.data());
+        setMarginWidthN(0, width);
+    }
+
     for ( auto it = markerMap.begin(); it != markerMap.end(); ++it)
     {
         qDebug() << "source:" << it.key() << ", marker:" << it.value();

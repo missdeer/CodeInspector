@@ -15,8 +15,7 @@ public:
     QMap<int, sptr_t> setAsmItems(const QVector<AsmItem>& items, bool binary);
 protected:
     virtual QVariant inputMethodQuery(Qt::InputMethodQuery) const;
-private slots:
-    void linesAdded(int linesAdded);
+
 private:
     ScintillaConfig m_sc;
 };
