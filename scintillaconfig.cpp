@@ -329,9 +329,11 @@ void ScintillaConfig::applyStyle(const QDomElement &styleElem)
 #if defined(Q_OS_MAC) || defined (Q_OS_IOS)
             m_sci->styleSetFont(id, "Menlo");
 #elif defined(Q_OS_WIN)
-            sci->styleSetFont(id, "Consolas");
+            m_sci->styleSetFont(id, "Consolas");
+#elif defined(Q_OS_ANDROID)
+            m_sci->styleSetFont(id, "Droid Sans Mono");
 #else
-            sci->styleSetFont(id, "Monospace");
+            m_sci->styleSetFont(id, "Monospace");
 #endif
     }
 

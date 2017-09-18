@@ -123,7 +123,7 @@ QMap<int, sptr_t> CodeInspector::setAsmItems(const QVector<AsmItem> &items, bool
     return markerMap;
 }
 
-QVariant CodeInspector::inputMethodQuery(Qt::InputMethodQuery query) const
+QVariant CodeInspector::inputMethodQuery(Qt::InputMethodQuery /*query*/) const
 {
     return QVariant(QRectF(0,0, 0, 0));
 }

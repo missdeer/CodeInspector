@@ -12,7 +12,7 @@ class CodeEditor;
 class CodeInspector;
 
 QT_BEGIN_NAMESPACE
-class QToolButton;
+class QPushButton;
 QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow
