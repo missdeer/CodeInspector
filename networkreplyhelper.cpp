@@ -38,9 +38,7 @@ void NetworkReplyHelper::error(QNetworkReply::NetworkError code)
     if (m_reply)
     {
         QString e = m_reply->errorString();
-#if !defined(QT_NO_DEBUG)
         qDebug() << __func__ << e;
-#endif
         emit errorMessage(code, e);
     }
 }
@@ -56,14 +54,10 @@ void NetworkReplyHelper::finished()
 
 void NetworkReplyHelper::sslErrors(const QList<QSslError> &errors)
 {
-#if !defined(QT_NO_DEBUG)
     Q_FOREACH(const QSslError &e, errors)
     {
         qDebug() << "ssl error:" << e.errorString();
     }
-#else
-    Q_UNUSED(errors);
-#endif
 }
 
 void NetworkReplyHelper::uploadProgress(qint64 bytesSent, qint64 bytesTotal)

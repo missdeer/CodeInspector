@@ -53,7 +53,7 @@ void CodeEditor::marginClicked(int position, int /*modifiers*/, int margin)
     }
 }
 
-void CodeEditor::modified(int type, int position, int /*length*/, int /*linesAdded*/, const QByteArray &/*text*/, int /*line*/, int /*foldNow*/, int /*foldPrev*/)
+void CodeEditor::modified(int type, int /*position*/, int /*length*/, int /*linesAdded*/, const QByteArray &/*text*/, int /*line*/, int /*foldNow*/, int /*foldPrev*/)
 {
     if (type & (SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT))
         emit contentModified();

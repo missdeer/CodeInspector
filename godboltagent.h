@@ -103,7 +103,7 @@ private:
 
     bool storeCompilerList(int index, const QByteArray& content);
     bool loadCompilerList(int index, QByteArray& content);
-    void parseCompilerListFromJSON(int index, const QByteArray& content);
+    bool parseCompilerListFromJSON(int index, const QByteArray& content);
 };
 
 #endif // GODBOLTAGENT_H

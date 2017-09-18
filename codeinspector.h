@@ -13,9 +13,10 @@ public:
     void initialize();
     void setContent(const QString& content, bool binary);
     QMap<int, sptr_t> setAsmItems(const QVector<AsmItem>& items, bool binary);
+protected:
+    virtual QVariant inputMethodQuery(Qt::InputMethodQuery) const;
 private slots:
     void linesAdded(int linesAdded);
-    void marginClicked(int position, int modifiers, int margin);
 private:
     ScintillaConfig m_sc;
 };

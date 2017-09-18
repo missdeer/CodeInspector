@@ -127,9 +127,13 @@ void GodboltAgent::onCompilerListRequestFinished()
 
     QByteArray& content = reply->content();
     int index = reply->data().toInt();
-    storeCompilerList(index, content);
+    if (!content.isEmpty())
+    {
+        storeCompilerList(index, content);
 
-    parseCompilerListFromJSON(index, content);
+        if (!parseCompilerListFromJSON(index, content))
+            switchProgrammingLanguage(index);
+    }
 }
 
 void GodboltAgent::onCompileRequestFinished()
@@ -146,7 +150,7 @@ void GodboltAgent::onCompileRequestFinished()
 
     if (!doc.isObject())
     {
-        qDebug() << "compilation result is expected to be an object";
+        qDebug() << "compilation result is expected to be an object:" << QString(content);
         return;
     }
 
@@ -155,14 +159,14 @@ void GodboltAgent::onCompileRequestFinished()
     QJsonValue codeVal = docObj["code"];
     if (!codeVal.isDouble())
     {
-        qDebug() << "compilation result code is expected to be an integer";
+        qDebug() << "compilation result code is expected to be an integer:" << QString(content);
         return;
     }
 
     QJsonValue stdoutVal = docObj["stdout"];
     if (!stdoutVal.isArray())
     {
-        qDebug() << "compilation result stdout is expected to be an integer";
+        qDebug() << "compilation result stdout is expected to be an integer:" << QString(content);
         return;
     }
 
@@ -176,7 +180,7 @@ void GodboltAgent::onCompileRequestFinished()
     QJsonValue stderrVal = docObj["stderr"];
     if (!stderrVal.isArray())
     {
-        qDebug() << "compilation result stderr is expected to be an integer";
+        qDebug() << "compilation result stderr is expected to be an integer:" << QString(content);
         return;
     }
 
@@ -190,7 +194,7 @@ void GodboltAgent::onCompileRequestFinished()
     QJsonValue asmVal = docObj["asm"];
     if (!asmVal.isArray())
     {
-        qDebug() << "compilation result asm is expected to be an integer";
+        qDebug() << "compilation result asm is expected to be an integer:" << QString(content);
         return;
     }
     QJsonArray asmArray = asmVal.toArray();
@@ -271,14 +275,14 @@ bool GodboltAgent::loadCompilerList(int index, QByteArray &content)
     return true;
 }
 
-void GodboltAgent::parseCompilerListFromJSON(int index, const QByteArray &content)
+bool GodboltAgent::parseCompilerListFromJSON(int index, const QByteArray &content)
 {
     QJsonDocument doc = QJsonDocument::fromJson(content);
 
     if (!doc.isArray())
     {
-        qDebug() << "compiler list is expected to be an array";
-        return;
+        qDebug() << "compiler list is expected to be an array:" << QString(content);
+        return false;
     }
 
     QJsonArray cl = doc.array();
@@ -290,8 +294,8 @@ void GodboltAgent::parseCompilerListFromJSON(int index, const QByteArray &conten
     {
         if (!a.isObject())
         {
-            qDebug() << "compiler list item is expected to be an object";
-            return;
+            qDebug() << "compiler list item is expected to be an object:"  << QString(content);
+            return false;
         }
         QJsonObject o = a.toObject();
         Compiler c;
@@ -330,6 +334,8 @@ void GodboltAgent::parseCompilerListFromJSON(int index, const QByteArray &conten
 
     if (changed)
         emit compilerListRetrieved();
+
+    return true;
 }
 
 const QVector<AsmItem> &GodboltAgent::getAsmItems() const

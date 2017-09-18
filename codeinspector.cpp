@@ -30,10 +30,6 @@ void CodeInspector::linesAdded(int /*linesAdded*/)
         sci->setMarginWidthN(0, width);
 }
 
-void CodeInspector::marginClicked(int /*position*/, int /*modifiers*/, int /*margin*/)
-{
-}
-
 void CodeInspector::setContent(const QString &content, bool binary)
 {
     auto b = content.toUtf8();
@@ -120,4 +116,9 @@ QMap<int, sptr_t> CodeInspector::setAsmItems(const QVector<AsmItem> &items, bool
         setMarginWidthN(1, textLength);
 
     return markerMap;
+}
+
+QVariant CodeInspector::inputMethodQuery(Qt::InputMethodQuery query) const
+{
+    return QVariant(QRectF(0,0, 0, 0));
 }
