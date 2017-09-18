@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:installLocation="auto" package="com.dfordsoft.codeinspector.full" android:versionName="1.0">
+    <application android:name="com.dfordsoft.codeinspector" android:label="@string/app_name" android:icon="@drawable/icon" android:theme="@style/codeinspectorTheme">
+        <activity android:screenOrientation="unspecified" android:name="com.dfordsoft.codeinspector.QtPushActivity" android:label="@string/app_name" android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|locale|fontScale|keyboard|keyboardHidden|navigation">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+            <meta-data android:value="CodeInspector" android:name="android.app.lib_name"/>
+            <meta-data android:resource="@array/qt_sources" android:name="android.app.qt_sources_resource_id"/>
+            <meta-data android:value="default" android:name="android.app.repository"/>
+            <meta-data android:resource="@array/qt_libs" android:name="android.app.qt_libs_resource_id"/>
+            <meta-data android:resource="@array/bundled_libs" android:name="android.app.bundled_libs_resource_id"/>
+            <!-- Deploy Qt libs as part of package -->
+            <meta-data android:value="-- %%BUNDLE_LOCAL_QT_LIBS%% --" android:name="android.app.bundle_local_qt_libs"/>
+            <meta-data android:resource="@array/bundled_in_lib" android:name="android.app.bundled_in_lib_resource_id"/>
+            <meta-data android:resource="@array/bundled_in_assets" android:name="android.app.bundled_in_assets_resource_id"/>
+            <!-- Run with local libs -->
+            <meta-data android:value="-- %%USE_LOCAL_QT_LIBS%% --" android:name="android.app.use_local_qt_libs"/>
+            <meta-data android:value="/data/local/tmp/qt/" android:name="android.app.libs_prefix"/>
+            <meta-data android:value="-- %%INSERT_LOCAL_LIBS%% --" android:name="android.app.load_local_libs"/>
+            <meta-data android:value="-- %%INSERT_LOCAL_JARS%% --" android:name="android.app.load_local_jars"/>
+            <meta-data android:value="-- %%INSERT_INIT_CLASSES%% --" android:name="android.app.static_init_classes"/>
+            <!--  Messages maps -->
+            <meta-data android:value="@string/ministro_not_found_msg" android:name="android.app.ministro_not_found_msg"/>
+            <meta-data android:value="@string/ministro_needed_msg" android:name="android.app.ministro_needed_msg"/>
+            <meta-data android:value="@string/fatal_error_msg" android:name="android.app.fatal_error_msg"/>
+            <!--  Messages maps -->
+            <!-- Splash screen -->
+            <meta-data android:name="android.app.splash_screen_drawable" android:resource="@drawable/logo"/>
+            <!-- Splash screen -->
+        </activity>
+
+    </application>
+    <uses-sdk android:minSdkVersion="16" android:targetSdkVersion="20"/>
+    <supports-screens android:normalScreens="true" android:smallScreens="true" android:largeScreens="true" android:anyDensity="true"/>
+    <!-- %%INSERT_PERMISSIONS -->
+    <!-- %%INSERT_FEATURES -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.READ_LOGS"/>
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+    <!-- for location only -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <permission android:name="com.dfordsoft.istkani.permission.MIPUSH_RECEIVE" android:protectionLevel="signature"/>
+    <uses-permission android:name="com.dfordsoft.istkani.permission.MIPUSH_RECEIVE"/>
+</manifest>

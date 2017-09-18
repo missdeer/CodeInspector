@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="istkaniTheme" parent="@android:style/Theme.Holo.NoActionBar">
+        <item name="android:windowBackground">@android:color/white</item>
+    </style>
+
+</resources>
