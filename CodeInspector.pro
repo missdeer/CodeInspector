@@ -91,3 +91,5 @@ android: {
             $$PWD/android/libs/armeabi-v7a/libssl.so
     }
 }
+
+DISTFILES +=
