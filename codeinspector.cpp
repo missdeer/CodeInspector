@@ -114,6 +114,7 @@ QMap<int, sptr_t> CodeInspector::setAsmItems(const QVector<AsmItem> &items, bool
             }
         }
     }
+
     if (textLength)
         setMarginWidthN(1, textLength);
     for ( auto it = markerMap.begin(); it != markerMap.end(); ++it)

@@ -15,8 +15,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->edtCompilerOptions->setClearButtonEnabled(true);
 
     QSplitter* splitter = new QSplitter(this);
-#if defined(Q_OS_IOS) || defined(Q_OS_ANDROID)
+#if defined(Q_OS_IOS)
     splitter->setHandleWidth(10);
+#elif defined(Q_OS_ANDROID)
+    splitter->setBackgroundRole(QPalette::WindowText);
+    splitter->setHandleWidth(50);
+    ui->btnConfiguration->setIconSize(QSize(120, 120));
+    ui->btnLoadExample->setIconSize(QSize(120, 120));
 #endif
     ui->editorLayout->addWidget(splitter);
     m_codeEditor = new CodeEditor(splitter);
@@ -53,7 +58,11 @@ MainWindow::MainWindow(QWidget *parent) :
         b.btn->setIcon(QIcon(b.icon));
         b.btn->setCheckable(true);
         b.btn->setChecked(b.checked);
+#if defined(Q_OS_ANDROID)
+        b.btn->setIconSize(QSize(120, 120));
+#else
         b.btn->setIconSize(QSize(24, 24));
+#endif
         b.btn->setToolTip(b.tooltip);
         b.btn->setFlat(true);
         connect(b.btn, &QPushButton::clicked, this, &MainWindow::onDelayCompile);
