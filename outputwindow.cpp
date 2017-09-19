@@ -40,3 +40,8 @@ void OutputWindow::setContent(const QByteArray &content)
 
     emptyUndoBuffer();
 }
+
+QVariant CodeInspector::inputMethodQuery(Qt::InputMethodQuery /*query*/) const
+{
+    return QVariant(QRectF(0,0, 0, 0));
+}

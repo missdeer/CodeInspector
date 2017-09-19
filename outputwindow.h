@@ -12,6 +12,8 @@ public:
     void initialize();
     void setContent(const QString& content);
     void setContent(const QByteArray& content);
+protected:
+    virtual QVariant inputMethodQuery(Qt::InputMethodQuery) const;
 private:
     ScintillaConfig m_sc;
 };

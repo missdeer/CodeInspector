@@ -60,5 +60,6 @@
         <file>resource/example/rust/sumoverarray.rs</file>
         <file>resource/example/rust/sumoverarrayopt.rs</file>
         <file>resource/example/swift/square.swift</file>
+        <file>resource/image/errmsg.png</file>
     </qresource>
 </RCC>

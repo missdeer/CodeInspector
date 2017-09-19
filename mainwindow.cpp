@@ -41,7 +41,13 @@ MainWindow::MainWindow(QWidget *parent) :
     outputBarLayout->setContentsMargins(0,0,0,0);
     outputBarLayout->setSpacing(0);
 
-    m_btnToggleOutput = new QPushButton(tr("Output"));
+    m_btnToggleOutput = new QPushButton(QIcon(":/resource/image/errmsg.png"), "");
+#if defined(Q_OS_ANDROID)
+    m_btnToggleOutput->setIconSize(QSize(120, 120));
+#else
+    m_btnToggleOutput->setIconSize(QSize(32, 32));
+#endif
+    m_btnToggleOutput->setFlat(true);
     outputBarLayout->addWidget(m_btnToggleOutput);
     outputBarLayout->addStretch(1);
 
