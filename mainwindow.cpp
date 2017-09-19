@@ -48,6 +48,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_btnToggleOutput->setIconSize(QSize(32, 32));
 #endif
     m_btnToggleOutput->setFlat(true);
+    m_btnToggleOutput->setToolTip(tr("Toggle output window"));
     outputBarLayout->addWidget(m_btnToggleOutput);
     outputBarLayout->addStretch(1);
 
