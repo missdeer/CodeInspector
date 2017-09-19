@@ -27,7 +27,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->editorLayout->addWidget(splitter);
 
     QWidget* editorPanel = new QWidget(splitter);
-    QVBoxLayout* editorPanelLayout = new QVBoxLayout(editorPanel);
+    QVBoxLayout* editorPanelLayout = new QVBoxLayout();
     editorPanel->setLayout(editorPanelLayout);
     editorPanelLayout->setContentsMargins(0,0,0,0);
     editorPanelLayout->setSpacing(0);
@@ -37,7 +37,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     editorPanelLayout->addWidget(m_codeEditor);
 
-    QHBoxLayout* outputBarLayout = new QHBoxLayout(editorPanel);
+    QHBoxLayout* outputBarLayout = new QHBoxLayout();
     outputBarLayout->setContentsMargins(0,0,0,0);
     outputBarLayout->setSpacing(0);
 
@@ -61,10 +61,10 @@ MainWindow::MainWindow(QWidget *parent) :
     splitter->addWidget(editorPanel);
 
     QWidget* inspectorPanel = new QWidget(splitter);
-    QVBoxLayout* inspectoerPanelLayout = new QVBoxLayout(inspectorPanel);
+    QVBoxLayout* inspectoerPanelLayout = new QVBoxLayout();
     inspectorPanel->setLayout(inspectoerPanelLayout);
 
-    QHBoxLayout* toolButtonLayout = new QHBoxLayout(inspectorPanel);
+    QHBoxLayout* toolButtonLayout = new QHBoxLayout();
     toolButtonLayout->setContentsMargins(0,0,0,0);
     toolButtonLayout->setSpacing(2);
 
