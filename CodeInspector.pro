@@ -35,7 +35,8 @@ SOURCES += \
     codeeditor.cpp \
     codeinspector.cpp \
     godboltagent.cpp \
-    networkreplyhelper.cpp
+    networkreplyhelper.cpp \
+    outputwindow.cpp
 
 HEADERS += \
     stdafx.h \
@@ -46,7 +47,8 @@ HEADERS += \
     codeeditor.h \
     codeinspector.h \
     godboltagent.h \
-    networkreplyhelper.h
+    networkreplyhelper.h \
+    outputwindow.h
 
 FORMS += \
     mainwindow.ui \

@@ -109,7 +109,8 @@ QMap<int, sptr_t> CodeInspector::setAsmItems(const QVector<AsmItem> &items, bool
         sptr_t right = marginRight() + 2;
         auto b = QString("%1").arg(linesAdded).toUtf8();
         sptr_t width = left + right + textWidth(STYLE_LINENUMBER, b.data());
-        setMarginWidthN(0, width);
+        if (width > 32)
+            setMarginWidthN(0, width);
     }
 
     for ( auto it = markerMap.begin(); it != markerMap.end(); ++it)

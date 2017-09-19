@@ -10,7 +10,7 @@ class MainWindow;
 
 class CodeEditor;
 class CodeInspector;
-class ScintillaEdit;
+class OutputWindow;
 
 QT_BEGIN_NAMESPACE
 class QToolButton;
@@ -37,7 +37,7 @@ private:
     QTimer *m_timer;
     CodeEditor* m_codeEditor;
     CodeInspector* m_codeInspector;
-    ScintillaEdit* m_output;
+    OutputWindow* m_output;
     QPushButton* m_btnToggleOutput;
     QToolButton* m_btnBinary;
     QToolButton* m_btnLabels;

@@ -2,6 +2,7 @@
 #include "configdialog.h"
 #include "codeinspector.h"
 #include "codeeditor.h"
+#include "outputwindow.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -46,8 +47,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     editorPanelLayout->addLayout(outputBarLayout);
 
-    m_output = new ScintillaEdit(editorPanel);
-    m_output->setCodePage(SC_CP_UTF8);
+    m_output = new OutputWindow(editorPanel);
+    m_output->initialize();
     editorPanelLayout->addWidget(m_output);
 
     splitter->addWidget(editorPanel);
@@ -195,8 +196,7 @@ void MainWindow::onCompiled()
     if (!output.isEmpty() && !m_btnToggleOutput->isVisible())
         m_btnToggleOutput->setVisible(true);
 
-    auto b = output.toUtf8();
-    m_output->setText(b.data());
+    m_output->setContent(output);
 }
 
 void MainWindow::onSwitchProgrammingLanguage(int index)
