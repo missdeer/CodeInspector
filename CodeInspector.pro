@@ -29,7 +29,6 @@ RC_FILE = codeinspector.rc
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
-    configdialog.cpp \
     scintillaconfig.cpp \
     settings.cpp \
     codeeditor.cpp \
@@ -41,7 +40,6 @@ SOURCES += \
 HEADERS += \
     stdafx.h \
     mainwindow.h \
-    configdialog.h \
     scintillaconfig.h \
     settings.h \
     codeeditor.h \
@@ -51,8 +49,7 @@ HEADERS += \
     outputwindow.h
 
 FORMS += \
-    mainwindow.ui \
-    configdialog.ui
+    mainwindow.ui
 
 CONFIG += mobility
 MOBILITY = 

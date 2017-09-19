@@ -1,4 +1,4 @@
-#include <QtCore>
+#include "stdafx.h"
 #include "networkreplyhelper.h"
 
 NetworkReplyHelper::NetworkReplyHelper(QNetworkReply *reply, QObject *parent)

@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "outputwindow.h"
 
 OutputWindow::OutputWindow(QWidget *parent)

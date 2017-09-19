@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "configdialog.h"
 #include "codeinspector.h"
 #include "codeeditor.h"
 #include "outputwindow.h"
