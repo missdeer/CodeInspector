@@ -24,10 +24,33 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->btnLoadExample->setIconSize(QSize(120, 120));
 #endif
     ui->editorLayout->addWidget(splitter);
-    m_codeEditor = new CodeEditor(splitter);
+
+    QWidget* editorPanel = new QWidget(splitter);
+    QVBoxLayout* editorPanelLayout = new QVBoxLayout(editorPanel);
+    editorPanel->setLayout(editorPanelLayout);
+    editorPanelLayout->setContentsMargins(0,0,0,0);
+    editorPanelLayout->setSpacing(0);
+
+    m_codeEditor = new CodeEditor(editorPanel);
     m_codeEditor->initialize();
 
-    splitter->addWidget(m_codeEditor);
+    editorPanelLayout->addWidget(m_codeEditor);
+
+    QHBoxLayout* outputBarLayout = new QHBoxLayout(editorPanel);
+    outputBarLayout->setContentsMargins(0,0,0,0);
+    outputBarLayout->setSpacing(0);
+
+    m_btnToggleOutput = new QPushButton(tr("Output"));
+    outputBarLayout->addWidget(m_btnToggleOutput);
+    outputBarLayout->addStretch(1);
+
+    editorPanelLayout->addLayout(outputBarLayout);
+
+    m_output = new ScintillaEdit(editorPanel);
+    m_output->setCodePage(SC_CP_UTF8);
+    editorPanelLayout->addWidget(m_output);
+
+    splitter->addWidget(editorPanel);
 
     QWidget* inspectorPanel = new QWidget(splitter);
     QVBoxLayout* inspectoerPanelLayout = new QVBoxLayout(inspectorPanel);
@@ -82,6 +105,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     splitter->addWidget(inspectorPanel);
 
+    connect(m_btnToggleOutput, &QPushButton::clicked, [&]{m_output->setVisible(!m_output->isVisible());});
     connect(m_timer, &QTimer::timeout, this, &MainWindow::onNeedCompile);
     connect(&m_backend, &GodboltAgent::compilerListRetrieved, this, &MainWindow::onCompilerListRetrieved);
     connect(&m_backend, &GodboltAgent::compiled, this, &MainWindow::onCompiled);
@@ -90,6 +114,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->edtCompilerOptions, &QLineEdit::textChanged, this, &MainWindow::onDelayCompile);
     connect(ui->cbCompilerList, SIGNAL(currentIndexChanged(int)), this, SLOT(onSwitchCompiler(int)));
     m_backend.switchProgrammingLanguage(0);
+
+    m_btnToggleOutput->setVisible(false);
+    m_output->setVisible(false);
 }
 
 MainWindow::~MainWindow()
@@ -157,6 +184,19 @@ void MainWindow::onCompiled()
     m_codeEditor->setMarkerColor(markerMap);
 
     auto output = m_backend.getCompileOutput();
+    if (output.isEmpty())
+    {
+        if (m_btnToggleOutput->isVisible())
+            m_btnToggleOutput->setVisible(false);
+        if (m_output->isVisible())
+            m_output->setVisible(false);
+    }
+
+    if (!output.isEmpty() && !m_btnToggleOutput->isVisible())
+        m_btnToggleOutput->setVisible(true);
+
+    auto b = output.toUtf8();
+    m_output->setText(b.data());
 }
 
 void MainWindow::onSwitchProgrammingLanguage(int index)
