@@ -12,7 +12,7 @@ class CodeEditor;
 class CodeInspector;
 
 QT_BEGIN_NAMESPACE
-class QPushButton;
+class QToolButton;
 QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow
@@ -35,12 +35,12 @@ private:
     QTimer *m_timer;
     CodeEditor* m_codeEditor;
     CodeInspector* m_codeInspector;
-    QPushButton* m_btnBinary;
-    QPushButton* m_btnLabels;
-    QPushButton* m_btnTrim;
-    QPushButton* m_btnDirectives;
-    QPushButton* m_btnIntel;
-    QPushButton* m_btnCommentOnly;
+    QToolButton* m_btnBinary;
+    QToolButton* m_btnLabels;
+    QToolButton* m_btnTrim;
+    QToolButton* m_btnDirectives;
+    QToolButton* m_btnIntel;
+    QToolButton* m_btnCommentOnly;
     GodboltAgent m_backend;
 
     void storeToCache(int index, const CompileInfo& ci);

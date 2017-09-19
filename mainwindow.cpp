@@ -38,7 +38,7 @@ MainWindow::MainWindow(QWidget *parent) :
     toolButtonLayout->setSpacing(2);
 
     struct {
-        QPushButton*& btn;
+        QToolButton*& btn;
         QString icon;
         QString text;
         QString tooltip;
@@ -54,7 +54,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     for (const auto & b : buttons)
     {
-        b.btn = new QPushButton(QIcon(b.icon), "", inspectorPanel);
+        //b.btn = new QToolButton(QIcon(b.icon), "", inspectorPanel);
+        b.btn = new QToolButton(inspectorPanel);
         b.btn->setIcon(QIcon(b.icon));
         b.btn->setCheckable(true);
         b.btn->setChecked(b.checked);
@@ -64,7 +65,7 @@ MainWindow::MainWindow(QWidget *parent) :
         b.btn->setIconSize(QSize(24, 24));
 #endif
         b.btn->setToolTip(b.tooltip);
-        b.btn->setFlat(true);
+        //b.btn->setFlat(true);
         connect(b.btn, &QPushButton::clicked, this, &MainWindow::onDelayCompile);
         toolButtonLayout->addWidget(b.btn);
     }
