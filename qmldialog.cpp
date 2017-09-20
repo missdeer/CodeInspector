@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "qmldialog.h"
 #include "ui_qmldialog.h"
 
@@ -11,4 +12,9 @@ QmlDialog::QmlDialog(QWidget *parent) :
 QmlDialog::~QmlDialog()
 {
     delete ui;
+}
+
+void QmlDialog::loadQml(const QUrl &u)
+{
+    ui->quickWidget->setSource(u);
 }

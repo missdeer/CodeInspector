@@ -13,6 +13,7 @@ class QmlDialog : public QDialog
 
 public:
     explicit QmlDialog(QWidget *parent = 0);
+    void loadQml(const QUrl& u);
     ~QmlDialog();
 
 private:
