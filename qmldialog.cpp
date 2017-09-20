@@ -7,6 +7,10 @@ QmlDialog::QmlDialog(QWidget *parent) :
     ui(new Ui::QmlDialog)
 {
     ui->setupUi(this);
+    ui->quickWidget->setAttribute(Qt::WA_TranslucentBackground, true);
+    ui->quickWidget->setAttribute(Qt::WA_AlwaysStackOnTop, true);
+    ui->quickWidget->setClearColor(Qt::transparent);
+    ui->quickWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
 }
 
 QmlDialog::~QmlDialog()

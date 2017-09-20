@@ -145,6 +145,20 @@ void GodboltAgent::onCompileRequestFinished()
     NetworkReplyHelper* reply = qobject_cast<NetworkReplyHelper*>(sender());
     reply->deleteLater();
 
+    class Guard
+    {
+    public:
+        explicit Guard(GodboltAgent* ga)
+            : m_ga(ga)
+        {}
+        ~Guard() {
+            emit m_ga->compiled();
+        }
+    private:
+        GodboltAgent* m_ga;
+    };
+    Guard g(this);
+
     QByteArray& content = reply->content();
     QJsonDocument doc = QJsonDocument::fromJson(content);
 
@@ -239,8 +253,6 @@ void GodboltAgent::onCompileRequestFinished()
         m_asmItems.push_back(asmItem);
         m_asmContent.append(asmItem.text + "\n");
     }
-
-    emit compiled();
 }
 
 bool GodboltAgent::storeCompilerList(int index, const QByteArray &content)

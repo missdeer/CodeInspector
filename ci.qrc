@@ -61,5 +61,7 @@
         <file>resource/example/rust/sumoverarrayopt.rs</file>
         <file>resource/example/swift/square.swift</file>
         <file>resource/image/errmsg.png</file>
+        <file>resource/qml/example.qml</file>
+        <file>resource/qml/configuration.qml</file>
     </qresource>
 </RCC>
