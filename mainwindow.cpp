@@ -2,6 +2,7 @@
 #include "codeinspector.h"
 #include "codeeditor.h"
 #include "outputwindow.h"
+#include "qmldialog.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -340,3 +341,15 @@ bool MainWindow::restoreFromCache(int index, CompileInfo &ci)
     return true;
 }
 
+
+void MainWindow::on_btnLoadExample_clicked()
+{
+    QmlDialog dlg(this);
+    dlg.exec();
+}
+
+void MainWindow::on_btnConfiguration_clicked()
+{
+    QmlDialog dlg(this);
+    dlg.exec();
+}

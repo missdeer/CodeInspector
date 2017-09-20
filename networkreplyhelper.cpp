@@ -85,3 +85,29 @@ void NetworkReplyHelper::setData(const QVariant &data)
     m_data = data;
 }
 
+void NetworkReplyHelper::wait(int milliseconds)
+{
+    QTimer timer;
+    timer.setSingleShot(true);
+
+    QEventLoop loop;
+    connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
+    connect(m_reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+
+    timer.start(milliseconds);
+    loop.exec();
+
+    if (timer.isActive())
+    {
+        // network works fine
+        timer.stop();
+    }
+    else
+    {
+        // network request timeout
+        qDebug() << "request timeout";
+        disconnect(m_reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+        m_reply->abort();
+    }
+}
+

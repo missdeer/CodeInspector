@@ -15,7 +15,7 @@ public:
 
     QVariant data() const;
     void setData(const QVariant &data);
-
+    void wait(int milliseconds);
 signals:
     void done();
     void cancel();

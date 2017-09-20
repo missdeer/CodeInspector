@@ -31,6 +31,10 @@ private slots:
     void onSwitchProgrammingLanguage(int);
     void onSwitchCompiler(int index);
     void onDelayCompile();
+    void on_btnLoadExample_clicked();
+
+    void on_btnConfiguration_clicked();
+
 private:
     Ui::MainWindow *ui;
     bool m_postInitialized;
