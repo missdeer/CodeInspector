@@ -176,6 +176,13 @@ void ScintillaConfig::initInspectorMargins(bool binary)
     m_sci->setMarginSensitiveN(1, false);
 }
 
+void ScintillaConfig::inttOuputWindowMargins()
+{
+    m_sci->setMarginWidthN(0, 0);
+    m_sci->setMarginWidthN(1, 0);
+    m_sci->setMarginWidthN(2, 0);
+}
+
 void ScintillaConfig::initMarkers()
 {
     const int lineBackgroundColorCount = 12;
