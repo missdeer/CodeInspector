@@ -16,6 +16,11 @@ GodboltAgent::~GodboltAgent()
     }
 }
 
+const LanguageList &GodboltAgent::getLanguageList()
+{
+    return m_languageList;
+}
+
 const CompilerList &GodboltAgent::getCompilerList(int index)
 {
     auto it = m_compilerLists.find(index);
@@ -361,6 +366,21 @@ bool GodboltAgent::parseCompilerListFromJSON(int index, const QByteArray &conten
         emit compilerListRetrieved();
 
     return true;
+}
+
+bool GodboltAgent::storeLanguageList(const QByteArray &content)
+{
+
+}
+
+bool GodboltAgent::loadLanguageList(QByteArray &content)
+{
+
+}
+
+bool GodboltAgent::parseLanguageList(const QByteArray &content)
+{
+
 }
 
 const QVector<AsmItem> &GodboltAgent::getAsmItems() const

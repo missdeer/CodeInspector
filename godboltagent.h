@@ -5,6 +5,13 @@
 #include <QList>
 #include <QNetworkAccessManager>
 
+struct Language
+{
+    QString id;
+    QString name;
+};
+
+
 struct Compiler
 {
     QString id;
@@ -57,6 +64,7 @@ struct AsmItem
     QList<AsmLink> links;
 };
 
+typedef QList<Language> LanguageList;
 typedef QList<Compiler> CompilerList;
 
 class GodboltAgent : public QObject
@@ -65,6 +73,7 @@ class GodboltAgent : public QObject
 public:
     explicit GodboltAgent(QObject *parent = nullptr);
     ~GodboltAgent();
+    const LanguageList &getLanguageList();
     const CompilerList &getCompilerList(int index);
     void compile(const CompileInfo& ci);
     bool canCompile(int programmingLanguageIndex, int compilerIndex);
@@ -76,6 +85,7 @@ public:
 
 signals:
     void compilerListRetrieved();
+    void languageListRetrieved();
     void compiled();
 public slots:
     void switchLanguage(int index);
@@ -83,9 +93,11 @@ public slots:
 private slots:
     void onCompilerListRequestFinished();
     void onCompileRequestFinished();
+    void onLanguageListRequestFinished();
 private:
     QMap<int, CompilerList*> m_compilerLists;
     QNetworkAccessManager m_nam;
+    LanguageList m_languageList;
 
     QStringList m_backendUrls = {
         "https://gcc.godbolt.org",
@@ -104,6 +116,10 @@ private:
     bool storeCompilerList(int index, const QByteArray& content);
     bool loadCompilerList(int index, QByteArray& content);
     bool parseCompilerListFromJSON(int index, const QByteArray& content);
+
+    bool storeLanguageList(const QByteArray& content);
+    bool loadLanguageList(QByteArray& content);
+    bool parseLanguageList(const QByteArray& content);
 };
 
 #endif // GODBOLTAGENT_H
