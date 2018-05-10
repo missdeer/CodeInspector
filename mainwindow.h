@@ -28,7 +28,7 @@ private slots:
     void onCompilerListRetrieved();
     void onNeedCompile();
     void onCompiled();
-    void onSwitchProgrammingLanguage(int);
+    void onSwitchLanguage(int);
     void onSwitchCompiler(int index);
     void onDelayCompile();
 private:

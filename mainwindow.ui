@@ -104,7 +104,7 @@
        <number>2</number>
       </property>
       <item>
-       <widget class="QComboBox" name="cbProgrammingLanguageList">
+       <widget class="QComboBox" name="cbLanguageList">
         <item>
          <property name="text">
           <string>C++</string>

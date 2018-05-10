@@ -93,7 +93,7 @@ bool GodboltAgent::canCompile(int programmingLanguageIndex, int compilerIndex)
     return (compilerIndex >= 0 && compilerIndex < compilerList.length());
 }
 
-void GodboltAgent::switchProgrammingLanguage(int index)
+void GodboltAgent::switchLanguage(int index)
 {
     auto it = m_compilerLists.find(index);
     if (m_compilerLists.end() != it && !it.value()->isEmpty())
@@ -132,7 +132,7 @@ void GodboltAgent::onCompilerListRequestFinished()
         storeCompilerList(index, content);
 
         if (!parseCompilerListFromJSON(index, content))
-            switchProgrammingLanguage(index);
+            switchLanguage(index);
     }
 }
 

@@ -18,7 +18,7 @@ void ScintillaConfig::initScintilla()
     m_sci->setWhitespaceBack(true, 0xFFFFFF);
     m_sci->setMouseDownCaptures(true);
 #if defined(Q_OS_WIN)
-    sci->setEOLMode(SC_EOL_CRLF);
+    m_sci->setEOLMode(SC_EOL_CRLF);
 #else
     m_sci->setEOLMode(SC_EOL_LF);
 #endif
@@ -68,7 +68,7 @@ void ScintillaConfig::initScintilla()
     m_sci->usePopUp(true);
 
 #if defined(Q_OS_WIN)
-    sci->setTechnology(SC_TECHNOLOGY_DIRECTWRITEDC );
+    m_sci->setTechnology(SC_TECHNOLOGY_DIRECTWRITEDC );
 #endif
     m_sci->setBufferedDraw(false);
     m_sci->setPhasesDraw(SC_PHASES_TWO);

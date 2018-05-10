@@ -116,11 +116,11 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_timer, &QTimer::timeout, this, &MainWindow::onNeedCompile);
     connect(&m_backend, &GodboltAgent::compilerListRetrieved, this, &MainWindow::onCompilerListRetrieved);
     connect(&m_backend, &GodboltAgent::compiled, this, &MainWindow::onCompiled);
-    connect(ui->cbProgrammingLanguageList, SIGNAL(currentIndexChanged(int)), this, SLOT(onSwitchProgrammingLanguage(int)));
+    connect(ui->cbLanguageList, SIGNAL(currentIndexChanged(int)), this, SLOT(onSwitchLanguage(int)));
     connect(m_codeEditor, &CodeEditor::contentModified, this, &MainWindow::onDelayCompile);
     connect(ui->edtCompilerOptions, &QLineEdit::textChanged, this, &MainWindow::onDelayCompile);
     connect(ui->cbCompilerList, SIGNAL(currentIndexChanged(int)), this, SLOT(onSwitchCompiler(int)));
-    m_backend.switchProgrammingLanguage(0);
+    m_backend.switchLanguage(0);
 
     m_btnToggleOutput->setVisible(false);
     m_output->setVisible(false);
@@ -136,7 +136,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::onCompilerListRetrieved()
 {
-    auto cl = m_backend.getCompilerList(ui->cbProgrammingLanguageList->currentIndex());
+    auto cl = m_backend.getCompilerList(ui->cbLanguageList->currentIndex());
     ui->cbCompilerList->clear();
     for (const auto & c : cl)
     {
@@ -146,13 +146,13 @@ void MainWindow::onCompilerListRetrieved()
     if (!m_postInitialized)
     {
         m_postInitialized = true;
-        onSwitchProgrammingLanguage(0);
+        onSwitchLanguage(0);
     }
 }
 
 void MainWindow::onNeedCompile()
 {
-    if (!m_backend.canCompile(ui->cbProgrammingLanguageList->currentIndex(), ui->cbCompilerList->currentIndex()))
+    if (!m_backend.canCompile(ui->cbLanguageList->currentIndex(), ui->cbCompilerList->currentIndex()))
         return;
 
     Q_ASSERT(m_codeEditor);
@@ -168,7 +168,7 @@ void MainWindow::onNeedCompile()
     ci.trim = m_btnTrim->isChecked();
     ci.directives = m_btnDirectives->isChecked();
     ci.intel = m_btnIntel->isChecked();
-    ci.programmingLanguageIndex = ui->cbProgrammingLanguageList->currentIndex();
+    ci.programmingLanguageIndex = ui->cbLanguageList->currentIndex();
     ci.compilerIndex = ui->cbCompilerList->currentIndex();
     m_backend.compile(ci);
 
@@ -205,10 +205,10 @@ void MainWindow::onCompiled()
     m_output->setContent(output);
 }
 
-void MainWindow::onSwitchProgrammingLanguage(int index)
+void MainWindow::onSwitchLanguage(int index)
 {
     m_codeEditor->clearContent();
-    m_backend.switchProgrammingLanguage(index);
+    m_backend.switchLanguage(index);
     QStringList lexers = {
         "cpp",
         "d",
@@ -255,7 +255,7 @@ void MainWindow::onSwitchProgrammingLanguage(int index)
 
 void MainWindow::onSwitchCompiler(int index)
 {
-    auto cl = m_backend.getCompilerList(ui->cbProgrammingLanguageList->currentIndex());
+    auto cl = m_backend.getCompilerList(ui->cbLanguageList->currentIndex());
     if(index >=0 && index < cl.length())
     {
         const auto& compiler = cl[index];
