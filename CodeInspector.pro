@@ -35,7 +35,8 @@ SOURCES += \
     codeinspector.cpp \
     godboltagent.cpp \
     networkreplyhelper.cpp \
-    outputwindow.cpp
+    outputwindow.cpp \
+    qmldialog.cpp
 
 HEADERS += \
     stdafx.h \
@@ -46,10 +47,12 @@ HEADERS += \
     codeinspector.h \
     godboltagent.h \
     networkreplyhelper.h \
-    outputwindow.h
+    outputwindow.h \
+    qmldialog.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    qmldialog.ui
 
 CONFIG += mobility
 MOBILITY = 

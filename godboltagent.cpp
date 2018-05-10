@@ -81,6 +81,7 @@ void GodboltAgent::compile(const CompileInfo &ci)
     QNetworkReply* reply = m_nam.post(request, postBody);
 
     NetworkReplyHelper* replyHelper = new NetworkReplyHelper(reply);
+    replyHelper->setTimeout(10000);
     connect(replyHelper, SIGNAL(done()), this, SLOT(onCompileRequestFinished()));
 }
 
@@ -117,6 +118,7 @@ void GodboltAgent::switchLanguage(int index)
     QNetworkReply* reply = m_nam.get(request);
     NetworkReplyHelper* replyHelper = new NetworkReplyHelper(reply);
     replyHelper->setData(index);
+    replyHelper->setTimeout(10000);
     connect(replyHelper, SIGNAL(done()), this, SLOT(onCompilerListRequestFinished()));
 }
 
@@ -134,6 +136,10 @@ void GodboltAgent::onCompilerListRequestFinished()
         if (!parseCompilerListFromJSON(index, content))
             switchLanguage(index);
     }
+    else
+    {
+        m_compileOutput = reply->getErrorMessage();
+    }
 }
 
 void GodboltAgent::onCompileRequestFinished()
@@ -145,7 +151,28 @@ void GodboltAgent::onCompileRequestFinished()
     NetworkReplyHelper* reply = qobject_cast<NetworkReplyHelper*>(sender());
     reply->deleteLater();
 
+    class Guard
+    {
+    public:
+        explicit Guard(GodboltAgent* ga)
+            : m_ga(ga)
+        {}
+        ~Guard() {
+            emit m_ga->compiled();
+        }
+    private:
+        GodboltAgent* m_ga;
+    };
+    Guard g(this);
+
     QByteArray& content = reply->content();
+
+    if (content.isEmpty())
+    {
+        m_compileOutput = reply->getErrorMessage();
+        return;
+    }
+
     QJsonDocument doc = QJsonDocument::fromJson(content);
 
     if (!doc.isObject())
@@ -239,8 +266,6 @@ void GodboltAgent::onCompileRequestFinished()
         m_asmItems.push_back(asmItem);
         m_asmContent.append(asmItem.text + "\n");
     }
-
-    emit compiled();
 }
 
 bool GodboltAgent::storeCompilerList(int index, const QByteArray &content)

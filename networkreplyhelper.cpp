@@ -4,6 +4,7 @@
 NetworkReplyHelper::NetworkReplyHelper(QNetworkReply *reply, QObject *parent)
     : QObject(parent)
     , m_reply(reply)
+    , m_timeoutTimer(nullptr)
 {
     if (m_reply)
     {
@@ -24,12 +25,22 @@ NetworkReplyHelper::~NetworkReplyHelper()
         m_reply->deleteLater();
         m_reply = nullptr;
     }
+
+    if (m_timeoutTimer)
+    {
+        if (m_timeoutTimer->isActive())
+            m_timeoutTimer->stop();
+        delete m_timeoutTimer;
+        m_timeoutTimer = nullptr;
+    }
 }
 
 void NetworkReplyHelper::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
 {
     Q_UNUSED(bytesReceived);
     Q_UNUSED(bytesTotal);
+    if (m_timeoutTimer && m_timeoutTimer->isActive())
+        m_timeoutTimer->start();
 }
 
 void NetworkReplyHelper::error(QNetworkReply::NetworkError code)
@@ -37,9 +48,9 @@ void NetworkReplyHelper::error(QNetworkReply::NetworkError code)
     Q_UNUSED(code);
     if (m_reply)
     {
-        QString e = m_reply->errorString();
-        qDebug() << __func__ << e;
-        emit errorMessage(code, e);
+        m_errMsg.append(m_reply->errorString() + "\n");
+        qDebug() << __func__ << m_errMsg;
+        emit errorMessage(code, m_errMsg);
     }
 }
 
@@ -48,6 +59,8 @@ void NetworkReplyHelper::finished()
 #if !defined(QT_NO_DEBUG)
     qDebug() << this << " finished: " << QString(m_content) << "\n";
 #endif
+    if (m_timeoutTimer)
+        m_timeoutTimer->stop();
 
     emit done();
 }
@@ -57,6 +70,7 @@ void NetworkReplyHelper::sslErrors(const QList<QSslError> &errors)
     Q_FOREACH(const QSslError &e, errors)
     {
         qDebug() << "ssl error:" << e.errorString();
+        m_errMsg.append(e.errorString() + "\n");
     }
 }
 
@@ -64,6 +78,8 @@ void NetworkReplyHelper::uploadProgress(qint64 bytesSent, qint64 bytesTotal)
 {
     Q_UNUSED(bytesSent);
     Q_UNUSED(bytesTotal);
+    if (m_timeoutTimer && m_timeoutTimer->isActive())
+        m_timeoutTimer->start();
 }
 
 void NetworkReplyHelper::readyRead()
@@ -75,6 +91,13 @@ void NetworkReplyHelper::readyRead()
     }
 }
 
+void NetworkReplyHelper::timeout()
+{
+    qDebug() << "network request timeout";
+    if (m_reply && m_reply->isRunning())
+        m_reply->abort();
+}
+
 QVariant NetworkReplyHelper::data() const
 {
     return m_data;
@@ -83,5 +106,18 @@ QVariant NetworkReplyHelper::data() const
 void NetworkReplyHelper::setData(const QVariant &data)
 {
     m_data = data;
+}
+
+void NetworkReplyHelper::setTimeout(int milliseconds)
+{
+    if (!m_reply->isRunning())
+        return;
+    if (!m_timeoutTimer)
+    {
+        m_timeoutTimer = new QTimer;
+        m_timeoutTimer->setSingleShot(true);
+        connect(m_timeoutTimer, &QTimer::timeout, this, &NetworkReplyHelper::timeout);
+    }
+    m_timeoutTimer->start(milliseconds);
 }
 

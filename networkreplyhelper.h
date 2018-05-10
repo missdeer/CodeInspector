@@ -15,7 +15,8 @@ public:
 
     QVariant data() const;
     void setData(const QVariant &data);
-
+    void setTimeout(int milliseconds);
+    const QString& getErrorMessage() const { return m_errMsg; }
 signals:
     void done();
     void cancel();
@@ -27,10 +28,14 @@ public slots:
     void sslErrors(const QList<QSslError> & errors);
     void uploadProgress(qint64 bytesSent, qint64 bytesTotal);
     void readyRead();
+private slots:
+    void timeout();
 private:
     QNetworkReply* m_reply;
+    QTimer *m_timeoutTimer;
     QVariant m_data;
     QByteArray m_content;
+    QString m_errMsg;
 };
 
 
