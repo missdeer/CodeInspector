@@ -162,7 +162,7 @@ void MainWindow::onLanguageListRetrieved()
     if (!m_postInitialized)
     {
         m_postInitialized = true;
-        onSwitchLanguage(0);
+        onSwitchLanguage(ui->cbLanguageList->currentText());
     }
 }
 
@@ -225,17 +225,26 @@ void MainWindow::onSwitchLanguage(const QString& name)
 {
     m_codeEditor->clearContent();
     m_backend.switchLanguage(name);
-    QStringList lexers = {
-        "cpp",
-        "d",
-        "rust",
-        "go",
-        "ispc",
-        "haskell",
-        "swift",
+
+    // language name, lexer name
+    QMap<QString, QString> lexerMap = {
+        { "C++", "cpp" },
+        { "Cppx", "cpp"},
+        { "Assembly", "asm"},
+        { "CUDA", "cpp"},
+        { "LLVM IR", "asm"},
+        { "D", "d"},
+        { "ispc", "c"},
+        { "Analysis", "asm"},
+        { "C", "c"},
+        { "Rust", "rust"},
+        { "Go", "go"},
+        { "Pascal", "pascal"},
+        { "Haskell", "haskell"},
+        { "Swift", "swift"},
     };
     Q_ASSERT(m_codeEditor);
-    m_codeEditor->setLanguage(/*lexers[index]*/ "cpp");
+    m_codeEditor->setLanguage(lexerMap[name]);
 
     CompileInfo ci;
     if (restoreFromCache(name, ci))
@@ -252,21 +261,7 @@ void MainWindow::onSwitchLanguage(const QString& name)
         ui->cbCompilerList->setCurrentIndex(ci.compilerIndex);
         return;
     }
-
-    QStringList examples = {
-        ":/resource/example/cpp/square.cpp",
-        ":/resource/example/d/square.d",
-        ":/resource/example/rust/square.rs",
-        ":/resource/example/go/square.go",
-        ":/resource/example/ispc/square.ispc",
-        ":/resource/example/haskell/sumoverarray.hs",
-        ":/resource/example/swift/square.swift",
-    };
-    QFile f(examples[/*index*/0]);
-    if (!f.open(QIODevice::ReadOnly))
-        return;
-    m_codeEditor->setContent(f.readAll());
-    f.close();
+    m_codeEditor->setContent(m_backend.getExample(name));
 }
 
 void MainWindow::onSwitchCompiler(int index)

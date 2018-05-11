@@ -93,6 +93,7 @@ public:
 
     const AsmItemList &getAsmItems() const;
 
+    const QString& getExample(const QString& language) const;
 signals:
     void compilerListRetrieved();
     void languageListRetrieved();

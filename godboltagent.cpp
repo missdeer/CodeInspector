@@ -117,30 +117,30 @@ bool GodboltAgent::canCompile(const QString& language, const QString& compiler)
     return it != compilerList.end();
 }
 
-void GodboltAgent::switchLanguage(const QString& name)
+void GodboltAgent::switchLanguage(const QString &language)
 {
-    auto it = m_compilerMap.find(name);
+    auto it = m_compilerMap.find(language);
     if (m_compilerMap.end() != it && !it.value()->isEmpty())
     {
         emit compilerListRetrieved();
         return;
     }
-    m_compilerMap.insert(name, new CompilerList);
+    m_compilerMap.insert(language, new CompilerList);
 
     QByteArray content;
-    if (loadCompilerList(name, content))
+    if (loadCompilerList(language, content))
     {
-        parseCompilerListFromJSON(name, content);
+        parseCompilerListFromJSON(language, content);
     }
 
-    QString requestUrl = "https://godbolt.org/api/compilers";
+    QString requestUrl = "https://godbolt.org/api/compilers/" + getLanguageId(language);
     QNetworkRequest request(requestUrl);
     request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
     request.setRawHeader("Accept", "application/json, text/javascript, */*; q=0.01");
 
     QNetworkReply* reply = m_nam.get(request);
     NetworkReplyHelper* replyHelper = new NetworkReplyHelper(reply);
-    replyHelper->setData(name);
+    replyHelper->setData(language);
     replyHelper->setTimeout(10000);
     connect(replyHelper, SIGNAL(done()), this, SLOT(onCompilerListRequestFinished()));
 }
@@ -491,6 +491,15 @@ const QString &GodboltAgent::getLanguageId(const QString &name)
 const AsmItemList &GodboltAgent::getAsmItems() const
 {
     return m_asmItems;
+}
+
+const QString &GodboltAgent::getExample(const QString &language) const
+{
+    auto it = std::find_if(m_languageList.begin(), m_languageList.end(),
+                           [&language](LanguagePtr l) { return l->name == language;});
+
+    qDebug() << "example:" << (*it)->example;
+    return (*it)->example;
 }
 
 const QString &GodboltAgent::getAsmContent() const
