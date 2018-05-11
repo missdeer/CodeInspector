@@ -115,11 +115,13 @@ private:
     QMap<QString, CompilerListPtr> m_compilerMap; // language name - compiler list
     QMap<QString, QString> m_defaultCompiler; // language id - compiler id
 
+    void requestCompilerList(const QString &language);
     bool storeCompilerList(const QString& name, const QByteArray& content);
     bool loadCompilerList(const QString& name, QByteArray& content);
     bool parseCompilerListFromJSON(const QString &language, const QByteArray& content);
     bool parseCompilerListFromConfiguration(QJsonArray& array);
 
+    void requestLanguageList();
     bool storeLanguageList(const QByteArray& content);
     bool loadLanguageList(QByteArray& content);
     bool parseLanguageListFromJSON(const QByteArray& content);
@@ -128,14 +130,14 @@ private:
     bool parseLibListFromConfiguration(QJsonObject& obj);
     bool parseDefaultCompilerFromConfiguration(QJsonObject& obj);
 
-    const QString& getLanguageId(const QString& name);
-    const QString& getLanguageName(const QString& id);
-    const QString& getCompilerId(CompilerListPtr compilerList, const QString& name);
-
     void requestConfigurations();
     bool storeConfiguration(const QByteArray& content);
     bool loadConfiguration( QByteArray& content);
     bool parseConfiguration(const QByteArray& content);
+
+    const QString& getLanguageId(const QString& name);
+    const QString& getLanguageName(const QString& id);
+    const QString& getCompilerId(CompilerListPtr compilerList, const QString& name);
 };
 
 #endif // GODBOLTAGENT_H

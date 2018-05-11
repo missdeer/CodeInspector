@@ -15,6 +15,20 @@ GodboltAgent::~GodboltAgent()
 {
 }
 
+void GodboltAgent::requestLanguageList()
+{
+    qDebug() << "request language list";
+    QString requestUrl = "https://godbolt.org/api/languages";
+    QNetworkRequest request(requestUrl);
+    request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
+    request.setRawHeader("Accept", "application/json, text/javascript, */*; q=0.01");
+
+    QNetworkReply* reply = m_nam.get(request);
+    NetworkReplyHelper* replyHelper = new NetworkReplyHelper(reply);
+    replyHelper->setTimeout(10000);
+    connect(replyHelper, SIGNAL(done()), this, SLOT(onLanguageListRequestFinished()));
+}
+
 LanguageList &GodboltAgent::getLanguageList()
 {
     if (m_languageList.empty())
@@ -25,17 +39,7 @@ LanguageList &GodboltAgent::getLanguageList()
             if (parseLanguageListFromJSON(content))
                 return m_languageList;
         }
-
-        qDebug() << "request language list";
-        QString requestUrl = "https://godbolt.org/api/languages";
-        QNetworkRequest request(requestUrl);
-        request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
-        request.setRawHeader("Accept", "application/json, text/javascript, */*; q=0.01");
-
-        QNetworkReply* reply = m_nam.get(request);
-        NetworkReplyHelper* replyHelper = new NetworkReplyHelper(reply);
-        replyHelper->setTimeout(10000);
-        connect(replyHelper, SIGNAL(done()), this, SLOT(onLanguageListRequestFinished()));
+        requestLanguageList();
     }
     return m_languageList;
 }
@@ -117,6 +121,20 @@ bool GodboltAgent::canCompile(const QString& language, const QString& compiler)
     return it != compilerList.end();
 }
 
+void GodboltAgent::requestCompilerList(const QString &language)
+{
+    QString requestUrl = "https://godbolt.org/api/compilers/" + getLanguageId(language);
+    QNetworkRequest request(requestUrl);
+    request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
+    request.setRawHeader("Accept", "application/json, text/javascript, */*; q=0.01");
+
+    QNetworkReply* reply = m_nam.get(request);
+    NetworkReplyHelper* replyHelper = new NetworkReplyHelper(reply);
+    replyHelper->setData(language);
+    replyHelper->setTimeout(10000);
+    connect(replyHelper, SIGNAL(done()), this, SLOT(onCompilerListRequestFinished()));
+}
+
 void GodboltAgent::switchLanguage(const QString &language)
 {
     auto it = m_compilerMap.find(language);
@@ -133,16 +151,7 @@ void GodboltAgent::switchLanguage(const QString &language)
         parseCompilerListFromJSON(language, content);
     }
 
-    QString requestUrl = "https://godbolt.org/api/compilers/" + getLanguageId(language);
-    QNetworkRequest request(requestUrl);
-    request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
-    request.setRawHeader("Accept", "application/json, text/javascript, */*; q=0.01");
-
-    QNetworkReply* reply = m_nam.get(request);
-    NetworkReplyHelper* replyHelper = new NetworkReplyHelper(reply);
-    replyHelper->setData(language);
-    replyHelper->setTimeout(10000);
-    connect(replyHelper, SIGNAL(done()), this, SLOT(onCompilerListRequestFinished()));
+    requestCompilerList(language);
 }
 
 void GodboltAgent::onCompilerListRequestFinished()
