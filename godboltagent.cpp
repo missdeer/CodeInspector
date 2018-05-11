@@ -42,6 +42,7 @@ LanguageList &GodboltAgent::getLanguageList()
 
 CompilerListPtr GodboltAgent::getCompilerList(const QString &name)
 {
+    qDebug() << __FUNCTION__ << name << m_compilerMap.size();
     auto it = m_compilerMap.find(name);
     if (m_compilerMap.end() == it)
     {
@@ -54,7 +55,7 @@ CompilerListPtr GodboltAgent::getCompilerList(const QString &name)
 
 void GodboltAgent::compile(const CompileInfo &ci)
 {
-    CompilerListPtr compilerList = m_compilerMap[ci.language];
+    CompilerListPtr compilerList = m_compilerMap.find(ci.language).value();
 
     QJsonObject compilerOptionsObj;
     compilerOptionsObj.insert("produceOptInfo", false);
@@ -363,7 +364,7 @@ bool GodboltAgent::parseCompilerListFromJSON(const QString& language, const QByt
     QJsonArray cl = doc.array();
 
     CompilerListPtr compilerList = m_compilerMap.find(language).value();
-    CompilerListPtr newCompilerList;
+    CompilerListPtr newCompilerList(new CompilerList);
     bool changed = false;
     for ( auto a : cl)
     {
@@ -416,7 +417,6 @@ bool GodboltAgent::parseCompilerListFromJSON(const QString& language, const QByt
 bool GodboltAgent::parseCompilerListFromConfiguration(QJsonArray &array)
 {
     CompilerListPtr compilerList;
-    CompilerList newCompilerList;
     for ( auto a : array)
     {
         if (!a.isObject())
@@ -425,7 +425,8 @@ bool GodboltAgent::parseCompilerListFromConfiguration(QJsonArray &array)
             return false;
         }
         QJsonObject o = a.toObject();
-        QString language = o["language"].toString();
+        QString languageId = o["lang"].toString();
+        QString language = getLanguageName(languageId);
         if (m_compilerMap.find(language) != m_compilerMap.end())
             compilerList = m_compilerMap.find(language).value();
         else
@@ -440,7 +441,7 @@ bool GodboltAgent::parseCompilerListFromConfiguration(QJsonArray &array)
         c->supportsBinary = o["supportsBinary"].toBool();
         c->supportsExecute = o["supportsExecute"].toBool();
         c->supportsIntel = o["supportsIntel"].toBool();
-        newCompilerList.push_back(c);
+
         auto it = std::find_if(compilerList->begin(), compilerList->end(),
                                [&c](CompilerPtr compiler){
             return compiler->id == c->id && compiler->name == c->name;
@@ -449,20 +450,6 @@ bool GodboltAgent::parseCompilerListFromConfiguration(QJsonArray &array)
         {
             compilerList->push_back(c);
         }
-    }
-
-    for (auto it = compilerList->begin();it != compilerList->end();)
-    {
-        auto findIt = std::find_if(newCompilerList.begin(), newCompilerList.end(),
-                                   [&it](CompilerPtr compiler){
-            return compiler->id == (*it)->id && compiler->name == (*it)->name;
-        });
-        if (findIt == newCompilerList.end())
-        {
-            it = compilerList->erase(it);
-        }
-        else
-            ++it;
     }
 
     return true;
@@ -618,6 +605,13 @@ const QString &GodboltAgent::getLanguageId(const QString &name)
     return (*it)->id;
 }
 
+const QString &GodboltAgent::getLanguageName(const QString &id)
+{
+    auto it = std::find_if(m_languageList.begin(), m_languageList.end(),
+                           [&id](LanguagePtr l) { return l->id == id;});
+    return (*it)->name;
+}
+
 const QString &GodboltAgent::getCompilerId(CompilerListPtr compilerList, const QString &name)
 {
     auto it = std::find_if(compilerList->begin(), compilerList->end(),
@@ -634,14 +628,11 @@ const QString &GodboltAgent::getDefaultCompilerName(const QString &languageName)
     if (m_defaultCompiler.end() == langIt)
         return emptyString;
     auto compilerId = langIt.value();
-    qDebug() << __FUNCTION__ << "compiler id:" << compilerId;
     auto compilerList = getCompilerList(languageName);
-    qDebug() << __FUNCTION__ << "compiler list size:" << compilerList->size();
     auto it =std::find_if(compilerList->begin(), compilerList->end(),
                  [&compilerId](CompilerPtr c) { return c->id == compilerId;});
     if (compilerList->end() == it)
         return emptyString;
-    qDebug() << __FUNCTION__ << (*it)->name;
     return (*it)->name;
 }
 
@@ -675,7 +666,7 @@ bool GodboltAgent::storeConfiguration(const QByteArray &content)
 
 bool GodboltAgent::loadConfiguration(QByteArray &content)
 {
-    QString path = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/languages";
+    QString path = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/configuration";
     if (!QFile::exists(path))
         return false;
     QFile f(path);
@@ -694,7 +685,7 @@ bool GodboltAgent::parseConfiguration(const QByteArray &content)
     QJsonDocument doc = QJsonDocument::fromJson(content);
     if (!doc.isObject())
     {
-        qDebug() << "expected to be an object:" << content;
+        qDebug() << "configuration is expected to be an object:" << content;
         return false;
     }
 

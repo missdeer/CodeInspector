@@ -129,6 +129,7 @@ private:
     bool parseDefaultCompilerFromConfiguration(QJsonObject& obj);
 
     const QString& getLanguageId(const QString& name);
+    const QString& getLanguageName(const QString& id);
     const QString& getCompilerId(CompilerListPtr compilerList, const QString& name);
 
     void requestConfigurations();
