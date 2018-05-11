@@ -87,10 +87,10 @@ void GodboltAgent::compile(const CompileInfo &ci)
 
     QJsonObject rootObj;
     rootObj.insert("source", QString(ci.source));
-    rootObj.insert("compiler", compilerList[ci.compilerIndex]->id);
+    rootObj.insert("compiler", getCompilerId(compilerList, ci.compiler));
     rootObj.insert("options", QJsonValue::fromVariant(optionsObj));
 
-    QString requestUrl = "https://godbolt.org/api/compiler/" + compilerList[ci.compilerIndex]->id + "/compile";
+    QString requestUrl = "https://godbolt.org/api/compiler/" + getCompilerId(compilerList, ci.compiler) + "/compile";
     QNetworkRequest request(requestUrl);
     request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
@@ -485,6 +485,13 @@ const QString &GodboltAgent::getLanguageId(const QString &name)
 {
     auto it = std::find_if(m_languageList.begin(), m_languageList.end(),
                            [&name](LanguagePtr l) { return l->name == name;});
+    return (*it)->id;
+}
+
+const QString &GodboltAgent::getCompilerId(const CompilerList &compilerList, const QString &name)
+{
+    auto it = std::find_if(compilerList.begin(), compilerList.end(),
+                           [&name](CompilerPtr c) { return c->name == name;});
     return (*it)->id;
 }
 

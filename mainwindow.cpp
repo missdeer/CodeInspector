@@ -121,7 +121,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->cbLanguageList, SIGNAL(currentIndexChanged(QString)), this, SLOT(onSwitchLanguage(const QString&)));
     connect(m_codeEditor, &CodeEditor::contentModified, this, &MainWindow::onDelayCompile);
     connect(ui->edtCompilerOptions, &QLineEdit::textChanged, this, &MainWindow::onDelayCompile);
-    connect(ui->cbCompilerList, SIGNAL(currentIndexChanged(int)), this, SLOT(onSwitchCompiler(int)));
+    connect(ui->cbCompilerList, SIGNAL(currentIndexChanged(QString)), this, SLOT(onSwitchCompiler(const QString&)));
 
     onLanguageListRetrieved();
 
@@ -185,7 +185,7 @@ void MainWindow::onNeedCompile()
     ci.directives = m_btnDirectives->isChecked();
     ci.intel = m_btnIntel->isChecked();
     ci.language = ui->cbLanguageList->currentText();
-    ci.compilerIndex = ui->cbCompilerList->currentIndex();
+    ci.compiler = ui->cbCompilerList->currentText();
     m_backend.compile(ci);
 
     m_codeEditor->setSavePoint();
@@ -193,7 +193,7 @@ void MainWindow::onNeedCompile()
     m_codeInspector->setContent(tr("<Compiling...>"), m_btnBinary->isChecked());
 
     storeToCache(ci.language, ci);
-    qDebug() << "store:" << ci.compilerIndex;
+    qDebug() << "store:" << ci.compiler;
 }
 
 void MainWindow::onCompiled()
@@ -234,9 +234,9 @@ void MainWindow::onSwitchLanguage(const QString& name)
         { "CUDA", "cpp"},
         { "LLVM IR", "asm"},
         { "D", "d"},
-        { "ispc", "c"},
+        { "ispc", "cpp"},
         { "Analysis", "asm"},
-        { "C", "c"},
+        { "C", "cpp"},
         { "Rust", "rust"},
         { "Go", "go"},
         { "Pascal", "pascal"},
@@ -249,7 +249,7 @@ void MainWindow::onSwitchLanguage(const QString& name)
     CompileInfo ci;
     if (restoreFromCache(name, ci))
     {
-        qDebug() << "restore:" << ci.compilerIndex;
+        qDebug() << "restore:" << ci.compiler;
         m_codeEditor->setContent(ci.source);
         ui->edtCompilerOptions->setText(ci.userArguments);
         m_btnBinary->setChecked(ci.binary);
@@ -258,18 +258,20 @@ void MainWindow::onSwitchLanguage(const QString& name)
         m_btnTrim->setChecked(ci.trim);
         m_btnDirectives->setChecked(ci.directives);
         m_btnIntel->setChecked(ci.intel);
-        ui->cbCompilerList->setCurrentIndex(ci.compilerIndex);
+        ui->cbCompilerList->setCurrentText(ci.compiler);
         return;
     }
     m_codeEditor->setContent(m_backend.getExample(name));
 }
 
-void MainWindow::onSwitchCompiler(int index)
+void MainWindow::onSwitchCompiler(const QString& name)
 {
     auto cl = m_backend.getCompilerList(ui->cbLanguageList->currentText());
-    if(index >=0 && index < cl.length())
+    auto it = std::find_if(cl.begin(), cl.end(),
+                           [&name](CompilerPtr c) { return c->name == name;});
+    if(cl.end() != it)
     {
-        auto compiler = cl[index];
+        auto compiler = *it;
         m_btnBinary->setEnabled(compiler->supportsBinary);
         m_btnIntel->setEnabled(compiler->supportsIntel);
         ui->cbCompilerList->setToolTip(compiler->version);
@@ -311,7 +313,7 @@ void MainWindow::storeToCache(const QString &name, const CompileInfo &ci)
 
     stream << ci.binary
            << ci.commentOnly
-           << ci.compilerIndex
+           << ci.compiler
            << ci.directives
            << ci.intel
            << ci.labels
@@ -339,7 +341,7 @@ bool MainWindow::restoreFromCache(const QString& name, CompileInfo &ci)
 
     stream >> ci.binary
            >> ci.commentOnly
-           >> ci.compilerIndex
+           >> ci.compiler
            >> ci.directives
            >> ci.intel
            >> ci.labels

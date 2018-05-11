@@ -34,8 +34,7 @@ typedef QList<CompilerPtr> CompilerList;
 struct CompileInfo
 {
     CompileInfo()
-        : compilerIndex(0)
-        , labels(false)
+        : labels(false)
         , directives(false)
         , commentOnly(false)
         , trim(false)
@@ -44,7 +43,7 @@ struct CompileInfo
     {}
     QByteArray source;
     QString language;
-    int compilerIndex;
+    QString compiler;
     QString userArguments;
     bool labels;
     bool directives;
@@ -132,6 +131,7 @@ private:
     bool parseLanguageListFromJSON(const QByteArray& content);
 
     const QString& getLanguageId(const QString& name);
+    const QString& getCompilerId(const CompilerList& compilerList, const QString& name);
 };
 
 #endif // GODBOLTAGENT_H

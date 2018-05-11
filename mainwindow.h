@@ -30,7 +30,7 @@ private slots:
     void onNeedCompile();
     void onCompiled();
     void onSwitchLanguage(const QString &name);
-    void onSwitchCompiler(int index);
+    void onSwitchCompiler(const QString &name);
     void onDelayCompile();
     void on_btnLoadExample_clicked();
 
