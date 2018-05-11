@@ -26,9 +26,10 @@ public:
     ~MainWindow();
 private slots:
     void onCompilerListRetrieved();
+    void onLanguageListRetrieved();
     void onNeedCompile();
     void onCompiled();
-    void onSwitchLanguage(int);
+    void onSwitchLanguage(const QString &name);
     void onSwitchCompiler(int index);
     void onDelayCompile();
     void on_btnLoadExample_clicked();
@@ -51,8 +52,8 @@ private:
     QToolButton* m_btnCommentOnly;
     GodboltAgent m_backend;
 
-    void storeToCache(int index, const CompileInfo& ci);
-    bool restoreFromCache(int index, CompileInfo& ci);
+    void storeToCache(const QString &name, const CompileInfo& ci);
+    bool restoreFromCache(const QString &name, CompileInfo& ci);
 };
 
 #endif // MAINWINDOW_H

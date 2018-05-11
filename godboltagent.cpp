@@ -10,25 +10,44 @@ GodboltAgent::GodboltAgent(QObject *parent)
 
 GodboltAgent::~GodboltAgent()
 {
-    for (auto p : m_compilerLists.values())
+    for (auto p : m_compilerMap.values())
     {
         delete p;
     }
 }
 
-const LanguageList &GodboltAgent::getLanguageList()
+LanguageList &GodboltAgent::getLanguageList()
 {
+    if (m_languageList.empty())
+    {
+        QByteArray content;
+        if (loadLanguageList(content))
+        {
+            if (parseLanguageListFromJSON(content))
+                return m_languageList;
+        }
+
+        qDebug() << "request language list";
+        QString requestUrl = "https://godbolt.org/api/languages";
+        QNetworkRequest request(requestUrl);
+        request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
+        request.setRawHeader("Accept", "application/json, text/javascript, */*; q=0.01");
+
+        QNetworkReply* reply = m_nam.get(request);
+        NetworkReplyHelper* replyHelper = new NetworkReplyHelper(reply);
+        replyHelper->setTimeout(10000);
+        connect(replyHelper, SIGNAL(done()), this, SLOT(onLanguageListRequestFinished()));
+    }
     return m_languageList;
 }
 
-const CompilerList &GodboltAgent::getCompilerList(int index)
+CompilerList &GodboltAgent::getCompilerList(const QString &name)
 {
-    auto it = m_compilerLists.find(index);
-
-    if (m_compilerLists.end() == it)
+    auto it = m_compilerMap.find(name);
+    if (m_compilerMap.end() == it)
     {
-        m_compilerLists.insert(index, new CompilerList);
-        it = m_compilerLists.find(index);
+        m_compilerMap.insert(name, new CompilerList);
+        it = m_compilerMap.find(name);
     }
 
     return *it.value();
@@ -36,7 +55,7 @@ const CompilerList &GodboltAgent::getCompilerList(int index)
 
 void GodboltAgent::compile(const CompileInfo &ci)
 {
-    const CompilerList& compilerList = *m_compilerLists[ci.programmingLanguageIndex];
+    const CompilerList& compilerList = *m_compilerMap[ci.language];
 
     QJsonObject compilerOptionsObj;
     compilerOptionsObj.insert("produceOptInfo", false);
@@ -68,14 +87,14 @@ void GodboltAgent::compile(const CompileInfo &ci)
 
     QJsonObject rootObj;
     rootObj.insert("source", QString(ci.source));
-    rootObj.insert("compiler", compilerList[ci.compilerIndex].id);
+    rootObj.insert("compiler", compilerList[ci.compilerIndex]->id);
     rootObj.insert("options", QJsonValue::fromVariant(optionsObj));
 
-    QString requestUrl = m_backendUrls[ci.programmingLanguageIndex] + "/api/compiler/" + compilerList[ci.compilerIndex].id + "/compile";
+    QString requestUrl = "https://godbolt.org/api/compiler/" + compilerList[ci.compilerIndex]->id + "/compile";
     QNetworkRequest request(requestUrl);
     request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    request.setRawHeader("Referer", m_backendUrls[ci.programmingLanguageIndex].toUtf8());
+    request.setRawHeader("Referer", "https://godbolt.org/");
     request.setRawHeader("Accept", "application/json, text/javascript, */*; q=0.01");
     request.setRawHeader("X-Requested-With", "XMLHttpRequest");
 
@@ -90,39 +109,38 @@ void GodboltAgent::compile(const CompileInfo &ci)
     connect(replyHelper, SIGNAL(done()), this, SLOT(onCompileRequestFinished()));
 }
 
-bool GodboltAgent::canCompile(int programmingLanguageIndex, int compilerIndex)
+bool GodboltAgent::canCompile(const QString& language, const QString& compiler)
 {
-    if (programmingLanguageIndex >= m_compilerLists.size())
-        return false;
-
-    const CompilerList& compilerList = *m_compilerLists[programmingLanguageIndex];
-    return (compilerIndex >= 0 && compilerIndex < compilerList.length());
+    const CompilerList& compilerList = *m_compilerMap[language];
+    auto it = std::find_if(compilerList.begin(), compilerList.end(),
+                           [&compiler](CompilerPtr c){ return c->name == compiler;});
+    return it != compilerList.end();
 }
 
-void GodboltAgent::switchLanguage(int index)
+void GodboltAgent::switchLanguage(const QString& name)
 {
-    auto it = m_compilerLists.find(index);
-    if (m_compilerLists.end() != it && !it.value()->isEmpty())
+    auto it = m_compilerMap.find(name);
+    if (m_compilerMap.end() != it && !it.value()->isEmpty())
     {
         emit compilerListRetrieved();
         return;
     }
-    m_compilerLists.insert(index, new CompilerList);
+    m_compilerMap.insert(name, new CompilerList);
 
     QByteArray content;
-    if (loadCompilerList(index, content))
+    if (loadCompilerList(name, content))
     {
-        parseCompilerListFromJSON(index, content);
+        parseCompilerListFromJSON(name, content);
     }
 
-    QString requestUrl = m_backendUrls[index] + "/api/compilers";
+    QString requestUrl = "https://godbolt.org/api/compilers";
     QNetworkRequest request(requestUrl);
     request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
     request.setRawHeader("Accept", "application/json, text/javascript, */*; q=0.01");
 
     QNetworkReply* reply = m_nam.get(request);
     NetworkReplyHelper* replyHelper = new NetworkReplyHelper(reply);
-    replyHelper->setData(index);
+    replyHelper->setData(name);
     replyHelper->setTimeout(10000);
     connect(replyHelper, SIGNAL(done()), this, SLOT(onCompilerListRequestFinished()));
 }
@@ -133,13 +151,13 @@ void GodboltAgent::onCompilerListRequestFinished()
     reply->deleteLater();
 
     QByteArray& content = reply->content();
-    int index = reply->data().toInt();
+    QString name = reply->data().toString();
     if (!content.isEmpty())
     {
-        storeCompilerList(index, content);
+        storeCompilerList(name, content);
 
-        if (!parseCompilerListFromJSON(index, content))
-            switchLanguage(index);
+        if (!parseCompilerListFromJSON(name, content))
+            switchLanguage(name);
     }
     else
     {
@@ -233,17 +251,17 @@ void GodboltAgent::onCompileRequestFinished()
     for (auto a : asmArray)
     {
         QJsonObject o = a.toObject();
-        AsmItem asmItem;
-        asmItem.text = o["text"].toString();
+        AsmItemPtr asmItem(new AsmItem);
+        asmItem->text = o["text"].toString();
         if (o["source"].isDouble())
-            asmItem.source = o["source"].toDouble();
+            asmItem->source = o["source"].toDouble();
         else if (o["source"].isObject())
         {
             QJsonObject srcObj = o["source"].toObject();
-            asmItem.source = srcObj["line"].toDouble();
+            asmItem->source = srcObj["line"].toDouble();
         }
         if (o["address"].isDouble())
-            asmItem.address = o["address"].toDouble();
+            asmItem->address = o["address"].toDouble();
         if (o["opcodes"].isArray())
         {
             QJsonArray opcodes = o["opcodes"].toArray();
@@ -251,7 +269,7 @@ void GodboltAgent::onCompileRequestFinished()
             {
                 QString op = opcode.toString();
                 bool ok = false;
-                asmItem.opcodes.append(op.toInt(&ok, 16));
+                asmItem->opcodes.append(op.toInt(&ok, 16));
             }
         }
         if (o["links"].isArray())
@@ -260,26 +278,37 @@ void GodboltAgent::onCompileRequestFinished()
             for (auto link : links)
             {
                 QJsonObject l = link.toObject();
-                AsmLink asmLink;
-                asmLink.offset = l["offset"].toInt();
-                asmLink.length = l["length"].toInt();
-                asmLink.to = l["to"].toInt();
-                asmItem.links.push_back(asmLink);
+                AsmLinkPtr asmLink(new AsmLink);
+                asmLink->offset = l["offset"].toInt();
+                asmLink->length = l["length"].toInt();
+                asmLink->to = l["to"].toInt();
+                asmItem->links.push_back(asmLink);
             }
         }
 
         m_asmItems.push_back(asmItem);
-        m_asmContent.append(asmItem.text + "\n");
+        m_asmContent.append(asmItem->text + "\n");
     }
 }
 
-bool GodboltAgent::storeCompilerList(int index, const QByteArray &content)
+void GodboltAgent::onLanguageListRequestFinished()
+{
+    NetworkReplyHelper* reply = qobject_cast<NetworkReplyHelper*>(sender());
+    reply->deleteLater();
+
+    QByteArray& content = reply->content();
+    storeLanguageList(content);
+    if (parseLanguageListFromJSON(content))
+        emit languageListRetrieved();
+}
+
+bool GodboltAgent::storeCompilerList(const QString& name, const QByteArray &content)
 {
     QString d = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/compilerlist";
     QDir dir(d);
     if (!dir.exists())
         dir.mkpath(d);
-    QString path = QString("%1/%2").arg(d).arg(index);
+    QString path = QString("%1/%2").arg(d).arg(name);
     QFile f(path);
     if (!f.open(QIODevice::WriteOnly))
     {
@@ -291,10 +320,10 @@ bool GodboltAgent::storeCompilerList(int index, const QByteArray &content)
     return true;
 }
 
-bool GodboltAgent::loadCompilerList(int index, QByteArray &content)
+bool GodboltAgent::loadCompilerList(const QString &name, QByteArray &content)
 {
     QString d = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
-    QString path = QString("%1/compilerlist/%2").arg(d).arg(index);
+    QString path = QString("%1/compilerlist/%2").arg(d).arg(name);
     if (!QFile::exists(path))
         return false;
     QFile f(path);
@@ -305,7 +334,7 @@ bool GodboltAgent::loadCompilerList(int index, QByteArray &content)
     return true;
 }
 
-bool GodboltAgent::parseCompilerListFromJSON(int index, const QByteArray &content)
+bool GodboltAgent::parseCompilerListFromJSON(const QString& language, const QByteArray &content)
 {
     QJsonDocument doc = QJsonDocument::fromJson(content);
 
@@ -317,7 +346,7 @@ bool GodboltAgent::parseCompilerListFromJSON(int index, const QByteArray &conten
 
     QJsonArray cl = doc.array();
 
-    CompilerList *compilerList = m_compilerLists.find(index).value();
+    CompilerList *compilerList = m_compilerMap.find(language).value();
     CompilerList newCompilerList;
     bool changed = false;
     for ( auto a : cl)
@@ -328,17 +357,17 @@ bool GodboltAgent::parseCompilerListFromJSON(int index, const QByteArray &conten
             return false;
         }
         QJsonObject o = a.toObject();
-        Compiler c;
-        c.id = o["id"].toString();
-        c.name = o["name"].toString();
-        c.version = o["version"].toString();
-        c.supportsBinary = o["supportsBinary"].toBool();
-        c.supportsExecute = o["supportsExecute"].toBool();
-        c.supportsIntel = o["supportsIntel"].toBool();
+        CompilerPtr c(new Compiler);
+        c->id = o["id"].toString();
+        c->name = o["name"].toString();
+        c->version = o["version"].toString();
+        c->supportsBinary = o["supportsBinary"].toBool();
+        c->supportsExecute = o["supportsExecute"].toBool();
+        c->supportsIntel = o["supportsIntel"].toBool();
         newCompilerList.push_back(c);
         auto it = std::find_if(compilerList->begin(), compilerList->end(),
-                               [&c](const Compiler& compiler){
-            return compiler.id == c.id && compiler.name == c.name;
+                               [&c](CompilerPtr compiler){
+            return compiler->id == c->id && compiler->name == c->name;
         });
         if (compilerList->end() == it)
         {
@@ -350,8 +379,8 @@ bool GodboltAgent::parseCompilerListFromJSON(int index, const QByteArray &conten
     for (auto it = compilerList->begin();it != compilerList->end();)
     {
         auto findIt = std::find_if(newCompilerList.begin(), newCompilerList.end(),
-                                   [&it](const Compiler& compiler){
-            return compiler.id == it->id && compiler.name == it->name;
+                                   [&it](CompilerPtr compiler){
+            return compiler->id == (*it)->id && compiler->name == (*it)->name;
         });
         if (findIt == newCompilerList.end())
         {
@@ -370,20 +399,96 @@ bool GodboltAgent::parseCompilerListFromJSON(int index, const QByteArray &conten
 
 bool GodboltAgent::storeLanguageList(const QByteArray &content)
 {
-
+    QString path = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/languages";
+    QFile f(path);
+    if (!f.open(QIODevice::WriteOnly))
+    {
+        qDebug() << "open file " << path << " for writting failed";
+        return false;
+    }
+    f.write(content);
+    f.close();
+    return true;
 }
 
 bool GodboltAgent::loadLanguageList(QByteArray &content)
 {
-
+    QString path = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/languages";
+    if (!QFile::exists(path))
+        return false;
+    QFile f(path);
+    if (!f.open(QIODevice::ReadOnly))
+    {
+        qDebug() << "open file " << path << " for reading failed";
+        return false;
+    }
+    content = f.readAll();
+    f.close();
+    return true;
 }
 
-bool GodboltAgent::parseLanguageList(const QByteArray &content)
+bool GodboltAgent::parseLanguageListFromJSON(const QByteArray &content)
 {
+    QJsonDocument doc = QJsonDocument::fromJson(content);
 
+    if (!doc.isArray())
+    {
+        qDebug() << "language list is expected to be an array:" << QString(content);
+        return false;
+    }
+
+    QJsonArray ll = doc.array();
+    m_languageList.clear();
+
+    for (auto l : ll)
+    {
+        if (!l.isObject())
+        {
+            qDebug() << "language list item is expected to be an object:"  << QString(content);
+            return false;
+        }
+
+        QJsonObject o = l.toObject();
+        LanguagePtr lang(new Language);
+        lang->id = o["id"].toString();
+        lang->name = o["name"].toString();
+        lang->monaco = o["monaco"].toString();
+        lang->example = o["example"].toString();
+        QJsonArray extensions = o["extensions"].toArray();
+        for (auto ext : extensions)
+        {
+            if (!ext.isString())
+            {
+                qDebug() << "extensions item is expected to be a string:" << QString(content);
+                return false;
+            }
+            lang->extensions.append(ext.toString());
+        }
+        QJsonArray alias = o["alias"].toArray();
+        for (auto a : alias)
+        {
+            if (!a.isString())
+            {
+                qDebug() << "alias item is expected to be a string:" << QString(content);
+                return false;
+            }
+            lang->alias.append(a.toString());
+        }
+
+        m_languageList.append(lang);
+    }
+
+    return !m_languageList.empty();
 }
 
-const QVector<AsmItem> &GodboltAgent::getAsmItems() const
+const QString &GodboltAgent::getLanguageId(const QString &name)
+{
+    auto it = std::find_if(m_languageList.begin(), m_languageList.end(),
+                           [&name](LanguagePtr l) { return l->name == name;});
+    return (*it)->id;
+}
+
+const AsmItemList &GodboltAgent::getAsmItems() const
 {
     return m_asmItems;
 }

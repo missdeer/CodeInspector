@@ -9,8 +9,14 @@ struct Language
 {
     QString id;
     QString name;
+    QString monaco;
+    QStringList extensions;
+    QStringList alias;
+    QString example;
 };
 
+typedef QSharedPointer<Language> LanguagePtr;
+typedef QList<LanguagePtr> LanguageList;
 
 struct Compiler
 {
@@ -22,11 +28,13 @@ struct Compiler
     bool supportsIntel;
 };
 
+typedef QSharedPointer<Compiler> CompilerPtr;
+typedef QList<CompilerPtr> CompilerList;
+
 struct CompileInfo
 {
     CompileInfo()
-        : programmingLanguageIndex(0)
-        , compilerIndex(0)
+        : compilerIndex(0)
         , labels(false)
         , directives(false)
         , commentOnly(false)
@@ -35,7 +43,7 @@ struct CompileInfo
         , intel(false)
     {}
     QByteArray source;
-    int programmingLanguageIndex;
+    QString language;
     int compilerIndex;
     QString userArguments;
     bool labels;
@@ -54,6 +62,8 @@ struct AsmLink
     unsigned long long to;
 };
 
+typedef QSharedPointer<AsmLink> AsmLinkPtr;
+
 struct AsmItem
 {
     AsmItem() : address(0), source(-1) {}
@@ -61,11 +71,11 @@ struct AsmItem
     unsigned long long address;
     QString text;
     int source;
-    QList<AsmLink> links;
+    QList<AsmLinkPtr> links;
 };
 
-typedef QList<Language> LanguageList;
-typedef QList<Compiler> CompilerList;
+typedef QSharedPointer<AsmItem> AsmItemPtr;
+typedef QVector<AsmItemPtr> AsmItemList;
 
 class GodboltAgent : public QObject
 {
@@ -73,29 +83,28 @@ class GodboltAgent : public QObject
 public:
     explicit GodboltAgent(QObject *parent = nullptr);
     ~GodboltAgent();
-    const LanguageList &getLanguageList();
-    const CompilerList &getCompilerList(int index);
+    LanguageList &getLanguageList();
+    CompilerList &getCompilerList(const QString& name);
     void compile(const CompileInfo& ci);
-    bool canCompile(int programmingLanguageIndex, int compilerIndex);
+    bool canCompile(const QString &language, const QString &compiler);
     const QString& getCompileOutput() const;
 
     const QString& getAsmContent() const;
 
-    const QVector<AsmItem>& getAsmItems() const;
+    const AsmItemList &getAsmItems() const;
 
 signals:
     void compilerListRetrieved();
     void languageListRetrieved();
     void compiled();
 public slots:
-    void switchLanguage(int index);
-
+    void switchLanguage(const QString& name);
 private slots:
     void onCompilerListRequestFinished();
     void onCompileRequestFinished();
     void onLanguageListRequestFinished();
 private:
-    QMap<int, CompilerList*> m_compilerLists;
+    QMap<QString, CompilerList*> m_compilerMap;
     QNetworkAccessManager m_nam;
     LanguageList m_languageList;
 
@@ -111,15 +120,17 @@ private:
 
     QString m_compileOutput;
     QString m_asmContent;
-    QVector<AsmItem> m_asmItems;
+    AsmItemList m_asmItems;
 
-    bool storeCompilerList(int index, const QByteArray& content);
-    bool loadCompilerList(int index, QByteArray& content);
-    bool parseCompilerListFromJSON(int index, const QByteArray& content);
+    bool storeCompilerList(const QString& name, const QByteArray& content);
+    bool loadCompilerList(const QString& name, QByteArray& content);
+    bool parseCompilerListFromJSON(const QString &language, const QByteArray& content);
 
     bool storeLanguageList(const QByteArray& content);
     bool loadLanguageList(QByteArray& content);
-    bool parseLanguageList(const QByteArray& content);
+    bool parseLanguageListFromJSON(const QByteArray& content);
+
+    const QString& getLanguageId(const QString& name);
 };
 
 #endif // GODBOLTAGENT_H

@@ -116,12 +116,14 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_btnToggleOutput, &QPushButton::clicked, [&]{m_output->setVisible(!m_output->isVisible());});
     connect(m_timer, &QTimer::timeout, this, &MainWindow::onNeedCompile);
     connect(&m_backend, &GodboltAgent::compilerListRetrieved, this, &MainWindow::onCompilerListRetrieved);
+    connect(&m_backend, &GodboltAgent::languageListRetrieved, this, &MainWindow::onLanguageListRetrieved);
     connect(&m_backend, &GodboltAgent::compiled, this, &MainWindow::onCompiled);
-    connect(ui->cbLanguageList, SIGNAL(currentIndexChanged(int)), this, SLOT(onSwitchLanguage(int)));
+    connect(ui->cbLanguageList, SIGNAL(currentIndexChanged(QString)), this, SLOT(onSwitchLanguage(const QString&)));
     connect(m_codeEditor, &CodeEditor::contentModified, this, &MainWindow::onDelayCompile);
     connect(ui->edtCompilerOptions, &QLineEdit::textChanged, this, &MainWindow::onDelayCompile);
     connect(ui->cbCompilerList, SIGNAL(currentIndexChanged(int)), this, SLOT(onSwitchCompiler(int)));
-    m_backend.switchLanguage(0);
+
+    onLanguageListRetrieved();
 
     m_btnToggleOutput->setVisible(false);
     m_output->setVisible(false);
@@ -137,11 +139,24 @@ MainWindow::~MainWindow()
 
 void MainWindow::onCompilerListRetrieved()
 {
-    auto cl = m_backend.getCompilerList(ui->cbLanguageList->currentIndex());
+    auto cl = m_backend.getCompilerList(ui->cbLanguageList->currentText());
     ui->cbCompilerList->clear();
-    for (const auto & c : cl)
+    for (auto c : cl)
     {
-        ui->cbCompilerList->addItem(c.name);
+        ui->cbCompilerList->addItem(c->name);
+    }
+}
+
+void MainWindow::onLanguageListRetrieved()
+{
+    auto ll = m_backend.getLanguageList();
+    if (ll.empty())
+        return;
+
+    ui->cbLanguageList->clear();
+    for (auto l : ll)
+    {
+        ui->cbLanguageList->addItem(l->name);
     }
 
     if (!m_postInitialized)
@@ -153,7 +168,7 @@ void MainWindow::onCompilerListRetrieved()
 
 void MainWindow::onNeedCompile()
 {
-    if (!m_backend.canCompile(ui->cbLanguageList->currentIndex(), ui->cbCompilerList->currentIndex()))
+    if (!m_backend.canCompile(ui->cbLanguageList->currentText(), ui->cbCompilerList->currentText()))
         return;
 
     Q_ASSERT(m_codeEditor);
@@ -169,7 +184,7 @@ void MainWindow::onNeedCompile()
     ci.trim = m_btnTrim->isChecked();
     ci.directives = m_btnDirectives->isChecked();
     ci.intel = m_btnIntel->isChecked();
-    ci.programmingLanguageIndex = ui->cbLanguageList->currentIndex();
+    ci.language = ui->cbLanguageList->currentText();
     ci.compilerIndex = ui->cbCompilerList->currentIndex();
     m_backend.compile(ci);
 
@@ -177,7 +192,7 @@ void MainWindow::onNeedCompile()
     Q_ASSERT(m_codeInspector);
     m_codeInspector->setContent(tr("<Compiling...>"), m_btnBinary->isChecked());
 
-    storeToCache(ci.programmingLanguageIndex, ci);
+    storeToCache(ci.language, ci);
     qDebug() << "store:" << ci.compilerIndex;
 }
 
@@ -206,10 +221,10 @@ void MainWindow::onCompiled()
     m_output->setContent(output);
 }
 
-void MainWindow::onSwitchLanguage(int index)
+void MainWindow::onSwitchLanguage(const QString& name)
 {
     m_codeEditor->clearContent();
-    m_backend.switchLanguage(index);
+    m_backend.switchLanguage(name);
     QStringList lexers = {
         "cpp",
         "d",
@@ -220,10 +235,10 @@ void MainWindow::onSwitchLanguage(int index)
         "swift",
     };
     Q_ASSERT(m_codeEditor);
-    m_codeEditor->setLanguage(lexers[index]);
+    m_codeEditor->setLanguage(/*lexers[index]*/ "cpp");
 
     CompileInfo ci;
-    if (restoreFromCache(index, ci))
+    if (restoreFromCache(name, ci))
     {
         qDebug() << "restore:" << ci.compilerIndex;
         m_codeEditor->setContent(ci.source);
@@ -247,7 +262,7 @@ void MainWindow::onSwitchLanguage(int index)
         ":/resource/example/haskell/sumoverarray.hs",
         ":/resource/example/swift/square.swift",
     };
-    QFile f(examples[index]);
+    QFile f(examples[/*index*/0]);
     if (!f.open(QIODevice::ReadOnly))
         return;
     m_codeEditor->setContent(f.readAll());
@@ -256,13 +271,13 @@ void MainWindow::onSwitchLanguage(int index)
 
 void MainWindow::onSwitchCompiler(int index)
 {
-    auto cl = m_backend.getCompilerList(ui->cbLanguageList->currentIndex());
+    auto cl = m_backend.getCompilerList(ui->cbLanguageList->currentText());
     if(index >=0 && index < cl.length())
     {
-        const auto& compiler = cl[index];
-        m_btnBinary->setEnabled(compiler.supportsBinary);
-        m_btnIntel->setEnabled(compiler.supportsIntel);
-        ui->cbCompilerList->setToolTip(compiler.version);
+        auto compiler = cl[index];
+        m_btnBinary->setEnabled(compiler->supportsBinary);
+        m_btnIntel->setEnabled(compiler->supportsIntel);
+        ui->cbCompilerList->setToolTip(compiler->version);
 
         onDelayCompile();
     }
@@ -281,13 +296,13 @@ void MainWindow::onDelayCompile()
 #endif
 }
 
-void MainWindow::storeToCache(int index, const CompileInfo &ci)
+void MainWindow::storeToCache(const QString &name, const CompileInfo &ci)
 {
     QString d = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
     QDir dir(d);
     if (!dir.exists())
         dir.mkpath(d);
-    QString path = QString("%1/%2").arg(d).arg(index);
+    QString path = QString("%1/%2").arg(d).arg(name);
     QFile f(path);
     if (!f.open(QIODevice::WriteOnly))
     {
@@ -305,7 +320,7 @@ void MainWindow::storeToCache(int index, const CompileInfo &ci)
            << ci.directives
            << ci.intel
            << ci.labels
-           << ci.programmingLanguageIndex
+           << ci.language
            << ci.source
            << ci.trim
            << ci.userArguments;
@@ -314,10 +329,10 @@ void MainWindow::storeToCache(int index, const CompileInfo &ci)
     f.close();
 }
 
-bool MainWindow::restoreFromCache(int index, CompileInfo &ci)
+bool MainWindow::restoreFromCache(const QString& name, CompileInfo &ci)
 {
     QString d = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
-    QString path = QString("%1/%2").arg(d).arg(index);
+    QString path = QString("%1/%2").arg(d).arg(name);
     if (!QFile::exists(path))
         return false;
     QFile f(path);
@@ -333,7 +348,7 @@ bool MainWindow::restoreFromCache(int index, CompileInfo &ci)
            >> ci.directives
            >> ci.intel
            >> ci.labels
-           >> ci.programmingLanguageIndex
+           >> ci.language
            >> ci.source
            >> ci.trim
            >> ci.userArguments;

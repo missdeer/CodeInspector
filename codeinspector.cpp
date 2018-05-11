@@ -31,7 +31,7 @@ void CodeInspector::setContent(const QString &content, bool binary)
     colourise(0, -1);
 }
 
-QMap<int, sptr_t> CodeInspector::setAsmItems(const QVector<AsmItem> &items, bool binary)
+QMap<int, sptr_t> CodeInspector::setAsmItems(const AsmItemList &items, bool binary)
 {
     const sptr_t marginStyleId = STYLE_LASTPREDEFINED + 1;
     int textLength = 0;
@@ -42,15 +42,15 @@ QMap<int, sptr_t> CodeInspector::setAsmItems(const QVector<AsmItem> &items, bool
 
     for (int i = 0; i < items.length(); i++)
     {
-        const AsmItem& item  = items.at(i);
+        auto item  = items.at(i);
 
-        if (item.source != -1)
+        if (item->source != -1)
         {
-            auto it = markerMap.find(item.source);
+            auto it = markerMap.find(item->source);
             if (markerMap.end() == it)
             {
                 // pick a color
-                markerMap.insert(item.source, markerIndex);
+                markerMap.insert(item->source, markerIndex);
                 markerAdd(i, markerIndex);
 
                 markerIndex++;
@@ -70,18 +70,18 @@ QMap<int, sptr_t> CodeInspector::setAsmItems(const QVector<AsmItem> &items, bool
             ts.setFieldWidth(2);
             ts.setIntegerBase(16);
             ts.setPadChar('0');
-            if (item.address > 0)
+            if (item->address > 0)
             {
-                ts << item.address;
+                ts << item->address;
             }
 
             if (!text.isEmpty())
                 text.append(":");
             else
                 text.append("00:");
-            if (!item.opcodes.isEmpty())
+            if (!item->opcodes.isEmpty())
             {
-                for (const auto& opcode : item.opcodes)
+                for (const auto& opcode : item->opcodes)
                 {
                     ts << opcode;
                 }

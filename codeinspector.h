@@ -12,7 +12,7 @@ public:
     explicit CodeInspector(QWidget *parent = 0);
     void initialize();
     void setContent(const QString& content, bool binary);
-    QMap<int, sptr_t> setAsmItems(const QVector<AsmItem>& items, bool binary);
+    QMap<int, sptr_t> setAsmItems(const AsmItemList &items, bool binary);
 protected:
     virtual QVariant inputMethodQuery(Qt::InputMethodQuery) const;
 
