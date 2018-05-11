@@ -103,6 +103,7 @@ private slots:
     void onCompilerListRequestFinished();
     void onCompileRequestFinished();
     void onLanguageListRequestFinished();
+    void onConfigurationRequestFinished();
 private:
     QMap<QString, CompilerList*> m_compilerMap;
     QNetworkAccessManager m_nam;
@@ -129,9 +130,12 @@ private:
     bool storeLanguageList(const QByteArray& content);
     bool loadLanguageList(QByteArray& content);
     bool parseLanguageListFromJSON(const QByteArray& content);
+    bool parseLanguageListFromConfiguration(QJsonObject& obj);
 
     const QString& getLanguageId(const QString& name);
     const QString& getCompilerId(const CompilerList& compilerList, const QString& name);
+
+    void requestConfigurations();
 };
 
 #endif // GODBOLTAGENT_H

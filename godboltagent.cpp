@@ -5,7 +5,7 @@
 GodboltAgent::GodboltAgent(QObject *parent)
     : QObject(parent)
 {
-
+    requestConfigurations();
 }
 
 GodboltAgent::~GodboltAgent()
@@ -302,6 +302,34 @@ void GodboltAgent::onLanguageListRequestFinished()
         emit languageListRetrieved();
 }
 
+void GodboltAgent::onConfigurationRequestFinished()
+{
+    NetworkReplyHelper* reply = qobject_cast<NetworkReplyHelper*>(sender());
+    reply->deleteLater();
+
+    QByteArray& content = reply->content();
+    QByteArray leading("<script>window.compilerExplorerOptions = ");
+    QByteArray ending("</script>");
+    int index = content.indexOf(leading);
+    content = content.mid(index + leading.size());
+    index = content.indexOf(ending);
+    content = content.left(index);
+
+    QJsonDocument doc = QJsonDocument::fromJson(content);
+    if (!doc.isObject())
+    {
+        qDebug() << "expected to be an object:" << content;
+        return;
+    }
+
+    QJsonObject obj = doc.object();
+    QJsonObject languages = obj["languages"].toObject();
+    parseLanguageListFromConfiguration(languages);
+    QJsonArray compilers = obj["compilers"].toArray();
+    QJsonObject libs = obj["libs"].toObject();
+    QJsonObject defaultCompiler = obj["defaultCompiler"].toObject();
+}
+
 bool GodboltAgent::storeCompilerList(const QString& name, const QByteArray &content)
 {
     QString d = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/compilerlist";
@@ -481,6 +509,48 @@ bool GodboltAgent::parseLanguageListFromJSON(const QByteArray &content)
     return !m_languageList.empty();
 }
 
+bool GodboltAgent::parseLanguageListFromConfiguration(QJsonObject &obj)
+{
+    m_languageList.clear();
+    for (auto v : obj)
+    {
+        if (!v.isObject())
+        {
+            qDebug() << "language item is expected to be an object";
+            return false;
+        }
+        QJsonObject o = v.toObject();
+        LanguagePtr lang(new Language);
+        lang->id = o["id"].toString();
+        lang->name = o["name"].toString();
+        lang->monaco = o["monaco"].toString();
+        lang->example = o["example"].toString();
+        QJsonArray extensions = o["extensions"].toArray();
+        for (auto ext : extensions)
+        {
+            if (!ext.isString())
+            {
+                qDebug() << "extensions item is expected to be a string";
+                return false;
+            }
+            lang->extensions.append(ext.toString());
+        }
+        QJsonArray alias = o["alias"].toArray();
+        for (auto a : alias)
+        {
+            if (!a.isString())
+            {
+                qDebug() << "alias item is expected to be a string";
+                return false;
+            }
+            lang->alias.append(a.toString());
+        }
+
+        m_languageList.append(lang);
+    }
+    return !m_languageList.empty();
+}
+
 const QString &GodboltAgent::getLanguageId(const QString &name)
 {
     auto it = std::find_if(m_languageList.begin(), m_languageList.end(),
@@ -493,6 +563,20 @@ const QString &GodboltAgent::getCompilerId(const CompilerList &compilerList, con
     auto it = std::find_if(compilerList.begin(), compilerList.end(),
                            [&name](CompilerPtr c) { return c->name == name;});
     return (*it)->id;
+}
+
+void GodboltAgent::requestConfigurations()
+{
+    qDebug() << "request configurations";
+    QString requestUrl = "https://godbolt.org/";
+    QNetworkRequest request(requestUrl);
+    request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
+    request.setRawHeader("Accept", "application/json, text/javascript, */*; q=0.01");
+
+    QNetworkReply* reply = m_nam.get(request);
+    NetworkReplyHelper* replyHelper = new NetworkReplyHelper(reply);
+    replyHelper->setTimeout(10000);
+    connect(replyHelper, SIGNAL(done()), this, SLOT(onConfigurationRequestFinished()));
 }
 
 const AsmItemList &GodboltAgent::getAsmItems() const
