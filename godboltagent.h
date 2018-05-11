@@ -30,6 +30,7 @@ struct Compiler
 
 typedef QSharedPointer<Compiler> CompilerPtr;
 typedef QList<CompilerPtr> CompilerList;
+typedef QSharedPointer<CompilerList> CompilerListPtr;
 
 struct CompileInfo
 {
@@ -83,7 +84,7 @@ public:
     explicit GodboltAgent(QObject *parent = nullptr);
     ~GodboltAgent();
     LanguageList &getLanguageList();
-    CompilerList &getCompilerList(const QString& name);
+    CompilerListPtr getCompilerList(const QString& name);
     void compile(const CompileInfo& ci);
     bool canCompile(const QString &language, const QString &compiler);
     const QString& getCompileOutput() const;
@@ -93,6 +94,7 @@ public:
     const AsmItemList &getAsmItems() const;
 
     const QString& getExample(const QString& language) const;
+    const QString& getDefaultCompilerName(const QString& languageName);
 signals:
     void compilerListRetrieved();
     void languageListRetrieved();
@@ -105,37 +107,34 @@ private slots:
     void onLanguageListRequestFinished();
     void onConfigurationRequestFinished();
 private:
-    QMap<QString, CompilerList*> m_compilerMap;
     QNetworkAccessManager m_nam;
     LanguageList m_languageList;
-
-    QStringList m_backendUrls = {
-        "https://gcc.godbolt.org",
-        "https://d.godbolt.org",
-        "https://rust.godbolt.org",
-        "https://go.godbolt.org",
-        "https://ispc.godbolt.org",
-        "https://haskell.godbolt.org",
-        "https://swift.godbolt.org",
-    };
-
     QString m_compileOutput;
     QString m_asmContent;
     AsmItemList m_asmItems;
+    QMap<QString, CompilerListPtr> m_compilerMap; // language name - compiler list
+    QMap<QString, QString> m_defaultCompiler; // language id - compiler id
 
     bool storeCompilerList(const QString& name, const QByteArray& content);
     bool loadCompilerList(const QString& name, QByteArray& content);
     bool parseCompilerListFromJSON(const QString &language, const QByteArray& content);
+    bool parseCompilerListFromConfiguration(QJsonArray& array);
 
     bool storeLanguageList(const QByteArray& content);
     bool loadLanguageList(QByteArray& content);
     bool parseLanguageListFromJSON(const QByteArray& content);
     bool parseLanguageListFromConfiguration(QJsonObject& obj);
 
+    bool parseLibListFromConfiguration(QJsonObject& obj);
+    bool parseDefaultCompilerFromConfiguration(QJsonObject& obj);
+
     const QString& getLanguageId(const QString& name);
-    const QString& getCompilerId(const CompilerList& compilerList, const QString& name);
+    const QString& getCompilerId(CompilerListPtr compilerList, const QString& name);
 
     void requestConfigurations();
+    bool storeConfiguration(const QByteArray& content);
+    bool loadConfiguration( QByteArray& content);
+    bool parseConfiguration(const QByteArray& content);
 };
 
 #endif // GODBOLTAGENT_H

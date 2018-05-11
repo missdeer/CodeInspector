@@ -9,7 +9,6 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    m_postInitialized(false),
     m_timer(new QTimer)
 {
     ui->setupUi(this);
@@ -141,7 +140,7 @@ void MainWindow::onCompilerListRetrieved()
 {
     auto cl = m_backend.getCompilerList(ui->cbLanguageList->currentText());
     ui->cbCompilerList->clear();
-    for (auto c : cl)
+    for (auto c : *cl)
     {
         ui->cbCompilerList->addItem(c->name);
     }
@@ -159,11 +158,7 @@ void MainWindow::onLanguageListRetrieved()
         ui->cbLanguageList->addItem(l->name);
     }
 
-    if (!m_postInitialized)
-    {
-        m_postInitialized = true;
-        onSwitchLanguage(ui->cbLanguageList->currentText());
-    }
+    ui->cbLanguageList->setCurrentIndex(0);
 }
 
 void MainWindow::onNeedCompile()
@@ -223,6 +218,7 @@ void MainWindow::onCompiled()
 
 void MainWindow::onSwitchLanguage(const QString& name)
 {
+    qDebug() << __FUNCTION__ << name;
     m_codeEditor->clearContent();
     m_backend.switchLanguage(name);
 
@@ -261,15 +257,22 @@ void MainWindow::onSwitchLanguage(const QString& name)
         ui->cbCompilerList->setCurrentText(ci.compiler);
         return;
     }
+
+    QString compilerName = m_backend.getDefaultCompilerName(name);
+    if (!compilerName.isEmpty())
+    {
+        qDebug() << "default compiler name:" << compilerName;
+        ui->cbCompilerList->setCurrentText(compilerName);
+    }
     m_codeEditor->setContent(m_backend.getExample(name));
 }
 
 void MainWindow::onSwitchCompiler(const QString& name)
 {
     auto cl = m_backend.getCompilerList(ui->cbLanguageList->currentText());
-    auto it = std::find_if(cl.begin(), cl.end(),
+    auto it = std::find_if(cl->begin(), cl->end(),
                            [&name](CompilerPtr c) { return c->name == name;});
-    if(cl.end() != it)
+    if(cl->end() != it)
     {
         auto compiler = *it;
         m_btnBinary->setEnabled(compiler->supportsBinary);
