@@ -54,6 +54,27 @@ struct CompileInfo
     bool intel;
 };
 
+struct LibraryVersion
+{
+    QString version;
+    QStringList path;
+};
+
+typedef QSharedPointer<LibraryVersion> LibraryVersionPtr;
+
+struct Library
+{
+    QString id;
+    QString name;
+    QString description;
+    QString url;
+    QList<LibraryVersionPtr> versions;
+};
+
+typedef QSharedPointer<Library> LibraryPtr;
+typedef QList<LibraryPtr> LibraryList;
+typedef QSharedPointer<LibraryList> LibraryListPtr;
+
 struct AsmLink
 {
     AsmLink() : offset(0), length(0), to(0) {}
@@ -84,7 +105,8 @@ public:
     explicit GodboltAgent(QObject *parent = nullptr);
     ~GodboltAgent();
     LanguageList &getLanguageList();
-    CompilerListPtr getCompilerList(const QString& name);
+    CompilerListPtr getCompilerList(const QString& languageName);
+    LibraryListPtr getLibraryList(const QString& languageName);
     void compile(const CompileInfo& ci);
     bool canCompile(const QString &language, const QString &compiler);
     const QString& getCompileOutput() const;
@@ -114,6 +136,7 @@ private:
     AsmItemList m_asmItems;
     QMap<QString, CompilerListPtr> m_compilerMap; // language name - compiler list
     QMap<QString, QString> m_defaultCompiler; // language id - compiler id
+    QMap<QString, LibraryListPtr> m_libs; // language id - library list
 
     void requestCompilerList(const QString &language);
     bool storeCompilerList(const QString& name, const QByteArray& content);

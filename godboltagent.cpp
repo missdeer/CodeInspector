@@ -44,16 +44,23 @@ LanguageList &GodboltAgent::getLanguageList()
     return m_languageList;
 }
 
-CompilerListPtr GodboltAgent::getCompilerList(const QString &name)
+CompilerListPtr GodboltAgent::getCompilerList(const QString &languageName)
 {
-    qDebug() << __FUNCTION__ << name << m_compilerMap.size();
-    auto it = m_compilerMap.find(name);
+    qDebug() << __FUNCTION__ << languageName << m_compilerMap.size();
+    auto it = m_compilerMap.find(languageName);
     if (m_compilerMap.end() == it)
     {
-        m_compilerMap.insert(name, CompilerListPtr(new CompilerList));
-        it = m_compilerMap.find(name);
+        m_compilerMap.insert(languageName, CompilerListPtr(new CompilerList));
+        it = m_compilerMap.find(languageName);
     }
 
+    return it.value();
+}
+
+LibraryListPtr GodboltAgent::getLibraryList(const QString &languageName)
+{
+    auto languageId = getLanguageId(languageName);
+    auto it = m_libs.find(languageId);
     return it.value();
 }
 
@@ -592,6 +599,58 @@ bool GodboltAgent::parseLanguageListFromConfiguration(QJsonObject &obj)
 
 bool GodboltAgent::parseLibListFromConfiguration(QJsonObject &obj)
 {
+    m_libs.clear();
+    auto languagesId = obj.keys();
+    for (auto& language : languagesId)
+    {
+        auto libs = obj[language];
+        if (!libs.isObject())
+        {
+            qDebug() << "libs is expected to be an object";
+            return false;
+        }
+        LibraryListPtr libraryList(new LibraryList);
+        m_libs.insert(language, libraryList);
+        auto libsObj = libs.toObject();
+        auto libsId = libsObj.keys();
+        for (auto & libId : libsId)
+        {
+            auto lib = libsObj[libId];
+            if (!lib.isObject())
+            {
+                qDebug() << "lib is expected to be an object";
+                return false;
+            }
+            LibraryPtr library(new Library);
+            libraryList->append(library);
+            auto libObj = lib.toObject();
+            library->id = libId;
+            library->name = libObj["name"].toString();
+            library->url = libObj["url"].toString();
+            if (!libObj["description"].isNull())
+                library->description = libObj["description"].toString();
+            auto versions = libObj["versions"].toObject();
+            auto versionsId = versions.keys();
+            for (auto & versionId : versionsId)
+            {
+                auto version = versions[versionId];
+                if (!version.isObject())
+                {
+                    qDebug() << "version is expected to be an object";
+                    return false;
+                }
+                auto versionObj = version.toObject();
+                LibraryVersionPtr ver(new LibraryVersion);
+                ver->version = versionObj["version"].toString();
+                auto path = versionObj["path"].toArray();
+                for (auto p : path)
+                {
+                    ver->path.append(p.toString());
+                }
+                library->versions.append(ver);
+            }
+        }
+    }
     return true;
 }
 
@@ -699,12 +758,12 @@ bool GodboltAgent::parseConfiguration(const QByteArray &content)
     }
 
     QJsonObject obj = doc.object();
-    QJsonObject languages = obj["languages"].toObject();
-    bool ret = parseLanguageListFromConfiguration(languages);
+//    QJsonObject languages = obj["languages"].toObject();
+//    bool ret = parseLanguageListFromConfiguration(languages);
     QJsonObject libs = obj["libs"].toObject();
-    ret &= parseLibListFromConfiguration(libs);
-    QJsonArray compilers = obj["compilers"].toArray();
-    ret &= parseCompilerListFromConfiguration(compilers);
+    bool ret = parseLibListFromConfiguration(libs);
+//    QJsonArray compilers = obj["compilers"].toArray();
+//    ret &= parseCompilerListFromConfiguration(compilers);
     QJsonObject defaultCompiler = obj["defaultCompiler"].toObject();
     ret &= parseDefaultCompilerFromConfiguration(defaultCompiler);
 
@@ -721,7 +780,7 @@ const QString &GodboltAgent::getExample(const QString &language) const
     auto it = std::find_if(m_languageList.begin(), m_languageList.end(),
                            [&language](LanguagePtr l) { return l->name == language;});
 
-    qDebug() << "get example:" << (*it)->example;
+    //qDebug() << "get example:" << (*it)->example;
     return (*it)->example;
 }
 

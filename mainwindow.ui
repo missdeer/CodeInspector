@@ -99,7 +99,7 @@
      <number>0</number>
     </property>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1,1,0,0">
+     <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1,1,0,0,0,0">
       <property name="spacing">
        <number>2</number>
       </property>
@@ -127,6 +127,46 @@
         <property name="icon">
          <iconset resource="ci.qrc">
           <normaloff>:/resource/image/loadexample.png</normaloff>:/resource/image/loadexample.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>32</width>
+          <height>32</height>
+         </size>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnLibrary">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="ci.qrc">
+          <normaloff>:/resource/image/library.png</normaloff>:/resource/image/library.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>32</width>
+          <height>32</height>
+         </size>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnOption">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="ci.qrc">
+          <normaloff>:/resource/image/option.png</normaloff>:/resource/image/option.png</iconset>
         </property>
         <property name="iconSize">
          <size>

@@ -20,6 +20,8 @@ MainWindow::MainWindow(QWidget *parent) :
 #elif defined(Q_OS_ANDROID)
     splitter->setBackgroundRole(QPalette::WindowText);
     splitter->setHandleWidth(50);
+    ui->btnLibrary->setIconSize(QSize(120, 120));
+    ui->btnOption->setIconSize(QSize(120, 120));
     ui->btnConfiguration->setIconSize(QSize(120, 120));
     ui->btnLoadExample->setIconSize(QSize(120, 120));
 #endif
@@ -370,5 +372,21 @@ void MainWindow::on_btnConfiguration_clicked()
     QmlDialog dlg(this);
     dlg.setWindowTitle(tr("Configuration"));
     dlg.loadQml(QUrl("qrc:resource/qml/configuration.qml"));
+    dlg.exec();
+}
+
+void MainWindow::on_btnOption_clicked()
+{
+    QmlDialog dlg(this);
+    dlg.setWindowTitle(tr("Inspector Options"));
+    dlg.loadQml(QUrl("qrc:resource/qml/option.qml"));
+    dlg.exec();
+}
+
+void MainWindow::on_btnLibrary_clicked()
+{
+    QmlDialog dlg(this);
+    dlg.setWindowTitle(tr("Library"));
+    dlg.loadQml(QUrl("qrc:resource/qml/library.qml"));
     dlg.exec();
 }

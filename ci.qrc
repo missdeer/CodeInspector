@@ -63,5 +63,9 @@
         <file>resource/image/errmsg.png</file>
         <file>resource/qml/example.qml</file>
         <file>resource/qml/configuration.qml</file>
+        <file>resource/image/library.png</file>
+        <file>resource/image/option.png</file>
+        <file>resource/qml/library.qml</file>
+        <file>resource/qml/option.qml</file>
     </qresource>
 </RCC>
