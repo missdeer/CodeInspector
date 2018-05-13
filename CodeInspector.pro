@@ -36,7 +36,8 @@ SOURCES += \
     godboltagent.cpp \
     networkreplyhelper.cpp \
     outputwindow.cpp \
-    qmldialog.cpp
+    qmldialog.cpp \
+    quickwidgetapi.cpp
 
 HEADERS += \
     stdafx.h \
@@ -48,7 +49,8 @@ HEADERS += \
     godboltagent.h \
     networkreplyhelper.h \
     outputwindow.h \
-    qmldialog.h
+    qmldialog.h \
+    quickwidgetapi.h
 
 FORMS += \
     mainwindow.ui \

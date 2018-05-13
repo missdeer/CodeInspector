@@ -9,7 +9,8 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    m_timer(new QTimer)
+    m_timer(new QTimer),
+    m_quickAPI(new QuickWidgetAPI(this))
 {
     ui->setupUi(this);
     ui->edtCompilerOptions->setClearButtonEnabled(true);
@@ -65,49 +66,9 @@ MainWindow::MainWindow(QWidget *parent) :
     QVBoxLayout* inspectoerPanelLayout = new QVBoxLayout();
     inspectorPanel->setLayout(inspectoerPanelLayout);
 
-    QHBoxLayout* toolButtonLayout = new QHBoxLayout();
-    toolButtonLayout->setContentsMargins(0,0,0,0);
-    toolButtonLayout->setSpacing(2);
-
-    struct {
-        QToolButton*& btn;
-        QString icon;
-        QString text;
-        QString tooltip;
-        bool checked;
-    } buttons[] = {
-    {m_btnBinary, ":/resource/image/binary.png", tr("Binary"), tr("Compile to binary and disassemble the output"), false},
-    {m_btnLabels, ":/resource/image/label.png", tr("Labels"), tr("Filter unused labels from the output"), true},
-    {m_btnTrim, ":/resource/image/trim.png", tr("Trim"), tr("Trim intra-line whitespace"), true},
-    {m_btnDirectives, ":/resource/image/detectives.png", tr("Directives"), tr("Filter all assembler directives from the output"), true},
-    {m_btnIntel, ":/resource/image/intel.png", tr("Intel"), tr("Output disassembly in Intel syntax"), true},
-    {m_btnCommentOnly, ":/resource/image/comment.png", tr("Comment Only"), tr("Remove all line which are only comments from the output"), true},
-    };
-
-    for (const auto & b : buttons)
-    {
-        //b.btn = new QToolButton(QIcon(b.icon), "", inspectorPanel);
-        b.btn = new QToolButton(inspectorPanel);
-        b.btn->setIcon(QIcon(b.icon));
-        b.btn->setCheckable(true);
-        b.btn->setChecked(b.checked);
-#if defined(Q_OS_ANDROID)
-        b.btn->setIconSize(QSize(120, 120));
-#else
-        b.btn->setIconSize(QSize(24, 24));
-#endif
-        b.btn->setToolTip(b.tooltip);
-        //b.btn->setFlat(true);
-        connect(b.btn, &QPushButton::clicked, this, &MainWindow::onDelayCompile);
-        toolButtonLayout->addWidget(b.btn);
-    }
-
-    toolButtonLayout->addStretch();
-
     m_codeInspector = new CodeInspector(splitter);
     m_codeInspector->initialize();
 
-    inspectoerPanelLayout->addLayout(toolButtonLayout);
     inspectoerPanelLayout->addWidget(m_codeInspector);
     inspectoerPanelLayout->setContentsMargins(0,0,0,0);
     inspectoerPanelLayout->setSpacing(2);
@@ -175,19 +136,19 @@ void MainWindow::onNeedCompile()
         return;
 
     ci.userArguments = ui->edtCompilerOptions->text();
-    ci.binary = m_btnBinary->isChecked();
-    ci.commentOnly = m_btnCommentOnly->isChecked();
-    ci.labels = m_btnLabels->isChecked();
-    ci.trim = m_btnTrim->isChecked();
-    ci.directives = m_btnDirectives->isChecked();
-    ci.intel = m_btnIntel->isChecked();
+    ci.binary = m_quickAPI->binary();
+    ci.commentOnly = m_quickAPI->commentOnly();
+    ci.labels = m_quickAPI->labels();
+    ci.trim = m_quickAPI->trim();
+    ci.directives = m_quickAPI->directives();
+    ci.intel =m_quickAPI->intel();
     ci.language = ui->cbLanguageList->currentText();
     ci.compiler = ui->cbCompilerList->currentText();
     m_backend.compile(ci);
 
     m_codeEditor->setSavePoint();
     Q_ASSERT(m_codeInspector);
-    m_codeInspector->setContent(tr("<Compiling...>"), m_btnBinary->isChecked());
+    m_codeInspector->setContent(tr("<Compiling...>"), m_quickAPI->binary());
 
     storeToCache(ci.language, ci);
     qDebug() << "store:" << ci.compiler;
@@ -197,9 +158,9 @@ void MainWindow::onCompiled()
 {
     auto content = m_backend.getAsmContent();
     Q_ASSERT(m_codeInspector);
-    m_codeInspector->setContent(content, m_btnBinary->isChecked());
+    m_codeInspector->setContent(content, m_quickAPI->binary());
     auto asmItems = m_backend.getAsmItems();
-    auto markerMap = m_codeInspector->setAsmItems(asmItems,m_btnBinary->isChecked());
+    auto markerMap = m_codeInspector->setAsmItems(asmItems, m_quickAPI->binary());
     Q_ASSERT(m_codeEditor);
     m_codeEditor->setMarkerColor(markerMap);
 
@@ -250,12 +211,12 @@ void MainWindow::onSwitchLanguage(const QString& name)
         qDebug() << "restore:" << ci.compiler;
         m_codeEditor->setContent(ci.source);
         ui->edtCompilerOptions->setText(ci.userArguments);
-        m_btnBinary->setChecked(ci.binary);
-        m_btnCommentOnly->setChecked(ci.commentOnly);
-        m_btnLabels->setChecked( ci.labels);
-        m_btnTrim->setChecked(ci.trim);
-        m_btnDirectives->setChecked(ci.directives);
-        m_btnIntel->setChecked(ci.intel);
+        m_quickAPI->setBinary(ci.binary);
+        m_quickAPI->setCommentOnly(ci.commentOnly);
+        m_quickAPI->setLabels(ci.labels);
+        m_quickAPI->setTrim(ci.trim);
+        m_quickAPI->setDirectives(ci.directives);
+        m_quickAPI->setIntel(ci.intel);
         ui->cbCompilerList->setCurrentText(ci.compiler);
         return;
     }
@@ -277,8 +238,8 @@ void MainWindow::onSwitchCompiler(const QString& name)
     if(cl->end() != it)
     {
         auto compiler = *it;
-        m_btnBinary->setEnabled(compiler->supportsBinary);
-        m_btnIntel->setEnabled(compiler->supportsIntel);
+        m_quickAPI->setBinaryEnabled(compiler->supportsBinary);
+        m_quickAPI->setIntelEnabled(compiler->supportsIntel);
         ui->cbCompilerList->setToolTip(compiler->version);
 
         onDelayCompile();
@@ -361,7 +322,7 @@ bool MainWindow::restoreFromCache(const QString& name, CompileInfo &ci)
 
 void MainWindow::on_btnLoadExample_clicked()
 {
-    QmlDialog dlg(this);
+    QmlDialog dlg(this, m_quickAPI);
     dlg.setWindowTitle(tr("Load Example..."));
     dlg.loadQml(QUrl("qrc:resource/qml/example.qml"));
     dlg.exec();
@@ -369,7 +330,7 @@ void MainWindow::on_btnLoadExample_clicked()
 
 void MainWindow::on_btnConfiguration_clicked()
 {
-    QmlDialog dlg(this);
+    QmlDialog dlg(this, m_quickAPI);
     dlg.setWindowTitle(tr("Configuration"));
     dlg.loadQml(QUrl("qrc:resource/qml/configuration.qml"));
     dlg.exec();
@@ -377,7 +338,7 @@ void MainWindow::on_btnConfiguration_clicked()
 
 void MainWindow::on_btnOption_clicked()
 {
-    QmlDialog dlg(this);
+    QmlDialog dlg(this, m_quickAPI);
     dlg.setWindowTitle(tr("Inspector Options"));
     dlg.loadQml(QUrl("qrc:resource/qml/option.qml"));
     dlg.exec();
@@ -385,7 +346,7 @@ void MainWindow::on_btnOption_clicked()
 
 void MainWindow::on_btnLibrary_clicked()
 {
-    QmlDialog dlg(this);
+    QmlDialog dlg(this, m_quickAPI);
     dlg.setWindowTitle(tr("Library"));
     dlg.loadQml(QUrl("qrc:resource/qml/library.qml"));
     dlg.exec();

@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "godboltagent.h"
+#include "quickwidgetapi.h"
 
 namespace Ui {
 class MainWindow;
@@ -44,12 +45,7 @@ private:
     CodeInspector* m_codeInspector;
     OutputWindow* m_output;
     QPushButton* m_btnToggleOutput;
-    QToolButton* m_btnBinary;
-    QToolButton* m_btnLabels;
-    QToolButton* m_btnTrim;
-    QToolButton* m_btnDirectives;
-    QToolButton* m_btnIntel;
-    QToolButton* m_btnCommentOnly;
+    QuickWidgetAPI* m_quickAPI;
     GodboltAgent m_backend;
 
     void storeToCache(const QString &name, const CompileInfo& ci);
