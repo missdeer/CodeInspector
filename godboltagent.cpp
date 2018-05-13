@@ -710,7 +710,6 @@ void GodboltAgent::requestConfigurations()
     QString requestUrl = "https://godbolt.org/";
     QNetworkRequest request(requestUrl);
     request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
-    request.setRawHeader("Accept", "application/json, text/javascript, */*; q=0.01");
 
     QNetworkReply* reply = m_nam.get(request);
     NetworkReplyHelper* replyHelper = new NetworkReplyHelper(reply);
@@ -720,7 +719,7 @@ void GodboltAgent::requestConfigurations()
 
 bool GodboltAgent::storeConfiguration(const QByteArray &content)
 {
-    QString path = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/configuration";
+    QString path = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/configurations";
     QFile f(path);
     if (!f.open(QIODevice::WriteOnly))
     {
@@ -734,7 +733,7 @@ bool GodboltAgent::storeConfiguration(const QByteArray &content)
 
 bool GodboltAgent::loadConfiguration(QByteArray &content)
 {
-    QString path = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/configuration";
+    QString path = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/configurations";
     if (!QFile::exists(path))
         return false;
     QFile f(path);
