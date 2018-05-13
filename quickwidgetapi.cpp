@@ -137,3 +137,25 @@ void QuickWidgetAPI::setCommentOnlyEnabled(bool commentOnlyEnabled)
     m_commentOnlyEnabled = commentOnlyEnabled;
     emit commentOnlyEnabledChanged();
 }
+
+bool QuickWidgetAPI::demangle() const
+{
+    return m_demangle;
+}
+
+void QuickWidgetAPI::setDemangle(bool demangle)
+{
+    m_demangle = demangle;
+    emit demangleChanged();
+}
+
+bool QuickWidgetAPI::demangleEnabled() const
+{
+    return m_demangleEnabled;
+}
+
+void QuickWidgetAPI::setDemangleEnabled(bool demangleEnabled)
+{
+    m_demangleEnabled = demangleEnabled;
+    emit demangleEnabledChanged();
+}

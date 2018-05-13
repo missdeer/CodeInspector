@@ -26,6 +26,10 @@ struct Compiler
     bool supportsBinary;
     bool supportsExecute;
     bool supportsIntel;
+    bool supportsDemangle;
+    bool supportsCfg;
+    bool supportsAstView;
+    bool supportsOptimizationOutput;
 };
 
 typedef QSharedPointer<Compiler> CompilerPtr;
@@ -41,6 +45,7 @@ struct CompileInfo
         , trim(false)
         , binary(false)
         , intel(false)
+        , demangle(false)
     {}
     QByteArray source;
     QString language;
@@ -52,6 +57,7 @@ struct CompileInfo
     bool trim;
     bool binary;
     bool intel;
+    bool demangle;
 };
 
 struct LibraryVersion

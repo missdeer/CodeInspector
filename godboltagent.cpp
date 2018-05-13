@@ -84,11 +84,11 @@ void GodboltAgent::compile(const CompileInfo &ci)
         { "directives", ci.directives},
         { "intel", ci.intel},
         { "commentOnly", ci.commentOnly},
+        { "demangle", ci.demangle},
     };
     for (const auto& f : filterMap)
     {
-        if (f.value)
-            filtersObj.insert(f.key, true);
+         filtersObj.insert(f.key, f.value);
     }
 
     QJsonObject optionsObj;
@@ -397,6 +397,10 @@ bool GodboltAgent::parseCompilerListFromJSON(const QString& language, const QByt
         c->supportsBinary = o["supportsBinary"].toBool();
         c->supportsExecute = o["supportsExecute"].toBool();
         c->supportsIntel = o["supportsIntel"].toBool();
+        c->supportsDemangle = o["supportsDemangle"].toBool();
+        c->supportsOptimizationOutput = o["supportsOptOutput"].toBool();
+        c->supportsAstView = o["supportsAstView"].toBool();
+        c->supportsCfg = o["supportsCfg"].toBool();
         newCompilerList->push_back(c);
         auto it = std::find_if(compilerList->begin(), compilerList->end(),
                                [&c](CompilerPtr compiler){

@@ -142,6 +142,7 @@ void MainWindow::onNeedCompile()
     ci.trim = m_quickAPI->trim();
     ci.directives = m_quickAPI->directives();
     ci.intel =m_quickAPI->intel();
+    ci.demangle = m_quickAPI->demangle();
     ci.language = ui->cbLanguageList->currentText();
     ci.compiler = ui->cbCompilerList->currentText();
     m_backend.compile(ci);
@@ -217,6 +218,7 @@ void MainWindow::onSwitchLanguage(const QString& name)
         m_quickAPI->setTrim(ci.trim);
         m_quickAPI->setDirectives(ci.directives);
         m_quickAPI->setIntel(ci.intel);
+        m_quickAPI->setDemangle(ci.demangle);
         ui->cbCompilerList->setCurrentText(ci.compiler);
         return;
     }
@@ -286,6 +288,7 @@ void MainWindow::storeToCache(const QString &name, const CompileInfo &ci)
            << ci.language
            << ci.source
            << ci.trim
+           << ci.demangle
            << ci.userArguments;
     stream.commitTransaction();
     qDebug() << "commit transaction";
@@ -314,6 +317,7 @@ bool MainWindow::restoreFromCache(const QString& name, CompileInfo &ci)
            >> ci.language
            >> ci.source
            >> ci.trim
+           >> ci.demangle
            >> ci.userArguments;
 
     return true;

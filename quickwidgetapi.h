@@ -12,12 +12,14 @@ class QuickWidgetAPI : public QObject
     Q_PROPERTY(bool directives READ directives WRITE setDirectives NOTIFY directivesChanged)
     Q_PROPERTY(bool intel READ intel WRITE setIntel NOTIFY intelChanged)
     Q_PROPERTY(bool commentOnly READ commentOnly WRITE setCommentOnly NOTIFY commentOnlyChanged)
+    Q_PROPERTY(bool demangle READ demangle WRITE setDemangle NOTIFY demangleChanged)
     Q_PROPERTY(bool binaryEnabled READ binaryEnabled WRITE setBinaryEnabled NOTIFY binaryEnabledChanged)
     Q_PROPERTY(bool labelsEnabled READ labelsEnabled WRITE setLabelsEnabled NOTIFY labelsEnabledChanged)
     Q_PROPERTY(bool trimEnabled READ trimEnabled WRITE setTrimEnabled NOTIFY trimEnabledChanged)
     Q_PROPERTY(bool directivesEnabled READ directivesEnabled WRITE setDirectivesEnabled NOTIFY directivesEnabledChanged)
     Q_PROPERTY(bool intelEnabled READ intelEnabled WRITE setIntelEnabled NOTIFY intelEnabledChanged)
     Q_PROPERTY(bool commentOnlyEnabled READ commentOnlyEnabled WRITE setCommentOnlyEnabled NOTIFY commentOnlyEnabledChanged)
+    Q_PROPERTY(bool demangleEnabled READ demangleEnabled WRITE setDemangleEnabled NOTIFY demangleEnabledChanged)
 public:
     explicit QuickWidgetAPI(QObject *parent = nullptr);
 
@@ -57,6 +59,12 @@ public:
     bool commentOnlyEnabled() const;
     void setCommentOnlyEnabled(bool commentOnlyEnabled);
 
+    bool demangle() const;
+    void setDemangle(bool demangle);
+
+    bool demangleEnabled() const;
+    void setDemangleEnabled(bool demangleEnabled);
+
 signals:
     void binaryChanged();
     void labelsChanged();
@@ -64,12 +72,15 @@ signals:
     void directivesChanged();
     void intelChanged();
     void commentOnlyChanged();
+    void demangleChanged();
+
     void binaryEnabledChanged();
     void labelsEnabledChanged();
     void trimEnabledChanged();
     void directivesEnabledChanged();
     void intelEnabledChanged();
     void commentOnlyEnabledChanged();
+    void demangleEnabledChanged();
 public slots:
 
 private:
@@ -86,6 +97,8 @@ private:
     bool m_intelEnabled;
     bool m_commentOnly;
     bool m_commentOnlyEnabled;
+    bool m_demangle;
+    bool m_demangleEnabled;
 };
 
 typedef QSharedPointer<QuickWidgetAPI> QuickWidgetAPIPtr;
