@@ -33,7 +33,7 @@ Flickable {
                     leftPadding: 10
                     rightPadding: 10
                     wrapMode: Text.WordWrap
-                    text: qsTr("Understand how your code is executed.\n\n")                }
+                    text: qsTr("Copyright (C) 2017 - 2018 CodeInspector. All rights reserved.")                }
             }
             RowLayout {
                 LabelSubheading {
@@ -41,8 +41,8 @@ Flickable {
                     leftPadding: 10
                     rightPadding: 10
                     wrapMode: Text.WordWrap
-                    text: qsTr("Run compilers interactively and interact with the assembly.\n\n")
-                    color: primaryColor
+                    text: qsTr("Homepage: <a href='https://www.codeinspector.com'>https://www.codeinspector.com</a>\n")
+                    onLinkActivated: Qt.openUrlExternally(link)
                 }
             }
             RowLayout {
@@ -51,7 +51,18 @@ Flickable {
                     leftPadding: 10
                     rightPadding: 10
                     wrapMode: Text.WordWrap
-                    text: qsTr("Compiler Explorer is an interactive compiler. \nThe left-hand pane shows editable C, C++, Rust, Go, D, Haskell, Swift and Pascal code. \nThe right, the assembly output of having compiled the code with a given compiler and settings. \nMultiple compilers are supported.\n")
+                    text: qsTr("Twitter: <a href='https://twitter.com/missdeerme'>@missdeerme</a>\n")
+                    onLinkActivated: Qt.openUrlExternally(link)
+                }
+            }
+            RowLayout {
+                LabelSubheading {
+                    topPadding: 6
+                    leftPadding: 10
+                    rightPadding: 10
+                    wrapMode: Text.WordWrap
+                    text: qsTr("Email: <a href='mailto:missdeer@gmail.com'>missdeer@gmail.com</a>\n")
+                    onLinkActivated: Qt.openUrlExternally(link)
                 }
             }
             HorizontalDivider {}

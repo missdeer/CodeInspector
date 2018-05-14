@@ -24,7 +24,7 @@ Flickable {
             LabelHeadline {
                 leftPadding: 10
                 bottomPadding: 16
-                text: qsTr("The Home Page")
+                text: qsTr("Introduce")
             }
             RowLayout {
                 IconInactive {
@@ -35,7 +35,8 @@ Flickable {
                     leftPadding: 10
                     rightPadding: 10
                     wrapMode: Text.WordWrap
-                    text: qsTr("This Page is on a StackView - want to push another Page on top ?\nTap on the 'Qt' Logo")                }
+                    text: qsTr("Understand how your code is executed.")
+                }
                 Item {
                     implicitWidth: 96
                     implicitHeight: 96
@@ -44,7 +45,7 @@ Flickable {
                         anchors.fill: parent
                         // anchors.verticalCenterOffset: -50
                         fillMode: Image.PreserveAspectFit
-                        source: "qrc:/resource/image/extra/qt-logo.png"
+                        source: "qrc:/codeinspector.png"
                     }
                     MouseArea {
                         anchors.fill: parent
@@ -62,7 +63,7 @@ Flickable {
                     leftPadding: 10
                     rightPadding: 10
                     wrapMode: Text.WordWrap
-                    text: qsTr("Example APP demonstrating Qt Quick Controls 2\n\n")
+                    text: qsTr("Run compilers interactively and interact with the assembly.")
                 }
             }
             RowLayout {
@@ -71,34 +72,7 @@ Flickable {
                     leftPadding: 10
                     rightPadding: 10
                     wrapMode: Text.WordWrap
-                    text: qsTr("Home Page is a StackView.\nNavigation Drawer can be opened swiping from left or tapping on Menu Button.\nHome Page is marked as Favority, so you can also navigate from Bottom (in Portrait Mode)\n")
-                }
-            }
-            RowLayout {
-                LabelBodySecondary {
-                    topPadding: 6
-                    leftPadding: 10
-                    rightPadding: 10
-                    wrapMode: Text.WordWrap
-                    text: qsTr("Activation Policy: ")
-                }
-                LabelBody {
-                    topPadding: 6
-                    leftPadding: 10
-                    rightPadding: 10
-                    wrapMode: Text.WordWrap
-                    text: qsTr("IMMEDIATELY")
-                }
-            }
-            HorizontalDivider {}
-
-            RowLayout {
-                ButtonFlat {
-                    text: qsTr("Modal Popup Test")
-
-                    onClicked: {
-                        popupTestModal.open()
-                    }
+                    text: qsTr("Compiler Explorer is an interactive compiler. \nThe left-hand pane shows editable C, C++, Rust, Go, D, Haskell, Swift and Pascal code. \nThe right, the assembly output of having compiled the code with a given compiler and settings. \nMultiple compilers are supported.\n")
                 }
             }
 
@@ -106,12 +80,6 @@ Flickable {
         } // col layout
     } // root
     ScrollIndicator.vertical: ScrollIndicator { }
-
-    PopupTestModal {
-        id: popupTestModal
-        text: qsTr("While this modal Popup is open:\n\nDrawer should be blocked\nAndroid Back key should be blocked\n\nQt 5.8 problem: Drawer can be dragged below the modal Popup")
-    }
-
 
     // emitting a Signal could be another option
     Component.onDestruction: {
