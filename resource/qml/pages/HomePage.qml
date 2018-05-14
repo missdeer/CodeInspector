@@ -56,7 +56,10 @@ Flickable {
                 }
             }
 
-            HorizontalDivider {}
+            HorizontalDivider {
+                Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft | Qt.AlignRight
+                Layout.margins: 6
+            }
             RowLayout {
                 LabelSubheading {
                     topPadding: 6
@@ -76,7 +79,10 @@ Flickable {
                 }
             }
 
-            HorizontalDivider {}
+            HorizontalDivider {
+                Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft | Qt.AlignRight
+                Layout.margins: 6
+            }
         } // col layout
     } // root
     ScrollIndicator.vertical: ScrollIndicator { }

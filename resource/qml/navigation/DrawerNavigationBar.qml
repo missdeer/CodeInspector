@@ -28,8 +28,9 @@ Drawer {
             anchors.right: parent.right
             spacing: 0
             Item {
-                anchors.left: parent.left
-                anchors.right: parent.right
+//                anchors.left: parent.left
+//                anchors.right: parent.right
+                Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft | Qt.AlignRight
                 height: 120
                 Rectangle {
                     anchors.fill: parent
