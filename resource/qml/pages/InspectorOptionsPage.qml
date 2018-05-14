@@ -8,7 +8,7 @@ import QtGraphicalEffects 1.0
 import "../common"
 
 Flickable {
-    property string name: "SettingsPage"
+    property string name: "Inspector Options"
     // index to get access to Loader (Destination)
     property int myIndex: index
     contentHeight: root.height
@@ -27,7 +27,7 @@ Flickable {
             anchors.left: parent.left
             LabelHeadline {
                 leftPadding: 10
-                text: qsTr("Settings Drawer Navigation")
+                text: qsTr("Inspector Options")
             }
             IconInactive {
                 imageName: modelData.icon
@@ -35,66 +35,83 @@ Flickable {
             }
             HorizontalDivider {}
             RowLayout {
-                LabelSubheading {
+                Switch {
+                    focusPolicy: Qt.NoFocus
                     topPadding: 6
-                    leftPadding: 10
-                    rightPadding: 10
-                    wrapMode: Text.WordWrap
-                    text: qsTr("Settings is a normal Page.\nNavigation Drawer can be opened swiping from left or tapping on Menu Button.\nSettings is marked as favorite, so can be opened from Bottom Navigation (in Portrait Mode)")
+                    leftPadding: 12
+                    text: qsTr("Compile to binary and disassemble the output")
+                    checked: api.binary
+                    onCheckedChanged: {
+                        api.binary = checked
+                    }
                 }
             }
             RowLayout {
-                LabelBodySecondary {
-                    topPadding: 6
-                    leftPadding: 10
-                    rightPadding: 10
-                    wrapMode: Text.WordWrap
-                    text: qsTr("Activation Policy: ")
-                }
-                LabelBody {
-                    topPadding: 6
-                    leftPadding: 10
-                    rightPadding: 10
-                    wrapMode: Text.WordWrap
-                    text: qsTr("WHILE SELECTED")
+                Switch {
+                    focusPolicy: Qt.NoFocus
+                    leftPadding: 12
+                    text: qsTr("Filter unused labels from the output")
+                    checked: api.labels
+                    onCheckedChanged: {
+                        api.labels = checked
+                    }
                 }
             }
-            HorizontalDivider {}
-            RowLayout {
-                Switch {
-                    focusPolicy: Qt.NoFocus
-                    topPadding: 6
-                    leftPadding: 12
-                    text: qsTr("Highlight Active Navigation Selection")
-                    checked: highlightActiveNavigationButton
-                    onCheckedChanged: {
-                        highlightActiveNavigationButton = checked
-                    }
-                } // switch highlightActiveNavigationButton
-            } // row switch highlightActiveNavigationButton
             RowLayout {
                 Switch {
                     focusPolicy: Qt.NoFocus
                     leftPadding: 12
-                    text: qsTr("Hide TitleBar")
-                    checked: hideTitleBar
+                    text: qsTr("Filter all assembler directives from the output")
+                    checked: api.directives
                     onCheckedChanged: {
-                        hideTitleBar = checked
+                        api.directives = checked
                     }
-                } // switch hideTitleBar
-            } // row switch hideTitleBar
+                }
+            }
             RowLayout {
                 Switch {
                     focusPolicy: Qt.NoFocus
                     leftPadding: 12
-                    text: qsTr("Show Favorites at Bottom in Portrait")
-                    checked: showFavorites
+                    text: qsTr("Remove all lines which are only comments from the output")
+                    checked: api.commentOnly
                     onCheckedChanged: {
-                        showFavorites = checked
+                        api.commentOnly = checked
                     }
-                } // switch showFavorites
-            } // row switch showFavorites
-
+                }
+            }
+            RowLayout {
+                Switch {
+                    focusPolicy: Qt.NoFocus
+                    leftPadding: 12
+                    text: qsTr("Trim intra-line whitespace")
+                    checked: api.trim
+                    onCheckedChanged: {
+                        api.trim = checked
+                    }
+                }
+            }
+            RowLayout {
+                Switch {
+                    focusPolicy: Qt.NoFocus
+                    leftPadding: 12
+                    text: qsTr("Output disassembly in intel syntax")
+                    checked: api.intel
+                    onCheckedChanged: {
+                        api.intel = checked
+                    }
+                }
+            }
+            RowLayout {
+                Switch {
+                    focusPolicy: Qt.NoFocus
+                    leftPadding: 12
+                    text: qsTr("Demangle output")
+                    checked: api.demangle
+                    onCheckedChanged: {
+                        api.demangle = checked
+                    }
+                }
+            }
         } // col layout
 
     } // root
@@ -107,11 +124,11 @@ Flickable {
 
     // called immediately after Loader.loaded
     function init() {
-        console.log(qsTr("Init done from SettingsPage"))
+        console.log(qsTr("Init done from InspectorOptionPage"))
     }
     // called from Component.destruction
     function cleanup() {
-        console.log(qsTr("Cleanup done from SettingsPage"))
+        console.log(qsTr("Cleanup done from InspectorOptionPage"))
     }
 
 } // flickable
