@@ -334,4 +334,5 @@ void MainWindow::on_btnConfiguration_clicked()
     context->setContextProperty("appUI", m_appUI);
     dlg.loadQml(QUrl("qrc:/resource/qml/main.qml"));
     dlg.exec();
+    disconnect(m_quickAPI, SIGNAL(doCloseConfiguration()), &dlg, SLOT(accept()));
 }
