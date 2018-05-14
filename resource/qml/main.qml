@@ -15,7 +15,7 @@ Item {
     // visibile must set to true - default is false
     visible: true
     //
-    property bool isLandscape: width > height
+    property bool isLandscape: true //width > height
 
     property bool backKeyBlocked: false
 
@@ -153,8 +153,8 @@ Item {
 
     Loader {
         id: titleBar
-        visible: false // !isLandscape && !hideTitleBar
-        active: false //!isLandscape && !hideTitleBar
+        visible: !isLandscape && !hideTitleBar
+        active: !isLandscape && !hideTitleBar
         source: "navigation/DrawerTitleBar.qml"
         onLoaded: {
             if(item) {
@@ -165,12 +165,12 @@ Item {
     // in LANDSCAPE header is null and we have a floating TitleBar
     Loader {
         id: titleBarFloating
-        visible: true //isLandscape && !hideTitleBar
+        visible: isLandscape && !hideTitleBar
         anchors.top: parent.top
         anchors.left: parent.left
         // anchors.leftMargin: sideBar.width+6
         anchors.right: parent.right
-        active: true //isLandscape && !hideTitleBar
+        active: isLandscape && !hideTitleBar
         source: "navigation/DrawerTitleBar.qml"
         onLoaded: {
             if(item) {
@@ -186,7 +186,7 @@ Item {
     // Bottom Toolbar (only Portrait)
     DrawerFavoritesNavigationBar {
         id: favoritesBar
-        visible: false //showFavorites && !isLandscape && navigationBar.position == 0
+        visible: showFavorites && !isLandscape && navigationBar.position == 0
     }
 
     // the ROOT contains always only one Page,

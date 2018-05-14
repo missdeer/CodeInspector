@@ -250,6 +250,7 @@ void MainWindow::onSwitchCompiler(const QString& name)
         auto compiler = *it;
         m_quickAPI->setBinaryEnabled(compiler->supportsBinary);
         m_quickAPI->setIntelEnabled(compiler->supportsIntel);
+        m_quickAPI->setDemangleEnabled(compiler->supportsDemangle);
         ui->cbCompilerList->setToolTip(compiler->version);
 
         onDelayCompile();

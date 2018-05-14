@@ -4,19 +4,19 @@
 QuickWidgetAPI::QuickWidgetAPI(QObject *parent)
     : QObject(parent)
     , m_binary(false)
-    , m_binaryEnabled(false)
+    , m_binaryEnabled(true)
     , m_labels(true)
-    , m_labelsEnabled(false)
+    , m_labelsEnabled(true)
     , m_trim(true)
-    , m_trimEnabled(false)
+    , m_trimEnabled(true)
     , m_directives(true)
-    , m_directivesEnabled(false)
-    , m_intel(false)
-    , m_intelEnabled(false)
-    , m_commentOnly(false)
-    , m_commentOnlyEnabled(false)
+    , m_directivesEnabled(true)
+    , m_intel(true)
+    , m_intelEnabled(true)
+    , m_commentOnly(true)
+    , m_commentOnlyEnabled(true)
     , m_demangle(true)
-    , m_demangleEnabled(false)
+    , m_demangleEnabled(true)
 
 {
 
@@ -37,7 +37,7 @@ void QuickWidgetAPI::setBinary(bool binary)
     if (m_binary == binary)
         return;
     m_binary = binary;
-    emit binaryChanged();
+    emit binaryChanged();        
     qDebug() << __FUNCTION__ << binary;
 }
 
@@ -120,8 +120,10 @@ void QuickWidgetAPI::setBinaryEnabled(bool binaryEnabled)
 {
     if (m_binaryEnabled == binaryEnabled)
         return;
+    if (!binaryEnabled)
+        m_binary = false;
     m_binaryEnabled = binaryEnabled;
-    return binaryEnabledChanged();
+    emit binaryEnabledChanged();
 }
 
 bool QuickWidgetAPI::labelsEnabled() const
@@ -134,7 +136,7 @@ void QuickWidgetAPI::setLabelsEnabled(bool labelsEnabled)
     if (m_labelsEnabled == labelsEnabled)
         return;
     m_labelsEnabled = labelsEnabled;
-    return labelsEnabledChanged();
+    emit labelsEnabledChanged();
 }
 
 bool QuickWidgetAPI::trimEnabled() const
@@ -147,7 +149,7 @@ void QuickWidgetAPI::setTrimEnabled(bool trimEnabled)
     if (m_trimEnabled == trimEnabled)
         return;
     m_trimEnabled = trimEnabled;
-    return trimEnabledChanged();
+    emit trimEnabledChanged();
 }
 
 bool QuickWidgetAPI::directivesEnabled() const
@@ -172,6 +174,8 @@ void QuickWidgetAPI::setIntelEnabled(bool intelEnabled)
 {
     if (m_intelEnabled == intelEnabled)
         return;
+    if (!intelEnabled)
+        m_intel = false;
     m_intelEnabled = intelEnabled;
     emit intelEnabledChanged();
 }
@@ -212,6 +216,8 @@ void QuickWidgetAPI::setDemangleEnabled(bool demangleEnabled)
 {
     if (m_demangleEnabled == demangleEnabled)
         return;
+    if (!demangleEnabled)
+        m_demangle = false;
     m_demangleEnabled = demangleEnabled;
     emit demangleEnabledChanged();
 }

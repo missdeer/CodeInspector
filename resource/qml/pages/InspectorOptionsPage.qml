@@ -42,6 +42,7 @@ Flickable {
                     verticalAlignment: Image.AlignTop
                 }
                 Switch {
+                    enabled: api.binaryEnabled
                     focusPolicy: Qt.NoFocus
                     topPadding: 6
                     leftPadding: 12
@@ -58,6 +59,7 @@ Flickable {
                     verticalAlignment: Image.AlignTop
                 }
                 Switch {
+                    enabled: api.labelsEnabled
                     focusPolicy: Qt.NoFocus
                     leftPadding: 12
                     text: qsTr("Filter unused labels from the output")
@@ -73,6 +75,7 @@ Flickable {
                     verticalAlignment: Image.AlignTop
                 }
                 Switch {
+                    enabled: api.directivesEnabled
                     focusPolicy: Qt.NoFocus
                     leftPadding: 12
                     text: qsTr("Filter all assembler directives from the output")
@@ -88,6 +91,7 @@ Flickable {
                     verticalAlignment: Image.AlignTop
                 }
                 Switch {
+                    enabled: api.commentOnlyEnabled
                     focusPolicy: Qt.NoFocus
                     leftPadding: 12
                     text: qsTr("Remove all lines which are only comments from the output")
@@ -103,6 +107,7 @@ Flickable {
                     verticalAlignment: Image.AlignTop
                 }
                 Switch {
+                    enabled: api.trimEnabled
                     focusPolicy: Qt.NoFocus
                     leftPadding: 12
                     text: qsTr("Trim intra-line whitespace")
@@ -118,6 +123,7 @@ Flickable {
                     verticalAlignment: Image.AlignTop
                 }
                 Switch {
+                    enabled: api.intelEnabled
                     focusPolicy: Qt.NoFocus
                     leftPadding: 12
                     text: qsTr("Output disassembly in intel syntax")
@@ -133,6 +139,7 @@ Flickable {
                     verticalAlignment: Image.AlignTop
                 }
                 Switch {
+                    enabled: api.demangleEnabled
                     focusPolicy: Qt.NoFocus
                     leftPadding: 12
                     text: qsTr("Demangle output")
