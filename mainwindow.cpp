@@ -80,9 +80,16 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(&m_backend, &GodboltAgent::languageListRetrieved, this, &MainWindow::onLanguageListRetrieved);
     connect(&m_backend, &GodboltAgent::compiled, this, &MainWindow::onCompiled);
     connect(ui->cbLanguageList, SIGNAL(currentIndexChanged(QString)), this, SLOT(onSwitchLanguage(const QString&)));
+    connect(ui->cbCompilerList, SIGNAL(currentIndexChanged(QString)), this, SLOT(onSwitchCompiler(const QString&)));
     connect(m_codeEditor, &CodeEditor::contentModified, this, &MainWindow::onDelayCompile);
     connect(ui->edtCompilerOptions, &QLineEdit::textChanged, this, &MainWindow::onDelayCompile);
-    connect(ui->cbCompilerList, SIGNAL(currentIndexChanged(QString)), this, SLOT(onSwitchCompiler(const QString&)));
+    connect(m_quickAPI, &QuickWidgetAPI::binaryChanged, this, &MainWindow::onDelayCompile);
+    connect(m_quickAPI, &QuickWidgetAPI::labelsChanged, this, &MainWindow::onDelayCompile);
+    connect(m_quickAPI, &QuickWidgetAPI::directivesChanged, this, &MainWindow::onDelayCompile);
+    connect(m_quickAPI, &QuickWidgetAPI::commentOnlyChanged, this, &MainWindow::onDelayCompile);
+    connect(m_quickAPI, &QuickWidgetAPI::demangleChanged, this, &MainWindow::onDelayCompile);
+    connect(m_quickAPI, &QuickWidgetAPI::trimChanged, this, &MainWindow::onDelayCompile);
+    connect(m_quickAPI, &QuickWidgetAPI::intelChanged, this, &MainWindow::onDelayCompile);
 
     onLanguageListRetrieved();
 

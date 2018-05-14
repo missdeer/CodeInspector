@@ -47,6 +47,7 @@ Flickable {
                     leftPadding: 12
                     text: qsTr("Compile to binary and disassemble the output")
                     checked: api.binary
+                    onCheckedChanged: api.binary = checked
                 }
             }
             RowLayout {
@@ -61,6 +62,7 @@ Flickable {
                     leftPadding: 12
                     text: qsTr("Filter unused labels from the output")
                     checked: api.labels
+                    onCheckedChanged: api.labels = checked
                 }
             }
             RowLayout {
@@ -75,6 +77,7 @@ Flickable {
                     leftPadding: 12
                     text: qsTr("Filter all assembler directives from the output")
                     checked: api.directives
+                    onCheckedChanged: api.directives = checked
                 }
             }
             RowLayout {
@@ -89,6 +92,7 @@ Flickable {
                     leftPadding: 12
                     text: qsTr("Remove all lines which are only comments from the output")
                     checked: api.commentOnly
+                    onCheckedChanged: api.commentOnly = checked
                 }
             }
             RowLayout {
@@ -103,6 +107,7 @@ Flickable {
                     leftPadding: 12
                     text: qsTr("Trim intra-line whitespace")
                     checked: api.trim
+                    onCheckedChanged: api.trim = checked
                 }
             }
             RowLayout {
@@ -117,6 +122,7 @@ Flickable {
                     leftPadding: 12
                     text: qsTr("Output disassembly in intel syntax")
                     checked: api.intel
+                    onCheckedChanged: api.intel = checked
                 }
             }
             RowLayout {
@@ -131,6 +137,7 @@ Flickable {
                     leftPadding: 12
                     text: qsTr("Demangle output")
                     checked: api.demangle
+                    onCheckedChanged: api.demangle = checked
                 }
             }
         } // col layout
