@@ -4,9 +4,10 @@
 #
 #-------------------------------------------------
 
-QT       += core gui widgets xml network concurrent sql qml quickwidgets
+QT       += core gui widgets xml network concurrent sql qml quickwidgets widgets
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+lessThan(QT_MAJOR_VERSION, 5): error("Qt 5 is required")
+greaterThan(QT_MINOR_VERSION, 10): CONFIG += qmlcompiler
 
 TARGET = CodeInspector
 TEMPLATE = app
