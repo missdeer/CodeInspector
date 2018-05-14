@@ -4,7 +4,7 @@
 #include "qmldialog.h"
 #include "ui_qmldialog.h"
 
-QmlDialog::QmlDialog(QWidget *parent, QObject *api) :
+QmlDialog::QmlDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::QmlDialog)
 {
@@ -13,7 +13,7 @@ QmlDialog::QmlDialog(QWidget *parent, QObject *api) :
     ui->quickWidget->setAttribute(Qt::WA_AlwaysStackOnTop, true);
     ui->quickWidget->setClearColor(Qt::transparent);
     ui->quickWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
-    ui->quickWidget->engine()->rootContext()->setContextProperty("api", api);
+    ui->quickWidget->engine()->addImportPath("qrc:/resource/qml");
 }
 
 QmlDialog::~QmlDialog()
@@ -24,4 +24,14 @@ QmlDialog::~QmlDialog()
 void QmlDialog::loadQml(const QUrl &u)
 {
     ui->quickWidget->setSource(u);
+}
+
+QQmlEngine *QmlDialog::engine()
+{
+    return ui->quickWidget->engine();
+}
+
+QQmlContext *QmlDialog::context()
+{
+    return ui->quickWidget->engine()->rootContext();
 }

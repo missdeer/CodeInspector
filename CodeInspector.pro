@@ -37,7 +37,8 @@ SOURCES += \
     networkreplyhelper.cpp \
     outputwindow.cpp \
     qmldialog.cpp \
-    quickwidgetapi.cpp
+    quickwidgetapi.cpp \
+    applicationui.cpp
 
 HEADERS += \
     stdafx.h \
@@ -50,7 +51,9 @@ HEADERS += \
     networkreplyhelper.h \
     outputwindow.h \
     qmldialog.h \
-    quickwidgetapi.h
+    quickwidgetapi.h \
+    applicationui.hpp \
+    uiconstants.hpp
 
 FORMS += \
     mainwindow.ui \

@@ -4,6 +4,8 @@
 
 int main(int argc, char *argv[])
 {
+    qputenv("QT_QUICK_CONTROLS_STYLE", "material");
+    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
     QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps, true);
 
     QApplication::setApplicationName("CodeInspector");

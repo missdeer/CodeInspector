@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include <QQmlContext>
 #include "codeinspector.h"
 #include "codeeditor.h"
 #include "outputwindow.h"
@@ -10,7 +11,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     m_timer(new QTimer),
-    m_quickAPI(new QuickWidgetAPI(this))
+    m_quickAPI(new QuickWidgetAPI(this)),
+    m_appUI(new ApplicationUI(this))
 {
     ui->setupUi(this);
     ui->edtCompilerOptions->setClearButtonEnabled(true);
@@ -21,10 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
 #elif defined(Q_OS_ANDROID)
     splitter->setBackgroundRole(QPalette::WindowText);
     splitter->setHandleWidth(50);
-    ui->btnLibrary->setIconSize(QSize(120, 120));
-    ui->btnOption->setIconSize(QSize(120, 120));
     ui->btnConfiguration->setIconSize(QSize(120, 120));
-    ui->btnLoadExample->setIconSize(QSize(120, 120));
 #endif
     ui->editorLayout->addWidget(splitter);
 
@@ -96,6 +95,8 @@ MainWindow::~MainWindow()
     if (m_timer->isActive())
         m_timer->stop();
     delete m_timer;
+    delete m_appUI;
+    delete m_quickAPI;
     delete ui;
 }
 
@@ -323,35 +324,13 @@ bool MainWindow::restoreFromCache(const QString& name, CompileInfo &ci)
     return true;
 }
 
-
-void MainWindow::on_btnLoadExample_clicked()
-{
-    QmlDialog dlg(this, m_quickAPI);
-    dlg.setWindowTitle(tr("Load Example..."));
-    dlg.loadQml(QUrl("qrc:resource/qml/example.qml"));
-    dlg.exec();
-}
-
 void MainWindow::on_btnConfiguration_clicked()
 {
-    QmlDialog dlg(this, m_quickAPI);
+    QmlDialog dlg(this);
     dlg.setWindowTitle(tr("Configuration"));
-    dlg.loadQml(QUrl("qrc:resource/qml/configuration.qml"));
-    dlg.exec();
-}
-
-void MainWindow::on_btnOption_clicked()
-{
-    QmlDialog dlg(this, m_quickAPI);
-    dlg.setWindowTitle(tr("Inspector Options"));
-    dlg.loadQml(QUrl("qrc:resource/qml/option.qml"));
-    dlg.exec();
-}
-
-void MainWindow::on_btnLibrary_clicked()
-{
-    QmlDialog dlg(this, m_quickAPI);
-    dlg.setWindowTitle(tr("Library"));
-    dlg.loadQml(QUrl("qrc:resource/qml/library.qml"));
+    auto context = dlg.context();
+    context->setContextProperty("api", m_quickAPI);
+    context->setContextProperty("appUI", m_appUI);
+    dlg.loadQml(QUrl("qrc:/resource/qml/main.qml"));
     dlg.exec();
 }
