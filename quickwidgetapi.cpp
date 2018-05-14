@@ -6,6 +6,11 @@ QuickWidgetAPI::QuickWidgetAPI(QObject *parent) : QObject(parent)
 
 }
 
+void QuickWidgetAPI::closeConfiguration()
+{
+    emit doCloseConfiguration();
+}
+
 bool QuickWidgetAPI::binary() const
 {
     return m_binary;

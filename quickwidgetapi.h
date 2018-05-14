@@ -22,6 +22,7 @@ class QuickWidgetAPI : public QObject
     Q_PROPERTY(bool demangleEnabled READ demangleEnabled WRITE setDemangleEnabled NOTIFY demangleEnabledChanged)
 public:
     explicit QuickWidgetAPI(QObject *parent = nullptr);
+    Q_INVOKABLE void closeConfiguration();
 
     bool binary() const;
     void setBinary(bool binary);
@@ -66,6 +67,8 @@ public:
     void setDemangleEnabled(bool demangleEnabled);
 
 signals:
+    void doCloseConfiguration();
+
     void binaryChanged();
     void labelsChanged();
     void trimChanged();

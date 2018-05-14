@@ -112,7 +112,8 @@ Item {
         {"type": "../navigation/DrawerNavigationButton.qml", "name": "Libraries", "icon": "settings.png", "source": "../pages/SettingsPage.qml", "showCounter":false, "showMarker":false, "a_p":3},
         {"type": "../navigation/DrawerNavigationButton.qml", "name": "Preferences", "icon": "settings.png", "source": "../pages/SettingsPage.qml", "showCounter":false, "showMarker":false, "a_p":3},
         {"type": "../navigation/DrawerDivider.qml", "name": "", "icon": "", "source": "", "a_p":1},
-        {"type": "../navigation/DrawerNavigationTextButton.qml", "name": "About this App", "icon": "", "source": "../pages/AboutPage.qml", "showCounter":false, "showMarker":false, "a_p":3}
+        {"type": "../navigation/DrawerNavigationTextButton.qml", "name": "About", "icon": "", "source": "../pages/AboutPage.qml", "showCounter":false, "showMarker":false, "a_p":3},
+        {"type": "../navigation/DrawerNavigationTextButton.qml", "name": "Return", "icon": "", "source": "../pages/AboutPage.qml", "showCounter":false, "showMarker":false, "a_p":3}
     ]
     // Counter: Car
     // Marker: Subway, Flight
@@ -125,6 +126,7 @@ Item {
         {"counter":0, "marker":""},
         {"counter":0, "marker":""},
         {},
+        {"counter":0, "marker":""},
         {"counter":0, "marker":""},
     ]
     // Menu Button
@@ -151,8 +153,8 @@ Item {
 
     Loader {
         id: titleBar
-        visible: !isLandscape && !hideTitleBar
-        active: !isLandscape && !hideTitleBar
+        visible: false // !isLandscape && !hideTitleBar
+        active: false //!isLandscape && !hideTitleBar
         source: "navigation/DrawerTitleBar.qml"
         onLoaded: {
             if(item) {
@@ -168,7 +170,7 @@ Item {
         anchors.left: parent.left
         // anchors.leftMargin: sideBar.width+6
         anchors.right: parent.right
-        active: isLandscape && !hideTitleBar
+        active: true //isLandscape && !hideTitleBar
         source: "navigation/DrawerTitleBar.qml"
         onLoaded: {
             if(item) {
@@ -184,7 +186,7 @@ Item {
     // Bottom Toolbar (only Portrait)
     DrawerFavoritesNavigationBar {
         id: favoritesBar
-        visible: showFavorites && !isLandscape && navigationBar.position == 0
+        visible: false //showFavorites && !isLandscape && navigationBar.position == 0
     }
 
     // the ROOT contains always only one Page,
@@ -285,12 +287,17 @@ Item {
         // switch to new Destination
         // Destinations are lazy loaded via Loader
         function activateDestination(navigationIndex) {
-            if(destinations.itemAt(navigationIndex).status == Loader.Ready) {
-                console.log("replace item on root stack: "+navigationIndex)
-                replaceDestination(destinations.itemAt(navigationIndex))
-            } else {
-                console.log("first time item to be replaced: "+navigationIndex)
-                destinations.itemAt(navigationIndex).active = true
+            if (navigationIndex == navigationModel.length - 1)
+                api.closeConfiguration();
+            else
+            {
+                if(destinations.itemAt(navigationIndex).status == Loader.Ready) {
+                    console.log("replace item on root stack: "+navigationIndex)
+                    replaceDestination(destinations.itemAt(navigationIndex))
+                } else {
+                    console.log("first time item to be replaced: "+navigationIndex)
+                    destinations.itemAt(navigationIndex).active = true
+                }
             }
         }
         // called from activeDestination() and also from Destination.onLoaded()
@@ -320,13 +327,6 @@ Item {
             } else {
                 initialPlaceholder.active = false
             }
-        }
-
-        // example HowTo increase a counter (visible from Drawer and Cars Page)
-        function increaseCars() {
-            var counter = navigationData[3].counter + 1
-            navigationData[3].counter = counter
-            navigationBar.navigationButtons.itemAt(3).item.counter = counter
         }
 
     } // rootPane

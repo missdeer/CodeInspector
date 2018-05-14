@@ -21,6 +21,11 @@ QmlDialog::~QmlDialog()
     delete ui;
 }
 
+void QmlDialog::doClose()
+{
+    QDialog::accept();
+}
+
 void QmlDialog::loadQml(const QUrl &u)
 {
     ui->quickWidget->setSource(u);

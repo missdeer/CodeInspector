@@ -20,6 +20,9 @@ public:
     QQmlContext* context();
     ~QmlDialog();
 
+public slots:
+    void doClose();
+
 private:
     Ui::QmlDialog *ui;
 };

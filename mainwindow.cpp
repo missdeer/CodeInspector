@@ -327,6 +327,7 @@ bool MainWindow::restoreFromCache(const QString& name, CompileInfo &ci)
 void MainWindow::on_btnConfiguration_clicked()
 {
     QmlDialog dlg(this);
+    connect(m_quickAPI, SIGNAL(doCloseConfiguration()), &dlg, SLOT(accept()));
     dlg.setWindowTitle(tr("Configuration"));
     auto context = dlg.context();
     context->setContextProperty("api", m_quickAPI);
