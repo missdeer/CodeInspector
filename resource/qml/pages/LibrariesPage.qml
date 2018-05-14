@@ -25,13 +25,15 @@ Flickable {
             id: theContent
             anchors.right: parent.right
             anchors.left: parent.left
-            LabelHeadline {
-                leftPadding: 10
-                text: qsTr("Select used libraries")
-            }
-            IconInactive {
-                imageName: modelData.icon
-                imageSize: 48
+            RowLayout {
+                IconInactive {
+                    imageName: modelData.icon
+                    imageSize: 48
+                }
+                LabelHeadline {
+                    leftPadding: 10
+                    text: qsTr("Select used libraries")
+                }
             }
             HorizontalDivider {}
             RowLayout {

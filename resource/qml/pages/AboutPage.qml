@@ -22,9 +22,15 @@ Flickable {
         ColumnLayout {
             anchors.right: parent.right
             anchors.left: parent.left
-            LabelHeadline {
-                leftPadding: 10
-                text: qsTr("About")
+            RowLayout{
+                IconInactive {
+                    imageName: modelData.icon
+                    imageSize: 48
+                }
+                LabelHeadline {
+                    leftPadding: 10
+                    text: qsTr("About")
+                }
             }
             HorizontalDivider {}
             RowLayout {
