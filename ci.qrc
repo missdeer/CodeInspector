@@ -1,7 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>resource/image/configuration.png</file>
-        <file>resource/image/loadexample.png</file>
         <file>resource/sci/functionList.xml</file>
         <file>resource/sci/langs.model.xml</file>
         <file>resource/sci/stylers.model.xml</file>
@@ -61,8 +60,6 @@
         <file>resource/example/rust/sumoverarrayopt.rs</file>
         <file>resource/example/swift/square.swift</file>
         <file>resource/image/errmsg.png</file>
-        <file>resource/image/library.png</file>
-        <file>resource/image/option.png</file>
         <file>resource/qml/common/ButtonFlat.qml</file>
         <file>resource/qml/common/ButtonIconActive.qml</file>
         <file>resource/qml/common/ButtonRaised.qml</file>
@@ -112,6 +109,10 @@
         <file>resource/qml/pages/QtPage.qml</file>
         <file>resource/qml/pages/SettingsPage.qml</file>
         <file>resource/qml/pages/ThemePage.qml</file>
+        <file>resource/qml/pages/ExamplesPage.qml</file>
+        <file>resource/qml/pages/InspectorOptionsPage.qml</file>
+        <file>resource/qml/pages/LibrariesPage.qml</file>
+        <file>resource/qml/pages/PreferencesPage.qml</file>
         <file>resource/qml/popups/PopupInfo.qml</file>
         <file>resource/qml/popups/PopupTestModal.qml</file>
         <file>resource/qml/popups/PopupToast.qml</file>
@@ -387,270 +388,6 @@
         <file>resource/image/extra/qt-logo@2x.png</file>
         <file>resource/image/extra/qt-logo@3x.png</file>
         <file>resource/image/extra/qt-logo@4x.png</file>
-        <file>resource/image/white/x18/add.png</file>
-        <file>resource/image/white/x18/add@2x.png</file>
-        <file>resource/image/white/x18/add@3x.png</file>
-        <file>resource/image/white/x18/add@4x.png</file>
-        <file>resource/image/white/x18/arrow_back.png</file>
-        <file>resource/image/white/x18/arrow_back@2x.png</file>
-        <file>resource/image/white/x18/arrow_back@3x.png</file>
-        <file>resource/image/white/x18/arrow_back@4x.png</file>
-        <file>resource/image/white/x18/bus.png</file>
-        <file>resource/image/white/x18/bus@2x.png</file>
-        <file>resource/image/white/x18/bus@3x.png</file>
-        <file>resource/image/white/x18/bus@4x.png</file>
-        <file>resource/image/white/x18/car.png</file>
-        <file>resource/image/white/x18/car@2x.png</file>
-        <file>resource/image/white/x18/car@3x.png</file>
-        <file>resource/image/white/x18/car@4x.png</file>
-        <file>resource/image/white/x18/colors.png</file>
-        <file>resource/image/white/x18/colors@2x.png</file>
-        <file>resource/image/white/x18/colors@3x.png</file>
-        <file>resource/image/white/x18/colors@4x.png</file>
-        <file>resource/image/white/x18/directions.png</file>
-        <file>resource/image/white/x18/directions@2x.png</file>
-        <file>resource/image/white/x18/directions@3x.png</file>
-        <file>resource/image/white/x18/directions@4x.png</file>
-        <file>resource/image/white/x18/done.png</file>
-        <file>resource/image/white/x18/done@2x.png</file>
-        <file>resource/image/white/x18/done@3x.png</file>
-        <file>resource/image/white/x18/done@4x.png</file>
-        <file>resource/image/white/x18/flight.png</file>
-        <file>resource/image/white/x18/flight@2x.png</file>
-        <file>resource/image/white/x18/flight@3x.png</file>
-        <file>resource/image/white/x18/flight@4x.png</file>
-        <file>resource/image/white/x18/home.png</file>
-        <file>resource/image/white/x18/home@2x.png</file>
-        <file>resource/image/white/x18/home@3x.png</file>
-        <file>resource/image/white/x18/home@4x.png</file>
-        <file>resource/image/white/x18/menu.png</file>
-        <file>resource/image/white/x18/menu@2x.png</file>
-        <file>resource/image/white/x18/menu@3x.png</file>
-        <file>resource/image/white/x18/menu@4x.png</file>
-        <file>resource/image/white/x18/person.png</file>
-        <file>resource/image/white/x18/person@2x.png</file>
-        <file>resource/image/white/x18/person@3x.png</file>
-        <file>resource/image/white/x18/person@4x.png</file>
-        <file>resource/image/white/x18/remove.png</file>
-        <file>resource/image/white/x18/remove@2x.png</file>
-        <file>resource/image/white/x18/remove@3x.png</file>
-        <file>resource/image/white/x18/remove@4x.png</file>
-        <file>resource/image/white/x18/settings.png</file>
-        <file>resource/image/white/x18/settings@2x.png</file>
-        <file>resource/image/white/x18/settings@3x.png</file>
-        <file>resource/image/white/x18/settings@4x.png</file>
-        <file>resource/image/white/x18/stars.png</file>
-        <file>resource/image/white/x18/stars@2x.png</file>
-        <file>resource/image/white/x18/stars@3x.png</file>
-        <file>resource/image/white/x18/stars@4x.png</file>
-        <file>resource/image/white/x18/subway.png</file>
-        <file>resource/image/white/x18/subway@2x.png</file>
-        <file>resource/image/white/x18/subway@3x.png</file>
-        <file>resource/image/white/x18/subway@4x.png</file>
-        <file>resource/image/white/x18/truck.png</file>
-        <file>resource/image/white/x18/truck@2x.png</file>
-        <file>resource/image/white/x18/truck@3x.png</file>
-        <file>resource/image/white/x18/truck@4x.png</file>
-        <file>resource/image/white/x36/add.png</file>
-        <file>resource/image/white/x36/add@2x.png</file>
-        <file>resource/image/white/x36/add@3x.png</file>
-        <file>resource/image/white/x36/add@4x.png</file>
-        <file>resource/image/white/x36/arrow_back.png</file>
-        <file>resource/image/white/x36/arrow_back@2x.png</file>
-        <file>resource/image/white/x36/arrow_back@3x.png</file>
-        <file>resource/image/white/x36/arrow_back@4x.png</file>
-        <file>resource/image/white/x36/bus.png</file>
-        <file>resource/image/white/x36/bus@2x.png</file>
-        <file>resource/image/white/x36/bus@3x.png</file>
-        <file>resource/image/white/x36/bus@4x.png</file>
-        <file>resource/image/white/x36/car.png</file>
-        <file>resource/image/white/x36/car@2x.png</file>
-        <file>resource/image/white/x36/car@3x.png</file>
-        <file>resource/image/white/x36/car@4x.png</file>
-        <file>resource/image/white/x36/colors.png</file>
-        <file>resource/image/white/x36/colors@2x.png</file>
-        <file>resource/image/white/x36/colors@3x.png</file>
-        <file>resource/image/white/x36/colors@4x.png</file>
-        <file>resource/image/white/x36/directions.png</file>
-        <file>resource/image/white/x36/directions@2x.png</file>
-        <file>resource/image/white/x36/directions@3x.png</file>
-        <file>resource/image/white/x36/directions@4x.png</file>
-        <file>resource/image/white/x36/done.png</file>
-        <file>resource/image/white/x36/done@2x.png</file>
-        <file>resource/image/white/x36/done@3x.png</file>
-        <file>resource/image/white/x36/done@4x.png</file>
-        <file>resource/image/white/x36/flight.png</file>
-        <file>resource/image/white/x36/flight@2x.png</file>
-        <file>resource/image/white/x36/flight@3x.png</file>
-        <file>resource/image/white/x36/flight@4x.png</file>
-        <file>resource/image/white/x36/home.png</file>
-        <file>resource/image/white/x36/home@2x.png</file>
-        <file>resource/image/white/x36/home@3x.png</file>
-        <file>resource/image/white/x36/home@4x.png</file>
-        <file>resource/image/white/x36/menu.png</file>
-        <file>resource/image/white/x36/menu@2x.png</file>
-        <file>resource/image/white/x36/menu@3x.png</file>
-        <file>resource/image/white/x36/menu@4x.png</file>
-        <file>resource/image/white/x36/person.png</file>
-        <file>resource/image/white/x36/person@2x.png</file>
-        <file>resource/image/white/x36/person@3x.png</file>
-        <file>resource/image/white/x36/person@4x.png</file>
-        <file>resource/image/white/x36/remove.png</file>
-        <file>resource/image/white/x36/remove@2x.png</file>
-        <file>resource/image/white/x36/remove@3x.png</file>
-        <file>resource/image/white/x36/remove@4x.png</file>
-        <file>resource/image/white/x36/settings.png</file>
-        <file>resource/image/white/x36/settings@2x.png</file>
-        <file>resource/image/white/x36/settings@3x.png</file>
-        <file>resource/image/white/x36/settings@4x.png</file>
-        <file>resource/image/white/x36/stars.png</file>
-        <file>resource/image/white/x36/stars@2x.png</file>
-        <file>resource/image/white/x36/stars@3x.png</file>
-        <file>resource/image/white/x36/stars@4x.png</file>
-        <file>resource/image/white/x36/subway.png</file>
-        <file>resource/image/white/x36/subway@2x.png</file>
-        <file>resource/image/white/x36/subway@3x.png</file>
-        <file>resource/image/white/x36/subway@4x.png</file>
-        <file>resource/image/white/x36/truck.png</file>
-        <file>resource/image/white/x36/truck@2x.png</file>
-        <file>resource/image/white/x36/truck@3x.png</file>
-        <file>resource/image/white/x36/truck@4x.png</file>
-        <file>resource/image/white/x48/add.png</file>
-        <file>resource/image/white/x48/add@2x.png</file>
-        <file>resource/image/white/x48/add@3x.png</file>
-        <file>resource/image/white/x48/add@4x.png</file>
-        <file>resource/image/white/x48/arrow_back.png</file>
-        <file>resource/image/white/x48/arrow_back@2x.png</file>
-        <file>resource/image/white/x48/arrow_back@3x.png</file>
-        <file>resource/image/white/x48/arrow_back@4.png</file>
-        <file>resource/image/white/x48/bus.png</file>
-        <file>resource/image/white/x48/bus@2x.png</file>
-        <file>resource/image/white/x48/bus@3x.png</file>
-        <file>resource/image/white/x48/bus@4x.png</file>
-        <file>resource/image/white/x48/car.png</file>
-        <file>resource/image/white/x48/car@2x.png</file>
-        <file>resource/image/white/x48/car@3x.png</file>
-        <file>resource/image/white/x48/car@4x.png</file>
-        <file>resource/image/white/x48/colors.png</file>
-        <file>resource/image/white/x48/colors@2x.png</file>
-        <file>resource/image/white/x48/colors@3x.png</file>
-        <file>resource/image/white/x48/colors@4x.png</file>
-        <file>resource/image/white/x48/directions.png</file>
-        <file>resource/image/white/x48/directions@2x.png</file>
-        <file>resource/image/white/x48/directions@3x.png</file>
-        <file>resource/image/white/x48/directions@4x.png</file>
-        <file>resource/image/white/x48/done.png</file>
-        <file>resource/image/white/x48/done@2x.png</file>
-        <file>resource/image/white/x48/done@3x.png</file>
-        <file>resource/image/white/x48/done@4x.png</file>
-        <file>resource/image/white/x48/flight.png</file>
-        <file>resource/image/white/x48/flight@2x.png</file>
-        <file>resource/image/white/x48/flight@3x.png</file>
-        <file>resource/image/white/x48/flight@4x.png</file>
-        <file>resource/image/white/x48/home.png</file>
-        <file>resource/image/white/x48/home@2x.png</file>
-        <file>resource/image/white/x48/home@3x.png</file>
-        <file>resource/image/white/x48/home@4x.png</file>
-        <file>resource/image/white/x48/menu.png</file>
-        <file>resource/image/white/x48/menu@2x.png</file>
-        <file>resource/image/white/x48/menu@3x.png</file>
-        <file>resource/image/white/x48/menu@4x.png</file>
-        <file>resource/image/white/x48/person.png</file>
-        <file>resource/image/white/x48/person@2x.png</file>
-        <file>resource/image/white/x48/person@3x.png</file>
-        <file>resource/image/white/x48/person@4.png</file>
-        <file>resource/image/white/x48/remove.png</file>
-        <file>resource/image/white/x48/remove@2x.png</file>
-        <file>resource/image/white/x48/remove@3x.png</file>
-        <file>resource/image/white/x48/remove@4x.png</file>
-        <file>resource/image/white/x48/settings.png</file>
-        <file>resource/image/white/x48/settings@2x.png</file>
-        <file>resource/image/white/x48/settings@3x.png</file>
-        <file>resource/image/white/x48/settings@4x.png</file>
-        <file>resource/image/white/x48/stars.png</file>
-        <file>resource/image/white/x48/stars@2x.png</file>
-        <file>resource/image/white/x48/stars@3x.png</file>
-        <file>resource/image/white/x48/stars@4x.png</file>
-        <file>resource/image/white/x48/subway.png</file>
-        <file>resource/image/white/x48/subway@2x.png</file>
-        <file>resource/image/white/x48/subway@3x.png</file>
-        <file>resource/image/white/x48/subway@4x.png</file>
-        <file>resource/image/white/x48/truck.png</file>
-        <file>resource/image/white/x48/truck@2x.png</file>
-        <file>resource/image/white/x48/truck@3x.png</file>
-        <file>resource/image/white/x48/truck@4x.png</file>
-        <file>resource/image/white/add.png</file>
-        <file>resource/image/white/add@2x.png</file>
-        <file>resource/image/white/add@3x.png</file>
-        <file>resource/image/white/add@4x.png</file>
-        <file>resource/image/white/arrow_back.png</file>
-        <file>resource/image/white/arrow_back@2x.png</file>
-        <file>resource/image/white/arrow_back@3x.png</file>
-        <file>resource/image/white/arrow_back@4x.png</file>
-        <file>resource/image/white/bus.png</file>
-        <file>resource/image/white/bus@2x.png</file>
-        <file>resource/image/white/bus@3x.png</file>
-        <file>resource/image/white/bus@4x.png</file>
-        <file>resource/image/white/car.png</file>
-        <file>resource/image/white/car@2x.png</file>
-        <file>resource/image/white/car@3x.png</file>
-        <file>resource/image/white/car@4x.png</file>
-        <file>resource/image/white/colors.png</file>
-        <file>resource/image/white/colors@2x.png</file>
-        <file>resource/image/white/colors@3x.png</file>
-        <file>resource/image/white/colors@4x.png</file>
-        <file>resource/image/white/directions.png</file>
-        <file>resource/image/white/directions@2x.png</file>
-        <file>resource/image/white/directions@3x.png</file>
-        <file>resource/image/white/directions@4x.png</file>
-        <file>resource/image/white/done.png</file>
-        <file>resource/image/white/done@2x.png</file>
-        <file>resource/image/white/done@3x.png</file>
-        <file>resource/image/white/done@4x.png</file>
-        <file>resource/image/white/flight.png</file>
-        <file>resource/image/white/flight@2x.png</file>
-        <file>resource/image/white/flight@3x.png</file>
-        <file>resource/image/white/flight@4x.png</file>
-        <file>resource/image/white/home.png</file>
-        <file>resource/image/white/home@2x.png</file>
-        <file>resource/image/white/home@3x.png</file>
-        <file>resource/image/white/home@4x.png</file>
-        <file>resource/image/white/menu.png</file>
-        <file>resource/image/white/menu@2x.png</file>
-        <file>resource/image/white/menu@3x.png</file>
-        <file>resource/image/white/menu@4x.png</file>
-        <file>resource/image/white/more_vert.png</file>
-        <file>resource/image/white/more_vert@2x.png</file>
-        <file>resource/image/white/more_vert@3x.png</file>
-        <file>resource/image/white/more_vert@4x.png</file>
-        <file>resource/image/white/person.png</file>
-        <file>resource/image/white/person@2x.png</file>
-        <file>resource/image/white/person@3x.png</file>
-        <file>resource/image/white/person@4x.png</file>
-        <file>resource/image/white/remove.png</file>
-        <file>resource/image/white/remove@2x.png</file>
-        <file>resource/image/white/remove@3x.png</file>
-        <file>resource/image/white/remove@4x.png</file>
-        <file>resource/image/white/settings.png</file>
-        <file>resource/image/white/settings@2x.png</file>
-        <file>resource/image/white/settings@3x.png</file>
-        <file>resource/image/white/settings@4x.png</file>
-        <file>resource/image/white/stars.png</file>
-        <file>resource/image/white/stars@2x.png</file>
-        <file>resource/image/white/stars@3x.png</file>
-        <file>resource/image/white/stars@4x.png</file>
-        <file>resource/image/white/subway.png</file>
-        <file>resource/image/white/subway@2x.png</file>
-        <file>resource/image/white/subway@3x.png</file>
-        <file>resource/image/white/subway@4x.png</file>
-        <file>resource/image/white/truck.png</file>
-        <file>resource/image/white/truck@2x.png</file>
-        <file>resource/image/white/truck@3x.png</file>
-        <file>resource/image/white/truck@4x.png</file>
-        <file>resource/qml/pages/ExamplesPage.qml</file>
-        <file>resource/qml/pages/InspectorOptionsPage.qml</file>
-        <file>resource/qml/pages/LibrariesPage.qml</file>
-        <file>resource/qml/pages/Preferences.qml</file>
         <file>resource/image/black/examples.png</file>
         <file>resource/image/black/examples@2x.png</file>
         <file>resource/image/black/examples@3x.png</file>
@@ -747,5 +484,21 @@
         <file>resource/image/black/x48/return@2x.png</file>
         <file>resource/image/black/x48/return@3x.png</file>
         <file>resource/image/black/x48/return@4x.png</file>
+        <file>resource/image/white/x18/menu.png</file>
+        <file>resource/image/white/x18/menu@2x.png</file>
+        <file>resource/image/white/x18/menu@3x.png</file>
+        <file>resource/image/white/x18/menu@4x.png</file>
+        <file>resource/image/white/x36/menu.png</file>
+        <file>resource/image/white/x36/menu@2x.png</file>
+        <file>resource/image/white/x36/menu@3x.png</file>
+        <file>resource/image/white/x36/menu@4x.png</file>
+        <file>resource/image/white/x48/menu.png</file>
+        <file>resource/image/white/x48/menu@2x.png</file>
+        <file>resource/image/white/x48/menu@3x.png</file>
+        <file>resource/image/white/x48/menu@4x.png</file>
+        <file>resource/image/white/menu.png</file>
+        <file>resource/image/white/menu@2x.png</file>
+        <file>resource/image/white/menu@3x.png</file>
+        <file>resource/image/white/menu@4x.png</file>
     </qresource>
 </RCC>
