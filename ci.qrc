@@ -96,19 +96,8 @@
         <file>resource/qml/navigation/DrawerTitleBar.qml</file>
         <file>resource/qml/navigation/HomeNavigation.qml</file>
         <file>resource/qml/pages/AboutPage.qml</file>
-        <file>resource/qml/pages/AccentColorPage.qml</file>
-        <file>resource/qml/pages/ColorSchemaPage.qml</file>
         <file>resource/qml/pages/HomePage.qml</file>
         <file>resource/qml/pages/InitialItemPage.qml</file>
-        <file>resource/qml/pages/PageFive.qml</file>
-        <file>resource/qml/pages/PageFour.qml</file>
-        <file>resource/qml/pages/PageOne.qml</file>
-        <file>resource/qml/pages/PageThree.qml</file>
-        <file>resource/qml/pages/PageTwo.qml</file>
-        <file>resource/qml/pages/PrimaryColorPage.qml</file>
-        <file>resource/qml/pages/QtPage.qml</file>
-        <file>resource/qml/pages/SettingsPage.qml</file>
-        <file>resource/qml/pages/ThemePage.qml</file>
         <file>resource/qml/pages/ExamplesPage.qml</file>
         <file>resource/qml/pages/InspectorOptionsPage.qml</file>
         <file>resource/qml/pages/LibrariesPage.qml</file>

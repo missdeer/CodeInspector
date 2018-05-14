@@ -1,8 +1,8 @@
 
-import QtQuick 2.9
+import QtQuick 2.10
 import QtQuick.Layouts 1.3
-import QtQuick.Controls 2.2
-import QtQuick.Controls.Material 2.2
+import QtQuick.Controls 2.3
+import QtQuick.Controls.Material 2.3
 import QtGraphicalEffects 1.0
 
 import "../pages"
@@ -16,14 +16,14 @@ StackView {
     initialItem: HomePage{}
 
     Loader {
-        id: qtPageLoader
+        id: homePageLoader
         active: true
         visible: false
-        source: "../pages/QtPage.qml"
+        source: "../pages/HomePage.qml"
     }
 
     function pushQtPage() {
-        navPane.push(qtPageLoader.item)
+        navPane.push(homePageLoader.item)
     }
 
     Component.onDestruction: {
