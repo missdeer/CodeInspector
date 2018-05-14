@@ -36,7 +36,7 @@
         <file>resource/image/trim.png</file>
         <file>resource/image/comment.png</file>
         <file>resource/image/intel.png</file>
-        <file>resource/image/detectives.png</file>
+        <file>resource/image/directives.png</file>
         <file>resource/example/cpp/maxarray.cpp</file>
         <file>resource/example/cpp/maxarrayopt.cpp</file>
         <file>resource/example/cpp/square.cpp</file>
@@ -500,5 +500,117 @@
         <file>resource/image/white/menu@2x.png</file>
         <file>resource/image/white/menu@3x.png</file>
         <file>resource/image/white/menu@4x.png</file>
+        <file>resource/image/black/x18/binary.png</file>
+        <file>resource/image/black/x18/binary@2x.png</file>
+        <file>resource/image/black/x18/binary@3x.png</file>
+        <file>resource/image/black/x18/binary@4x.png</file>
+        <file>resource/image/black/x18/comment.png</file>
+        <file>resource/image/black/x18/comment@2x.png</file>
+        <file>resource/image/black/x18/comment@3x.png</file>
+        <file>resource/image/black/x18/comment@4x.png</file>
+        <file>resource/image/black/x18/demangle.png</file>
+        <file>resource/image/black/x18/demangle@2x.png</file>
+        <file>resource/image/black/x18/demangle@3x.png</file>
+        <file>resource/image/black/x18/demangle@4x.png</file>
+        <file>resource/image/black/x18/directives.png</file>
+        <file>resource/image/black/x18/directives@2x.png</file>
+        <file>resource/image/black/x18/directives@3x.png</file>
+        <file>resource/image/black/x18/directives@4x.png</file>
+        <file>resource/image/black/x18/intel.png</file>
+        <file>resource/image/black/x18/intel@2x.png</file>
+        <file>resource/image/black/x18/intel@3x.png</file>
+        <file>resource/image/black/x18/intel@4x.png</file>
+        <file>resource/image/black/x18/label.png</file>
+        <file>resource/image/black/x18/label@2x.png</file>
+        <file>resource/image/black/x18/label@3x.png</file>
+        <file>resource/image/black/x18/label@4x.png</file>
+        <file>resource/image/black/x18/trim.png</file>
+        <file>resource/image/black/x18/trim@2x.png</file>
+        <file>resource/image/black/x18/trim@3x.png</file>
+        <file>resource/image/black/x18/trim@4x.png</file>
+        <file>resource/image/black/x36/binary.png</file>
+        <file>resource/image/black/x36/binary@2x.png</file>
+        <file>resource/image/black/x36/binary@3x.png</file>
+        <file>resource/image/black/x36/binary@4x.png</file>
+        <file>resource/image/black/x36/comment.png</file>
+        <file>resource/image/black/x36/comment@2x.png</file>
+        <file>resource/image/black/x36/comment@3x.png</file>
+        <file>resource/image/black/x36/comment@4x.png</file>
+        <file>resource/image/black/x36/demangle.png</file>
+        <file>resource/image/black/x36/demangle@2x.png</file>
+        <file>resource/image/black/x36/demangle@3x.png</file>
+        <file>resource/image/black/x36/demangle@4x.png</file>
+        <file>resource/image/black/x36/directives.png</file>
+        <file>resource/image/black/x36/directives@2x.png</file>
+        <file>resource/image/black/x36/directives@3x.png</file>
+        <file>resource/image/black/x36/directives@4x.png</file>
+        <file>resource/image/black/x36/intel.png</file>
+        <file>resource/image/black/x36/intel@2x.png</file>
+        <file>resource/image/black/x36/intel@3x.png</file>
+        <file>resource/image/black/x36/intel@4x.png</file>
+        <file>resource/image/black/x36/label.png</file>
+        <file>resource/image/black/x36/label@2x.png</file>
+        <file>resource/image/black/x36/label@3x.png</file>
+        <file>resource/image/black/x36/label@4x.png</file>
+        <file>resource/image/black/x36/trim.png</file>
+        <file>resource/image/black/x36/trim@2x.png</file>
+        <file>resource/image/black/x36/trim@3x.png</file>
+        <file>resource/image/black/x36/trim@4x.png</file>
+        <file>resource/image/black/x48/binary.png</file>
+        <file>resource/image/black/x48/binary@2x.png</file>
+        <file>resource/image/black/x48/binary@3x.png</file>
+        <file>resource/image/black/x48/binary@4x.png</file>
+        <file>resource/image/black/x48/comment.png</file>
+        <file>resource/image/black/x48/comment@2x.png</file>
+        <file>resource/image/black/x48/comment@3x.png</file>
+        <file>resource/image/black/x48/comment@4x.png</file>
+        <file>resource/image/black/x48/demangle.png</file>
+        <file>resource/image/black/x48/demangle@2x.png</file>
+        <file>resource/image/black/x48/demangle@3x.png</file>
+        <file>resource/image/black/x48/demangle@4x.png</file>
+        <file>resource/image/black/x48/directives.png</file>
+        <file>resource/image/black/x48/directives@2x.png</file>
+        <file>resource/image/black/x48/directives@3x.png</file>
+        <file>resource/image/black/x48/directives@4x.png</file>
+        <file>resource/image/black/x48/intel.png</file>
+        <file>resource/image/black/x48/intel@2x.png</file>
+        <file>resource/image/black/x48/intel@3x.png</file>
+        <file>resource/image/black/x48/intel@4x.png</file>
+        <file>resource/image/black/x48/label.png</file>
+        <file>resource/image/black/x48/label@2x.png</file>
+        <file>resource/image/black/x48/label@3x.png</file>
+        <file>resource/image/black/x48/label@4x.png</file>
+        <file>resource/image/black/x48/trim.png</file>
+        <file>resource/image/black/x48/trim@2x.png</file>
+        <file>resource/image/black/x48/trim@3x.png</file>
+        <file>resource/image/black/x48/trim@4x.png</file>
+        <file>resource/image/black/binary.png</file>
+        <file>resource/image/black/binary@2x.png</file>
+        <file>resource/image/black/binary@3x.png</file>
+        <file>resource/image/black/binary@4x.png</file>
+        <file>resource/image/black/comment.png</file>
+        <file>resource/image/black/comment@2x.png</file>
+        <file>resource/image/black/comment@3x.png</file>
+        <file>resource/image/black/comment@4x.png</file>
+        <file>resource/image/black/demangle.png</file>
+        <file>resource/image/black/demangle@2x.png</file>
+        <file>resource/image/black/demangle@3x.png</file>
+        <file>resource/image/black/demangle@4x.png</file>
+        <file>resource/image/black/directives.png</file>
+        <file>resource/image/black/directives@2x.png</file>
+        <file>resource/image/black/directives@3x.png</file>
+        <file>resource/image/black/directives@4x.png</file>
+        <file>resource/image/black/intel.png</file>
+        <file>resource/image/black/intel@2x.png</file>
+        <file>resource/image/black/intel@3x.png</file>
+        <file>resource/image/black/intel@4x.png</file>
+        <file>resource/image/black/label.png</file>
+        <file>resource/image/black/label@2x.png</file>
+        <file>resource/image/black/label@3x.png</file>
+        <file>resource/image/black/label@4x.png</file>
+        <file>resource/image/black/trim.png</file>
+        <file>resource/image/black/trim@2x.png</file>
+        <file>resource/image/black/trim@3x.png</file>
+        <file>resource/image/black/trim@4x.png</file>
     </qresource>
 </RCC>

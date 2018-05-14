@@ -35,81 +35,102 @@ Flickable {
             }
             HorizontalDivider {}
             RowLayout {
+                Image {
+                    source: "qrc:/resource/image/black/binary.png"
+                    width: 24
+                    height: 24
+                    verticalAlignment: Image.AlignTop
+                }
                 Switch {
                     focusPolicy: Qt.NoFocus
                     topPadding: 6
                     leftPadding: 12
                     text: qsTr("Compile to binary and disassemble the output")
                     checked: api.binary
-                    onCheckedChanged: {
-                        api.binary = checked
-                    }
                 }
             }
             RowLayout {
+                Image {
+                    source: "qrc:/resource/image/black/label.png"
+                    width: 24
+                    height: 24
+                    verticalAlignment: Image.AlignTop
+                }
                 Switch {
                     focusPolicy: Qt.NoFocus
                     leftPadding: 12
                     text: qsTr("Filter unused labels from the output")
                     checked: api.labels
-                    onCheckedChanged: {
-                        api.labels = checked
-                    }
                 }
             }
             RowLayout {
+                Image {
+                    source: "qrc:/resource/image/black/directives.png"
+                    width: 24
+                    height: 24
+                    verticalAlignment: Image.AlignTop
+                }
                 Switch {
                     focusPolicy: Qt.NoFocus
                     leftPadding: 12
                     text: qsTr("Filter all assembler directives from the output")
                     checked: api.directives
-                    onCheckedChanged: {
-                        api.directives = checked
-                    }
                 }
             }
             RowLayout {
+                Image {
+                    source: "qrc:/resource/image/black/comment.png"
+                    width: 24
+                    height: 24
+                    verticalAlignment: Image.AlignTop
+                }
                 Switch {
                     focusPolicy: Qt.NoFocus
                     leftPadding: 12
                     text: qsTr("Remove all lines which are only comments from the output")
                     checked: api.commentOnly
-                    onCheckedChanged: {
-                        api.commentOnly = checked
-                    }
                 }
             }
             RowLayout {
+                Image {
+                    source: "qrc:/resource/image/black/trim.png"
+                    width: 24
+                    height: 24
+                    verticalAlignment: Image.AlignTop
+                }
                 Switch {
                     focusPolicy: Qt.NoFocus
                     leftPadding: 12
                     text: qsTr("Trim intra-line whitespace")
                     checked: api.trim
-                    onCheckedChanged: {
-                        api.trim = checked
-                    }
                 }
             }
             RowLayout {
+                Image {
+                    source: "qrc:/resource/image/black/intel.png"
+                    width: 24
+                    height: 24
+                    verticalAlignment: Image.AlignTop
+                }
                 Switch {
                     focusPolicy: Qt.NoFocus
                     leftPadding: 12
                     text: qsTr("Output disassembly in intel syntax")
                     checked: api.intel
-                    onCheckedChanged: {
-                        api.intel = checked
-                    }
                 }
             }
             RowLayout {
+                Image {
+                    source: "qrc:/resource/image/black/demangle.png"
+                    width: 24
+                    height: 24
+                    verticalAlignment: Image.AlignTop
+                }
                 Switch {
                     focusPolicy: Qt.NoFocus
                     leftPadding: 12
                     text: qsTr("Demangle output")
                     checked: api.demangle
-                    onCheckedChanged: {
-                        api.demangle = checked
-                    }
                 }
             }
         } // col layout
