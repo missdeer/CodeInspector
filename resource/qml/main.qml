@@ -107,13 +107,13 @@ Item {
         {"type": "../navigation/DrawerNavigationButton.qml", "name": "Home", "icon": "home.png", "source": "../navigation/HomeNavigation.qml", "showCounter":false, "showMarker":false, "a_p":1},
         {"type": "../navigation/DrawerDivider.qml", "name": "", "icon": "", "source": "", "a_p":1},
         {"type": "../navigation/DrawerSubtitle.qml", "name": "Features", "icon": "", "source": "", "a_p":1},
-        {"type": "../navigation/DrawerNavigationButton.qml", "name": "Examples", "icon": "settings.png", "source": "../pages/SettingsPage.qml", "showCounter":false, "showMarker":false, "a_p":3},
-        {"type": "../navigation/DrawerNavigationButton.qml", "name": "Options", "icon": "settings.png", "source": "../pages/SettingsPage.qml", "showCounter":false, "showMarker":false, "a_p":3},
-        {"type": "../navigation/DrawerNavigationButton.qml", "name": "Libraries", "icon": "settings.png", "source": "../pages/SettingsPage.qml", "showCounter":false, "showMarker":false, "a_p":3},
-        {"type": "../navigation/DrawerNavigationButton.qml", "name": "Preferences", "icon": "settings.png", "source": "../pages/SettingsPage.qml", "showCounter":false, "showMarker":false, "a_p":3},
+        {"type": "../navigation/DrawerNavigationButton.qml", "name": "Examples", "icon": "examples.png", "source": "../pages/ExamplesPage.qml", "showCounter":false, "showMarker":false, "a_p":3},
+        {"type": "../navigation/DrawerNavigationButton.qml", "name": "Options", "icon": "options.png", "source": "../pages/InspectorOptionsPage.qml", "showCounter":false, "showMarker":false, "a_p":3},
+        {"type": "../navigation/DrawerNavigationButton.qml", "name": "Libraries", "icon": "libraries.png", "source": "../pages/LibrariesPage.qml", "showCounter":false, "showMarker":false, "a_p":3},
+        {"type": "../navigation/DrawerNavigationButton.qml", "name": "Preferences", "icon": "preferences.png", "source": "../pages/PreferencesPage.qml", "showCounter":false, "showMarker":false, "a_p":3},
         {"type": "../navigation/DrawerDivider.qml", "name": "", "icon": "", "source": "", "a_p":1},
-        {"type": "../navigation/DrawerNavigationTextButton.qml", "name": "About", "icon": "", "source": "../pages/AboutPage.qml", "showCounter":false, "showMarker":false, "a_p":3},
-        {"type": "../navigation/DrawerNavigationTextButton.qml", "name": "Return", "icon": "", "source": "../pages/AboutPage.qml", "showCounter":false, "showMarker":false, "a_p":3}
+        {"type": "../navigation/DrawerNavigationButton.qml", "name": "About", "icon": "codeinspector.png", "source": "../pages/AboutPage.qml", "showCounter":false, "showMarker":false, "a_p":3},
+        {"type": "../navigation/DrawerNavigationButton.qml", "name": "Return", "icon": "return.png", "source": "", "showCounter":false, "showMarker":false, "a_p":3}
     ]
     // Counter: Car
     // Marker: Subway, Flight

@@ -65,7 +65,7 @@ Drawer {
                     x: 16
                     y: 12
                     IconColored {
-                        imageName: "directions.png"
+                        imageName: "codeinspector.png"
                         imageSize: 48
                         color: textOnPrimary
                     }

@@ -29,7 +29,7 @@ ToolBar {
         }
         LabelTitle {
             id: titleLabel
-            text: "ekke's Drawer APP"
+            text: "CodeInspector"
             leftPadding: 6
             rightPadding: 6
             elide: Label.ElideRight
