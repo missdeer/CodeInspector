@@ -48,7 +48,8 @@ Drawer {
                         LabelBody {
                             text: "CodeInspector"
                             font.weight: Font.Medium
-                            color: textOnPrimary
+                            font.pixelSize: 16
+                            color: textOnPrimaryLight
                         }
                         LabelBody {
                             text: ""
@@ -65,10 +66,14 @@ Drawer {
                     height: 48
                     x: 16
                     y: 12
-                    IconColored {
-                        imageName: "codeinspector.png"
-                        imageSize: 48
-                        color: textOnPrimary
+//                    IconColored {
+//                        imageName: "codeinspector.png"
+//                        imageSize: 48
+//                        color: textOnPrimaryLight
+//                    }
+                    Image {
+                        anchors.fill: parent
+                        source: "qrc:/resource/image/black/x48/codeinspector.png"
                     }
                 }
             }

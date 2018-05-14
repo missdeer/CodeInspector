@@ -104,7 +104,7 @@ Item {
     // StackView: Home --> QtPage
     // SwipeView+TabBar: ColorSchema
     property var navigationModel: [
-        {"type": "../navigation/DrawerNavigationButton.qml", "name": "Home", "icon": "home.png", "source": "../navigation/HomeNavigation.qml", "showCounter":false, "showMarker":false, "a_p":1},
+        {"type": "../navigation/DrawerNavigationButton.qml", "name": "Introduce", "icon": "home.png", "source": "../navigation/HomeNavigation.qml", "showCounter":false, "showMarker":false, "a_p":1},
         {"type": "../navigation/DrawerDivider.qml", "name": "", "icon": "", "source": "", "a_p":1},
         {"type": "../navigation/DrawerSubtitle.qml", "name": "Features", "icon": "", "source": "", "a_p":1},
         {"type": "../navigation/DrawerNavigationButton.qml", "name": "Examples", "icon": "examples.png", "source": "../pages/ExamplesPage.qml", "showCounter":false, "showMarker":false, "a_p":3},
