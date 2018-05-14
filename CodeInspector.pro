@@ -1,9 +1,3 @@
-#-------------------------------------------------
-#
-# Project created by QtCreator 2017-09-04T17:15:20
-#
-#-------------------------------------------------
-
 QT       += core gui widgets xml network concurrent sql qml quickwidgets widgets
 
 lessThan(QT_MAJOR_VERSION, 5): error("Qt 5 is required")
@@ -38,7 +32,8 @@ SOURCES += \
     networkreplyhelper.cpp \
     outputwindow.cpp \
     qmldialog.cpp \
-    quickwidgetapi.cpp
+    quickwidgetapi.cpp \
+    applicationui.cpp
 
 HEADERS += \
     stdafx.h \
@@ -51,7 +46,9 @@ HEADERS += \
     networkreplyhelper.h \
     outputwindow.h \
     qmldialog.h \
-    quickwidgetapi.h
+    quickwidgetapi.h \
+    applicationui.hpp \
+    uiconstants.hpp
 
 FORMS += \
     mainwindow.ui \
@@ -97,4 +94,3 @@ android: {
     }
 }
 
-DISTFILES +=

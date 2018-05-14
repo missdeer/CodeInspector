@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "godboltagent.h"
 #include "quickwidgetapi.h"
+#include "applicationui.hpp"
 
 namespace Ui {
 class MainWindow;
@@ -33,10 +34,7 @@ private slots:
     void onSwitchLanguage(const QString &name);
     void onSwitchCompiler(const QString &name);
     void onDelayCompile();
-    void on_btnLoadExample_clicked();
     void on_btnConfiguration_clicked();
-    void on_btnOption_clicked();
-    void on_btnLibrary_clicked();
 private:
     Ui::MainWindow *ui;
     bool m_postInitialized;
@@ -46,6 +44,7 @@ private:
     OutputWindow* m_output;
     QPushButton* m_btnToggleOutput;
     QuickWidgetAPI* m_quickAPI;
+    ApplicationUI* m_appUI;
     GodboltAgent m_backend;
 
     void storeToCache(const QString &name, const CompileInfo& ci);
