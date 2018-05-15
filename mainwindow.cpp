@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include <QQmlEngine>
 #include <QQmlContext>
 #include "codeinspector.h"
 #include "codeeditor.h"
@@ -96,6 +97,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     m_btnToggleOutput->setVisible(false);
     m_output->setVisible(false);
+
+    qmlRegisterType<Library>("com.dfordsoft.codeinspector", 1, 0, "Library");
+    qmlRegisterType<LibraryVersion>("com.dfordsoft.codeinspector", 1, 0, "LibraryVersion");
 }
 
 MainWindow::~MainWindow()

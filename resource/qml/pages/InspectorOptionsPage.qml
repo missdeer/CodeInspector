@@ -8,7 +8,7 @@ import QtGraphicalEffects 1.0
 import "../common"
 
 Flickable {
-    property string name: "Inspector Options"
+    property string name: "InspectorOptions"
     // index to get access to Loader (Destination)
     property int myIndex: index
     contentHeight: root.height
@@ -32,7 +32,7 @@ Flickable {
                 }
                 LabelHeadline {
                     leftPadding: 10
-                    text: qsTr("Inspector Options")
+                    text: qsTr("Inspector options")
                 }
             }
             HorizontalDivider {}

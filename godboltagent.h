@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QList>
 #include <QNetworkAccessManager>
+#include "library.h"
 
 struct Language
 {
@@ -59,27 +60,6 @@ struct CompileInfo
     bool intel;
     bool demangle;
 };
-
-struct LibraryVersion
-{
-    QString version;
-    QStringList path;
-};
-
-typedef QSharedPointer<LibraryVersion> LibraryVersionPtr;
-
-struct Library
-{
-    QString id;
-    QString name;
-    QString description;
-    QString url;
-    QList<LibraryVersionPtr> versions;
-};
-
-typedef QSharedPointer<Library> LibraryPtr;
-typedef QList<LibraryPtr> LibraryList;
-typedef QSharedPointer<LibraryList> LibraryListPtr;
 
 struct AsmLink
 {

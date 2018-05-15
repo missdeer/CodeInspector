@@ -33,7 +33,9 @@ SOURCES += \
     outputwindow.cpp \
     qmldialog.cpp \
     quickwidgetapi.cpp \
-    applicationui.cpp
+    applicationui.cpp \
+    library.cpp \
+    libraryversion.cpp
 
 HEADERS += \
     stdafx.h \
@@ -48,7 +50,9 @@ HEADERS += \
     qmldialog.h \
     quickwidgetapi.h \
     applicationui.hpp \
-    uiconstants.hpp
+    uiconstants.hpp \
+    library.h \
+    libraryversion.h
 
 FORMS += \
     mainwindow.ui \

@@ -628,11 +628,11 @@ bool GodboltAgent::parseLibListFromConfiguration(QJsonObject &obj)
             LibraryPtr library(new Library);
             libraryList->append(library);
             auto libObj = lib.toObject();
-            library->id = libId;
-            library->name = libObj["name"].toString();
-            library->url = libObj["url"].toString();
+            library->setId( libId);
+            library->setName( libObj["name"].toString());
+            library->setUrl( libObj["url"].toString());
             if (!libObj["description"].isNull())
-                library->description = libObj["description"].toString();
+                library->setDescription(libObj["description"].toString());
             auto versions = libObj["versions"].toObject();
             auto versionsId = versions.keys();
             for (auto & versionId : versionsId)
@@ -645,13 +645,13 @@ bool GodboltAgent::parseLibListFromConfiguration(QJsonObject &obj)
                 }
                 auto versionObj = version.toObject();
                 LibraryVersionPtr ver(new LibraryVersion);
-                ver->version = versionObj["version"].toString();
+                ver->setVersion(versionObj["version"].toString());
                 auto path = versionObj["path"].toArray();
                 for (auto p : path)
                 {
-                    ver->path.append(p.toString());
+                    ver->appendPath(p.toString());
                 }
-                library->versions.append(ver);
+                library->appendVersion(ver);
             }
         }
     }
