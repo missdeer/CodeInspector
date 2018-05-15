@@ -46,7 +46,8 @@ Flickable {
                             leftPadding: 10
                             rightPadding: 10
                             wrapMode: Text.WordWrap
-                            text: modelData.name
+                            text: modelData.name + " - <a href='" + modelData.url + "'>" + modelData.url +"</a>"
+                            onLinkActivated: Qt.openUrlExternally(link)
                         }
                     }
                     Repeater {

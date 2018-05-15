@@ -645,7 +645,11 @@ bool GodboltAgent::parseLibListFromConfiguration(QJsonObject &obj)
                 }
                 auto versionObj = version.toObject();
                 LibraryVersionPtr ver(new LibraryVersion);
-                ver->setVersion(versionObj["version"].toString());
+                auto v = versionObj["version"];
+                if (v.isString())
+                    ver->setVersion(v.toString());
+                else if (v.isDouble())
+                    ver->setVersion(QString("%1").arg(v.toDouble()));
                 auto path = versionObj["path"].toArray();
                 for (auto p : path)
                 {
