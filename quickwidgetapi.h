@@ -20,9 +20,11 @@ class QuickWidgetAPI : public QObject
     Q_PROPERTY(bool intelEnabled READ intelEnabled WRITE setIntelEnabled NOTIFY intelEnabledChanged)
     Q_PROPERTY(bool commentOnlyEnabled READ commentOnlyEnabled WRITE setCommentOnlyEnabled NOTIFY commentOnlyEnabledChanged)
     Q_PROPERTY(bool demangleEnabled READ demangleEnabled WRITE setDemangleEnabled NOTIFY demangleEnabledChanged)
+    Q_PROPERTY(QStringList examples READ examples WRITE setExamples NOTIFY examplesChanged)
 public:
     explicit QuickWidgetAPI(QObject *parent = nullptr);
     Q_INVOKABLE void closeConfiguration();
+    Q_INVOKABLE void loadExample(int index);
 
     bool binary() const;
     void setBinary(bool binary);
@@ -66,8 +68,12 @@ public:
     bool demangleEnabled() const;
     void setDemangleEnabled(bool demangleEnabled);
 
+    const QStringList &examples() const;
+    void setExamples(const QStringList &examples);
+
 signals:
     void doCloseConfiguration();
+    void doLoadExample(const QString& name);
 
     void binaryChanged();
     void labelsChanged();
@@ -84,6 +90,8 @@ signals:
     void intelEnabledChanged();
     void commentOnlyEnabledChanged();
     void demangleEnabledChanged();
+
+    void examplesChanged();
 public slots:
 
 private:
@@ -102,6 +110,7 @@ private:
     bool m_commentOnlyEnabled;
     bool m_demangle;
     bool m_demangleEnabled;
+    QStringList m_examples;
 };
 
 typedef QSharedPointer<QuickWidgetAPI> QuickWidgetAPIPtr;

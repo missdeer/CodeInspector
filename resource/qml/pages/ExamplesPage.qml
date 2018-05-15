@@ -1,4 +1,3 @@
-
 import QtQuick 2.10
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.3
@@ -26,77 +25,57 @@ Flickable {
             anchors.right: parent.right
             anchors.left: parent.left
             RowLayout {
+                id: subjectLayout
                 IconInactive {
                     imageName: modelData.icon
                     imageSize: 48
                 }
                 LabelHeadline {
                     leftPadding: 10
-                    text: qsTr("Loading Example")
+                    text: qsTr("Load an example")
                 }
             }
             HorizontalDivider {}
-            RowLayout {
-                LabelSubheading {
-                    topPadding: 6
-                    leftPadding: 10
-                    rightPadding: 10
-                    wrapMode: Text.WordWrap
-                    text: qsTr("Settings is a normal Page.\nNavigation Drawer can be opened swiping from left or tapping on Menu Button.\nSettings is marked as favorite, so can be opened from Bottom Navigation (in Portrait Mode)")
-                }
-            }
-            RowLayout {
-                LabelBodySecondary {
-                    topPadding: 6
-                    leftPadding: 10
-                    rightPadding: 10
-                    wrapMode: Text.WordWrap
-                    text: qsTr("Activation Policy: ")
-                }
-                LabelBody {
-                    topPadding: 6
-                    leftPadding: 10
-                    rightPadding: 10
-                    wrapMode: Text.WordWrap
-                    text: qsTr("WHILE SELECTED")
-                }
-            }
-            HorizontalDivider {}
-            RowLayout {
-                Switch {
-                    focusPolicy: Qt.NoFocus
-                    topPadding: 6
-                    leftPadding: 12
-                    text: qsTr("Highlight Active Navigation Selection")
-                    checked: highlightActiveNavigationButton
-                    onCheckedChanged: {
-                        highlightActiveNavigationButton = checked
-                    }
-                } // switch highlightActiveNavigationButton
-            } // row switch highlightActiveNavigationButton
-            RowLayout {
-                Switch {
-                    focusPolicy: Qt.NoFocus
-                    leftPadding: 12
-                    text: qsTr("Hide TitleBar")
-                    checked: hideTitleBar
-                    onCheckedChanged: {
-                        hideTitleBar = checked
-                    }
-                } // switch hideTitleBar
-            } // row switch hideTitleBar
-            RowLayout {
-                Switch {
-                    focusPolicy: Qt.NoFocus
-                    leftPadding: 12
-                    text: qsTr("Show Favorites at Bottom in Portrait")
-                    checked: showFavorites
-                    onCheckedChanged: {
-                        showFavorites = checked
-                    }
-                } // switch showFavorites
-            } // row switch showFavorites
 
+            Repeater {
+                model: api.examples
+                RowLayout {
+                    LabelTitle {
+                        verticalAlignment: Qt.AlignVCenter
+                        topPadding: 10
+                        leftPadding: 10
+                        rightPadding: 10
+                        wrapMode: Text.WordWrap
+                        text: modelData
+                    }
+                    Button {
+                        id: control
+                        text: qsTr("Load")
+                        contentItem: Text {
+                            text: control.text
+                            font: control.font
+                            opacity: enabled ? 1.0 : 0.3
+                            color: control.down ? "#17a81a" : "#21be2b"
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                            elide: Text.ElideRight
+                        }
+
+                        background: Rectangle {
+                            implicitWidth: 90
+                            implicitHeight: 20
+                            opacity: enabled ? 1 : 0.3
+                            border.color: control.down ? "#17a81a" : "#21be2b"
+                            border.width: 1
+                            radius: 8
+                        }
+                        onClicked: {
+                            api.loadExample(index)
+                            api.closeConfiguration()
+                        }
+                    }
+                }
+            }
         } // col layout
 
     } // root

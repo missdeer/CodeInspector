@@ -90,6 +90,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_quickAPI, &QuickWidgetAPI::demangleChanged, this, &MainWindow::onDelayCompile);
     connect(m_quickAPI, &QuickWidgetAPI::trimChanged, this, &MainWindow::onDelayCompile);
     connect(m_quickAPI, &QuickWidgetAPI::intelChanged, this, &MainWindow::onDelayCompile);
+    connect(m_quickAPI, &QuickWidgetAPI::doLoadExample, this, &MainWindow::onLoadSourceCode);
 
     onLanguageListRetrieved();
 
@@ -194,6 +195,11 @@ void MainWindow::onSwitchLanguage(const QString& name)
     m_codeEditor->clearContent();
     m_backend.switchLanguage(name);
 
+    QString d = getLanguageExampleDirectory(name);
+    QDir dir(":/resource/example/" + d);
+    auto files = dir.entryList(QDir::Files);
+    m_quickAPI->setExamples(files);
+
     // language name, lexer name
     QMap<QString, QString> lexerMap = {
         { "C++", "cpp" },
@@ -270,6 +276,17 @@ void MainWindow::onDelayCompile()
 #endif
 }
 
+void MainWindow::onLoadSourceCode(const QString &name)
+{
+    QFile f(QString(":/resource/example/%1/%2").arg(getLanguageExampleDirectory(ui->cbLanguageList->currentText())).arg(name));
+    if (!f.open(QIODevice::ReadOnly))
+        return ;
+    QByteArray c = f.readAll();
+    f.close();
+    Q_ASSERT(m_codeEditor);
+    m_codeEditor->setContent(QString(c));
+}
+
 void MainWindow::storeToCache(const QString &name, const CompileInfo &ci)
 {
     QString d = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
@@ -330,6 +347,32 @@ bool MainWindow::restoreFromCache(const QString& name, CompileInfo &ci)
            >> ci.userArguments;
 
     return true;
+}
+
+QString MainWindow::getLanguageExampleDirectory(const QString &name)
+{
+    QString d;
+    QMap<QString, QString> exampleDirMap = {
+        { "C++", "cpp" },
+        { "Cppx", "cppx"},
+        { "Assembly", "asm"},
+        { "CUDA", "cuda"},
+        { "LLVM IR", "llvmir"},
+        { "D", "d"},
+        { "ispc", "ispc"},
+        { "Analysis", "analysis"},
+        { "C", "c"},
+        { "Rust", "rust"},
+        { "Go", "go"},
+        { "Pascal", "pascal"},
+        { "Haskell", "haskell"},
+        { "Swift", "swift"},
+    };
+    auto it = exampleDirMap.find(name);
+    if (exampleDirMap.end() != it)
+        d = it.value();
+
+    return d;
 }
 
 void MainWindow::on_btnConfiguration_clicked()

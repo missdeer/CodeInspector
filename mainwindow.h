@@ -34,6 +34,7 @@ private slots:
     void onSwitchLanguage(const QString &name);
     void onSwitchCompiler(const QString &name);
     void onDelayCompile();
+    void onLoadSourceCode(const QString &content);
     void on_btnConfiguration_clicked();
 private:
     Ui::MainWindow *ui;
@@ -49,6 +50,7 @@ private:
 
     void storeToCache(const QString &name, const CompileInfo& ci);
     bool restoreFromCache(const QString &name, CompileInfo& ci);
+    QString getLanguageExampleDirectory(const QString& name);
 };
 
 #endif // MAINWINDOW_H

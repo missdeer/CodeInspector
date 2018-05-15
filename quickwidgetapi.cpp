@@ -27,6 +27,12 @@ void QuickWidgetAPI::closeConfiguration()
     emit doCloseConfiguration();
 }
 
+void QuickWidgetAPI::loadExample(int index)
+{
+    QString name = m_examples.at(index);
+    emit doLoadExample(name);
+}
+
 bool QuickWidgetAPI::binary() const
 {
     return m_binary;
@@ -220,4 +226,15 @@ void QuickWidgetAPI::setDemangleEnabled(bool demangleEnabled)
         m_demangle = false;
     m_demangleEnabled = demangleEnabled;
     emit demangleEnabledChanged();
+}
+
+const QStringList& QuickWidgetAPI::examples() const
+{
+    return m_examples;
+}
+
+void QuickWidgetAPI::setExamples(const QStringList &examples)
+{
+    m_examples = examples;
+    emit examplesChanged();
 }
