@@ -2,6 +2,8 @@
 #define QUICKWIDGETAPI_H
 
 #include <QObject>
+#include <QQmlEngine>
+#include "library.h"
 
 class QuickWidgetAPI : public QObject
 {
@@ -20,11 +22,15 @@ class QuickWidgetAPI : public QObject
     Q_PROPERTY(bool intelEnabled READ intelEnabled WRITE setIntelEnabled NOTIFY intelEnabledChanged)
     Q_PROPERTY(bool commentOnlyEnabled READ commentOnlyEnabled WRITE setCommentOnlyEnabled NOTIFY commentOnlyEnabledChanged)
     Q_PROPERTY(bool demangleEnabled READ demangleEnabled WRITE setDemangleEnabled NOTIFY demangleEnabledChanged)
-    Q_PROPERTY(QStringList examples READ examples WRITE setExamples NOTIFY examplesChanged)
+    Q_PROPERTY(QStringList examples READ examples NOTIFY examplesChanged)
+    Q_PROPERTY(QQmlListProperty<Library> libs READ libs NOTIFY libsChanged)
 public:
     explicit QuickWidgetAPI(QObject *parent = nullptr);
     Q_INVOKABLE void closeConfiguration();
     Q_INVOKABLE void loadExample(int index);
+    Q_INVOKABLE bool isLibrarySelected(const QString& libraryName, const QString& versionName, const QString& versionPath);
+    Q_INVOKABLE void selectLibrary(const QString& libraryName, const QString& versionName, const QString& versionPath);
+    Q_INVOKABLE void unselectLibrary(const QString& libraryName, const QString& versionName, const QString& versionPath);
 
     bool binary() const;
     void setBinary(bool binary);
@@ -71,6 +77,34 @@ public:
     const QStringList &examples() const;
     void setExamples(const QStringList &examples);
 
+    void setLibs(LibraryListPtr libs);
+    QQmlListProperty<Library>  libs();
+
+    void appendLib(Library* p) {
+        qDebug() << __FUNCTION__;
+    }
+
+    int libCount() const
+    {
+        qDebug() << __FUNCTION__ << m_libs;
+        if (!m_libs)
+            return 0;
+        return m_libs->length();
+    }
+
+    Library *lib(int index) const
+    {
+        qDebug() << __FUNCTION__ << m_libs;
+        if (!m_libs)
+            return nullptr;
+        if (index >= m_libs->length())
+            return nullptr;
+        return m_libs->at(index).data();
+    }
+
+    void clearLibs() {
+        qDebug() << __FUNCTION__;
+    }
 signals:
     void doCloseConfiguration();
     void doLoadExample(const QString& name);
@@ -92,6 +126,7 @@ signals:
     void demangleEnabledChanged();
 
     void examplesChanged();
+    void libsChanged();
 public slots:
 
 private:
@@ -111,6 +146,27 @@ private:
     bool m_demangle;
     bool m_demangleEnabled;
     QStringList m_examples;
+    LibraryListPtr m_libs;
+
+    static void appendLib(QQmlListProperty<Library>* list, Library* p)
+    {
+        reinterpret_cast< QuickWidgetAPI* >(list->data)->appendLib(p);
+    }
+
+    static int libCount(QQmlListProperty<Library>* list)
+    {
+        return reinterpret_cast< QuickWidgetAPI* >(list->data)->libCount();
+    }
+
+    static Library *lib(QQmlListProperty<Library>* list, int index)
+    {
+        return reinterpret_cast< QuickWidgetAPI* >(list->data)->lib(index);
+    }
+
+    static void clearLibs(QQmlListProperty<Library>* list)
+    {
+        reinterpret_cast< QuickWidgetAPI* >(list->data)->clearLibs();
+    }
 };
 
 typedef QSharedPointer<QuickWidgetAPI> QuickWidgetAPIPtr;

@@ -52,12 +52,12 @@ void Library::setUrl(const QString &value)
 
 QQmlListProperty<LibraryVersion> Library::getVersions()
 {
-    QList<LibraryVersion*> v;
+    m_versions.clear();
     for (auto ver : versions)
     {
-        v.append(ver.data());
+        m_versions.append(ver.data());
     }
-    return QQmlListProperty<LibraryVersion>(this, v);
+    return QQmlListProperty<LibraryVersion>(this, m_versions);
 }
 
 void Library::setVersions(const QList<LibraryVersionPtr> &value)
@@ -69,4 +69,5 @@ void Library::setVersions(const QList<LibraryVersionPtr> &value)
 void Library::appendVersion(LibraryVersionPtr ver)
 {
     versions.append(ver);
+    emit versionsChanged();
 }

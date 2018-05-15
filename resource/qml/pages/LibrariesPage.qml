@@ -35,66 +35,46 @@ Flickable {
                 }
             }
             HorizontalDivider {}
-            RowLayout {
-                LabelSubheading {
-                    topPadding: 6
-                    leftPadding: 10
-                    rightPadding: 10
-                    wrapMode: Text.WordWrap
-                    text: qsTr("Settings is a normal Page.\nNavigation Drawer can be opened swiping from left or tapping on Menu Button.\nSettings is marked as favorite, so can be opened from Bottom Navigation (in Portrait Mode)")
+            Repeater {
+                model: api.libs
+                ColumnLayout {
+                    anchors.right: parent.right
+                    anchors.left: parent.left
+                    RowLayout {
+                        LabelSubheading {
+                            topPadding: 6
+                            leftPadding: 10
+                            rightPadding: 10
+                            wrapMode: Text.WordWrap
+                            text: modelData.name
+                        }
+                    }
+                    Repeater {
+                        id: library
+                        model: modelData.versions
+                        property string name: modelData.name
+                        RowLayout {
+                            CheckBox {
+                                id: cb
+                                topPadding: 6
+                                leftPadding: 10
+                                rightPadding: 10
+                                text: modelData.version
+                                checked: api.isLibrarySelected(library.name, modelData.version, modelData.path)
+                                onCheckedChanged: {
+                                    if (checked){
+                                        api.selectLibrary(library.name, modelData.version, modelData.path)
+                                        console.log("add: " + library.name + " : " +text + " - " + modelData.path)
+                                    }else{
+                                        api.unselectLibrary(library.name, modelData.version, modelData.path)
+                                        console.log("remove: " + library.name + " : " +text + " - " + modelData.path)
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
-            RowLayout {
-                LabelBodySecondary {
-                    topPadding: 6
-                    leftPadding: 10
-                    rightPadding: 10
-                    wrapMode: Text.WordWrap
-                    text: qsTr("Activation Policy: ")
-                }
-                LabelBody {
-                    topPadding: 6
-                    leftPadding: 10
-                    rightPadding: 10
-                    wrapMode: Text.WordWrap
-                    text: qsTr("WHILE SELECTED")
-                }
-            }
-            HorizontalDivider {}
-            RowLayout {
-                Switch {
-                    focusPolicy: Qt.NoFocus
-                    topPadding: 6
-                    leftPadding: 12
-                    text: qsTr("Highlight Active Navigation Selection")
-                    checked: highlightActiveNavigationButton
-                    onCheckedChanged: {
-                        highlightActiveNavigationButton = checked
-                    }
-                } // switch highlightActiveNavigationButton
-            } // row switch highlightActiveNavigationButton
-            RowLayout {
-                Switch {
-                    focusPolicy: Qt.NoFocus
-                    leftPadding: 12
-                    text: qsTr("Hide TitleBar")
-                    checked: hideTitleBar
-                    onCheckedChanged: {
-                        hideTitleBar = checked
-                    }
-                } // switch hideTitleBar
-            } // row switch hideTitleBar
-            RowLayout {
-                Switch {
-                    focusPolicy: Qt.NoFocus
-                    leftPadding: 12
-                    text: qsTr("Show Favorites at Bottom in Portrait")
-                    checked: showFavorites
-                    onCheckedChanged: {
-                        showFavorites = checked
-                    }
-                } // switch showFavorites
-            } // row switch showFavorites
 
         } // col layout
 
@@ -108,11 +88,11 @@ Flickable {
 
     // called immediately after Loader.loaded
     function init() {
-        console.log(qsTr("Init done from SettingsPage"))
+        console.log(qsTr("Init done from LibrariesPage"))
     }
     // called from Component.destruction
     function cleanup() {
-        console.log(qsTr("Cleanup done from SettingsPage"))
+        console.log(qsTr("Cleanup done from LibrariesPage"))
     }
 
 } // flickable

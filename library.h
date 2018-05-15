@@ -45,6 +45,7 @@ private:
     QString description;
     QString url;
     QList<LibraryVersionPtr> versions;
+    QList<LibraryVersion*> m_versions;
 };
 
 typedef QSharedPointer<Library> LibraryPtr;

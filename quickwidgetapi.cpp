@@ -17,7 +17,6 @@ QuickWidgetAPI::QuickWidgetAPI(QObject *parent)
     , m_commentOnlyEnabled(true)
     , m_demangle(true)
     , m_demangleEnabled(true)
-
 {
 
 }
@@ -31,6 +30,21 @@ void QuickWidgetAPI::loadExample(int index)
 {
     QString name = m_examples.at(index);
     emit doLoadExample(name);
+}
+
+bool QuickWidgetAPI::isLibrarySelected(const QString &libraryName, const QString &versionName, const QString &versionPath)
+{
+    return false;
+}
+
+void QuickWidgetAPI::selectLibrary(const QString &libraryName, const QString &versionName, const QString &versionPath)
+{
+
+}
+
+void QuickWidgetAPI::unselectLibrary(const QString &libraryName, const QString &versionName, const QString &versionPath)
+{
+
 }
 
 bool QuickWidgetAPI::binary() const
@@ -237,4 +251,20 @@ void QuickWidgetAPI::setExamples(const QStringList &examples)
 {
     m_examples = examples;
     emit examplesChanged();
+}
+
+void QuickWidgetAPI::setLibs(LibraryListPtr libs)
+{
+    m_libs = libs;
+    emit libsChanged();
+}
+
+QQmlListProperty<Library> QuickWidgetAPI::libs()
+{
+    return QQmlListProperty<Library>(this, this,
+                                     &QuickWidgetAPI::appendLib,
+                                     &QuickWidgetAPI::libCount,
+                                     &QuickWidgetAPI::lib,
+                                     &QuickWidgetAPI::clearLibs
+                                     );
 }

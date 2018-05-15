@@ -97,9 +97,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     m_btnToggleOutput->setVisible(false);
     m_output->setVisible(false);
-
-    qmlRegisterType<Library>("com.dfordsoft.codeinspector", 1, 0, "Library");
-    qmlRegisterType<LibraryVersion>("com.dfordsoft.codeinspector", 1, 0, "LibraryVersion");
 }
 
 MainWindow::~MainWindow()
@@ -203,6 +200,9 @@ void MainWindow::onSwitchLanguage(const QString& name)
     QDir dir(":/resource/example/" + d);
     auto files = dir.entryList(QDir::Files);
     m_quickAPI->setExamples(files);
+
+    auto libs = m_backend.getLibraryList(name);
+    m_quickAPI->setLibs(libs);
 
     // language name, lexer name
     QMap<QString, QString> lexerMap = {
@@ -382,6 +382,10 @@ QString MainWindow::getLanguageExampleDirectory(const QString &name)
 void MainWindow::on_btnConfiguration_clicked()
 {
     QmlDialog dlg(this);
+
+    qmlRegisterType<Library>("com.dfordsoft.codeinspector", 1, 0, "Library");
+    qmlRegisterType<LibraryVersion>("com.dfordsoft.codeinspector", 1, 0, "LibraryVersion");
+
     connect(m_quickAPI, SIGNAL(doCloseConfiguration()), &dlg, SLOT(accept()));
     dlg.setWindowTitle(tr("Configuration"));
     auto context = dlg.context();
