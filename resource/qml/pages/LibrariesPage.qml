@@ -46,8 +46,14 @@ Flickable {
                             leftPadding: 10
                             rightPadding: 10
                             wrapMode: Text.WordWrap
-                            text: modelData.name + " - <a href='" + modelData.url + "'>" + modelData.url +"</a>"
-                            onLinkActivated: Qt.openUrlExternally(link)
+                            text: modelData.name
+                        }
+                        Image {
+                            source: "qrc:/resource/image/black/x18/hyperlink.png"
+                            MouseArea {
+                                anchors.fill: parent
+                                onClicked: Qt.openUrlExternally(modelData.url)
+                            }
                         }
                     }
                     Repeater {
@@ -55,19 +61,19 @@ Flickable {
                         model: modelData.versions
                         property string name: modelData.name
                         RowLayout {
-                            CheckBox {
+                            Switch {
                                 id: cb
                                 topPadding: 6
                                 leftPadding: 10
                                 rightPadding: 10
                                 text: modelData.version
-                                checked: api.isLibrarySelected(library.name, modelData.version, modelData.path)
+                                checked: modelData.selected
                                 onCheckedChanged: {
+                                    if (modelData.selected != checked)
+                                        modelData.selected = checked
                                     if (checked){
-                                        api.selectLibrary(library.name, modelData.version, modelData.path)
                                         console.log("add: " + library.name + " : " +text + " - " + modelData.path)
                                     }else{
-                                        api.unselectLibrary(library.name, modelData.version, modelData.path)
                                         console.log("remove: " + library.name + " : " +text + " - " + modelData.path)
                                     }
                                 }

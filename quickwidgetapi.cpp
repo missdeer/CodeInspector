@@ -32,21 +32,6 @@ void QuickWidgetAPI::loadExample(int index)
     emit doLoadExample(name);
 }
 
-bool QuickWidgetAPI::isLibrarySelected(const QString &libraryName, const QString &versionName, const QString &versionPath)
-{
-    return false;
-}
-
-void QuickWidgetAPI::selectLibrary(const QString &libraryName, const QString &versionName, const QString &versionPath)
-{
-
-}
-
-void QuickWidgetAPI::unselectLibrary(const QString &libraryName, const QString &versionName, const QString &versionPath)
-{
-
-}
-
 bool QuickWidgetAPI::binary() const
 {
     return m_binary;

@@ -28,9 +28,6 @@ public:
     explicit QuickWidgetAPI(QObject *parent = nullptr);
     Q_INVOKABLE void closeConfiguration();
     Q_INVOKABLE void loadExample(int index);
-    Q_INVOKABLE bool isLibrarySelected(const QString& libraryName, const QString& versionName, const QString& versionPath);
-    Q_INVOKABLE void selectLibrary(const QString& libraryName, const QString& versionName, const QString& versionPath);
-    Q_INVOKABLE void unselectLibrary(const QString& libraryName, const QString& versionName, const QString& versionPath);
 
     bool binary() const;
     void setBinary(bool binary);

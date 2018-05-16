@@ -601,5 +601,20 @@
         <file>resource/image/black/trim@2x.png</file>
         <file>resource/image/black/trim@3x.png</file>
         <file>resource/image/black/trim@4x.png</file>
+        <file>resource/image/black/x18/hyperlink.png</file>
+        <file>resource/image/black/x18/hyperlink@2x.png</file>
+        <file>resource/image/black/x18/hyperlink@3x.png</file>
+        <file>resource/image/black/x18/hyperlink@4x.png</file>
+        <file>resource/image/black/x36/hyperlink.png</file>
+        <file>resource/image/black/x36/hyperlink@2x.png</file>
+        <file>resource/image/black/x36/hyperlink@3x.png</file>
+        <file>resource/image/black/x36/hyperlink@4x.png</file>
+        <file>resource/image/black/x48/hyperlink.png</file>
+        <file>resource/image/black/x48/hyperlink@2x.png</file>
+        <file>resource/image/black/x48/hyperlink@3x.png</file>
+        <file>resource/image/black/x48/hyperlink@4x.png</file>
+        <file>resource/image/black/hyperlink.png</file>
+        <file>resource/image/black/hyperlink@2x.png</file>
+        <file>resource/image/black/hyperlink@3x.png</file>
     </qresource>
 </RCC>
