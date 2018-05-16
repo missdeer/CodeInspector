@@ -144,7 +144,7 @@ private:
 
     void requestConfigurations();
     bool storeConfiguration(const QByteArray& content);
-    bool loadConfiguration( QByteArray& content);
+    bool loadConfiguration(const QString &path, QByteArray& content);
     bool parseConfiguration(const QByteArray& content);
 
     const QString& getLanguageId(const QString& name);

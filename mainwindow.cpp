@@ -116,7 +116,24 @@ MainWindow::~MainWindow()
 
 void MainWindow::onCompilerListReady()
 {
+    bool needRefresh = false;
+    auto count = ui->cbCompilerList->count();
     auto cl = m_backend.getCompilerList(ui->cbLanguageList->currentText());
+    if (count != cl->size())
+        needRefresh = true;
+    
+    for (int i = 0; i < count && !needRefresh; i++)
+    {
+        if (ui->cbLanguageList->itemText(i) != cl->at(i)->name)
+            needRefresh = true;
+    }
+    
+    if (!needRefresh)
+    {
+        qDebug() << __FUNCTION__ << "no need to refresh compiler list";
+        return;
+    }
+    
     ui->cbCompilerList->clear();
     for (auto c : *cl)
     {
@@ -129,6 +146,22 @@ void MainWindow::onLanguageListReady()
     auto ll = m_backend.getLanguageList();
     if (ll.empty())
         return;
+    
+    bool needRefresh = false;
+    auto count = ui->cbLanguageList->count();
+    if (count != ll.size())
+        needRefresh = true;
+    for ( int i = 0; i < count && !needRefresh; i ++)
+    {
+        if (ui->cbLanguageList->itemText(i) != ll.at(i)->name )
+            needRefresh = true;
+    }
+    
+    if (!needRefresh)
+    {
+        qDebug() << __FUNCTION__ << "no need to refresh language list";
+        return;
+    }
 
     ui->cbLanguageList->clear();
     for (auto l : ll)

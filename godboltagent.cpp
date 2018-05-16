@@ -14,8 +14,18 @@ GodboltAgent::~GodboltAgent()
 void GodboltAgent::initialize()
 {
     QByteArray content;
-    if (loadConfiguration(content))
+
+    const QString defaultConfigurationPath = ":/resource/configurations";
+    QString path = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/configurations";
+    bool res = false;
+    if (loadConfiguration(path, content))
+        res = parseConfiguration(content);
+    if (!res)
+    {
+        content.clear();
+        loadConfiguration(defaultConfigurationPath, content);
         parseConfiguration(content);
+    }
     requestConfigurations();
 }
 
@@ -350,8 +360,8 @@ void GodboltAgent::onConfigurationRequestFinished()
     index = content.indexOf(ending);
     content = content.left(index);
 
-    storeConfiguration(content);
-    parseConfiguration(content);
+    if (parseConfiguration(content))
+        storeConfiguration(content);
 }
 
 bool GodboltAgent::storeCompilerList(const QString& name, const QByteArray &content)
@@ -818,13 +828,9 @@ bool GodboltAgent::storeConfiguration(const QByteArray &content)
     return true;
 }
 
-bool GodboltAgent::loadConfiguration(QByteArray &content)
+bool GodboltAgent::loadConfiguration(const QString& path, QByteArray &content)
 {
     qDebug() << __FUNCTION__;
-
-    QString path = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/configurations";
-    if (!QFile::exists(path))
-        path = ":/resource/configurations";
     QFile f(path);
     if (!f.open(QIODevice::ReadOnly))
     {
