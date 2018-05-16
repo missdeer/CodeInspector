@@ -94,6 +94,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_quickAPI, &QuickWidgetAPI::doLibrarySwitched, this, &MainWindow::onDelayCompile);
     connect(m_quickAPI, &QuickWidgetAPI::doLoadExample, this, &MainWindow::onLoadSourceCode);
 
+    qmlRegisterType<Library>("com.dfordsoft.codeinspector", 1, 0, "Library");
+    qmlRegisterType<LibraryVersion>("com.dfordsoft.codeinspector", 1, 0, "LibraryVersion");
+
     onLanguageListRetrieved();
 
     m_btnToggleOutput->setVisible(false);
@@ -401,9 +404,6 @@ QString MainWindow::getLanguageExampleDirectory(const QString &name)
 void MainWindow::on_btnConfiguration_clicked()
 {
     QmlDialog dlg(this);
-
-    qmlRegisterType<Library>("com.dfordsoft.codeinspector", 1, 0, "Library");
-    qmlRegisterType<LibraryVersion>("com.dfordsoft.codeinspector", 1, 0, "LibraryVersion");
 
     connect(m_quickAPI, SIGNAL(doCloseConfiguration()), &dlg, SLOT(accept()));
     dlg.setWindowTitle(tr("Configuration"));
