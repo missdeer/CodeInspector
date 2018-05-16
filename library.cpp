@@ -50,14 +50,19 @@ void Library::setUrl(const QString &value)
     emit urlChanged();
 }
 
-QQmlListProperty<LibraryVersion> Library::getVersions()
+QQmlListProperty<LibraryVersion> Library::getQmlListPropertyVersions()
 {
-    m_versions.clear();
-    for (auto ver : versions)
-    {
-        m_versions.append(ver.data());
-    }
-    return QQmlListProperty<LibraryVersion>(this, m_versions);
+    return QQmlListProperty<LibraryVersion>(this, this,
+                                     &Library::appendLibVersion,
+                                     &Library::libVersionCount,
+                                     &Library::libVersion,
+                                     &Library::clearLibVersions
+                                     );
+}
+
+const QList<LibraryVersionPtr> &Library::getVersions()
+{
+    return versions;
 }
 
 void Library::setVersions(const QList<LibraryVersionPtr> &value)
@@ -71,3 +76,39 @@ void Library::appendVersion(LibraryVersionPtr ver)
     versions.append(ver);
     emit versionsChanged();
 }
+
+void Library::appendLibVersion(QQmlListProperty<LibraryVersion> *list, LibraryVersion *p)
+{
+    reinterpret_cast< Library* >(list->data)->appendLibVersion(p);
+}
+
+int Library::libVersionCount(QQmlListProperty<LibraryVersion> *list)
+{
+    return reinterpret_cast< Library* >(list->data)->libVersionCount();
+}
+
+LibraryVersion *Library::libVersion(QQmlListProperty<LibraryVersion> *list, int index)
+{
+    return reinterpret_cast< Library* >(list->data)->libVersion(index);
+}
+
+void Library::clearLibVersions(QQmlListProperty<LibraryVersion> *list)
+{
+    reinterpret_cast< Library* >(list->data)->clearLibVersions();
+}
+
+void Library::appendLibVersion(LibraryVersion *) {}
+
+int Library::libVersionCount() const
+{
+    return versions.length();
+}
+
+LibraryVersion *Library::libVersion(int index) const
+{
+    if (index >= versions.length())
+        return nullptr;
+    return versions.at(index).data();
+}
+
+void Library::clearLibVersions() {}

@@ -12,7 +12,7 @@ class Library : public QObject
     Q_PROPERTY(QString name READ getName WRITE setName NOTIFY nameChanged)
     Q_PROPERTY(QString description READ getDescription WRITE setDescription NOTIFY descriptionChanged)
     Q_PROPERTY(QString url READ getUrl WRITE setUrl NOTIFY urlChanged)
-    Q_PROPERTY(QQmlListProperty<LibraryVersion> versions READ getVersions NOTIFY versionsChanged)
+    Q_PROPERTY(QQmlListProperty<LibraryVersion> versions READ getQmlListPropertyVersions NOTIFY versionsChanged)
 public:
     explicit Library(QObject *parent = nullptr);
 
@@ -28,7 +28,8 @@ public:
     const QString& getUrl() const;
     void setUrl(const QString &value);
 
-    QQmlListProperty<LibraryVersion> getVersions();
+    QQmlListProperty<LibraryVersion> getQmlListPropertyVersions();
+    const QList<LibraryVersionPtr> &getVersions();
     void setVersions(const QList<LibraryVersionPtr> &value);
     void appendVersion(LibraryVersionPtr ver);
 signals:
@@ -45,7 +46,16 @@ private:
     QString description;
     QString url;
     QList<LibraryVersionPtr> versions;
-    QList<LibraryVersion*> m_versions;
+
+    static void appendLibVersion(QQmlListProperty<LibraryVersion>* list, LibraryVersion* p);
+    static int libVersionCount(QQmlListProperty<LibraryVersion>* list);
+    static LibraryVersion *libVersion(QQmlListProperty<LibraryVersion>* list, int index);
+    static void clearLibVersions(QQmlListProperty<LibraryVersion>* list);
+
+    void appendLibVersion(LibraryVersion* p);
+    int libVersionCount() const;
+    LibraryVersion *libVersion(int index) const;
+    void clearLibVersions();
 };
 
 typedef QSharedPointer<Library> LibraryPtr;

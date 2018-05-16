@@ -98,3 +98,6 @@ android: {
     }
 }
 
+DISTFILES += \
+    resource/image/black/hyperlink@4x.png
+

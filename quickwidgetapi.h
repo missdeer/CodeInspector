@@ -76,32 +76,6 @@ public:
 
     void setLibs(LibraryListPtr libs);
     QQmlListProperty<Library>  libs();
-
-    void appendLib(Library* p) {
-        qDebug() << __FUNCTION__;
-    }
-
-    int libCount() const
-    {
-        qDebug() << __FUNCTION__ << m_libs;
-        if (!m_libs)
-            return 0;
-        return m_libs->length();
-    }
-
-    Library *lib(int index) const
-    {
-        qDebug() << __FUNCTION__ << m_libs;
-        if (!m_libs)
-            return nullptr;
-        if (index >= m_libs->length())
-            return nullptr;
-        return m_libs->at(index).data();
-    }
-
-    void clearLibs() {
-        qDebug() << __FUNCTION__;
-    }
 signals:
     void doCloseConfiguration();
     void doLoadExample(const QString& name);
@@ -145,25 +119,15 @@ private:
     QStringList m_examples;
     LibraryListPtr m_libs;
 
-    static void appendLib(QQmlListProperty<Library>* list, Library* p)
-    {
-        reinterpret_cast< QuickWidgetAPI* >(list->data)->appendLib(p);
-    }
+    static void appendLib(QQmlListProperty<Library>* list, Library* p);
+    static int libCount(QQmlListProperty<Library>* list);
+    static Library *lib(QQmlListProperty<Library>* list, int index);
+    static void clearLibs(QQmlListProperty<Library>* list);
 
-    static int libCount(QQmlListProperty<Library>* list)
-    {
-        return reinterpret_cast< QuickWidgetAPI* >(list->data)->libCount();
-    }
-
-    static Library *lib(QQmlListProperty<Library>* list, int index)
-    {
-        return reinterpret_cast< QuickWidgetAPI* >(list->data)->lib(index);
-    }
-
-    static void clearLibs(QQmlListProperty<Library>* list)
-    {
-        reinterpret_cast< QuickWidgetAPI* >(list->data)->clearLibs();
-    }
+    void appendLib(Library* p);
+    int libCount() const;
+    Library *lib(int index) const;
+    void clearLibs();
 };
 
 typedef QSharedPointer<QuickWidgetAPI> QuickWidgetAPIPtr;

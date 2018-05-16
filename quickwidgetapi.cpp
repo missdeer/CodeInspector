@@ -253,3 +253,43 @@ QQmlListProperty<Library> QuickWidgetAPI::libs()
                                      &QuickWidgetAPI::clearLibs
                                      );
 }
+
+void QuickWidgetAPI::appendLib(QQmlListProperty<Library> *list, Library *p)
+{
+    reinterpret_cast< QuickWidgetAPI* >(list->data)->appendLib(p);
+}
+
+int QuickWidgetAPI::libCount(QQmlListProperty<Library> *list)
+{
+    return reinterpret_cast< QuickWidgetAPI* >(list->data)->libCount();
+}
+
+Library *QuickWidgetAPI::lib(QQmlListProperty<Library> *list, int index)
+{
+    return reinterpret_cast< QuickWidgetAPI* >(list->data)->lib(index);
+}
+
+void QuickWidgetAPI::clearLibs(QQmlListProperty<Library> *list)
+{
+    reinterpret_cast< QuickWidgetAPI* >(list->data)->clearLibs();
+}
+
+void QuickWidgetAPI::appendLib(Library *) {}
+
+int QuickWidgetAPI::libCount() const
+{
+    if (!m_libs)
+        return 0;
+    return m_libs->length();
+}
+
+Library *QuickWidgetAPI::lib(int index) const
+{
+    if (!m_libs)
+        return nullptr;
+    if (index >= m_libs->length())
+        return nullptr;
+    return m_libs->at(index).data();
+}
+
+void QuickWidgetAPI::clearLibs() {}

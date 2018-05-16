@@ -145,7 +145,25 @@ void MainWindow::onNeedCompile()
     if (ci.source.isEmpty())
         return;
 
-    ci.userArguments = ui->edtCompilerOptions->text();
+    QStringList userArguments = {
+        ui->edtCompilerOptions->text(),
+    };
+    auto libs = m_backend.getLibraryList(ui->cbLanguageList->currentText());
+    for (auto lib : *libs)
+    {
+        auto versions = lib->getVersions();
+        for (auto ver : versions)
+        {
+            if (ver->getSelected())
+            {
+                auto paths = ver->getPath();
+                for (auto& path : paths)
+                    userArguments.append("-isystem"+path);
+            }
+        }
+    }
+
+    ci.userArguments = userArguments.join(" ");
     ci.binary = m_quickAPI->binary();
     ci.commentOnly = m_quickAPI->commentOnly();
     ci.labels = m_quickAPI->labels();
