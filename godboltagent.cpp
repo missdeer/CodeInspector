@@ -61,6 +61,8 @@ LibraryListPtr GodboltAgent::getLibraryList(const QString &languageName)
 {
     auto languageId = getLanguageId(languageName);
     auto it = m_libs.find(languageId);
+    if (m_libs.end() == it)
+        return nullptr;
     return it.value();
 }
 
@@ -69,6 +71,7 @@ CompilerPtr GodboltAgent::getCompiler(const QString &language, const QString &co
     auto compilerList = m_compilerMap.find(language).value();
     auto it = std::find_if(compilerList->begin(), compilerList->end(),
                            [&compiler](CompilerPtr c) { return c->name == compiler;});
+    Q_ASSERT(compilerList->end() != it);
     return *it;
 }
 

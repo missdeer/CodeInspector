@@ -215,6 +215,9 @@ void MainWindow::onCompiled()
 void MainWindow::onSwitchLanguage(const QString& name)
 {
     qDebug() << __FUNCTION__ << name;
+    if (name.isEmpty())
+        return;
+    
     m_codeEditor->clearContent();
     m_backend.switchLanguage(name);
 
@@ -224,6 +227,8 @@ void MainWindow::onSwitchLanguage(const QString& name)
     m_quickAPI->setExamples(files);
 
     auto libs = m_backend.getLibraryList(name);
+    if (!libs)
+        return;
     m_quickAPI->setLibs(libs);
 
     // language name, lexer name
