@@ -23,7 +23,7 @@ class QuickWidgetAPI : public QObject
     Q_PROPERTY(bool commentOnlyEnabled READ commentOnlyEnabled WRITE setCommentOnlyEnabled NOTIFY commentOnlyEnabledChanged)
     Q_PROPERTY(bool demangleEnabled READ demangleEnabled WRITE setDemangleEnabled NOTIFY demangleEnabledChanged)
     Q_PROPERTY(QStringList examples READ examples NOTIFY examplesChanged)
-    Q_PROPERTY(QQmlListProperty<Library> libs READ libs NOTIFY libsChanged)
+    Q_PROPERTY(QQmlListProperty<Library> libs READ qmlListPropertyLibs NOTIFY libsChanged)
 public:
     explicit QuickWidgetAPI(QObject *parent = nullptr);
     Q_INVOKABLE void closeConfiguration();
@@ -75,7 +75,8 @@ public:
     void setExamples(const QStringList &examples);
 
     void setLibs(LibraryListPtr libs);
-    QQmlListProperty<Library>  libs();
+    LibraryListPtr libs();
+    QQmlListProperty<Library>  qmlListPropertyLibs();
 signals:
     void doCloseConfiguration();
     void doLoadExample(const QString& name);

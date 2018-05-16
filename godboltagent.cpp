@@ -64,6 +64,14 @@ LibraryListPtr GodboltAgent::getLibraryList(const QString &languageName)
     return it.value();
 }
 
+CompilerPtr GodboltAgent::getCompiler(const QString &language, const QString &compiler)
+{
+    auto compilerList = m_compilerMap.find(language).value();
+    auto it = std::find_if(compilerList->begin(), compilerList->end(),
+                           [&compiler](CompilerPtr c) { return c->name == compiler;});
+    return *it;
+}
+
 void GodboltAgent::compile(const CompileInfo &ci)
 {
     CompilerListPtr compilerList = m_compilerMap.find(ci.language).value();
@@ -122,10 +130,12 @@ void GodboltAgent::compile(const CompileInfo &ci)
 
 bool GodboltAgent::canCompile(const QString& language, const QString& compiler)
 {
-    const CompilerList& compilerList = *m_compilerMap[language];
-    auto it = std::find_if(compilerList.begin(), compilerList.end(),
+    if (m_compilerMap.find(language) == m_compilerMap.end())
+        return false;
+    auto compilerList = m_compilerMap.find(language).value();
+    auto it = std::find_if(compilerList->begin(), compilerList->end(),
                            [&compiler](CompilerPtr c){ return c->name == compiler;});
-    return it != compilerList.end();
+    return it != compilerList->end();
 }
 
 void GodboltAgent::requestCompilerList(const QString &language)
@@ -394,6 +404,7 @@ bool GodboltAgent::parseCompilerListFromJSON(const QString& language, const QByt
         c->id = o["id"].toString();
         c->name = o["name"].toString();
         c->version = o["version"].toString();
+        c->includeFlag = o["includeFlag"].toString();
         c->supportsBinary = o["supportsBinary"].toBool();
         c->supportsExecute = o["supportsExecute"].toBool();
         c->supportsIntel = o["supportsIntel"].toBool();

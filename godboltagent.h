@@ -24,6 +24,7 @@ struct Compiler
     QString id;
     QString name;
     QString version;
+    QString includeFlag;
     bool supportsBinary;
     bool supportsExecute;
     bool supportsIntel;
@@ -93,6 +94,7 @@ public:
     LanguageList &getLanguageList();
     CompilerListPtr getCompilerList(const QString& languageName);
     LibraryListPtr getLibraryList(const QString& languageName);
+    CompilerPtr getCompiler(const QString& language, const QString& compiler);
     void compile(const CompileInfo& ci);
     bool canCompile(const QString &language, const QString &compiler);
     const QString& getCompileOutput() const;

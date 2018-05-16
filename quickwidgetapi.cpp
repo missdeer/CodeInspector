@@ -240,11 +240,16 @@ void QuickWidgetAPI::setExamples(const QStringList &examples)
 
 void QuickWidgetAPI::setLibs(LibraryListPtr libs)
 {
-    m_libs = libs;
+    m_libs.swap(libs);
     emit libsChanged();
 }
 
-QQmlListProperty<Library> QuickWidgetAPI::libs()
+LibraryListPtr QuickWidgetAPI::libs()
+{
+    return m_libs;
+}
+
+QQmlListProperty<Library> QuickWidgetAPI::qmlListPropertyLibs()
 {
     return QQmlListProperty<Library>(this, this,
                                      &QuickWidgetAPI::appendLib,

@@ -144,11 +144,11 @@ void MainWindow::onNeedCompile()
     ci.source = m_codeEditor->getText(m_codeEditor->textLength() + 1);
     if (ci.source.isEmpty())
         return;
-
+    CompilerPtr compiler = m_backend.getCompiler(ui->cbLanguageList->currentText(), ui->cbCompilerList->currentText());
     QStringList userArguments = {
         ui->edtCompilerOptions->text(),
     };
-    auto libs = m_backend.getLibraryList(ui->cbLanguageList->currentText());
+    auto libs = m_quickAPI->libs();
     for (auto lib : *libs)
     {
         auto versions = lib->getVersions();
@@ -158,7 +158,7 @@ void MainWindow::onNeedCompile()
             {
                 auto paths = ver->getPath();
                 for (auto& path : paths)
-                    userArguments.append("-isystem"+path);
+                    userArguments.append(compiler->includeFlag + path);
             }
         }
     }
