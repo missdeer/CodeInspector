@@ -815,13 +815,14 @@ bool GodboltAgent::loadConfiguration(QByteArray &content)
 
     QString path = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/configurations";
     if (!QFile::exists(path))
-        return false;
+        path = ":/resource/configurations";
     QFile f(path);
     if (!f.open(QIODevice::ReadOnly))
     {
         qDebug() << "open file " << path << " for reading failed";
         return false;
     }
+    qDebug() << "load configurations from" << path;
     content = f.readAll();
     f.close();
     return true;

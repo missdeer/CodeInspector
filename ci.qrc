@@ -616,5 +616,19 @@
         <file>resource/image/black/hyperlink.png</file>
         <file>resource/image/black/hyperlink@2x.png</file>
         <file>resource/image/black/hyperlink@3x.png</file>
+        <file>resource/example/analysis/basic.asm</file>
+        <file>resource/example/assembly/infiniteLoop.asm</file>
+        <file>resource/example/c/maxArray.c</file>
+        <file>resource/example/c/sumOverArray.c</file>
+        <file>resource/example/cppx/basic.cpp</file>
+        <file>resource/example/cppx/interface.cpp</file>
+        <file>resource/example/cuda/square.cu</file>
+        <file>resource/example/llvm/square.ll</file>
+        <file>resource/example/pascal/maxArray.pas</file>
+        <file>resource/example/pascal/square.pas</file>
+        <file>resource/example/pascal/sumOverArray.pas</file>
+        <file>resource/example/swift/maxArray.swift</file>
+        <file>resource/example/swift/sumOverArray.swift</file>
+        <file>resource/configurations</file>
     </qresource>
 </RCC>
