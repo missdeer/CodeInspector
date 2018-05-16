@@ -433,6 +433,8 @@ bool GodboltAgent::parseCompilerListFromJSON(const QString& language, const QByt
         c->supportsOptimizationOutput = o["supportsOptOutput"].toBool();
         c->supportsAstView = o["supportsAstView"].toBool();
         c->supportsCfg = o["supportsCfg"].toBool();
+        if (o["supportsGccDump"].isBool())
+            c->supportsGccDump = o["supportsGccDump"].toBool();
         newCompilerList->push_back(c);
         auto it = std::find_if(compilerList->begin(), compilerList->end(),
                                [&c](CompilerPtr compiler){
@@ -492,9 +494,16 @@ bool GodboltAgent::parseCompilerListFromConfiguration(QJsonArray &array)
         c->id = o["id"].toString();
         c->name = o["name"].toString();
         c->version = o["version"].toString();
+        c->includeFlag = o["includeFlag"].toString();
         c->supportsBinary = o["supportsBinary"].toBool();
         c->supportsExecute = o["supportsExecute"].toBool();
         c->supportsIntel = o["supportsIntel"].toBool();
+        c->supportsDemangle = o["supportsDemangle"].toBool();
+        c->supportsOptimizationOutput = o["supportsOptOutput"].toBool();
+        c->supportsAstView = o["supportsAstView"].toBool();
+        c->supportsCfg = o["supportsCfg"].toBool();
+        if (o["supportsGccDump"].isBool())
+            c->supportsGccDump = o["supportsGccDump"].toBool();
 
         auto it = std::find_if(compilerList->begin(), compilerList->end(),
                                [&c](CompilerPtr compiler){

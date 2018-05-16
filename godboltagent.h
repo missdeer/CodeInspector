@@ -32,6 +32,7 @@ struct Compiler
     bool supportsCfg;
     bool supportsAstView;
     bool supportsOptimizationOutput;
+    bool supportsGccDump;
 };
 
 typedef QSharedPointer<Compiler> CompilerPtr;
