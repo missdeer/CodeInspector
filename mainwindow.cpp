@@ -91,6 +91,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_quickAPI, &QuickWidgetAPI::demangleChanged, this, &MainWindow::onDelayCompile);
     connect(m_quickAPI, &QuickWidgetAPI::trimChanged, this, &MainWindow::onDelayCompile);
     connect(m_quickAPI, &QuickWidgetAPI::intelChanged, this, &MainWindow::onDelayCompile);
+    connect(m_quickAPI, &QuickWidgetAPI::doLibrarySwitched, this, &MainWindow::onDelayCompile);
     connect(m_quickAPI, &QuickWidgetAPI::doLoadExample, this, &MainWindow::onLoadSourceCode);
 
     onLanguageListRetrieved();

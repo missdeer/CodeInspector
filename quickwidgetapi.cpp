@@ -32,6 +32,11 @@ void QuickWidgetAPI::loadExample(int index)
     emit doLoadExample(name);
 }
 
+void QuickWidgetAPI::librarySwitched()
+{
+    emit doLibrarySwitched();
+}
+
 bool QuickWidgetAPI::binary() const
 {
     return m_binary;

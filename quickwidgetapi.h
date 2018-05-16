@@ -28,6 +28,7 @@ public:
     explicit QuickWidgetAPI(QObject *parent = nullptr);
     Q_INVOKABLE void closeConfiguration();
     Q_INVOKABLE void loadExample(int index);
+    Q_INVOKABLE void librarySwitched();
 
     bool binary() const;
     void setBinary(bool binary);
@@ -80,6 +81,7 @@ public:
 signals:
     void doCloseConfiguration();
     void doLoadExample(const QString& name);
+    void doLibrarySwitched();
 
     void binaryChanged();
     void labelsChanged();

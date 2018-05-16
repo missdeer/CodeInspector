@@ -71,6 +71,7 @@ Flickable {
                                 onCheckedChanged: {
                                     if (modelData.selected != checked)
                                         modelData.selected = checked
+                                    api.librarySwitched()
                                     if (checked){
                                         console.log("add: " + library.name + " : " +text + " - " + modelData.path)
                                     }else{
