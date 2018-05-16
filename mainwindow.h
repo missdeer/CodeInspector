@@ -27,8 +27,9 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 private slots:
-    void onCompilerListRetrieved();
-    void onLanguageListRetrieved();
+    void onCompilerListReady();
+    void onLanguageListReady();
+    void onConfigurationReady();
     void onNeedCompile();
     void onCompiled();
     void onSwitchLanguage(const QString &name);

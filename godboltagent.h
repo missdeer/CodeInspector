@@ -91,6 +91,8 @@ class GodboltAgent : public QObject
 public:
     explicit GodboltAgent(QObject *parent = nullptr);
     ~GodboltAgent();
+
+    void initialize();
     LanguageList &getLanguageList();
     CompilerListPtr getCompilerList(const QString& languageName);
     LibraryListPtr getLibraryList(const QString& languageName);
@@ -98,16 +100,14 @@ public:
     void compile(const CompileInfo& ci);
     bool canCompile(const QString &language, const QString &compiler);
     const QString& getCompileOutput() const;
-
     const QString& getAsmContent() const;
-
     const AsmItemList &getAsmItems() const;
-
     const QString& getExample(const QString& language) const;
     const QString& getDefaultCompilerName(const QString& languageName);
 signals:
-    void compilerListRetrieved();
-    void languageListRetrieved();
+    void compilerListReady();
+    void languageListReady();
+    void configurationReady();
     void compiled();
 public slots:
     void switchLanguage(const QString& name);

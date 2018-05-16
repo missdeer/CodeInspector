@@ -77,8 +77,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(m_btnToggleOutput, &QPushButton::clicked, [&]{m_output->setVisible(!m_output->isVisible());});
     connect(m_timer, &QTimer::timeout, this, &MainWindow::onNeedCompile);
-    connect(&m_backend, &GodboltAgent::compilerListRetrieved, this, &MainWindow::onCompilerListRetrieved);
-    connect(&m_backend, &GodboltAgent::languageListRetrieved, this, &MainWindow::onLanguageListRetrieved);
+    connect(&m_backend, &GodboltAgent::compilerListReady, this, &MainWindow::onCompilerListReady);
+    connect(&m_backend, &GodboltAgent::languageListReady, this, &MainWindow::onLanguageListReady);
+    connect(&m_backend, &GodboltAgent::configurationReady, this, &MainWindow::onConfigurationReady);
     connect(&m_backend, &GodboltAgent::compiled, this, &MainWindow::onCompiled);
     connect(ui->cbLanguageList, SIGNAL(currentIndexChanged(QString)), this, SLOT(onSwitchLanguage(const QString&)));
     connect(ui->cbCompilerList, SIGNAL(currentIndexChanged(QString)), this, SLOT(onSwitchCompiler(const QString&)));
@@ -97,10 +98,10 @@ MainWindow::MainWindow(QWidget *parent) :
     qmlRegisterType<Library>("com.dfordsoft.codeinspector", 1, 0, "Library");
     qmlRegisterType<LibraryVersion>("com.dfordsoft.codeinspector", 1, 0, "LibraryVersion");
 
-    onLanguageListRetrieved();
-
     m_btnToggleOutput->setVisible(false);
     m_output->setVisible(false);
+
+    m_backend.initialize();
 }
 
 MainWindow::~MainWindow()
@@ -113,7 +114,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::onCompilerListRetrieved()
+void MainWindow::onCompilerListReady()
 {
     auto cl = m_backend.getCompilerList(ui->cbLanguageList->currentText());
     ui->cbCompilerList->clear();
@@ -123,7 +124,7 @@ void MainWindow::onCompilerListRetrieved()
     }
 }
 
-void MainWindow::onLanguageListRetrieved()
+void MainWindow::onLanguageListReady()
 {
     auto ll = m_backend.getLanguageList();
     if (ll.empty())
@@ -136,6 +137,17 @@ void MainWindow::onLanguageListRetrieved()
     }
 
     ui->cbLanguageList->setCurrentIndex(0);
+}
+
+void MainWindow::onConfigurationReady()
+{
+    QString name = ui->cbLanguageList->currentText();
+    if (name.isEmpty())
+        return;
+    auto libs = m_backend.getLibraryList(name);
+    if (!libs)
+        return;
+    m_quickAPI->setLibs(libs);
 }
 
 void MainWindow::onNeedCompile()
@@ -153,16 +165,19 @@ void MainWindow::onNeedCompile()
         ui->edtCompilerOptions->text(),
     };
     auto libs = m_quickAPI->libs();
-    for (auto lib : *libs)
+    if (libs)
     {
-        auto versions = lib->getVersions();
-        for (auto ver : versions)
+        for (auto lib : *libs)
         {
-            if (ver->getSelected())
+            auto versions = lib->getVersions();
+            for (auto ver : versions)
             {
-                auto paths = ver->getPath();
-                for (auto& path : paths)
-                    userArguments.append(compiler->includeFlag + path);
+                if (ver->getSelected())
+                {
+                    auto paths = ver->getPath();
+                    for (auto& path : paths)
+                        userArguments.append(compiler->includeFlag + path);
+                }
             }
         }
     }
@@ -227,9 +242,8 @@ void MainWindow::onSwitchLanguage(const QString& name)
     m_quickAPI->setExamples(files);
 
     auto libs = m_backend.getLibraryList(name);
-    if (!libs)
-        return;
-    m_quickAPI->setLibs(libs);
+    if (libs)
+        m_quickAPI->setLibs(libs);
 
     // language name, lexer name
     QMap<QString, QString> lexerMap = {

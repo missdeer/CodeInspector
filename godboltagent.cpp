@@ -5,14 +5,18 @@
 GodboltAgent::GodboltAgent(QObject *parent)
     : QObject(parent)
 {
-    QByteArray content;
-    if (loadConfiguration(content))
-        parseConfiguration(content);
-    requestConfigurations();
 }
 
 GodboltAgent::~GodboltAgent()
 {
+}
+
+void GodboltAgent::initialize()
+{
+    QByteArray content;
+    if (loadConfiguration(content))
+        parseConfiguration(content);
+    requestConfigurations();
 }
 
 void GodboltAgent::requestLanguageList()
@@ -160,7 +164,7 @@ void GodboltAgent::switchLanguage(const QString &language)
     auto it = m_compilerMap.find(language);
     if (m_compilerMap.end() != it && !it.value()->isEmpty())
     {
-        emit compilerListRetrieved();
+        emit compilerListReady();
         return;
     }
     m_compilerMap.insert(language, CompilerListPtr(new CompilerList));
@@ -322,17 +326,19 @@ void GodboltAgent::onCompileRequestFinished()
 
 void GodboltAgent::onLanguageListRequestFinished()
 {
+    qDebug() << __FUNCTION__;
     NetworkReplyHelper* reply = qobject_cast<NetworkReplyHelper*>(sender());
     reply->deleteLater();
 
     QByteArray& content = reply->content();
     storeLanguageList(content);
     if (parseLanguageListFromJSON(content))
-        emit languageListRetrieved();
+        emit languageListReady();
 }
 
 void GodboltAgent::onConfigurationRequestFinished()
 {
+    qDebug() << __FUNCTION__;
     NetworkReplyHelper* reply = qobject_cast<NetworkReplyHelper*>(sender());
     reply->deleteLater();
 
@@ -350,10 +356,18 @@ void GodboltAgent::onConfigurationRequestFinished()
 
 bool GodboltAgent::storeCompilerList(const QString& name, const QByteArray &content)
 {
+    qDebug() << __FUNCTION__;
+
     QString d = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/compilerlist";
     QDir dir(d);
     if (!dir.exists())
-        dir.mkpath(d);
+    {
+        if (!dir.mkpath(d))
+        {
+            qDebug() << "creating directory failed:" << d;
+            return false;
+        }
+    }
     QString path = QString("%1/%2").arg(d).arg(name);
     QFile f(path);
     if (!f.open(QIODevice::WriteOnly))
@@ -368,6 +382,8 @@ bool GodboltAgent::storeCompilerList(const QString& name, const QByteArray &cont
 
 bool GodboltAgent::loadCompilerList(const QString &name, QByteArray &content)
 {
+    qDebug() << __FUNCTION__;
+
     QString d = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
     QString path = QString("%1/compilerlist/%2").arg(d).arg(name);
     if (!QFile::exists(path))
@@ -382,6 +398,8 @@ bool GodboltAgent::loadCompilerList(const QString &name, QByteArray &content)
 
 bool GodboltAgent::parseCompilerListFromJSON(const QString& language, const QByteArray &content)
 {
+    qDebug() << __FUNCTION__;
+
     QJsonDocument doc = QJsonDocument::fromJson(content);
 
     if (!doc.isArray())
@@ -443,13 +461,15 @@ bool GodboltAgent::parseCompilerListFromJSON(const QString& language, const QByt
     }
 
     if (changed)
-        emit compilerListRetrieved();
+        emit compilerListReady();
 
     return true;
 }
 
 bool GodboltAgent::parseCompilerListFromConfiguration(QJsonArray &array)
 {
+    qDebug() << __FUNCTION__;
+
     CompilerListPtr compilerList;
     for ( auto a : array)
     {
@@ -491,7 +511,19 @@ bool GodboltAgent::parseCompilerListFromConfiguration(QJsonArray &array)
 
 bool GodboltAgent::storeLanguageList(const QByteArray &content)
 {
-    QString path = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/languages";
+    qDebug() << __FUNCTION__;
+
+    QString d = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) ;
+    QDir dir(d);
+    if (!dir.exists())
+    {
+        if (!dir.mkpath(d))
+        {
+            qDebug() << "creating directory failed:" << d;
+            return false;
+        }
+    }
+    QString path = d + "/languages";
     QFile f(path);
     if (!f.open(QIODevice::WriteOnly))
     {
@@ -505,6 +537,8 @@ bool GodboltAgent::storeLanguageList(const QByteArray &content)
 
 bool GodboltAgent::loadLanguageList(QByteArray &content)
 {
+    qDebug() << __FUNCTION__;
+
     QString path = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/languages";
     if (!QFile::exists(path))
         return false;
@@ -521,6 +555,8 @@ bool GodboltAgent::loadLanguageList(QByteArray &content)
 
 bool GodboltAgent::parseLanguageListFromJSON(const QByteArray &content)
 {
+    qDebug() << __FUNCTION__;
+
     QJsonDocument doc = QJsonDocument::fromJson(content);
 
     if (!doc.isArray())
@@ -575,6 +611,8 @@ bool GodboltAgent::parseLanguageListFromJSON(const QByteArray &content)
 
 bool GodboltAgent::parseLanguageListFromConfiguration(QJsonObject &obj)
 {
+    qDebug() << __FUNCTION__;
+
     m_languageList.clear();
     for (auto v : obj)
     {
@@ -617,6 +655,8 @@ bool GodboltAgent::parseLanguageListFromConfiguration(QJsonObject &obj)
 
 bool GodboltAgent::parseLibListFromConfiguration(QJsonObject &obj)
 {
+    qDebug() << __FUNCTION__;
+
     m_libs.clear();
     auto languagesId = obj.keys();
     for (auto& language : languagesId)
@@ -678,6 +718,8 @@ bool GodboltAgent::parseLibListFromConfiguration(QJsonObject &obj)
 
 bool GodboltAgent::parseDefaultCompilerFromConfiguration(QJsonObject &obj)
 {
+    qDebug() << __FUNCTION__;
+
     auto languages = obj.keys();
     m_defaultCompiler.clear();
     for (auto l : languages)
@@ -692,6 +734,7 @@ const QString &GodboltAgent::getLanguageId(const QString &name)
 {
     auto it = std::find_if(m_languageList.begin(), m_languageList.end(),
                            [&name](LanguagePtr l) { return l->name == name;});
+    Q_ASSERT(m_languageList.end() != it);
     return (*it)->id;
 }
 
@@ -699,6 +742,7 @@ const QString &GodboltAgent::getLanguageName(const QString &id)
 {
     auto it = std::find_if(m_languageList.begin(), m_languageList.end(),
                            [&id](LanguagePtr l) { return l->id == id;});
+    Q_ASSERT(m_languageList.end() != it);
     return (*it)->name;
 }
 
@@ -706,6 +750,7 @@ const QString &GodboltAgent::getCompilerId(CompilerListPtr compilerList, const Q
 {
     auto it = std::find_if(compilerList->begin(), compilerList->end(),
                            [&name](CompilerPtr c) { return c->name == name;});
+    Q_ASSERT(compilerList->end() != it);
     return (*it)->id;
 }
 
@@ -728,7 +773,7 @@ const QString &GodboltAgent::getDefaultCompilerName(const QString &languageName)
 
 void GodboltAgent::requestConfigurations()
 {
-    qDebug() << "request configurations";
+    qDebug() << __FUNCTION__;
     QString requestUrl = "https://godbolt.org/";
     QNetworkRequest request(requestUrl);
     request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
@@ -741,7 +786,18 @@ void GodboltAgent::requestConfigurations()
 
 bool GodboltAgent::storeConfiguration(const QByteArray &content)
 {
-    QString path = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/configurations";
+    qDebug() << __FUNCTION__;
+    QString d = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+    QDir dir(d);
+    if (!dir.exists())
+    {
+        if (!dir.mkpath(d))
+        {
+            qDebug() << "creating directory failed:" << d;
+            return false;
+        }
+    }
+    QString path = d + "/configurations";
     QFile f(path);
     if (!f.open(QIODevice::WriteOnly))
     {
@@ -755,6 +811,8 @@ bool GodboltAgent::storeConfiguration(const QByteArray &content)
 
 bool GodboltAgent::loadConfiguration(QByteArray &content)
 {
+    qDebug() << __FUNCTION__;
+
     QString path = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/configurations";
     if (!QFile::exists(path))
         return false;
@@ -771,6 +829,8 @@ bool GodboltAgent::loadConfiguration(QByteArray &content)
 
 bool GodboltAgent::parseConfiguration(const QByteArray &content)
 {
+    qDebug() << __FUNCTION__;
+
     QJsonDocument doc = QJsonDocument::fromJson(content);
     if (!doc.isObject())
     {
@@ -779,15 +839,20 @@ bool GodboltAgent::parseConfiguration(const QByteArray &content)
     }
 
     QJsonObject obj = doc.object();
-//    QJsonObject languages = obj["languages"].toObject();
-//    bool ret = parseLanguageListFromConfiguration(languages);
+    QJsonObject languages = obj["languages"].toObject();
+    bool ret = parseLanguageListFromConfiguration(languages);
+    if (ret)
+        emit languageListReady();
     QJsonObject libs = obj["libs"].toObject();
-    bool ret = parseLibListFromConfiguration(libs);
-//    QJsonArray compilers = obj["compilers"].toArray();
-//    ret &= parseCompilerListFromConfiguration(compilers);
+    ret &= parseLibListFromConfiguration(libs);
+    QJsonArray compilers = obj["compilers"].toArray();
+    ret &= parseCompilerListFromConfiguration(compilers);
+    if (ret)
+        emit compilerListReady();
     QJsonObject defaultCompiler = obj["defaultCompiler"].toObject();
     ret &= parseDefaultCompilerFromConfiguration(defaultCompiler);
-
+    if (ret)
+        emit configurationReady();
     return ret;
 }
 
@@ -800,8 +865,8 @@ const QString &GodboltAgent::getExample(const QString &language) const
 {
     auto it = std::find_if(m_languageList.begin(), m_languageList.end(),
                            [&language](LanguagePtr l) { return l->name == language;});
-
-    //qDebug() << "get example:" << (*it)->example;
+    Q_ASSERT(m_languageList.end() != it);
+    qDebug() << "get example:" << (*it)->example;
     return (*it)->example;
 }
 
