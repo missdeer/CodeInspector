@@ -47,7 +47,7 @@ Flickable {
                     leftPadding: 10
                     rightPadding: 10
                     wrapMode: Text.WordWrap
-                    text: qsTr("Homepage: <a href='https://www.codeinspector.com'>https://www.codeinspector.com</a>\n")
+                    text: qsTr("Homepage: <a href='https://www.dfordsoft.com/codeinspector/'>https://www.dfordsoft.com/codeinspector/</a>\n")
                     onLinkActivated: Qt.openUrlExternally(link)
                 }
             }
@@ -57,7 +57,7 @@ Flickable {
                     leftPadding: 10
                     rightPadding: 10
                     wrapMode: Text.WordWrap
-                    text: qsTr("Twitter: <a href='https://twitter.com/missdeerme'>@missdeerme</a>\n")
+                    text: qsTr("Twitter: <a href='https://twitter.com/dfordsoft'>@dfordsoft</a>\n")
                     onLinkActivated: Qt.openUrlExternally(link)
                 }
             }
@@ -67,7 +67,7 @@ Flickable {
                     leftPadding: 10
                     rightPadding: 10
                     wrapMode: Text.WordWrap
-                    text: qsTr("Email: <a href='mailto:missdeer@gmail.com'>missdeer@gmail.com</a>\n")
+                    text: qsTr("Email: <a href='mailto:missdeer@dfordsoft.com'>missdeer@dfordsoft.com</a>\n")
                     onLinkActivated: Qt.openUrlExternally(link)
                 }
             }

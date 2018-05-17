@@ -191,8 +191,8 @@ void MainWindow::onLanguageListReady()
         languages.append(l->name);
     }
 
-    ui->cbLanguageList->setCurrentIndex(m_quickAPI->defaultLanguageIndex());
     m_quickAPI->setLanguages(languages);
+    ui->cbLanguageList->setCurrentIndex(m_quickAPI->defaultLanguageIndex());
 }
 
 void MainWindow::onConfigurationReady()
