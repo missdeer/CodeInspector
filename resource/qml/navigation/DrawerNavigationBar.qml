@@ -46,7 +46,7 @@ Drawer {
                         leftPadding: 16
                         rightPadding: 16
                         LabelBody {
-                            text: "CodeInspector"
+                            text: "ToAsm"
                             font.weight: Font.Medium
                             font.pixelSize: 16
                             color: textOnPrimaryLight
@@ -67,13 +67,13 @@ Drawer {
                     x: 16
                     y: 12
 //                    IconColored {
-//                        imageName: "codeinspector.png"
+//                        imageName: "toasm.png"
 //                        imageSize: 48
 //                        color: textOnPrimaryLight
 //                    }
                     Image {
                         anchors.fill: parent
-                        source: "qrc:/resource/image/black/x48/codeinspector.png"
+                        source: "qrc:/resource/image/black/x48/toasm.png"
                     }
                 }
             }

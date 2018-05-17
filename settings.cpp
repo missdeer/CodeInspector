@@ -20,7 +20,7 @@ void Settings::initialize()
 
 void Settings::save()
 {
-    QSettings settings(QSettings::IniFormat, QSettings::UserScope, "dfordsoft.com", "CodeInspector");
+    QSettings settings;
     settings.setValue("codeEditorFontFamily", m_codeEditorFontFamily);
     settings.setValue("codeEditorTheme", m_codeEditorTheme);
     settings.setValue("codeInspectorFontFamily", m_codeInspectorFontFamily);
@@ -30,7 +30,7 @@ void Settings::save()
 
 void Settings::load()
 {
-    QSettings settings(QSettings::IniFormat, QSettings::UserScope, "dfordsoft.com", "CodeInspector");
+    QSettings settings;
     m_codeEditorFontFamily = settings.value("codeEditorFontFamily", QVariant("Source Code Pro")).toString();
     m_codeEditorTheme = settings.value("codeEditorTheme", QVariant("Default")).toString();
     m_codeInspectorFontFamily = settings.value("codeInspectorFontFamily", QVariant("Source Code Pro")).toString();

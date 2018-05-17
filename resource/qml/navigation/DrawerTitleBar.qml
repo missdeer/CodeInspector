@@ -29,7 +29,7 @@ ToolBar {
         }
         LabelTitle {
             id: titleLabel
-            text: "CodeInspector"
+            text: "ToAsm"
             leftPadding: 6
             rightPadding: 6
             elide: Label.ElideRight

@@ -45,7 +45,7 @@ Flickable {
                         anchors.fill: parent
                         // anchors.verticalCenterOffset: -50
                         fillMode: Image.PreserveAspectFit
-                        source: "qrc:/codeinspector.png"
+                        source: "qrc:/toasm.png"
                     }
                     MouseArea {
                         anchors.fill: parent

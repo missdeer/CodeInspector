@@ -3,15 +3,15 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleDisplayName</key>
-    <string>CodeInspector</string>
+    <string>ToAsm</string>
     <key>CFBundleDevelopmentRegion</key>
     <string>en-US</string>
     <key>CFBundleExecutable</key>
-    <string>CodeInspector</string>
+    <string>ToAsm</string>
     <key>CFBundleGetInfoString</key>
     <string>Created by Qt/QMake</string>
     <key>CFBundleIdentifier</key>
-    <string>com.dfordsoft.codeinspector.full</string>
+    <string>com.dfordsoft.toasm.full</string>
     <key>CFBundleName</key>
     <string>${PRODUCT_NAME}</string>
     <key>CFBundlePackageType</key>

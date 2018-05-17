@@ -3,7 +3,7 @@ QT       += core gui widgets xml network concurrent sql qml quickwidgets widgets
 lessThan(QT_MAJOR_VERSION, 5): error("Qt 5 is required")
 greaterThan(QT_MINOR_VERSION, 10): CONFIG += qmlcompiler
 
-TARGET = CodeInspector
+TARGET = ToAsm
 TEMPLATE = app
 CONFIG += c++11 precompile_header
 PRECOMPILED_HEADER = stdafx.h
@@ -19,7 +19,7 @@ DEFINES += QT_DEPRECATED_WARNINGS SCINTILLA_QT=1 SCI_LEXER=1 _CRT_SECURE_NO_DEPR
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-RC_FILE = codeinspector.rc
+RC_FILE = toasm.rc
 
 SOURCES += \
     main.cpp \
@@ -62,7 +62,7 @@ CONFIG += mobility
 MOBILITY = 
 
 RESOURCES += \
-    ci.qrc
+    toasm.qrc
 
 win32-msvc* {
     QMAKE_LFLAGS += "/LTCG"
@@ -70,7 +70,7 @@ win32-msvc* {
     QMAKE_LFLAGS_RELEASE += /DEBUG
 }
 macx: {
-    ICON = codeinspector.icns
+    ICON = toasm.icns
     icon.path = $$PWD
     INSTALLS += icon
 }
@@ -99,5 +99,10 @@ android: {
 }
 
 DISTFILES += \
-    resource/image/black/hyperlink@4x.png
+    resource/qml/*.qml \
+    resource/qml/pages/*.qml \
+    resource/qml/common/*.qml \
+    resource/qml/navigation/*.qml \
+    resource/qml/popups/*.qml \
+    resource/qml/tabs/*.qml\
 

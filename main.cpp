@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
     QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps, true);
 
-    QApplication::setApplicationName("CodeInspector");
+    QApplication::setApplicationName("ToAsm");
     QApplication::setApplicationVersion("1.0");
 
     QApplication a(argc, argv);

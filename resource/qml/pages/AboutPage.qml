@@ -39,7 +39,7 @@ Flickable {
                     leftPadding: 10
                     rightPadding: 10
                     wrapMode: Text.WordWrap
-                    text: qsTr("Copyright (C) 2017 - 2018 CodeInspector. All rights reserved.")                }
+                    text: qsTr("Copyright (C) 2017 - 2018 ToAsm. All rights reserved.")                }
             }
             RowLayout {
                 LabelSubheading {
@@ -47,7 +47,7 @@ Flickable {
                     leftPadding: 10
                     rightPadding: 10
                     wrapMode: Text.WordWrap
-                    text: qsTr("Homepage: <a href='https://www.dfordsoft.com/codeinspector/'>https://www.dfordsoft.com/codeinspector/</a>\n")
+                    text: qsTr("Homepage: <a href='https://toasm.app/'>https://toasm.app/</a>\n")
                     onLinkActivated: Qt.openUrlExternally(link)
                 }
             }

@@ -112,7 +112,7 @@ Item {
         {"type": "../navigation/DrawerNavigationButton.qml", "name": "Libraries", "icon": "libraries.png", "source": "../pages/LibrariesPage.qml", "showCounter":false, "showMarker":false, "a_p":3},
         {"type": "../navigation/DrawerNavigationButton.qml", "name": "Preferences", "icon": "preferences.png", "source": "../pages/PreferencesPage.qml", "showCounter":false, "showMarker":false, "a_p":3},
         {"type": "../navigation/DrawerDivider.qml", "name": "", "icon": "", "source": "", "a_p":1},
-        {"type": "../navigation/DrawerNavigationButton.qml", "name": "About", "icon": "codeinspector.png", "source": "../pages/AboutPage.qml", "showCounter":false, "showMarker":false, "a_p":3},
+        {"type": "../navigation/DrawerNavigationButton.qml", "name": "About", "icon": "toasm.png", "source": "../pages/AboutPage.qml", "showCounter":false, "showMarker":false, "a_p":3},
         {"type": "../navigation/DrawerNavigationButton.qml", "name": "Return", "icon": "return.png", "source": "", "showCounter":false, "showMarker":false, "a_p":3}
     ]
     // Counter: Car
@@ -158,7 +158,7 @@ Item {
         source: "navigation/DrawerTitleBar.qml"
         onLoaded: {
             if(item) {
-                item.text = qsTr("CodeInspector")
+                item.text = qsTr("ToAsm")
             }
         }
     }
@@ -174,7 +174,7 @@ Item {
         source: "navigation/DrawerTitleBar.qml"
         onLoaded: {
             if(item) {
-                item.text = qsTr("CodeInspector")
+                item.text = qsTr("ToAsm")
             }
         }
     }
