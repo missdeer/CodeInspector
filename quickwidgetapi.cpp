@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include <QSettings>
 #include "quickwidgetapi.h"
 
 QuickWidgetAPI::QuickWidgetAPI(QObject *parent)
@@ -17,12 +18,16 @@ QuickWidgetAPI::QuickWidgetAPI(QObject *parent)
     , m_commentOnlyEnabled(true)
     , m_demangle(true)
     , m_demangleEnabled(true)
-    , m_rememberLastSession(true)
-    , m_defaultLanguageIndex(0)
-    , m_autoRefreshInterval(1500)
-    , m_editorZoomFactor(100)
 {
-
+    QSettings settings;
+    m_rememberLastSession = settings.value("rememberLastSession", true).toBool();
+    m_defaultLanguageIndex = settings.value("defaultLanguageIndex", 0).toInt();
+#if defined(Q_OS_IOS) || defined(Q_OS_ANDROID)
+    m_autoRefreshInterval = settings.value("autoRefreshInterval", 1500).toInt();
+#else
+    m_autoRefreshInterval = settings.value("autoRefreshInterval", 750).toInt();
+#endif
+    m_editorZoomFactor = settings.value("editorZoomFactor", 100).toInt();
 }
 
 void QuickWidgetAPI::closeConfiguration()
@@ -293,7 +298,10 @@ bool QuickWidgetAPI::rememberLastSession() const
 }
 
 void QuickWidgetAPI::setRememberLastSession(bool rememberLastSession)
-{
+{    
+    QSettings settings;
+    settings.setValue("rememberLastSession", rememberLastSession);
+    settings.sync();
     m_rememberLastSession = rememberLastSession;
     emit rememberLastSessionChanged();
 }
@@ -305,6 +313,9 @@ int QuickWidgetAPI::autoRefreshInterval() const
 
 void QuickWidgetAPI::setAutoRefreshInterval(int autoRefreshInterval)
 {
+    QSettings settings;
+    settings.setValue("autoRefreshInterval", autoRefreshInterval);
+    settings.sync();
     m_autoRefreshInterval = autoRefreshInterval;
     emit autoRefreshIntervalChanged();
 }
@@ -316,6 +327,9 @@ int QuickWidgetAPI::editorZoomFactor() const
 
 void QuickWidgetAPI::setEditorZoomFactor(int editorZoomFactor)
 {
+    QSettings settings;
+    settings.setValue("editorZoomFactor", editorZoomFactor);
+    settings.sync();
     m_editorZoomFactor = editorZoomFactor;
     emit editorZoomFactorChanged();
 }
@@ -327,6 +341,9 @@ int QuickWidgetAPI::defaultLanguageIndex() const
 
 void QuickWidgetAPI::setDefaultLanguageIndex(int defaultLanguageIndex)
 {
+    QSettings settings;
+    settings.setValue("defaultLanguageIndex", defaultLanguageIndex);
+    settings.sync();
     m_defaultLanguageIndex = defaultLanguageIndex;
     emit defaultLanguageIndexChanged();
 }

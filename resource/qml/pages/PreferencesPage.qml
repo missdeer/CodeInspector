@@ -65,31 +65,14 @@ Flickable {
                     leftPadding: 10
                     rightPadding: 10
                     wrapMode: Text.WordWrap
-                    text: "Auto refresh interval(sec)"
+                    text: "Auto refresh interval(ms)"
                 }
                 SpinBox {
                     id: sbAutoRefreshInterval
                     value: api.autoRefreshInterval
                     from: 500
                     to: 5000
-                    stepSize: 100
-
-                    property int decimals: 1
-                    property real realValue: value / 1000
-
-                    validator: DoubleValidator {
-                        bottom: Math.min(sbAutoRefreshInterval.from, sbAutoRefreshInterval.to)
-                        top:  Math.max(sbAutoRefreshInterval.from, sbAutoRefreshInterval.to)
-                    }
-
-                    textFromValue: function(value, locale) {
-                        return Number(value / 1000).toLocaleString(locale, 'f', sbAutoRefreshInterval.decimals)
-                    }
-
-                    valueFromText: function(text, locale) {
-                        return Number.fromLocaleString(locale, text) * 1000
-                    }
-
+                    stepSize: 50
                     onValueChanged: api.autoRefreshInterval = value
                 }
             }
@@ -107,7 +90,6 @@ Flickable {
                     from: 50
                     to: 1000
                     stepSize: 10
-
                     onValueChanged: api.editorZoomFactor = value
                 }
             }

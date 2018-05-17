@@ -36,6 +36,7 @@ private slots:
     void onSwitchCompiler(const QString &name);
     void onDelayCompile();
     void onLoadSourceCode(const QString &content);
+    void onEditorZoomFactorChanged();
     void on_btnConfiguration_clicked();
 private:
     Ui::MainWindow *ui;

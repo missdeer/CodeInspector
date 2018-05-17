@@ -94,6 +94,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_quickAPI, &QuickWidgetAPI::intelChanged, this, &MainWindow::onDelayCompile);
     connect(m_quickAPI, &QuickWidgetAPI::doLibrarySwitched, this, &MainWindow::onDelayCompile);
     connect(m_quickAPI, &QuickWidgetAPI::doLoadExample, this, &MainWindow::onLoadSourceCode);
+    connect(m_quickAPI, &QuickWidgetAPI::editorZoomFactorChanged, this, &MainWindow::onEditorZoomFactorChanged);
 
     qmlRegisterType<Library>("com.dfordsoft.codeinspector", 1, 0, "Library");
     qmlRegisterType<LibraryVersion>("com.dfordsoft.codeinspector", 1, 0, "LibraryVersion");
@@ -102,6 +103,24 @@ MainWindow::MainWindow(QWidget *parent) :
     m_output->setVisible(false);
 
     m_backend.initialize();
+    if (m_quickAPI->rememberLastSession())
+    {
+        CompileInfo ci;
+        if (restoreFromCache("lastSession", ci))
+        {
+            m_codeEditor->setContent(ci.source);
+            ui->edtCompilerOptions->setText(ci.userArguments);
+            m_quickAPI->setBinary(ci.binary);
+            m_quickAPI->setCommentOnly(ci.commentOnly);
+            m_quickAPI->setLabels(ci.labels);
+            m_quickAPI->setTrim(ci.trim);
+            m_quickAPI->setDirectives(ci.directives);
+            m_quickAPI->setIntel(ci.intel);
+            m_quickAPI->setDemangle(ci.demangle);
+            ui->cbLanguageList->setCurrentText(ci.language);
+            ui->cbCompilerList->setCurrentText(ci.compiler);
+        }
+    }
 }
 
 MainWindow::~MainWindow()
@@ -172,7 +191,7 @@ void MainWindow::onLanguageListReady()
         languages.append(l->name);
     }
 
-    ui->cbLanguageList->setCurrentIndex(0);
+    ui->cbLanguageList->setCurrentIndex(m_quickAPI->defaultLanguageIndex());
     m_quickAPI->setLanguages(languages);
 }
 
@@ -237,6 +256,7 @@ void MainWindow::onNeedCompile()
     m_codeInspector->setContent(tr("<Compiling...>"), m_quickAPI->binary());
 
     storeToCache(ci.language, ci);
+    storeToCache("lastSession", ci);
     qDebug() << "store:" << ci.compiler;
 }
 
@@ -356,11 +376,7 @@ void MainWindow::onDelayCompile()
         m_timer->stop();
 
     m_timer->setSingleShot(true);
-#if defined(Q_OS_IOS) || defined(Q_OS_ANDROID)
-    m_timer->start(1500);
-#else
-    m_timer->start(750);
-#endif
+    m_timer->start(m_quickAPI->autoRefreshInterval());
 }
 
 void MainWindow::onLoadSourceCode(const QString &name)
@@ -372,6 +388,15 @@ void MainWindow::onLoadSourceCode(const QString &name)
     f.close();
     Q_ASSERT(m_codeEditor);
     m_codeEditor->setContent(QString(c));
+}
+
+void MainWindow::onEditorZoomFactorChanged()
+{
+    Q_ASSERT(m_codeEditor);
+    Q_ASSERT(m_codeInspector);
+    int zoomFactor = m_quickAPI->editorZoomFactor();
+    m_codeEditor->setZoom((zoomFactor - 100)/10);
+    m_codeInspector->setZoom((zoomFactor - 100)/10);
 }
 
 void MainWindow::storeToCache(const QString &name, const CompileInfo &ci)
