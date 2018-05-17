@@ -23,7 +23,24 @@ public:
     const QString & codeInspectorTheme() const;
     void setCodeInspectorTheme(const QString &codeInspectorTheme);
 
+    bool rememberLastSession() const;
+    void setRememberLastSession(bool rememberLastSession);
+
+    int defaultLanguageIndex() const;
+    void setDefaultLanguageIndex(int defaultLanguageIndex);
+
+    int autoRefreshInterval() const;
+    void setAutoRefreshInterval(int autoRefreshInterval);
+
+    int editorZoomFactor() const;
+    void setEditorZoomFactor(int editorZoomFactor);
+
 private:
+    bool m_rememberLastSession;
+    int m_defaultLanguageIndex;
+    int m_autoRefreshInterval; // millisecond
+    int m_editorZoomFactor; // percent
+
     QString m_codeEditorFontFamily;
     QString m_codeEditorTheme;
     QString m_codeInspectorFontFamily;

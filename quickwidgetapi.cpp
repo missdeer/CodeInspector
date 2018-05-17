@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include <QSettings>
+#include "settings.h"
 #include "quickwidgetapi.h"
 
 QuickWidgetAPI::QuickWidgetAPI(QObject *parent)
@@ -19,15 +20,6 @@ QuickWidgetAPI::QuickWidgetAPI(QObject *parent)
     , m_demangle(true)
     , m_demangleEnabled(true)
 {
-    QSettings settings;
-    m_rememberLastSession = settings.value("rememberLastSession", true).toBool();
-    m_defaultLanguageIndex = settings.value("defaultLanguageIndex", 0).toInt();
-#if defined(Q_OS_IOS) || defined(Q_OS_ANDROID)
-    m_autoRefreshInterval = settings.value("autoRefreshInterval", 1500).toInt();
-#else
-    m_autoRefreshInterval = settings.value("autoRefreshInterval", 750).toInt();
-#endif
-    m_editorZoomFactor = settings.value("editorZoomFactor", 100).toInt();
 }
 
 void QuickWidgetAPI::closeConfiguration()
@@ -286,7 +278,7 @@ void QuickWidgetAPI::setLanguages(const QStringList &languages)
     {
         if (languages.at(i) == "C++")
         {
-            m_defaultLanguageIndex = i;
+            g_settings->setDefaultLanguageIndex(i);
             break;
         }
     }
@@ -294,57 +286,45 @@ void QuickWidgetAPI::setLanguages(const QStringList &languages)
 
 bool QuickWidgetAPI::rememberLastSession() const
 {
-    return m_rememberLastSession;
+    return g_settings->rememberLastSession();
 }
 
 void QuickWidgetAPI::setRememberLastSession(bool rememberLastSession)
-{    
-    QSettings settings;
-    settings.setValue("rememberLastSession", rememberLastSession);
-    settings.sync();
-    m_rememberLastSession = rememberLastSession;
+{
+    g_settings->setRememberLastSession(rememberLastSession);
     emit rememberLastSessionChanged();
 }
 
 int QuickWidgetAPI::autoRefreshInterval() const
 {
-    return m_autoRefreshInterval;
+    return g_settings->autoRefreshInterval();
 }
 
 void QuickWidgetAPI::setAutoRefreshInterval(int autoRefreshInterval)
 {
-    QSettings settings;
-    settings.setValue("autoRefreshInterval", autoRefreshInterval);
-    settings.sync();
-    m_autoRefreshInterval = autoRefreshInterval;
+    g_settings->setAutoRefreshInterval(autoRefreshInterval);
     emit autoRefreshIntervalChanged();
 }
 
 int QuickWidgetAPI::editorZoomFactor() const
 {
-    return m_editorZoomFactor;
+    return g_settings->editorZoomFactor();
 }
 
 void QuickWidgetAPI::setEditorZoomFactor(int editorZoomFactor)
 {
-    QSettings settings;
-    settings.setValue("editorZoomFactor", editorZoomFactor);
-    settings.sync();
-    m_editorZoomFactor = editorZoomFactor;
+    g_settings->setEditorZoomFactor(editorZoomFactor);
     emit editorZoomFactorChanged();
 }
 
 int QuickWidgetAPI::defaultLanguageIndex() const
 {
-    return m_defaultLanguageIndex;
+    return g_settings->defaultLanguageIndex();
 }
 
 void QuickWidgetAPI::setDefaultLanguageIndex(int defaultLanguageIndex)
 {
-    QSettings settings;
-    settings.setValue("defaultLanguageIndex", defaultLanguageIndex);
-    settings.sync();
-    m_defaultLanguageIndex = defaultLanguageIndex;
+    g_settings->setDefaultLanguageIndex(defaultLanguageIndex);
     emit defaultLanguageIndexChanged();
 }
 

@@ -5,6 +5,7 @@
 #include "codeeditor.h"
 #include "outputwindow.h"
 #include "qmldialog.h"
+#include "settings.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -103,7 +104,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_output->setVisible(false);
 
     m_backend.initialize();
-    if (m_quickAPI->rememberLastSession())
+    if (g_settings->rememberLastSession())
     {
         CompileInfo ci;
         if (restoreFromCache("lastSession", ci))
@@ -192,7 +193,7 @@ void MainWindow::onLanguageListReady()
     }
 
     m_quickAPI->setLanguages(languages);
-    ui->cbLanguageList->setCurrentIndex(m_quickAPI->defaultLanguageIndex());
+    ui->cbLanguageList->setCurrentIndex(g_settings->defaultLanguageIndex());
 }
 
 void MainWindow::onConfigurationReady()
@@ -376,7 +377,7 @@ void MainWindow::onDelayCompile()
         m_timer->stop();
 
     m_timer->setSingleShot(true);
-    m_timer->start(m_quickAPI->autoRefreshInterval());
+    m_timer->start(g_settings->autoRefreshInterval());
 }
 
 void MainWindow::onLoadSourceCode(const QString &name)
@@ -394,7 +395,7 @@ void MainWindow::onEditorZoomFactorChanged()
 {
     Q_ASSERT(m_codeEditor);
     Q_ASSERT(m_codeInspector);
-    int zoomFactor = m_quickAPI->editorZoomFactor();
+    int zoomFactor = g_settings->editorZoomFactor();
     m_codeEditor->setZoom((zoomFactor - 100)/10);
     m_codeInspector->setZoom((zoomFactor - 100)/10);
 }

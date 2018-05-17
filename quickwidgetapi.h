@@ -146,11 +146,6 @@ private:
     bool m_demangle;
     bool m_demangleEnabled;
 
-    bool m_rememberLastSession;
-    int m_defaultLanguageIndex;
-    int m_autoRefreshInterval; // millisecond
-    int m_editorZoomFactor; // percent
-
     QStringList m_examples;
     QStringList m_languages;
     LibraryListPtr m_libs;

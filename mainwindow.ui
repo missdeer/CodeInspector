@@ -75,11 +75,11 @@
    </palette>
   </property>
   <property name="windowTitle">
-   <string>Code Inspector</string>
+   <string>ToAsm</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="ci.qrc">
-    <normaloff>:/codeinspector.png</normaloff>:/codeinspector.png</iconset>
+   <iconset resource="toasm.qrc">
+    <normaloff>:/toasm.png</normaloff>:/toasm.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1">
