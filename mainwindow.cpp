@@ -125,10 +125,9 @@ void MainWindow::onCompilerListReady()
     
     for (int i = 0; i < count && !needRefresh; i++)
     {
-        if (ui->cbLanguageList->itemText(i) != cl->at(i)->name)
+        if (ui->cbCompilerList->itemText(i) != cl->at(i)->name)
             needRefresh = true;
     }
-    
     if (!needRefresh)
     {
         qDebug() << __FUNCTION__ << "no need to refresh compiler list";
