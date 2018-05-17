@@ -31,7 +31,7 @@ void GodboltAgent::initialize()
 
 void GodboltAgent::requestLanguageList()
 {
-    qDebug() << "request language list";
+    qDebug() << __FUNCTION__;
     QString requestUrl = "https://godbolt.org/api/languages";
     QNetworkRequest request(requestUrl);
     request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
@@ -45,6 +45,7 @@ void GodboltAgent::requestLanguageList()
 
 LanguageList &GodboltAgent::getLanguageList()
 {
+    qDebug() << __FUNCTION__;
     if (m_languageList.empty())
     {
         QByteArray content;
@@ -91,6 +92,7 @@ CompilerPtr GodboltAgent::getCompiler(const QString &language, const QString &co
 
 void GodboltAgent::compile(const CompileInfo &ci)
 {
+    qDebug() << __FUNCTION__;
     CompilerListPtr compilerList = m_compilerMap.find(ci.language).value();
 
     QJsonObject compilerOptionsObj;
@@ -147,6 +149,7 @@ void GodboltAgent::compile(const CompileInfo &ci)
 
 bool GodboltAgent::canCompile(const QString& language, const QString& compiler)
 {
+    qDebug() << __FUNCTION__;
     if (m_compilerMap.find(language) == m_compilerMap.end())
         return false;
     auto compilerList = m_compilerMap.find(language).value();
@@ -157,6 +160,7 @@ bool GodboltAgent::canCompile(const QString& language, const QString& compiler)
 
 void GodboltAgent::requestCompilerList(const QString &language)
 {
+    qDebug() << __FUNCTION__;
     QString requestUrl = "https://godbolt.org/api/compilers/" + getLanguageId(language);
     QNetworkRequest request(requestUrl);
     request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
@@ -171,6 +175,7 @@ void GodboltAgent::requestCompilerList(const QString &language)
 
 void GodboltAgent::switchLanguage(const QString &language)
 {
+    qDebug() << __FUNCTION__ << m_compilerMap.size();
     auto it = m_compilerMap.find(language);
     if (m_compilerMap.end() != it && !it.value()->isEmpty())
     {
@@ -190,6 +195,7 @@ void GodboltAgent::switchLanguage(const QString &language)
 
 void GodboltAgent::onCompilerListRequestFinished()
 {
+    qDebug() << __FUNCTION__;
     NetworkReplyHelper* reply = qobject_cast<NetworkReplyHelper*>(sender());
     reply->deleteLater();
 
@@ -210,6 +216,7 @@ void GodboltAgent::onCompilerListRequestFinished()
 
 void GodboltAgent::onCompileRequestFinished()
 {
+    qDebug() << __FUNCTION__;
     m_compileOutput.clear();
     m_asmContent.clear();
     m_asmItems.clear();
@@ -857,18 +864,18 @@ bool GodboltAgent::parseConfiguration(const QByteArray &content)
     QJsonObject obj = doc.object();
     QJsonObject languages = obj["languages"].toObject();
     bool ret = parseLanguageListFromConfiguration(languages);
-    if (ret)
-        emit languageListReady();
     QJsonObject libs = obj["libs"].toObject();
     ret &= parseLibListFromConfiguration(libs);
     QJsonArray compilers = obj["compilers"].toArray();
     ret &= parseCompilerListFromConfiguration(compilers);
-    if (ret)
-        emit compilerListReady();
     QJsonObject defaultCompiler = obj["defaultCompiler"].toObject();
     ret &= parseDefaultCompilerFromConfiguration(defaultCompiler);
     if (ret)
+    {
+        emit languageListReady();
+        emit compilerListReady();
         emit configurationReady();
+    }
     return ret;
 }
 

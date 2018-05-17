@@ -116,6 +116,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::onCompilerListReady()
 {
+    qDebug() << __FUNCTION__;
     bool needRefresh = false;
     auto count = ui->cbCompilerList->count();
     auto cl = m_backend.getCompilerList(ui->cbLanguageList->currentText());
@@ -143,6 +144,7 @@ void MainWindow::onCompilerListReady()
 
 void MainWindow::onLanguageListReady()
 {
+    qDebug() << __FUNCTION__;
     auto ll = m_backend.getLanguageList();
     if (ll.empty())
         return;
@@ -177,6 +179,7 @@ void MainWindow::onLanguageListReady()
 
 void MainWindow::onConfigurationReady()
 {
+    qDebug() << __FUNCTION__;
     QString name = ui->cbLanguageList->currentText();
     if (name.isEmpty())
         return;
@@ -240,6 +243,7 @@ void MainWindow::onNeedCompile()
 
 void MainWindow::onCompiled()
 {
+    qDebug() << __FUNCTION__;
     auto content = m_backend.getAsmContent();
     Q_ASSERT(m_codeInspector);
     m_codeInspector->setContent(content, m_quickAPI->binary());
@@ -329,6 +333,9 @@ void MainWindow::onSwitchLanguage(const QString& name)
 
 void MainWindow::onSwitchCompiler(const QString& name)
 {
+    qDebug() << __FUNCTION__ << name;
+    if (name.isEmpty())
+        return;
     auto cl = m_backend.getCompilerList(ui->cbLanguageList->currentText());
     auto it = std::find_if(cl->begin(), cl->end(),
                            [&name](CompilerPtr c) { return c->name == name;});
