@@ -17,6 +17,10 @@ QuickWidgetAPI::QuickWidgetAPI(QObject *parent)
     , m_commentOnlyEnabled(true)
     , m_demangle(true)
     , m_demangleEnabled(true)
+    , m_rememberLastSession(true)
+    , m_defaultLanguageIndex(0)
+    , m_autoRefreshInterval(1500)
+    , m_editorZoomFactor(100)
 {
 
 }
@@ -262,6 +266,69 @@ QQmlListProperty<Library> QuickWidgetAPI::qmlListPropertyLibs()
                                      &QuickWidgetAPI::lib,
                                      &QuickWidgetAPI::clearLibs
                                      );
+}
+
+const QStringList& QuickWidgetAPI::languages() const
+{
+    return m_languages;
+}
+
+void QuickWidgetAPI::setLanguages(const QStringList &languages)
+{
+    m_languages = languages;
+    emit languagesChanged();
+    for (int i =0; i < languages.size(); i++)
+    {
+        if (languages.at(i) == "C++")
+        {
+            m_defaultLanguageIndex = i;
+            break;
+        }
+    }
+}
+
+bool QuickWidgetAPI::rememberLastSession() const
+{
+    return m_rememberLastSession;
+}
+
+void QuickWidgetAPI::setRememberLastSession(bool rememberLastSession)
+{
+    m_rememberLastSession = rememberLastSession;
+    emit rememberLastSessionChanged();
+}
+
+int QuickWidgetAPI::autoRefreshInterval() const
+{
+    return m_autoRefreshInterval;
+}
+
+void QuickWidgetAPI::setAutoRefreshInterval(int autoRefreshInterval)
+{
+    m_autoRefreshInterval = autoRefreshInterval;
+    emit autoRefreshIntervalChanged();
+}
+
+int QuickWidgetAPI::editorZoomFactor() const
+{
+    return m_editorZoomFactor;
+}
+
+void QuickWidgetAPI::setEditorZoomFactor(int editorZoomFactor)
+{
+    m_editorZoomFactor = editorZoomFactor;
+    emit editorZoomFactorChanged();
+}
+
+int QuickWidgetAPI::defaultLanguageIndex() const
+{
+    return m_defaultLanguageIndex;
+}
+
+void QuickWidgetAPI::setDefaultLanguageIndex(int defaultLanguageIndex)
+{
+    m_defaultLanguageIndex = defaultLanguageIndex;
+    emit defaultLanguageIndexChanged();
 }
 
 void QuickWidgetAPI::appendLib(QQmlListProperty<Library> *list, Library *p)

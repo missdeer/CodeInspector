@@ -163,13 +163,16 @@ void MainWindow::onLanguageListReady()
         return;
     }
 
+    QStringList languages;
     ui->cbLanguageList->clear();
     for (auto l : ll)
     {
         ui->cbLanguageList->addItem(l->name);
+        languages.append(l->name);
     }
 
     ui->cbLanguageList->setCurrentIndex(0);
+    m_quickAPI->setLanguages(languages);
 }
 
 void MainWindow::onConfigurationReady()

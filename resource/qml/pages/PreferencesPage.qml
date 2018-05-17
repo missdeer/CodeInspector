@@ -37,65 +37,80 @@ Flickable {
             }
             HorizontalDivider {}
             RowLayout {
+                Switch {
+                    focusPolicy: Qt.NoFocus
+                    leftPadding: 12
+                    text: qsTr("Remember last session")
+                    checked: api.rememberLastSession
+                    onCheckedChanged: api.rememberLastSession = checked
+                }
+            }
+            RowLayout {
                 LabelSubheading {
                     topPadding: 6
                     leftPadding: 10
                     rightPadding: 10
                     wrapMode: Text.WordWrap
-                    text: qsTr("Settings is a normal Page.\nNavigation Drawer can be opened swiping from left or tapping on Menu Button.\nSettings is marked as favorite, so can be opened from Bottom Navigation (in Portrait Mode)")
+                    text: "Default language"
+                }
+                ComboBox {
+                    model: api.languages
+                    currentIndex: api.defaultLanguageIndex
+                    onCurrentIndexChanged: api.defaultLanguageIndex = currentIndex
                 }
             }
             RowLayout {
-                LabelBodySecondary {
+                LabelSubheading {
                     topPadding: 6
                     leftPadding: 10
                     rightPadding: 10
                     wrapMode: Text.WordWrap
-                    text: qsTr("Activation Policy: ")
+                    text: "Auto refresh interval(sec)"
                 }
-                LabelBody {
+                SpinBox {
+                    id: sbAutoRefreshInterval
+                    value: api.autoRefreshInterval
+                    from: 500
+                    to: 5000
+                    stepSize: 100
+
+                    property int decimals: 1
+                    property real realValue: value / 1000
+
+                    validator: DoubleValidator {
+                        bottom: Math.min(sbAutoRefreshInterval.from, sbAutoRefreshInterval.to)
+                        top:  Math.max(sbAutoRefreshInterval.from, sbAutoRefreshInterval.to)
+                    }
+
+                    textFromValue: function(value, locale) {
+                        return Number(value / 1000).toLocaleString(locale, 'f', sbAutoRefreshInterval.decimals)
+                    }
+
+                    valueFromText: function(text, locale) {
+                        return Number.fromLocaleString(locale, text) * 1000
+                    }
+
+                    onValueChanged: api.autoRefreshInterval = value
+                }
+            }
+            RowLayout {
+                LabelSubheading {
                     topPadding: 6
                     leftPadding: 10
                     rightPadding: 10
                     wrapMode: Text.WordWrap
-                    text: qsTr("WHILE SELECTED")
+                    text: "Editor zoom factor(%)"
+                }
+                SpinBox {
+                    id: sbZoomFactor
+                    value: api.editorZoomFactor
+                    from: 50
+                    to: 1000
+                    stepSize: 10
+
+                    onValueChanged: api.editorZoomFactor = value
                 }
             }
-            HorizontalDivider {}
-            RowLayout {
-                Switch {
-                    focusPolicy: Qt.NoFocus
-                    topPadding: 6
-                    leftPadding: 12
-                    text: qsTr("Highlight Active Navigation Selection")
-                    checked: highlightActiveNavigationButton
-                    onCheckedChanged: {
-                        highlightActiveNavigationButton = checked
-                    }
-                } // switch highlightActiveNavigationButton
-            } // row switch highlightActiveNavigationButton
-            RowLayout {
-                Switch {
-                    focusPolicy: Qt.NoFocus
-                    leftPadding: 12
-                    text: qsTr("Hide TitleBar")
-                    checked: hideTitleBar
-                    onCheckedChanged: {
-                        hideTitleBar = checked
-                    }
-                } // switch hideTitleBar
-            } // row switch hideTitleBar
-            RowLayout {
-                Switch {
-                    focusPolicy: Qt.NoFocus
-                    leftPadding: 12
-                    text: qsTr("Show Favorites at Bottom in Portrait")
-                    checked: showFavorites
-                    onCheckedChanged: {
-                        showFavorites = checked
-                    }
-                } // switch showFavorites
-            } // row switch showFavorites
 
         } // col layout
 

@@ -22,7 +22,12 @@ class QuickWidgetAPI : public QObject
     Q_PROPERTY(bool intelEnabled READ intelEnabled WRITE setIntelEnabled NOTIFY intelEnabledChanged)
     Q_PROPERTY(bool commentOnlyEnabled READ commentOnlyEnabled WRITE setCommentOnlyEnabled NOTIFY commentOnlyEnabledChanged)
     Q_PROPERTY(bool demangleEnabled READ demangleEnabled WRITE setDemangleEnabled NOTIFY demangleEnabledChanged)
+    Q_PROPERTY(bool rememberLastSession READ rememberLastSession WRITE setRememberLastSession NOTIFY rememberLastSessionChanged)
+    Q_PROPERTY(int defaultLanguageIndex READ defaultLanguageIndex WRITE setDefaultLanguageIndex NOTIFY defaultLanguageIndexChanged)
+    Q_PROPERTY(int autoRefreshInterval READ autoRefreshInterval WRITE setAutoRefreshInterval NOTIFY autoRefreshIntervalChanged)
+    Q_PROPERTY(int editorZoomFactor READ editorZoomFactor WRITE setEditorZoomFactor NOTIFY editorZoomFactorChanged)
     Q_PROPERTY(QStringList examples READ examples NOTIFY examplesChanged)
+    Q_PROPERTY(QStringList languages READ languages NOTIFY languagesChanged)
     Q_PROPERTY(QQmlListProperty<Library> libs READ qmlListPropertyLibs NOTIFY libsChanged)
 public:
     explicit QuickWidgetAPI(QObject *parent = nullptr);
@@ -78,6 +83,22 @@ public:
     void setLibs(LibraryListPtr libs);
     LibraryListPtr libs();
     QQmlListProperty<Library>  qmlListPropertyLibs();
+
+    const QStringList &languages() const;
+    void setLanguages(const QStringList &languages);
+
+    bool rememberLastSession() const;
+    void setRememberLastSession(bool rememberLastSession);
+
+    int autoRefreshInterval() const;
+    void setAutoRefreshInterval(int autoRefreshInterval);
+
+    int editorZoomFactor() const;
+    void setEditorZoomFactor(int editorZoomFactor);
+
+    int defaultLanguageIndex() const;
+    void setDefaultLanguageIndex(int defaultLanguageIndex);
+
 signals:
     void doCloseConfiguration();
     void doLoadExample(const QString& name);
@@ -100,7 +121,12 @@ signals:
     void demangleEnabledChanged();
 
     void examplesChanged();
+    void languagesChanged();
     void libsChanged();
+    void rememberLastSessionChanged();
+    void defaultLanguageIndexChanged();
+    void autoRefreshIntervalChanged();
+    void editorZoomFactorChanged();
 public slots:
 
 private:
@@ -119,7 +145,14 @@ private:
     bool m_commentOnlyEnabled;
     bool m_demangle;
     bool m_demangleEnabled;
+
+    bool m_rememberLastSession;
+    int m_defaultLanguageIndex;
+    int m_autoRefreshInterval; // millisecond
+    int m_editorZoomFactor; // percent
+
     QStringList m_examples;
+    QStringList m_languages;
     LibraryListPtr m_libs;
 
     static void appendLib(QQmlListProperty<Library>* list, Library* p);
