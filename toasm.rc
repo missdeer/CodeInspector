@@ -14,12 +14,12 @@ BEGIN
         BLOCK "040904b0"
         BEGIN
             VALUE "CompanyName", "missdeer@dfordsoft.com"
-            VALUE "FileDescription", "Code Inspector"
+            VALUE "FileDescription", "ToAsm"
             VALUE "FileVersion", "1.0.0.1"
-            VALUE "InternalName", "Code Inspector"
-            VALUE "LegalCopyright", "Copyright (C) 2017 missdeer@dfordsoft.com.com. All rights reserved."
-            VALUE "OriginalFilename", "CodeInspector.exe"
-            VALUE "ProductName", "Code Inspector"
+            VALUE "InternalName", "ToAsm"
+            VALUE "LegalCopyright", "Copyright (C) 2017 - 2018 ToAsm. All rights reserved."
+            VALUE "OriginalFilename", "toasm.exe"
+            VALUE "ProductName", "ToAsm"
             VALUE "ProductVersion", "1.0.0.1"
         END
     END
@@ -31,4 +31,4 @@ END
 
 
 
-IDI_ICON1 ICON DISCARDABLE "codeinspector.ico"
+IDI_ICON1 ICON DISCARDABLE "toasm.ico"
