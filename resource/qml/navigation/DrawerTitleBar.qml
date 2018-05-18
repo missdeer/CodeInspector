@@ -39,7 +39,13 @@ ToolBar {
         }
         ToolButton {
             focusPolicy: Qt.NoFocus
-            enabled: false
+            Image {
+                anchors.centerIn: parent
+                source: "qrc:/resource/image/"+iconOnPrimaryFolder+"/return.png"
+            }
+            onClicked: {
+                api.closeConfiguration();
+            }
         }
     } // end RowLayout
 } // end ToolBar
