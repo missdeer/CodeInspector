@@ -106,7 +106,6 @@ Item {
     property var navigationModel: [
         {"type": "../navigation/DrawerNavigationButton.qml", "name": "Introduce", "icon": "home.png", "source": "../navigation/HomeNavigation.qml", "showCounter":false, "showMarker":false, "a_p":1},
         {"type": "../navigation/DrawerDivider.qml", "name": "", "icon": "", "source": "", "a_p":1},
-        {"type": "../navigation/DrawerSubtitle.qml", "name": "Features", "icon": "", "source": "", "a_p":1},
         {"type": "../navigation/DrawerNavigationButton.qml", "name": "Examples", "icon": "examples.png", "source": "../pages/ExamplesPage.qml", "showCounter":false, "showMarker":false, "a_p":3},
         {"type": "../navigation/DrawerNavigationButton.qml", "name": "Options", "icon": "options.png", "source": "../pages/InspectorOptionsPage.qml", "showCounter":false, "showMarker":false, "a_p":3},
         {"type": "../navigation/DrawerNavigationButton.qml", "name": "Libraries", "icon": "libraries.png", "source": "../pages/LibrariesPage.qml", "showCounter":false, "showMarker":false, "a_p":3},
@@ -119,7 +118,6 @@ Item {
     // Marker: Subway, Flight
     property var navigationData: [
         {"counter":0, "marker":""},
-        {},
         {},
         {"counter":0, "marker":""},
         {"counter":0, "marker":""},
