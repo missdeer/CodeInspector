@@ -103,26 +103,14 @@
         <file>resource/qml/tabs/TabButtonTextAndIcon.qml</file>
         <file>resource/qml/tabs/TextTabBar.qml</file>
         <file>resource/qml/main.qml</file>
-        <file>resource/image/black/x18/add.png</file>
-        <file>resource/image/black/x18/add@2x.png</file>
-        <file>resource/image/black/x18/add@3x.png</file>
-        <file>resource/image/black/x18/add@4x.png</file>
         <file>resource/image/black/x18/arrow_back.png</file>
         <file>resource/image/black/x18/arrow_back@2x.png</file>
         <file>resource/image/black/x18/arrow_back@3x.png</file>
         <file>resource/image/black/x18/arrow_back@4x.png</file>
-        <file>resource/image/black/x18/colors.png</file>
-        <file>resource/image/black/x18/colors@2x.png</file>
-        <file>resource/image/black/x18/colors@3x.png</file>
-        <file>resource/image/black/x18/colors@4x.png</file>
         <file>resource/image/black/x18/directions.png</file>
         <file>resource/image/black/x18/directions@2x.png</file>
         <file>resource/image/black/x18/directions@3x.png</file>
         <file>resource/image/black/x18/directions@4x.png</file>
-        <file>resource/image/black/x18/done.png</file>
-        <file>resource/image/black/x18/done@2x.png</file>
-        <file>resource/image/black/x18/done@3x.png</file>
-        <file>resource/image/black/x18/done@4x.png</file>
         <file>resource/image/black/x18/home.png</file>
         <file>resource/image/black/x18/home@2x.png</file>
         <file>resource/image/black/x18/home@3x.png</file>
@@ -131,42 +119,14 @@
         <file>resource/image/black/x18/menu@2x.png</file>
         <file>resource/image/black/x18/menu@3x.png</file>
         <file>resource/image/black/x18/menu@4x.png</file>
-        <file>resource/image/black/x18/person.png</file>
-        <file>resource/image/black/x18/person@2x.png</file>
-        <file>resource/image/black/x18/person@3x.png</file>
-        <file>resource/image/black/x18/person@4x.png</file>
-        <file>resource/image/black/x18/remove.png</file>
-        <file>resource/image/black/x18/remove@2x.png</file>
-        <file>resource/image/black/x18/remove@3x.png</file>
-        <file>resource/image/black/x18/remove@4x.png</file>
-        <file>resource/image/black/x18/settings.png</file>
-        <file>resource/image/black/x18/settings@2x.png</file>
-        <file>resource/image/black/x18/settings@3x.png</file>
-        <file>resource/image/black/x18/settings@4x.png</file>
-        <file>resource/image/black/x18/stars.png</file>
-        <file>resource/image/black/x18/stars@2x.png</file>
-        <file>resource/image/black/x18/stars@3x.png</file>
-        <file>resource/image/black/x18/stars@4x.png</file>
-        <file>resource/image/black/x36/add.png</file>
-        <file>resource/image/black/x36/add@2x.png</file>
-        <file>resource/image/black/x36/add@3x.png</file>
-        <file>resource/image/black/x36/add@4x.png</file>
         <file>resource/image/black/x36/arrow_back.png</file>
         <file>resource/image/black/x36/arrow_back@2x.png</file>
         <file>resource/image/black/x36/arrow_back@3x.png</file>
         <file>resource/image/black/x36/arrow_back@4x.png</file>
-        <file>resource/image/black/x36/colors.png</file>
-        <file>resource/image/black/x36/colors@2x.png</file>
-        <file>resource/image/black/x36/colors@3x.png</file>
-        <file>resource/image/black/x36/colors@4x.png</file>
         <file>resource/image/black/x36/directions.png</file>
         <file>resource/image/black/x36/directions@2x.png</file>
         <file>resource/image/black/x36/directions@3x.png</file>
         <file>resource/image/black/x36/directions@4x.png</file>
-        <file>resource/image/black/x36/done.png</file>
-        <file>resource/image/black/x36/done@2x.png</file>
-        <file>resource/image/black/x36/done@3x.png</file>
-        <file>resource/image/black/x36/done@4x.png</file>
         <file>resource/image/black/x36/home.png</file>
         <file>resource/image/black/x36/home@2x.png</file>
         <file>resource/image/black/x36/home@3x.png</file>
@@ -175,42 +135,14 @@
         <file>resource/image/black/x36/menu@2x.png</file>
         <file>resource/image/black/x36/menu@3x.png</file>
         <file>resource/image/black/x36/menu@4x.png</file>
-        <file>resource/image/black/x36/person.png</file>
-        <file>resource/image/black/x36/person@2x.png</file>
-        <file>resource/image/black/x36/person@3x.png</file>
-        <file>resource/image/black/x36/person@4x.png</file>
-        <file>resource/image/black/x36/remove.png</file>
-        <file>resource/image/black/x36/remove@2x.png</file>
-        <file>resource/image/black/x36/remove@3x.png</file>
-        <file>resource/image/black/x36/remove@4x.png</file>
-        <file>resource/image/black/x36/settings.png</file>
-        <file>resource/image/black/x36/settings@2x.png</file>
-        <file>resource/image/black/x36/settings@3x.png</file>
-        <file>resource/image/black/x36/settings@4x.png</file>
-        <file>resource/image/black/x36/stars.png</file>
-        <file>resource/image/black/x36/stars@2x.png</file>
-        <file>resource/image/black/x36/stars@3x.png</file>
-        <file>resource/image/black/x36/stars@4x.png</file>
-        <file>resource/image/black/x48/add.png</file>
-        <file>resource/image/black/x48/add@2x.png</file>
-        <file>resource/image/black/x48/add@3x.png</file>
-        <file>resource/image/black/x48/add@4x.png</file>
         <file>resource/image/black/x48/arrow_back.png</file>
         <file>resource/image/black/x48/arrow_back@2x.png</file>
         <file>resource/image/black/x48/arrow_back@3x.png</file>
         <file>resource/image/black/x48/arrow_back@4x.png</file>
-        <file>resource/image/black/x48/colors.png</file>
-        <file>resource/image/black/x48/colors@2x.png</file>
-        <file>resource/image/black/x48/colors@3x.png</file>
-        <file>resource/image/black/x48/colors@4x.png</file>
         <file>resource/image/black/x48/directions.png</file>
         <file>resource/image/black/x48/directions@2x.png</file>
         <file>resource/image/black/x48/directions@3x.png</file>
         <file>resource/image/black/x48/directions@4.png</file>
-        <file>resource/image/black/x48/done.png</file>
-        <file>resource/image/black/x48/done@2x.png</file>
-        <file>resource/image/black/x48/done@3x.png</file>
-        <file>resource/image/black/x48/done@4x.png</file>
         <file>resource/image/black/x48/home.png</file>
         <file>resource/image/black/x48/home@2x.png</file>
         <file>resource/image/black/x48/home@3x.png</file>
@@ -219,42 +151,14 @@
         <file>resource/image/black/x48/menu@2x.png</file>
         <file>resource/image/black/x48/menu@3x.png</file>
         <file>resource/image/black/x48/menu@4x.png</file>
-        <file>resource/image/black/x48/person.png</file>
-        <file>resource/image/black/x48/person@2x.png</file>
-        <file>resource/image/black/x48/person@3x.png</file>
-        <file>resource/image/black/x48/person@4x.png</file>
-        <file>resource/image/black/x48/remove.png</file>
-        <file>resource/image/black/x48/remove@2x.png</file>
-        <file>resource/image/black/x48/remove@3x.png</file>
-        <file>resource/image/black/x48/remove@4x.png</file>
-        <file>resource/image/black/x48/settings.png</file>
-        <file>resource/image/black/x48/settings@2x.png</file>
-        <file>resource/image/black/x48/settings@3x.png</file>
-        <file>resource/image/black/x48/settings@4x.png</file>
-        <file>resource/image/black/x48/stars.png</file>
-        <file>resource/image/black/x48/stars@2x.png</file>
-        <file>resource/image/black/x48/stars@3x.png</file>
-        <file>resource/image/black/x48/stars@4x.png</file>
-        <file>resource/image/black/add.png</file>
-        <file>resource/image/black/add@2x.png</file>
-        <file>resource/image/black/add@3x.png</file>
-        <file>resource/image/black/add@4x.png</file>
         <file>resource/image/black/arrow_back.png</file>
         <file>resource/image/black/arrow_back@2x.png</file>
         <file>resource/image/black/arrow_back@3x.png</file>
         <file>resource/image/black/arrow_back@4x.png</file>
-        <file>resource/image/black/colors.png</file>
-        <file>resource/image/black/colors@2x.png</file>
-        <file>resource/image/black/colors@3x.png</file>
-        <file>resource/image/black/colors@4x.png</file>
         <file>resource/image/black/directions.png</file>
         <file>resource/image/black/directions@2x.png</file>
         <file>resource/image/black/directions@3x.png</file>
         <file>resource/image/black/directions@4x.png</file>
-        <file>resource/image/black/done.png</file>
-        <file>resource/image/black/done@2x.png</file>
-        <file>resource/image/black/done@3x.png</file>
-        <file>resource/image/black/done@4x.png</file>
         <file>resource/image/black/home.png</file>
         <file>resource/image/black/home@2x.png</file>
         <file>resource/image/black/home@3x.png</file>
@@ -267,22 +171,6 @@
         <file>resource/image/black/more_vert@2x.png</file>
         <file>resource/image/black/more_vert@3x.png</file>
         <file>resource/image/black/more_vert@4x.png</file>
-        <file>resource/image/black/person.png</file>
-        <file>resource/image/black/person@2x.png</file>
-        <file>resource/image/black/person@3x.png</file>
-        <file>resource/image/black/person@4x.png</file>
-        <file>resource/image/black/remove.png</file>
-        <file>resource/image/black/remove@2x.png</file>
-        <file>resource/image/black/remove@3x.png</file>
-        <file>resource/image/black/remove@4x.png</file>
-        <file>resource/image/black/settings.png</file>
-        <file>resource/image/black/settings@2x.png</file>
-        <file>resource/image/black/settings@3x.png</file>
-        <file>resource/image/black/settings@4x.png</file>
-        <file>resource/image/black/stars.png</file>
-        <file>resource/image/black/stars@2x.png</file>
-        <file>resource/image/black/stars@3x.png</file>
-        <file>resource/image/black/stars@4x.png</file>
         <file>resource/image/black/examples.png</file>
         <file>resource/image/black/examples@2x.png</file>
         <file>resource/image/black/examples@3x.png</file>
