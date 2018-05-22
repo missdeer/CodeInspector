@@ -31,12 +31,6 @@
         <file>resource/sci/themes/Neon.xml</file>
         <file>resource/sci/themes/VS2015-Dark.xml</file>
         <file>toasm.png</file>
-        <file>resource/image/binary.png</file>
-        <file>resource/image/label.png</file>
-        <file>resource/image/trim.png</file>
-        <file>resource/image/comment.png</file>
-        <file>resource/image/intel.png</file>
-        <file>resource/image/directives.png</file>
         <file>resource/example/cpp/maxarray.cpp</file>
         <file>resource/example/cpp/maxarrayopt.cpp</file>
         <file>resource/example/cpp/square.cpp</file>
@@ -117,14 +111,6 @@
         <file>resource/image/black/x18/arrow_back@2x.png</file>
         <file>resource/image/black/x18/arrow_back@3x.png</file>
         <file>resource/image/black/x18/arrow_back@4x.png</file>
-        <file>resource/image/black/x18/bus.png</file>
-        <file>resource/image/black/x18/bus@2x.png</file>
-        <file>resource/image/black/x18/bus@3x.png</file>
-        <file>resource/image/black/x18/bus@4x.png</file>
-        <file>resource/image/black/x18/car.png</file>
-        <file>resource/image/black/x18/car@2x.png</file>
-        <file>resource/image/black/x18/car@3x.png</file>
-        <file>resource/image/black/x18/car@4x.png</file>
         <file>resource/image/black/x18/colors.png</file>
         <file>resource/image/black/x18/colors@2x.png</file>
         <file>resource/image/black/x18/colors@3x.png</file>
@@ -137,10 +123,6 @@
         <file>resource/image/black/x18/done@2x.png</file>
         <file>resource/image/black/x18/done@3x.png</file>
         <file>resource/image/black/x18/done@4x.png</file>
-        <file>resource/image/black/x18/flight.png</file>
-        <file>resource/image/black/x18/flight@2x.png</file>
-        <file>resource/image/black/x18/flight@3x.png</file>
-        <file>resource/image/black/x18/flight@4x.png</file>
         <file>resource/image/black/x18/home.png</file>
         <file>resource/image/black/x18/home@2x.png</file>
         <file>resource/image/black/x18/home@3x.png</file>
@@ -165,14 +147,6 @@
         <file>resource/image/black/x18/stars@2x.png</file>
         <file>resource/image/black/x18/stars@3x.png</file>
         <file>resource/image/black/x18/stars@4x.png</file>
-        <file>resource/image/black/x18/subway.png</file>
-        <file>resource/image/black/x18/subway@2x.png</file>
-        <file>resource/image/black/x18/subway@3x.png</file>
-        <file>resource/image/black/x18/subway@4x.png</file>
-        <file>resource/image/black/x18/truck.png</file>
-        <file>resource/image/black/x18/truck@2x.png</file>
-        <file>resource/image/black/x18/truck@3x.png</file>
-        <file>resource/image/black/x18/truck@4x.png</file>
         <file>resource/image/black/x36/add.png</file>
         <file>resource/image/black/x36/add@2x.png</file>
         <file>resource/image/black/x36/add@3x.png</file>
@@ -181,14 +155,6 @@
         <file>resource/image/black/x36/arrow_back@2x.png</file>
         <file>resource/image/black/x36/arrow_back@3x.png</file>
         <file>resource/image/black/x36/arrow_back@4x.png</file>
-        <file>resource/image/black/x36/bus.png</file>
-        <file>resource/image/black/x36/bus@2x.png</file>
-        <file>resource/image/black/x36/bus@3x.png</file>
-        <file>resource/image/black/x36/bus@4x.png</file>
-        <file>resource/image/black/x36/car.png</file>
-        <file>resource/image/black/x36/car@2x.png</file>
-        <file>resource/image/black/x36/car@3x.png</file>
-        <file>resource/image/black/x36/car@4x.png</file>
         <file>resource/image/black/x36/colors.png</file>
         <file>resource/image/black/x36/colors@2x.png</file>
         <file>resource/image/black/x36/colors@3x.png</file>
@@ -201,10 +167,6 @@
         <file>resource/image/black/x36/done@2x.png</file>
         <file>resource/image/black/x36/done@3x.png</file>
         <file>resource/image/black/x36/done@4x.png</file>
-        <file>resource/image/black/x36/flight.png</file>
-        <file>resource/image/black/x36/flight@2x.png</file>
-        <file>resource/image/black/x36/flight@3x.png</file>
-        <file>resource/image/black/x36/flight@4x.png</file>
         <file>resource/image/black/x36/home.png</file>
         <file>resource/image/black/x36/home@2x.png</file>
         <file>resource/image/black/x36/home@3x.png</file>
@@ -229,14 +191,6 @@
         <file>resource/image/black/x36/stars@2x.png</file>
         <file>resource/image/black/x36/stars@3x.png</file>
         <file>resource/image/black/x36/stars@4x.png</file>
-        <file>resource/image/black/x36/subway.png</file>
-        <file>resource/image/black/x36/subway@2x.png</file>
-        <file>resource/image/black/x36/subway@3x.png</file>
-        <file>resource/image/black/x36/subway@4x.png</file>
-        <file>resource/image/black/x36/truck.png</file>
-        <file>resource/image/black/x36/truck@2x.png</file>
-        <file>resource/image/black/x36/truck@3x.png</file>
-        <file>resource/image/black/x36/truck@4x.png</file>
         <file>resource/image/black/x48/add.png</file>
         <file>resource/image/black/x48/add@2x.png</file>
         <file>resource/image/black/x48/add@3x.png</file>
@@ -245,14 +199,6 @@
         <file>resource/image/black/x48/arrow_back@2x.png</file>
         <file>resource/image/black/x48/arrow_back@3x.png</file>
         <file>resource/image/black/x48/arrow_back@4x.png</file>
-        <file>resource/image/black/x48/bus.png</file>
-        <file>resource/image/black/x48/bus@2x.png</file>
-        <file>resource/image/black/x48/bus@3x.png</file>
-        <file>resource/image/black/x48/bus@4x.png</file>
-        <file>resource/image/black/x48/car.png</file>
-        <file>resource/image/black/x48/car@2x.png</file>
-        <file>resource/image/black/x48/car@3x.png</file>
-        <file>resource/image/black/x48/car@4x.png</file>
         <file>resource/image/black/x48/colors.png</file>
         <file>resource/image/black/x48/colors@2x.png</file>
         <file>resource/image/black/x48/colors@3x.png</file>
@@ -265,10 +211,6 @@
         <file>resource/image/black/x48/done@2x.png</file>
         <file>resource/image/black/x48/done@3x.png</file>
         <file>resource/image/black/x48/done@4x.png</file>
-        <file>resource/image/black/x48/flight.png</file>
-        <file>resource/image/black/x48/flight@2x.png</file>
-        <file>resource/image/black/x48/flight@3x.png</file>
-        <file>resource/image/black/x48/flight@4x.png</file>
         <file>resource/image/black/x48/home.png</file>
         <file>resource/image/black/x48/home@2x.png</file>
         <file>resource/image/black/x48/home@3x.png</file>
@@ -293,14 +235,6 @@
         <file>resource/image/black/x48/stars@2x.png</file>
         <file>resource/image/black/x48/stars@3x.png</file>
         <file>resource/image/black/x48/stars@4x.png</file>
-        <file>resource/image/black/x48/subway.png</file>
-        <file>resource/image/black/x48/subway@2x.png</file>
-        <file>resource/image/black/x48/subway@3x.png</file>
-        <file>resource/image/black/x48/subway@4x.png</file>
-        <file>resource/image/black/x48/truck.png</file>
-        <file>resource/image/black/x48/truck@2x.png</file>
-        <file>resource/image/black/x48/truck@3x.png</file>
-        <file>resource/image/black/x48/truck@4x.png</file>
         <file>resource/image/black/add.png</file>
         <file>resource/image/black/add@2x.png</file>
         <file>resource/image/black/add@3x.png</file>
@@ -309,14 +243,6 @@
         <file>resource/image/black/arrow_back@2x.png</file>
         <file>resource/image/black/arrow_back@3x.png</file>
         <file>resource/image/black/arrow_back@4x.png</file>
-        <file>resource/image/black/bus.png</file>
-        <file>resource/image/black/bus@2x.png</file>
-        <file>resource/image/black/bus@3x.png</file>
-        <file>resource/image/black/bus@4x.png</file>
-        <file>resource/image/black/car.png</file>
-        <file>resource/image/black/car@2x.png</file>
-        <file>resource/image/black/car@3x.png</file>
-        <file>resource/image/black/car@4x.png</file>
         <file>resource/image/black/colors.png</file>
         <file>resource/image/black/colors@2x.png</file>
         <file>resource/image/black/colors@3x.png</file>
@@ -329,10 +255,6 @@
         <file>resource/image/black/done@2x.png</file>
         <file>resource/image/black/done@3x.png</file>
         <file>resource/image/black/done@4x.png</file>
-        <file>resource/image/black/flight.png</file>
-        <file>resource/image/black/flight@2x.png</file>
-        <file>resource/image/black/flight@3x.png</file>
-        <file>resource/image/black/flight@4x.png</file>
         <file>resource/image/black/home.png</file>
         <file>resource/image/black/home@2x.png</file>
         <file>resource/image/black/home@3x.png</file>
@@ -361,22 +283,6 @@
         <file>resource/image/black/stars@2x.png</file>
         <file>resource/image/black/stars@3x.png</file>
         <file>resource/image/black/stars@4x.png</file>
-        <file>resource/image/black/subway.png</file>
-        <file>resource/image/black/subway@2x.png</file>
-        <file>resource/image/black/subway@3x.png</file>
-        <file>resource/image/black/subway@4x.png</file>
-        <file>resource/image/black/truck.png</file>
-        <file>resource/image/black/truck@2x.png</file>
-        <file>resource/image/black/truck@3x.png</file>
-        <file>resource/image/black/truck@4x.png</file>
-        <file>resource/image/extra/qt-arrow.png</file>
-        <file>resource/image/extra/qt-arrow@2x.png</file>
-        <file>resource/image/extra/qt-arrow@3x.png</file>
-        <file>resource/image/extra/qt-arrow@4x.png</file>
-        <file>resource/image/extra/qt-logo.png</file>
-        <file>resource/image/extra/qt-logo@2x.png</file>
-        <file>resource/image/extra/qt-logo@3x.png</file>
-        <file>resource/image/extra/qt-logo@4x.png</file>
         <file>resource/image/black/examples.png</file>
         <file>resource/image/black/examples@2x.png</file>
         <file>resource/image/black/examples@3x.png</file>
@@ -630,5 +536,21 @@
         <file>resource/example/swift/maxArray.swift</file>
         <file>resource/example/swift/sumOverArray.swift</file>
         <file>resource/configurations</file>
+        <file>resource/image/white/return@4x.png</file>
+        <file>resource/image/white/x48/return@4x.png</file>
+        <file>resource/image/white/x18/return.png</file>
+        <file>resource/image/white/x18/return@2x.png</file>
+        <file>resource/image/white/x18/return@3x.png</file>
+        <file>resource/image/white/x18/return@4x.png</file>
+        <file>resource/image/white/x36/return.png</file>
+        <file>resource/image/white/x36/return@2x.png</file>
+        <file>resource/image/white/x36/return@3x.png</file>
+        <file>resource/image/white/x36/return@4x.png</file>
+        <file>resource/image/white/x48/return.png</file>
+        <file>resource/image/white/x48/return@2x.png</file>
+        <file>resource/image/white/x48/return@3x.png</file>
+        <file>resource/image/white/return.png</file>
+        <file>resource/image/white/return@2x.png</file>
+        <file>resource/image/white/return@3x.png</file>
     </qresource>
 </RCC>
