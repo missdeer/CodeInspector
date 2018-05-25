@@ -38,8 +38,9 @@ Flickable {
             Repeater {
                 model: api.libs
                 ColumnLayout {
-                    anchors.right: parent.right
-                    anchors.left: parent.left
+                    //anchors.right: parent.right
+                    //anchors.left: parent.left
+                    Layout.alignment: Qt.AlignLeft | Qt.AlignRight
                     RowLayout {
                         LabelSubheading {
                             topPadding: 6
