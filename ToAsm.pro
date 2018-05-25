@@ -1,7 +1,7 @@
 QT       += core gui widgets xml network concurrent sql qml quickwidgets widgets
 
 lessThan(QT_MAJOR_VERSION, 5): error("Qt 5 is required")
-greaterThan(QT_MINOR_VERSION, 10): CONFIG += qmlcompiler
+greaterThan(QT_MINOR_VERSION, 10): CONFIG += qtquickcompiler
 
 TARGET = ToAsm
 TEMPLATE = app
