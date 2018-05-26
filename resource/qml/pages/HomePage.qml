@@ -75,7 +75,7 @@ Flickable {
                     leftPadding: 10
                     rightPadding: 10
                     wrapMode: Text.WordWrap
-                    text: qsTr("ToAsm is an interactive compiler. \nThe left-hand pane shows editable C, C++, Rust, Go, D, Haskell, Swift and Pascal code. \nThe right, the assembly output of having compiled the code with a given compiler and settings. \nMultiple compilers are supported.\n")
+                    text: qsTr("ToAsm is an interactive compiler. \nThe left-hand pane shows editable C, C++, Rust, Go, D, Haskell, Swift and Pascal source code. \nThe right, the assembly output of having compiled the code with a given compiler and settings. \nMultiple compilers are supported.\n")
                 }
             }
 
