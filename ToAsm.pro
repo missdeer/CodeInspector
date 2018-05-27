@@ -76,6 +76,7 @@ macx: {
 }
 
 ios {
+    xcode_product_bundle_identifier_setting.value = "com.dfordsoft.toasm.full"
     AppIcons.files=$$system("find $$PWD/appicon/ios/ -name '*.png'")
     AppIcons.path=./
     LaunchImages.files=$$system("find $$PWD/launchimage/ios/ -name '*.png'")
