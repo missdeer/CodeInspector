@@ -76,12 +76,12 @@ macx: {
 }
 
 ios {
+    QMAKE_ASSET_CATALOGS = $$PWD/appicon/ios/Images.xcassets
+    QMAKE_ASSET_CATALOGS_APP_ICON = "AppIcon"
     xcode_product_bundle_identifier_setting.value = "com.dfordsoft.toasm.full"
-    AppIcons.files=$$system("find $$PWD/appicon/ios/ -name '*.png'")
-    AppIcons.path=./
     LaunchImages.files=$$system("find $$PWD/launchimage/ios/ -name '*.png'")
     LaunchImages.path=./
-    QMAKE_BUNDLE_DATA += AppIcons LaunchImages
+    QMAKE_BUNDLE_DATA += LaunchImages
     QMAKE_INFO_PLIST = iosInfo.plist
 }
 
