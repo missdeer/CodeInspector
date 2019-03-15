@@ -125,7 +125,7 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="ci.qrc">
+         <iconset resource="CodeInspector.qrc">
           <normaloff>:/resource/image/configuration.png</normaloff>:/resource/image/configuration.png</iconset>
         </property>
         <property name="iconSize">
@@ -149,7 +149,7 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="ci.qrc"/>
+  <include location="CodeInspector.qrc"/>
  </resources>
  <connections/>
 </ui>
