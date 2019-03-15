@@ -5,13 +5,13 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en-US</string>
 	<key>CFBundleDisplayName</key>
-	<string>ToAsm</string>
+	<string>CodeInspector</string>
 	<key>CFBundleExecutable</key>
-	<string>ToAsm</string>
+	<string>CodeInspector</string>
 	<key>CFBundleGetInfoString</key>
 	<string>Created by Qt/QMake</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.dfordsoft.toasm.full</string>
+	<string>com.dfordsoft.codeinspector</string>
 	<key>CFBundleName</key>
 	<string>${PRODUCT_NAME}</string>
 	<key>CFBundlePackageType</key>

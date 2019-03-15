@@ -30,7 +30,7 @@
         <file>resource/sci/themes/NauticalButNice.xml</file>
         <file>resource/sci/themes/Neon.xml</file>
         <file>resource/sci/themes/VS2015-Dark.xml</file>
-        <file>toasm.png</file>
+        <file>CodeInspector.png</file>
         <file>resource/example/cpp/maxarray.cpp</file>
         <file>resource/example/cpp/maxarrayopt.cpp</file>
         <file>resource/example/cpp/square.cpp</file>
@@ -235,34 +235,34 @@
         <file>resource/image/black/x48/preferences@2x.png</file>
         <file>resource/image/black/x48/preferences@3x.png</file>
         <file>resource/image/black/x48/preferences@4x.png</file>
-        <file>resource/image/black/toasm.png</file>
-        <file>resource/image/black/toasm@2x.png</file>
-        <file>resource/image/black/toasm@3x.png</file>
-        <file>resource/image/black/toasm@4x.png</file>
+        <file>resource/image/black/CodeInspector.png</file>
+        <file>resource/image/black/CodeInspector@2x.png</file>
+        <file>resource/image/black/CodeInspector@3x.png</file>
+        <file>resource/image/black/CodeInspector@4x.png</file>
         <file>resource/image/black/return.png</file>
         <file>resource/image/black/return@2x.png</file>
         <file>resource/image/black/return@3x.png</file>
         <file>resource/image/black/return@4x.png</file>
-        <file>resource/image/black/x18/toasm.png</file>
-        <file>resource/image/black/x18/toasm@2x.png</file>
-        <file>resource/image/black/x18/toasm@3x.png</file>
-        <file>resource/image/black/x18/toasm@4x.png</file>
+        <file>resource/image/black/x18/CodeInspector.png</file>
+        <file>resource/image/black/x18/CodeInspector@2x.png</file>
+        <file>resource/image/black/x18/CodeInspector@3x.png</file>
+        <file>resource/image/black/x18/CodeInspector@4x.png</file>
         <file>resource/image/black/x18/return.png</file>
         <file>resource/image/black/x18/return@2x.png</file>
         <file>resource/image/black/x18/return@3x.png</file>
         <file>resource/image/black/x18/return@4x.png</file>
-        <file>resource/image/black/x36/toasm.png</file>
-        <file>resource/image/black/x36/toasm@2x.png</file>
-        <file>resource/image/black/x36/toasm@3x.png</file>
-        <file>resource/image/black/x36/toasm@4x.png</file>
+        <file>resource/image/black/x36/CodeInspector.png</file>
+        <file>resource/image/black/x36/CodeInspector@2x.png</file>
+        <file>resource/image/black/x36/CodeInspector@3x.png</file>
+        <file>resource/image/black/x36/CodeInspector@4x.png</file>
         <file>resource/image/black/x36/return.png</file>
         <file>resource/image/black/x36/return@2x.png</file>
         <file>resource/image/black/x36/return@3x.png</file>
         <file>resource/image/black/x36/return@4x.png</file>
-        <file>resource/image/black/x48/toasm.png</file>
-        <file>resource/image/black/x48/toasm@2x.png</file>
-        <file>resource/image/black/x48/toasm@3x.png</file>
-        <file>resource/image/black/x48/toasm@4x.png</file>
+        <file>resource/image/black/x48/CodeInspector.png</file>
+        <file>resource/image/black/x48/CodeInspector@2x.png</file>
+        <file>resource/image/black/x48/CodeInspector@3x.png</file>
+        <file>resource/image/black/x48/CodeInspector@4x.png</file>
         <file>resource/image/black/x48/return.png</file>
         <file>resource/image/black/x48/return@2x.png</file>
         <file>resource/image/black/x48/return@3x.png</file>

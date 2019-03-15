@@ -3,7 +3,7 @@ import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.3
 import QtQuick.Controls.Material 2.3
 import QtGraphicalEffects 1.0
-import com.dfordsoft.toasm 1.0
+import com.dfordsoft.codeinspector 1.0
 import "../common"
 
 Flickable {
@@ -34,7 +34,8 @@ Flickable {
                     text: qsTr("Select used libraries")
                 }
             }
-            HorizontalDivider {}
+            HorizontalDivider {
+            }
             Repeater {
                 model: api.libs
                 ColumnLayout {
@@ -74,10 +75,12 @@ Flickable {
                                         modelData.selected = checked
                                         api.librarySwitched()
                                     }
-                                    if (checked){
-                                        console.log("add: " + library.name + " : " +text + " - " + modelData.path)
-                                    }else{
-                                        console.log("remove: " + library.name + " : " +text + " - " + modelData.path)
+                                    if (checked) {
+                                        console.log("add: " + library.name + " : "
+                                                    + text + " - " + modelData.path)
+                                    } else {
+                                        console.log("remove: " + library.name + " : "
+                                                    + text + " - " + modelData.path)
                                     }
                                 }
                             }
@@ -85,12 +88,11 @@ Flickable {
                     }
                 }
             }
-
         } // col layout
-
     } // root
 
-    ScrollIndicator.vertical: ScrollIndicator { }
+    ScrollIndicator.vertical: ScrollIndicator {
+    }
 
     Component.onDestruction: {
         cleanup()
@@ -104,5 +106,4 @@ Flickable {
     function cleanup() {
         console.log(qsTr("Cleanup done from LibrariesPage"))
     }
-
 } // flickable

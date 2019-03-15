@@ -97,8 +97,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_quickAPI, &QuickWidgetAPI::doLoadExample, this, &MainWindow::onLoadSourceCode);
     connect(m_quickAPI, &QuickWidgetAPI::editorZoomFactorChanged, this, &MainWindow::onEditorZoomFactorChanged);
 
-    qmlRegisterType<Library>("com.dfordsoft.toasm", 1, 0, "Library");
-    qmlRegisterType<LibraryVersion>("com.dfordsoft.toasm", 1, 0, "LibraryVersion");
+    qmlRegisterType<Library>("com.dfordsoft.codeinspector", 1, 0, "Library");
+    qmlRegisterType<LibraryVersion>("com.dfordsoft.codeinspector", 1, 0, "LibraryVersion");
 
     m_btnToggleOutput->setVisible(false);
     m_output->setVisible(false);

@@ -9,12 +9,10 @@ import "popups"
 import "tabs"
 import "navigation"
 
-
 Item {
     id: appWindow
     // visibile must set to true - default is false
     visible: true
-    //
     property bool isLandscape: true //width > height
 
     property bool backKeyBlocked: false
@@ -54,9 +52,9 @@ Item {
     property color toastColor: themePalette[13]
     property real toastOpacity: themePalette[14]
     // Material.dropShadowColor  OK for Light, but too dark for dark theme
-    property color dropShadow: isDarkTheme? "#E4E4E4" : Material.dropShadowColor
+    property color dropShadow: isDarkTheme ? "#E4E4E4" : Material.dropShadowColor
     onIsDarkThemeChanged: {
-        if(isDarkTheme == 1) {
+        if (isDarkTheme == 1) {
             Material.theme = Material.Dark
         } else {
             Material.theme = Material.Light
@@ -88,13 +86,15 @@ Item {
     property real opacityBodyAndButton: primaryTextOpacity
     property real opacityBodySecondary: secondaryTextOpacity
     property real opacityCaption: secondaryTextOpacity
-    //
     // TODO C++ ENUM
     // Destination
     // TabBar-SwipeView
     // StackView
     property var activationPolicy: {
-        "NONE":0, "IMMEDIATELY":1, "LAZY":2, "WHILE_CURRENT":3
+        "NONE": 0,
+        "IMMEDIATELY": 1,
+        "LAZY": 2,
+        "WHILE_CURRENT": 3
     }
 
     // NAVIGATION BAR PROPRTIES (a_p == activationPolicy)
@@ -103,60 +103,130 @@ Item {
     // WHILE_CURRENT: Subway, About, Settings
     // StackView: Home --> QtPage
     // SwipeView+TabBar: ColorSchema
-    property var navigationModel: [
-        {"type": "../navigation/DrawerNavigationButton.qml", "name": "Introduce", "icon": "home.png", "source": "../navigation/HomeNavigation.qml", "showCounter":false, "showMarker":false, "a_p":1},
-        {"type": "../navigation/DrawerDivider.qml", "name": "", "icon": "", "source": "", "a_p":1},
-        {"type": "../navigation/DrawerNavigationButton.qml", "name": "Examples", "icon": "examples.png", "source": "../pages/ExamplesPage.qml", "showCounter":false, "showMarker":false, "a_p":3},
-        {"type": "../navigation/DrawerNavigationButton.qml", "name": "Options", "icon": "options.png", "source": "../pages/InspectorOptionsPage.qml", "showCounter":false, "showMarker":false, "a_p":3},
-        {"type": "../navigation/DrawerNavigationButton.qml", "name": "Libraries", "icon": "libraries.png", "source": "../pages/LibrariesPage.qml", "showCounter":false, "showMarker":false, "a_p":3},
-        {"type": "../navigation/DrawerNavigationButton.qml", "name": "Preferences", "icon": "preferences.png", "source": "../pages/PreferencesPage.qml", "showCounter":false, "showMarker":false, "a_p":3},
-        {"type": "../navigation/DrawerDivider.qml", "name": "", "icon": "", "source": "", "a_p":1},
-        {"type": "../navigation/DrawerNavigationButton.qml", "name": "About", "icon": "toasm.png", "source": "../pages/AboutPage.qml", "showCounter":false, "showMarker":false, "a_p":3},
-        {"type": "../navigation/DrawerNavigationButton.qml", "name": "Return", "icon": "return.png", "source": "", "showCounter":false, "showMarker":false, "a_p":3}
-    ]
+    property var navigationModel: [{
+            "type": "../navigation/DrawerNavigationButton.qml",
+            "name": "Introduce",
+            "icon": "home.png",
+            "source": "../navigation/HomeNavigation.qml",
+            "showCounter": false,
+            "showMarker": false,
+            "a_p": 1
+        }, {
+            "type": "../navigation/DrawerDivider.qml",
+            "name": "",
+            "icon": "",
+            "source": "",
+            "a_p": 1
+        }, {
+            "type": "../navigation/DrawerNavigationButton.qml",
+            "name": "Examples",
+            "icon": "examples.png",
+            "source": "../pages/ExamplesPage.qml",
+            "showCounter": false,
+            "showMarker": false,
+            "a_p": 3
+        }, {
+            "type": "../navigation/DrawerNavigationButton.qml",
+            "name": "Options",
+            "icon": "options.png",
+            "source": "../pages/InspectorOptionsPage.qml",
+            "showCounter": false,
+            "showMarker": false,
+            "a_p": 3
+        }, {
+            "type": "../navigation/DrawerNavigationButton.qml",
+            "name": "Libraries",
+            "icon": "libraries.png",
+            "source": "../pages/LibrariesPage.qml",
+            "showCounter": false,
+            "showMarker": false,
+            "a_p": 3
+        }, {
+            "type": "../navigation/DrawerNavigationButton.qml",
+            "name": "Preferences",
+            "icon": "preferences.png",
+            "source": "../pages/PreferencesPage.qml",
+            "showCounter": false,
+            "showMarker": false,
+            "a_p": 3
+        }, {
+            "type": "../navigation/DrawerDivider.qml",
+            "name": "",
+            "icon": "",
+            "source": "",
+            "a_p": 1
+        }, {
+            "type": "../navigation/DrawerNavigationButton.qml",
+            "name": "About",
+            "icon": "CodeInspector.png",
+            "source": "../pages/AboutPage.qml",
+            "showCounter": false,
+            "showMarker": false,
+            "a_p": 3
+        }, {
+            "type": "../navigation/DrawerNavigationButton.qml",
+            "name": "Return",
+            "icon": "return.png",
+            "source": "",
+            "showCounter": false,
+            "showMarker": false,
+            "a_p": 3
+        }]
     // Counter: Car
     // Marker: Subway, Flight
-    property var navigationData: [
-        {"counter":0, "marker":""},
-        {},
-        {"counter":0, "marker":""},
-        {"counter":0, "marker":""},
-        {"counter":0, "marker":""},
-        {"counter":0, "marker":""},
-        {},
-        {"counter":0, "marker":""},
-        {"counter":0, "marker":""},
-    ]
+    property var navigationData: [{
+            "counter": 0,
+            "marker": ""
+        }, {
+
+        }, {
+            "counter": 0,
+            "marker": ""
+        }, {
+            "counter": 0,
+            "marker": ""
+        }, {
+            "counter": 0,
+            "marker": ""
+        }, {
+            "counter": 0,
+            "marker": ""
+        }, {
+
+        }, {
+            "counter": 0,
+            "marker": ""
+        }, {
+            "counter": 0,
+            "marker": ""
+        }]
     // Menu Button
     // plus max 4 from drawer: home, car, flight, settings
     // favoritesModel maps to index from navigationModel
-    property var favoritesModel: [
-
-    ]
+    property var favoritesModel: []
     property int navigationIndex: 0
     onNavigationIndexChanged: {
         rootPane.activateDestination(navigationIndex)
     }
     property bool hideTitleBar: false
     onHideTitleBarChanged: {
-        //
+
     }
     property bool showFavorites: false
-    property bool highlightActiveNavigationButton : true
+    property bool highlightActiveNavigationButton: true
 
     // header only used in PORTRAIT to provide a fixed TitleBar
     //header: isLandscape || hideTitleBar ? null : titleBar
 
     //footer: showFavorites && !isLandscape && navigationBar.position == 0 ? favoritesBar : null
-
     Loader {
         id: titleBar
         visible: !isLandscape && !hideTitleBar
         active: !isLandscape && !hideTitleBar
         source: "navigation/DrawerTitleBar.qml"
         onLoaded: {
-            if(item) {
-                item.text = qsTr("ToAsm")
+            if (item) {
+                item.text = qsTr("CodeInspector")
             }
         }
     }
@@ -171,8 +241,8 @@ Item {
         active: isLandscape && !hideTitleBar
         source: "navigation/DrawerTitleBar.qml"
         onLoaded: {
-            if(item) {
-                item.text = qsTr("ToAsm")
+            if (item) {
+                item.text = qsTr("CodeInspector")
             }
         }
     }
@@ -192,9 +262,10 @@ Item {
     StackView {
         id: rootPane
         focus: true
-        anchors.top: isLandscape && !hideTitleBar? titleBarFloating.bottom : parent.top
+        anchors.top: isLandscape
+                     && !hideTitleBar ? titleBarFloating.bottom : parent.top
         anchors.left: parent.left
-        anchors.topMargin: isLandscape && !hideTitleBar? 6 : 0
+        anchors.topMargin: isLandscape && !hideTitleBar ? 6 : 0
         anchors.right: parent.right
         anchors.bottom: parent.bottom
 
@@ -215,7 +286,7 @@ Item {
             PropertyAnimation {
                 property: "opacity"
                 from: 0
-                to:1
+                to: 1
                 duration: 300
             }
         }
@@ -223,7 +294,7 @@ Item {
             PropertyAnimation {
                 property: "opacity"
                 from: 1
-                to:0
+                to: 0
                 duration: 300
             }
         }
@@ -233,15 +304,15 @@ Item {
         // or to exit the app
         property bool firstPageInfoRead: false
         Keys.onBackPressed: {
-            if(backKeyBlocked) {
+            if (backKeyBlocked) {
                 event.accepted = true
                 firstPageInfoRead = false
                 showToast(qsTr("Back key blocked while modal Popup on top"))
                 return
             }
 
-
-            if(navigationIndex == 0 && destinations.itemAt(navigationIndex).item.depth > 1) {
+            if (navigationIndex == 0 && destinations.itemAt(
+                        navigationIndex).item.depth > 1) {
                 destinations.itemAt(navigationIndex).item.pop()
                 event.accepted = true
                 firstPageInfoRead = false
@@ -251,17 +322,15 @@ Item {
             event.accepted = !firstPageInfoRead
             // user gets Popupo Info
             // hitting again BACK will close the app
-            if(!firstPageInfoRead) {
+            if (!firstPageInfoRead) {
                 firstPageInfoRead = true
                 showInfo(qsTr("Next BACK closes APP and clears Values\n\nUse 'Android Home' Button for Fast-Restart.\n\n"))
                 return
             }
             // We must cleanup loaded Pages
-
         }
 
         // TODO some Shortcus
-
         Repeater {
             id: destinations
             model: navigationModel
@@ -278,22 +347,21 @@ Item {
                 rootPane.firstDestinationLoaded()
             }
         }
-        function firstDestinationLoaded() {
-            // do some sepcial stuff here
+        function firstDestinationLoaded() {// do some sepcial stuff here
             // first page just becomes visible
         }
         // switch to new Destination
         // Destinations are lazy loaded via Loader
         function activateDestination(navigationIndex) {
             if (navigationIndex == navigationModel.length - 1)
-                api.closeConfiguration();
-            else
-            {
-                if(destinations.itemAt(navigationIndex).status == Loader.Ready) {
-                    console.log("replace item on root stack: "+navigationIndex)
+                api.closeConfiguration()
+            else {
+                if (destinations.itemAt(
+                            navigationIndex).status == Loader.Ready) {
+                    console.log("replace item on root stack: " + navigationIndex)
                     replaceDestination(destinations.itemAt(navigationIndex))
                 } else {
-                    console.log("first time item to be replaced: "+navigationIndex)
+                    console.log("first time item to be replaced: " + navigationIndex)
                     destinations.itemAt(navigationIndex).active = true
                 }
             }
@@ -302,34 +370,32 @@ Item {
         function replaceDestination(theItemLoader) {
             var previousIndex = rootPane.currentItem.myIndex
             var previousItemLoader
-            if(previousIndex >= 0) {
-                previousItemLoader  = destinations.itemAt(previousIndex)
+            if (previousIndex >= 0) {
+                previousItemLoader = destinations.itemAt(previousIndex)
             }
             // because of https://bugreports.qt.io/browse/QTBUG-54260
             // remember currentIndex before being replaced
-            if(rootPane.currentItem.name == "colorSchemaNavPage") {
+            if (rootPane.currentItem.name == "colorSchemaNavPage") {
                 rootPane.currentItem.lastCurrentIndex = rootPane.currentItem.currentIndex
             }
             // reset currentIndex to the last one
-            if(theItemLoader.item.name == "colorSchemaNavPage") {
+            if (theItemLoader.item.name == "colorSchemaNavPage") {
                 theItemLoader.item.currentIndex = theItemLoader.item.lastCurrentIndex
             }
             // now replace the Page
             rootPane.replace(theItemLoader.item)
-            // check if previous should be unloaded
 
-            if(previousIndex >= 0) {
-                if(destinations.itemAt(previousIndex).pageActivationPolicy == activationPolicy.WHILE_CURRENT) {
+            // check if previous should be unloaded
+            if (previousIndex >= 0) {
+                if (destinations.itemAt(
+                            previousIndex).pageActivationPolicy == activationPolicy.WHILE_CURRENT) {
                     destinations.itemAt(previousIndex).active = false
                 }
             } else {
                 initialPlaceholder.active = false
             }
         }
-
     } // rootPane
-
-
 
     function switchPrimaryPalette(paletteIndex) {
         primaryPalette = appUI.primaryPalette(paletteIndex)
@@ -369,5 +435,4 @@ Item {
             resetFocus()
         }
     }
-
 } // app window

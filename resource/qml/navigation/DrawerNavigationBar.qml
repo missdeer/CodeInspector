@@ -1,4 +1,3 @@
-
 import QtQuick 2.10
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.3
@@ -11,9 +10,9 @@ Drawer {
     z: 1
     leftPadding: 0
     property alias navigationButtons: navigationButtonRepeater
-    property real activeOpacity: iconFolder == "black" ?  0.87 : 1.0
-    property real inactiveOpacity: iconFolder == "black" ?  0.56 : 0.87 //  0.26 : 0.56
-    width: Math.min(240,  Math.min(appWindow.width, appWindow.height) / 3 * 2 )
+    property real activeOpacity: iconFolder == "black" ? 0.87 : 1.0
+    property real inactiveOpacity: iconFolder == "black" ? 0.56 : 0.87 //  0.26 : 0.56
+    width: Math.min(240, Math.min(appWindow.width, appWindow.height) / 3 * 2)
     height: appWindow.height
 
     Flickable {
@@ -28,8 +27,8 @@ Drawer {
             anchors.right: parent.right
             spacing: 0
             Item {
-//                anchors.left: parent.left
-//                anchors.right: parent.right
+                //                anchors.left: parent.left
+                //                anchors.right: parent.right
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft | Qt.AlignRight
                 height: 120
                 Rectangle {
@@ -46,7 +45,7 @@ Drawer {
                         leftPadding: 16
                         rightPadding: 16
                         LabelBody {
-                            text: "ToAsm"
+                            text: qsTr("CodeInspector")
                             font.weight: Font.Medium
                             font.pixelSize: 16
                             color: textOnPrimaryLight
@@ -66,14 +65,14 @@ Drawer {
                     height: 48
                     x: 16
                     y: 12
-//                    IconColored {
-//                        imageName: "toasm.png"
-//                        imageSize: 48
-//                        color: textOnPrimaryLight
-//                    }
+                    //                    IconColored {
+                    //                        imageName: "CodeInspector.png"
+                    //                        imageSize: 48
+                    //                        color: textOnPrimaryLight
+                    //                    }
                     Image {
                         anchors.fill: parent
-                        source: "qrc:/resource/image/black/x48/toasm.png"
+                        source: "qrc:/resource/image/black/x48/CodeInspector.png"
                     }
                 }
             }
@@ -90,10 +89,8 @@ Drawer {
                     active: true
                 }
             } // repeater
-            //
         } // ColumnLayout myButtons
-        ScrollIndicator.vertical: ScrollIndicator { }
-
+        ScrollIndicator.vertical: ScrollIndicator {
+        }
     } // Flickable
-
 } // drawer

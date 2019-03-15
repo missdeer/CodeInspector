@@ -1,4 +1,3 @@
-
 import QtQuick 2.10
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.3
@@ -22,7 +21,7 @@ Flickable {
         ColumnLayout {
             anchors.right: parent.right
             anchors.left: parent.left
-            RowLayout{
+            RowLayout {
                 IconInactive {
                     imageName: modelData.icon
                     imageSize: 48
@@ -32,14 +31,16 @@ Flickable {
                     text: qsTr("About")
                 }
             }
-            HorizontalDivider {}
+            HorizontalDivider {
+            }
             RowLayout {
                 LabelSubheading {
                     topPadding: 6
                     leftPadding: 10
                     rightPadding: 10
                     wrapMode: Text.WordWrap
-                    text: qsTr("Copyright (C) 2017 - 2018 ToAsm. All rights reserved.")                }
+                    text: qsTr("Copyright (C) 2017 - 2019 CodeInspector. All rights reserved.")
+                }
             }
             RowLayout {
                 LabelSubheading {
@@ -71,10 +72,12 @@ Flickable {
                     onLinkActivated: Qt.openUrlExternally(link)
                 }
             }
-            HorizontalDivider {}
+            HorizontalDivider {
+            }
         } // col layout
     } // root
-    ScrollIndicator.vertical: ScrollIndicator { }
+    ScrollIndicator.vertical: ScrollIndicator {
+    }
 
     // emitting a Signal could be another option
     Component.onDestruction: {

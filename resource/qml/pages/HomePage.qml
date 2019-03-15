@@ -1,4 +1,3 @@
-
 import QtQuick 2.10
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.3
@@ -45,7 +44,7 @@ Flickable {
                         anchors.fill: parent
                         // anchors.verticalCenterOffset: -50
                         fillMode: Image.PreserveAspectFit
-                        source: "qrc:/toasm.png"
+                        source: "qrc:/CodeInspector.png"
                     }
                     MouseArea {
                         anchors.fill: parent
@@ -75,7 +74,7 @@ Flickable {
                     leftPadding: 10
                     rightPadding: 10
                     wrapMode: Text.WordWrap
-                    text: qsTr("ToAsm is an interactive compiler. \nThe left-hand pane shows editable C, C++, Rust, Go, D, Haskell, Swift and Pascal source code. \nThe right, the assembly output of having compiled the code with a given compiler and settings. \nMultiple compilers are supported.\n")
+                    text: qsTr("CodeInspector is an interactive compiler. \nThe left-hand pane shows editable C, C++, Rust, Go, D, Haskell, Swift and Pascal source code. \nThe right, the assembly output of having compiled the code with a given compiler and settings. \nMultiple compilers are supported.\n")
                 }
             }
 
@@ -85,7 +84,8 @@ Flickable {
             }
         } // col layout
     } // root
-    ScrollIndicator.vertical: ScrollIndicator { }
+    ScrollIndicator.vertical: ScrollIndicator {
+    }
 
     // emitting a Signal could be another option
     Component.onDestruction: {

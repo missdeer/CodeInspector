@@ -1,4 +1,3 @@
-
 import QtQuick 2.10
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.3
@@ -21,7 +20,7 @@ ToolBar {
             focusPolicy: Qt.NoFocus
             Image {
                 anchors.centerIn: parent
-                source: "qrc:/resource/image/"+iconOnPrimaryFolder+"/menu.png"
+                source: "qrc:/resource/image/" + iconOnPrimaryFolder + "/menu.png"
             }
             onClicked: {
                 navigationBar.open()
@@ -29,7 +28,7 @@ ToolBar {
         }
         LabelTitle {
             id: titleLabel
-            text: "ToAsm"
+            text: qsTr("CodeInspector")
             leftPadding: 6
             rightPadding: 6
             elide: Label.ElideRight
@@ -41,13 +40,11 @@ ToolBar {
             focusPolicy: Qt.NoFocus
             Image {
                 anchors.centerIn: parent
-                source: "qrc:/resource/image/"+iconOnPrimaryFolder+"/return.png"
+                source: "qrc:/resource/image/" + iconOnPrimaryFolder + "/return.png"
             }
             onClicked: {
-                api.closeConfiguration();
+                api.closeConfiguration()
             }
         }
     } // end RowLayout
 } // end ToolBar
-
-

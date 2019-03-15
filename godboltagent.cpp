@@ -2,6 +2,8 @@
 #include "networkreplyhelper.h"
 #include "godboltagent.h"
 
+const QString baseUrl = QLatin1String("https://godbolt.org");
+
 GodboltAgent::GodboltAgent(QObject *parent)
     : QObject(parent)
 {
@@ -32,7 +34,7 @@ void GodboltAgent::initialize()
 void GodboltAgent::requestLanguageList()
 {
     qDebug() << __FUNCTION__;
-    QString requestUrl = "https://toasm.app/api/languages";
+    QString requestUrl = baseUrl + "/api/languages";
     QNetworkRequest request(requestUrl);
     request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
     request.setRawHeader("Accept", "application/json, text/javascript, */*; q=0.01");
@@ -128,7 +130,7 @@ void GodboltAgent::compile(const CompileInfo &ci)
     rootObj.insert("compiler", getCompilerId(compilerList, ci.compiler));
     rootObj.insert("options", QJsonValue::fromVariant(optionsObj));
 
-    QString requestUrl = "https://toasm.app/api/compiler/" + getCompilerId(compilerList, ci.compiler) + "/compile";
+    QString requestUrl = baseUrl + "/api/compiler/" + getCompilerId(compilerList, ci.compiler) + "/compile";
     QNetworkRequest request(requestUrl);
     request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
@@ -161,7 +163,7 @@ bool GodboltAgent::canCompile(const QString& language, const QString& compiler)
 void GodboltAgent::requestCompilerList(const QString &language)
 {
     qDebug() << __FUNCTION__;
-    QString requestUrl = "https://toasm.app/api/compilers/" + getLanguageId(language);
+    QString requestUrl = baseUrl + "/api/compilers/" + getLanguageId(language);
     QNetworkRequest request(requestUrl);
     request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
     request.setRawHeader("Accept", "application/json, text/javascript, */*; q=0.01");
@@ -800,7 +802,7 @@ const QString &GodboltAgent::getDefaultCompilerName(const QString &languageName)
 void GodboltAgent::requestConfigurations()
 {
     qDebug() << __FUNCTION__;
-    QString requestUrl = "https://toasm.app/web";
+    QString requestUrl = baseUrl + "/";
     QNetworkRequest request(requestUrl);
     request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
 

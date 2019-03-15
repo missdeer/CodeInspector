@@ -3,7 +3,7 @@ QT       += core gui widgets xml network concurrent sql qml quickwidgets widgets
 lessThan(QT_MAJOR_VERSION, 5): error("Qt 5 is required")
 greaterThan(QT_MINOR_VERSION, 10): CONFIG += qtquickcompiler
 
-TARGET = ToAsm
+TARGET = CodeInspector
 TEMPLATE = app
 CONFIG += c++11 precompile_header
 PRECOMPILED_HEADER = stdafx.h
@@ -19,7 +19,7 @@ DEFINES += QT_DEPRECATED_WARNINGS SCINTILLA_QT=1 SCI_LEXER=1 _CRT_SECURE_NO_DEPR
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-RC_FILE = toasm.rc
+RC_FILE = CodeInspector.rc
 
 SOURCES += \
     main.cpp \
@@ -62,7 +62,7 @@ CONFIG += mobility
 MOBILITY = 
 
 RESOURCES += \
-    toasm.qrc
+    CodeInspector.qrc
 
 win32-msvc* {
     QMAKE_LFLAGS += "/LTCG"
@@ -70,7 +70,7 @@ win32-msvc* {
     QMAKE_LFLAGS_RELEASE += /DEBUG
 }
 macx: {
-    ICON = toasm.icns
+    ICON = CodeInspector.icns
     icon.path = $$PWD
     INSTALLS += icon
 }
@@ -78,7 +78,7 @@ macx: {
 ios {
     QMAKE_ASSET_CATALOGS = $$PWD/appicon/ios/Images.xcassets
     QMAKE_ASSET_CATALOGS_APP_ICON = "AppIcon"
-    xcode_product_bundle_identifier_setting.value = "com.dfordsoft.toasm.full"
+    xcode_product_bundle_identifier_setting.value = "com.dfordsoft.codeinspector"
     LaunchImages.files=$$system("find $$PWD/launchimage/ios/ -name '*.png'")
     LaunchImages.path=./
     QMAKE_BUNDLE_DATA += LaunchImages
