@@ -7,6 +7,8 @@ QuickWidgetAPI::QuickWidgetAPI(QObject *parent)
     : QObject(parent)
     , m_binary(false)
     , m_binaryEnabled(true)
+    , m_functionsFromOtherLibraries(false)
+    , m_functionsFromOtherLibrariesEnabled(false)
     , m_labels(true)
     , m_labelsEnabled(true)
     , m_trim(true)
@@ -326,6 +328,34 @@ void QuickWidgetAPI::setDefaultLanguageIndex(int defaultLanguageIndex)
 {
     g_settings->setDefaultLanguageIndex(defaultLanguageIndex);
     emit defaultLanguageIndexChanged();
+}
+
+bool QuickWidgetAPI::functionsFromOtherLibraries() const
+{
+    return m_functionsFromOtherLibraries;
+}
+
+void QuickWidgetAPI::setFunctionsFromOtherLibraries(bool functionsFromOtherLibraries)
+{
+    if (m_functionsFromOtherLibraries == functionsFromOtherLibraries)
+        return;
+    m_functionsFromOtherLibraries = functionsFromOtherLibraries;
+    emit functionsFromOtherLibrariesChanged();
+}
+
+bool QuickWidgetAPI::functionsFromOtherLibrariesEnabled() const
+{
+    return m_functionsFromOtherLibrariesEnabled;
+}
+
+void QuickWidgetAPI::setFunctionsFromOtherLibrariesEnabled(bool functionsFromOtherLibrariesEnabled)
+{
+    if (m_functionsFromOtherLibrariesEnabled == functionsFromOtherLibrariesEnabled)
+        return;
+    if (!functionsFromOtherLibrariesEnabled)
+        m_functionsFromOtherLibrariesEnabled = false;
+    m_functionsFromOtherLibrariesEnabled = functionsFromOtherLibrariesEnabled;
+    emit functionsFromOtherLibrariesEnabledChanged();
 }
 
 void QuickWidgetAPI::appendLib(QQmlListProperty<Library> *list, Library *p)

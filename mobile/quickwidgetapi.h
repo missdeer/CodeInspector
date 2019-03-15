@@ -9,6 +9,7 @@ class QuickWidgetAPI : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(bool binary READ binary WRITE setBinary NOTIFY binaryChanged)
+    Q_PROPERTY(bool functionsFromOtherLibraries READ functionsFromOtherLibraries WRITE setFunctionsFromOtherLibraries NOTIFY functionsFromOtherLibrariesChanged)
     Q_PROPERTY(bool labels READ labels WRITE setLabels NOTIFY labelsChanged)
     Q_PROPERTY(bool trim READ trim WRITE setTrim NOTIFY trimChanged)
     Q_PROPERTY(bool directives READ directives WRITE setDirectives NOTIFY directivesChanged)
@@ -16,6 +17,7 @@ class QuickWidgetAPI : public QObject
     Q_PROPERTY(bool commentOnly READ commentOnly WRITE setCommentOnly NOTIFY commentOnlyChanged)
     Q_PROPERTY(bool demangle READ demangle WRITE setDemangle NOTIFY demangleChanged)
     Q_PROPERTY(bool binaryEnabled READ binaryEnabled WRITE setBinaryEnabled NOTIFY binaryEnabledChanged)
+    Q_PROPERTY(bool functionsFromOtherLibrariesEnabled READ functionsFromOtherLibrariesEnabled WRITE setFunctionsFromOtherLibrariesEnabled NOTIFY functionsFromOtherLibrariesEnabledChanged)
     Q_PROPERTY(bool labelsEnabled READ labelsEnabled WRITE setLabelsEnabled NOTIFY labelsEnabledChanged)
     Q_PROPERTY(bool trimEnabled READ trimEnabled WRITE setTrimEnabled NOTIFY trimEnabledChanged)
     Q_PROPERTY(bool directivesEnabled READ directivesEnabled WRITE setDirectivesEnabled NOTIFY directivesEnabledChanged)
@@ -99,12 +101,19 @@ public:
     int defaultLanguageIndex() const;
     void setDefaultLanguageIndex(int defaultLanguageIndex);
 
+    bool functionsFromOtherLibraries() const;
+    void setFunctionsFromOtherLibraries(bool functionsFromOtherLibraries);
+    
+    bool functionsFromOtherLibrariesEnabled() const;
+    void setFunctionsFromOtherLibrariesEnabled(bool functionsFromOtherLibrariesEnabled);
+    
 signals:
     void doCloseConfiguration();
     void doLoadExample(const QString& name);
     void doLibrarySwitched();
-
+    
     void binaryChanged();
+    void functionsFromOtherLibrariesChanged();
     void labelsChanged();
     void trimChanged();
     void directivesChanged();
@@ -113,6 +122,7 @@ signals:
     void demangleChanged();
 
     void binaryEnabledChanged();
+    void functionsFromOtherLibrariesEnabledChanged();
     void labelsEnabledChanged();
     void trimEnabledChanged();
     void directivesEnabledChanged();
@@ -133,6 +143,8 @@ private:
     // code inspector options
     bool m_binary;
     bool m_binaryEnabled;
+    bool m_functionsFromOtherLibraries;
+    bool m_functionsFromOtherLibrariesEnabled;
     bool m_labels;
     bool m_labelsEnabled;
     bool m_trim;
