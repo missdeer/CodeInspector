@@ -38,17 +38,6 @@ RESOURCES += \
     image.qrc \
     qml.qrc 
 
-win32-msvc* {
-    QMAKE_LFLAGS += "/LTCG"
-    QMAKE_CXXFLAGS_RELEASE += /Zi
-    QMAKE_LFLAGS_RELEASE += /DEBUG
-}
-macx: {
-    ICON = CodeInspector.icns
-    icon.path = $$PWD
-    INSTALLS += icon
-}
-
 ios {
     QMAKE_ASSET_CATALOGS = $$PWD/appicon/ios/Images.xcassets
     QMAKE_ASSET_CATALOGS_APP_ICON = "AppIcon"
