@@ -1,0 +1,39 @@
+<RCC>
+    <qresource prefix="/">
+        <file>resource/example/cpp/maxarray.cpp</file>
+        <file>resource/example/cpp/maxarrayopt.cpp</file>
+        <file>resource/example/cpp/square.cpp</file>
+        <file>resource/example/cpp/sumoverarray.cpp</file>
+        <file>resource/example/cpp/sumoverarrayopt.cpp</file>
+        <file>resource/example/d/maxarray.d</file>
+        <file>resource/example/d/maxarrayopt.d</file>
+        <file>resource/example/d/square.d</file>
+        <file>resource/example/d/sumoverarray.d</file>
+        <file>resource/example/d/sumoverarrayopt.d</file>
+        <file>resource/example/go/maxarray.go</file>
+        <file>resource/example/go/square.go</file>
+        <file>resource/example/haskell/sumoverarray.hs</file>
+        <file>resource/example/ispc/maxarray.ispc</file>
+        <file>resource/example/ispc/square.ispc</file>
+        <file>resource/example/ispc/sumarray.ispc</file>
+        <file>resource/example/rust/maxarray.rs</file>
+        <file>resource/example/rust/maxarrayopt.rs</file>
+        <file>resource/example/rust/square.rs</file>
+        <file>resource/example/rust/sumoverarray.rs</file>
+        <file>resource/example/rust/sumoverarrayopt.rs</file>
+        <file>resource/example/swift/square.swift</file>
+        <file>resource/example/analysis/basic.asm</file>
+        <file>resource/example/assembly/infiniteLoop.asm</file>
+        <file>resource/example/c/maxArray.c</file>
+        <file>resource/example/c/sumOverArray.c</file>
+        <file>resource/example/cppx/basic.cpp</file>
+        <file>resource/example/cppx/interface.cpp</file>
+        <file>resource/example/cuda/square.cu</file>
+        <file>resource/example/llvm/square.ll</file>
+        <file>resource/example/pascal/maxArray.pas</file>
+        <file>resource/example/pascal/square.pas</file>
+        <file>resource/example/pascal/sumOverArray.pas</file>
+        <file>resource/example/swift/maxArray.swift</file>
+        <file>resource/example/swift/sumOverArray.swift</file>
+    </qresource>
+</RCC>

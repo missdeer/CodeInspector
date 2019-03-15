@@ -62,7 +62,11 @@ CONFIG += mobility
 MOBILITY = 
 
 RESOURCES += \
-    CodeInspector.qrc
+    CodeInspector.qrc \
+    example.qrc \
+    image.qrc \
+    scintilla.qrc \
+    qml.qrc 
 
 win32-msvc* {
     QMAKE_LFLAGS += "/LTCG"
