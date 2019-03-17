@@ -42,7 +42,7 @@ QMap<int, sptr_t> CodeInspector::setAsmItems(const AsmItemList &items, bool bina
 
     for (int i = 0; i < items.length(); i++)
     {
-        auto item  = items.at(i);
+        const auto& item  = items.at(i);
 
         if (item->source != -1)
         {

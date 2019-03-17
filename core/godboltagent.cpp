@@ -9,10 +9,6 @@ GodboltAgent::GodboltAgent(QObject *parent)
 {
 }
 
-GodboltAgent::~GodboltAgent()
-{
-}
-
 void GodboltAgent::initialize()
 {
     QByteArray content;
@@ -40,7 +36,7 @@ void GodboltAgent::requestLanguageList()
     request.setRawHeader("Accept", "application/json, text/javascript, */*; q=0.01");
 
     QNetworkReply* reply = m_nam.get(request);
-    NetworkReplyHelper* replyHelper = new NetworkReplyHelper(reply);
+    auto* replyHelper = new NetworkReplyHelper(reply);
     replyHelper->setTimeout(10000);
     connect(replyHelper, SIGNAL(done()), this, SLOT(onLanguageListRequestFinished()));
 }
@@ -144,7 +140,7 @@ void GodboltAgent::compile(const CompileInfo &ci)
     qDebug() << "post body: " << QString(postBody);
     QNetworkReply* reply = m_nam.post(request, postBody);
 
-    NetworkReplyHelper* replyHelper = new NetworkReplyHelper(reply);
+    auto* replyHelper = new NetworkReplyHelper(reply);
     replyHelper->setTimeout(10000);
     connect(replyHelper, SIGNAL(done()), this, SLOT(onCompileRequestFinished()));
 }
@@ -223,7 +219,7 @@ void GodboltAgent::onCompileRequestFinished()
     m_asmContent.clear();
     m_asmItems.clear();
 
-    NetworkReplyHelper* reply = qobject_cast<NetworkReplyHelper*>(sender());
+    auto* reply = qobject_cast<NetworkReplyHelper*>(sender());
     reply->deleteLater();
 
     class Guard
@@ -235,6 +231,10 @@ void GodboltAgent::onCompileRequestFinished()
         ~Guard() {
             emit m_ga->compiled();
         }
+        Guard(const Guard&) = delete;
+        void operator=(const Guard&) = delete;
+        Guard(Guard&&) = delete;
+        void operator=(Guard&&) = delete;
     private:
         GodboltAgent* m_ga;
     };
@@ -306,14 +306,14 @@ void GodboltAgent::onCompileRequestFinished()
         AsmItemPtr asmItem(new AsmItem);
         asmItem->text = o["text"].toString();
         if (o["source"].isDouble())
-            asmItem->source = o["source"].toDouble();
+            asmItem->source = o["source"].toInt();
         else if (o["source"].isObject())
         {
             QJsonObject srcObj = o["source"].toObject();
-            asmItem->source = srcObj["line"].toDouble();
+            asmItem->source = srcObj["line"].toInt();
         }
         if (o["address"].isDouble())
-            asmItem->address = o["address"].toDouble();
+            asmItem->address = o["address"].toInt();
         if (o["opcodes"].isArray())
         {
             QJsonArray opcodes = o["opcodes"].toArray();
@@ -346,7 +346,7 @@ void GodboltAgent::onCompileRequestFinished()
 void GodboltAgent::onLanguageListRequestFinished()
 {
     qDebug() << __FUNCTION__;
-    NetworkReplyHelper* reply = qobject_cast<NetworkReplyHelper*>(sender());
+    auto* reply = qobject_cast<NetworkReplyHelper*>(sender());
     reply->deleteLater();
 
     QByteArray& content = reply->content();
@@ -358,7 +358,7 @@ void GodboltAgent::onLanguageListRequestFinished()
 void GodboltAgent::onConfigurationRequestFinished()
 {
     qDebug() << __FUNCTION__;
-    NetworkReplyHelper* reply = qobject_cast<NetworkReplyHelper*>(sender());
+    auto* reply = qobject_cast<NetworkReplyHelper*>(sender());
     reply->deleteLater();
 
     QByteArray& content = reply->content();
@@ -387,7 +387,7 @@ bool GodboltAgent::storeCompilerList(const QString& name, const QByteArray &cont
             return false;
         }
     }
-    QString path = QString("%1/%2").arg(d).arg(name);
+    QString path = QString("%1/%2").arg(d, name);
     QFile f(path);
     if (!f.open(QIODevice::WriteOnly))
     {
@@ -404,7 +404,7 @@ bool GodboltAgent::loadCompilerList(const QString &name, QByteArray &content)
     qDebug() << __FUNCTION__;
 
     QString d = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
-    QString path = QString("%1/compilerlist/%2").arg(d).arg(name);
+    QString path = QString("%1/compilerlist/%2").arg(d, name);
     if (!QFile::exists(path))
         return false;
     QFile f(path);
@@ -750,7 +750,7 @@ bool GodboltAgent::parseDefaultCompilerFromConfiguration(QJsonObject &obj)
 
     auto languages = obj.keys();
     m_defaultCompiler.clear();
-    for (auto l : languages)
+    for (const auto& l : languages)
     {
         m_defaultCompiler.insert(l, obj[l].toString());
     }
@@ -807,7 +807,7 @@ void GodboltAgent::requestConfigurations()
     request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
 
     QNetworkReply* reply = m_nam.get(request);
-    NetworkReplyHelper* replyHelper = new NetworkReplyHelper(reply);
+    auto* replyHelper = new NetworkReplyHelper(reply);
     replyHelper->setTimeout(10000);
     connect(replyHelper, SIGNAL(done()), this, SLOT(onConfigurationRequestFinished()));
 }

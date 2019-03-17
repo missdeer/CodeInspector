@@ -9,12 +9,12 @@ class CodeInspector : public ScintillaEdit
 {
     Q_OBJECT
 public:
-    explicit CodeInspector(QWidget *parent = 0);
+    explicit CodeInspector(QWidget *parent = nullptr);
     void initialize();
     void setContent(const QString& content, bool binary);
     QMap<int, sptr_t> setAsmItems(const AsmItemList &items, bool binary);
 protected:
-    virtual QVariant inputMethodQuery(Qt::InputMethodQuery) const;
+     QVariant inputMethodQuery(Qt::InputMethodQuery) const override;
 
 private:
     ScintillaConfig m_sc;

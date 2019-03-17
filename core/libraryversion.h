@@ -35,5 +35,5 @@ private:
     QStringList path;
 };
 
-typedef QSharedPointer<LibraryVersion> LibraryVersionPtr;
+using LibraryVersionPtr = QSharedPointer<LibraryVersion>;
 #endif // LIBRARYVERSION_H

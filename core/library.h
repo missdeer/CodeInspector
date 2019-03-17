@@ -58,7 +58,7 @@ private:
     void clearLibVersions();
 };
 
-typedef QSharedPointer<Library> LibraryPtr;
-typedef QList<LibraryPtr> LibraryList;
-typedef QSharedPointer<LibraryList> LibraryListPtr;
+using LibraryPtr = QSharedPointer<Library>;
+using LibraryList = QList<LibraryPtr>;
+using LibraryListPtr = QSharedPointer<LibraryList>;
 #endif // LIBRARY_H

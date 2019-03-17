@@ -4,12 +4,20 @@
 #include <QObject>
 #include <QNetworkReply>
 
+QT_BEGIN_NAMESPACE
+class QTimer;
+QT_END_NAMESPACE
+
 class NetworkReplyHelper : public QObject
 {
     Q_OBJECT
 public:
-    explicit NetworkReplyHelper(QNetworkReply* reply, QObject *parent = 0);
-    ~NetworkReplyHelper();
+    explicit NetworkReplyHelper(QNetworkReply* reply, QObject *parent = nullptr);
+    NetworkReplyHelper(const NetworkReplyHelper&) = delete;
+    void operator=(const NetworkReplyHelper&) = delete;
+    NetworkReplyHelper(NetworkReplyHelper&&) = delete;
+    void operator=(NetworkReplyHelper&&) = delete;
+    ~NetworkReplyHelper() override;
     QByteArray& content() { return m_content; }
     QNetworkReply* reply() { return m_reply; }
 

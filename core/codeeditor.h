@@ -8,8 +8,8 @@ class CodeEditor : public ScintillaEdit
 {
     Q_OBJECT
 public:
-    explicit CodeEditor(QWidget *parent = 0);
-    ~CodeEditor();
+    explicit CodeEditor(QWidget *parent = nullptr);
+    ~CodeEditor() override = default;
     void initialize();
     void setLanguage(const QString& lang);
     void setContent(const QString& content);

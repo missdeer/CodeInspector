@@ -7,11 +7,6 @@ CodeEditor::CodeEditor(QWidget *parent)
 {
 }
 
-CodeEditor::~CodeEditor()
-{
-
-}
-
 void CodeEditor::initialize()
 {
     m_sc.initScintilla();

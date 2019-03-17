@@ -16,8 +16,8 @@ struct Language
     QString example;
 };
 
-typedef QSharedPointer<Language> LanguagePtr;
-typedef QList<LanguagePtr> LanguageList;
+using LanguagePtr = QSharedPointer<Language>;
+using LanguageList = QList<LanguagePtr>;
 
 struct Compiler
 {
@@ -35,63 +35,56 @@ struct Compiler
     bool supportsGccDump;
 };
 
-typedef QSharedPointer<Compiler> CompilerPtr;
-typedef QList<CompilerPtr> CompilerList;
-typedef QSharedPointer<CompilerList> CompilerListPtr;
+using CompilerPtr = QSharedPointer<Compiler>;
+using CompilerList = QList<CompilerPtr>;
+using CompilerListPtr = QSharedPointer<CompilerList>;
 
 struct CompileInfo
 {
-    CompileInfo()
-        : labels(false)
-        , directives(false)
-        , commentOnly(false)
-        , trim(false)
-        , binary(false)
-        , intel(false)
-        , demangle(false)
-    {}
     QByteArray source;
     QString language;
     QString compiler;
     QString userArguments;
-    bool labels;
-    bool directives;
-    bool commentOnly;
-    bool trim;
-    bool binary;
-    bool intel;
-    bool demangle;
+    bool labels{};
+    bool directives{};
+    bool commentOnly{};
+    bool trim{};
+    bool binary{};
+    bool intel{};
+    bool demangle{};
 };
 
 struct AsmLink
 {
-    AsmLink() : offset(0), length(0), to(0) {}
-    int offset;
-    int length;
-    unsigned long long to;
+    int offset{};
+    int length{};
+    unsigned long long to{};
 };
 
-typedef QSharedPointer<AsmLink> AsmLinkPtr;
+using AsmLinkPtr = QSharedPointer<AsmLink>;
 
 struct AsmItem
 {
-    AsmItem() : address(0), source(-1) {}
     QVector<unsigned char> opcodes;
-    unsigned long long address;
+    unsigned long long address{};
     QString text;
-    int source;
+    int source{-1};
     QList<AsmLinkPtr> links;
 };
 
-typedef QSharedPointer<AsmItem> AsmItemPtr;
-typedef QVector<AsmItemPtr> AsmItemList;
+using AsmItemPtr = QSharedPointer<AsmItem>;
+using AsmItemList = QVector<AsmItemPtr>;
 
 class GodboltAgent : public QObject
 {
     Q_OBJECT
 public:
     explicit GodboltAgent(QObject *parent = nullptr);
-    ~GodboltAgent();
+    GodboltAgent(const GodboltAgent&) = delete;
+    void operator=(const GodboltAgent&) = delete;
+    GodboltAgent(GodboltAgent&&) = delete;
+    void operator=(GodboltAgent&&) = delete;
+    ~GodboltAgent() override = default;
 
     void initialize();
     LanguageList &getLanguageList();
