@@ -194,7 +194,7 @@ void GodboltAgent::switchLanguage(const QString &language)
 void GodboltAgent::onCompilerListRequestFinished()
 {
     qDebug() << __FUNCTION__;
-    NetworkReplyHelper* reply = qobject_cast<NetworkReplyHelper*>(sender());
+    auto* reply = qobject_cast<NetworkReplyHelper*>(sender());
     reply->deleteLater();
 
     QByteArray& content = reply->content();
