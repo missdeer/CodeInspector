@@ -52,6 +52,7 @@
 #include <QShortcut>
 #include <QToolButton>
 #include <QPushButton>
+#include <QComboBox>
 
 #include <QTimer>
 #include <QProcess>

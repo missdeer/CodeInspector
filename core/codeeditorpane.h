@@ -5,6 +5,7 @@
 
 QT_BEGIN_NAMESPACE
 class QPushButton;
+class QComboBox;
 class QLineEdit;
 QT_END_NAMESPACE
 
@@ -23,9 +24,7 @@ public slots:
     
 private:
     CodeEditor* m_codeEditor;
-    OutputWindow* m_output;
-    QLineEdit* m_compilerArguments;
-    QPushButton* m_btnToggleOutput;
+    QComboBox* m_languageList;
 };
 
 #endif // CODEEDITORPANE_H

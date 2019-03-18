@@ -4,4 +4,7 @@ SUBDIRS = \
     desktop \
     mobile
 
+RESOURCES += \
+    core/CodeInspector.qrc
+
 
