@@ -5,6 +5,7 @@
 
 QT_BEGIN_NAMESPACE
 class QPushButton;
+class QLineEdit;
 QT_END_NAMESPACE
 
 class CodeEditor;
@@ -23,6 +24,7 @@ public slots:
 private:
     CodeEditor* m_codeEditor;
     OutputWindow* m_output;
+    QLineEdit* m_compilerArguments;
     QPushButton* m_btnToggleOutput;
 };
 

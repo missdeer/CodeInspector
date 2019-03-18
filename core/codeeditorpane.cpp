@@ -6,15 +6,23 @@
 CodeEditorPane::CodeEditorPane(QWidget *parent) 
     : QWidget(parent)
 {    
-    QVBoxLayout *editorPanelLayout = new QVBoxLayout();
-    setLayout(editorPanelLayout);
-    editorPanelLayout->setContentsMargins(0,0,0,0);
-    editorPanelLayout->setSpacing(0);
+    QVBoxLayout *mainLayout = new QVBoxLayout();
+    setLayout(mainLayout);
+    mainLayout->setContentsMargins(0,0,0,0);
+    mainLayout->setSpacing(0);
+    
+    QHBoxLayout* argumentsBarLayout = new QHBoxLayout();
+    argumentsBarLayout->setContentsMargins(0,0,0,0);
+    argumentsBarLayout->setSpacing(0);
+    
+    m_compilerArguments = new QLineEdit(this);
+    argumentsBarLayout->addWidget(m_compilerArguments);
+    mainLayout->addLayout(argumentsBarLayout);
 
     m_codeEditor = new CodeEditor(this);
     m_codeEditor->initialize();
 
-    editorPanelLayout->addWidget(m_codeEditor);
+    mainLayout->addWidget(m_codeEditor);
 
     QHBoxLayout* outputBarLayout = new QHBoxLayout();
     outputBarLayout->setContentsMargins(0,0,0,0);
@@ -31,9 +39,9 @@ CodeEditorPane::CodeEditorPane(QWidget *parent)
     outputBarLayout->addWidget(m_btnToggleOutput);
     outputBarLayout->addStretch(1);
 
-    editorPanelLayout->addLayout(outputBarLayout);
+    mainLayout->addLayout(outputBarLayout);
 
     m_output = new OutputWindow(this);
     m_output->initialize();
-    editorPanelLayout->addWidget(m_output);
+    mainLayout->addWidget(m_output);
 }
