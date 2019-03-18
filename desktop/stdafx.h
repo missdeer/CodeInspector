@@ -5,12 +5,12 @@
 #if defined(_WIN32)
 #define NOMINMAX
 #include <Windows.h>
-#include <Shellapi.h>
-#include <shobjidl.h>
-#include <shlguid.h>
-#include <Shlobj.h>
+#include <shellapi.h>
+#include <ShObjIdl.h>
+#include <ShlGuid.h>
+#include <ShlObj.h>
 #include <strsafe.h>
-#include <PSapi.h>
+#include <Psapi.h>
 #endif
 
 #if defined (__cplusplus)
@@ -51,6 +51,7 @@
 #include <QTableView>
 #include <QShortcut>
 #include <QToolButton>
+#include <QPushButton>
 
 #include <QTimer>
 #include <QProcess>

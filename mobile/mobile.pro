@@ -13,7 +13,6 @@ include($$PWD/../core/core.pri)
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
-    outputwindow.cpp \
     qmldialog.cpp \
     quickwidgetapi.cpp \
     applicationui.cpp
@@ -21,7 +20,6 @@ SOURCES += \
 HEADERS += \
     stdafx.h \
     mainwindow.h \
-    outputwindow.h \
     qmldialog.h \
     quickwidgetapi.h \
     applicationui.hpp \

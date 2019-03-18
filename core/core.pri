@@ -21,7 +21,13 @@ SOURCES += \
     $$PWD/godboltagent.cpp \
     $$PWD/networkreplyhelper.cpp  \
     $$PWD/library.cpp \
-    $$PWD/libraryversion.cpp
+    $$PWD/libraryversion.cpp \
+    $$PWD/optimizationoutput.cpp \
+    $$PWD/astoutput.cpp \
+    $$PWD/gcctreertloutput.cpp \
+    $$PWD/llvmmachinecodeanalyzeroutput.cpp \
+    $$PWD/codeeditorpane.cpp \
+    $$PWD/outputwindow.cpp
 
 HEADERS += \
     $$PWD/scintillaconfig.h \
@@ -31,7 +37,13 @@ HEADERS += \
     $$PWD/godboltagent.h \
     $$PWD/networkreplyhelper.h  \
     $$PWD/library.h \
-    $$PWD/libraryversion.h
+    $$PWD/libraryversion.h \
+    $$PWD/optimizationoutput.h \
+    $$PWD/astoutput.h \
+    $$PWD/gcctreertloutput.h \
+    $$PWD/llvmmachinecodeanalyzeroutput.h \
+    $$PWD/codeeditorpane.h \
+    $$PWD/outputwindow.h
 
 	
 RESOURCES += \

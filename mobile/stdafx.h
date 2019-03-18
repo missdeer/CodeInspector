@@ -51,6 +51,7 @@
 #include <QTableView>
 #include <QShortcut>
 #include <QToolButton>
+#include <QPushButton>
 
 #include <QTimer>
 #include <QProcess>
