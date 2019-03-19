@@ -42,6 +42,12 @@ HEADERS += \
     $$PWD/gcctreertloutput.h \
     $$PWD/llvmmachinecodeanalyzeroutput.h \
     $$PWD/outputwindow.h \
+    $$PWD/language.hpp \
+    $$PWD/compiler.hpp \
+    $$PWD/compilerinfo.hpp \
+    $$PWD/asmlink.hpp \
+    $$PWD/asmitem.hpp \
+    $$PWD/backendinterface.hpp
 
 	
 RESOURCES += \

@@ -14,7 +14,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     m_timer(new QTimer),
     m_quickAPI(new QuickWidgetAPI(this)),
-    m_appUI(new ApplicationUI(this))
+    m_appUI(new ApplicationUI(this)),
+    m_backend(m_nam)
 {
     ui->setupUi(this);
     ui->edtCompilerOptions->setClearButtonEnabled(true);

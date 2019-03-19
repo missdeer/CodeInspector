@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "codeinspectorapp.h"
 #include "mainwindow.h"
 #include "settings.h"
 
@@ -11,6 +12,9 @@ int main(int argc, char *argv[])
     QApplication::setApplicationVersion("1.0");
 
     QApplication a(argc, argv);
+    
+    CodeInspectorApp app;
+    ciApp = &app;
 
     g_settings = new Settings;
     g_settings->initialize();

@@ -11,6 +11,7 @@ QT_END_NAMESPACE
 
 class CodeInspectorTabWidget;
 class OutputWindow;
+class GodboltAgent;
 
 class CodeInspectorPane : public QWidget
 {
@@ -28,6 +29,7 @@ private:
     QPushButton* m_btnToggleOutput;
     CodeInspectorTabWidget* m_codeInspectorTabWidget;
     OutputWindow* m_output;
+    GodboltAgent* m_backend;
 };
 
 #endif // CODEINSPECTORPANE_H

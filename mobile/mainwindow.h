@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QNetworkAccessManager>
 #include "godboltagent.h"
 #include "quickwidgetapi.h"
 #include "applicationui.hpp"
@@ -24,7 +25,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 private slots:
     void onCompilerListReady();
@@ -40,7 +41,6 @@ private slots:
     void on_btnConfiguration_clicked();
 private:
     Ui::MainWindow *ui;
-    bool m_postInitialized;
     QTimer *m_timer;
     CodeEditor* m_codeEditor;
     CodeInspector* m_codeInspector;
@@ -48,6 +48,7 @@ private:
     QPushButton* m_btnToggleOutput;
     QuickWidgetAPI* m_quickAPI;
     ApplicationUI* m_appUI;
+    QNetworkAccessManager m_nam;
     GodboltAgent m_backend;
 
     void storeToCache(const QString &name, const CompileInfo& ci);
