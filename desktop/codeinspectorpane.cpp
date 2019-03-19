@@ -43,7 +43,7 @@ CodeInspectorPane::CodeInspectorPane(QWidget *parent)
     outputPaneLayout->setSpacing(0);
     outputPane->setLayout(outputPaneLayout);
     
-    m_btnToggleOutput = new QPushButton(QIcon(":/resource/image/errmsg.png"), tr("Output Window"));
+    m_btnToggleOutput = new QPushButton(QIcon(":/resource/image/errmsg.png"), "");
     m_btnToggleOutput->setIconSize(QSize(32, 32));
     m_btnToggleOutput->setFlat(true);
     m_btnToggleOutput->setToolTip(tr("Toggle output window"));
@@ -70,5 +70,10 @@ CodeInspectorPane::CodeInspectorPane(QWidget *parent)
 
 void CodeInspectorPane::onToggleOutput()
 {
-    m_output->setVisible(!m_output->isVisible());
+    bool visible = !m_output->isVisible();
+    m_output->setVisible(visible);
+    if (!visible)
+    {
+        m_splitter->setSizes(QList<int>() << 4096 << m_btnToggleOutput->height());
+    }
 }
