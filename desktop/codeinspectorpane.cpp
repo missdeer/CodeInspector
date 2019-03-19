@@ -9,12 +9,12 @@ CodeInspectorPane::CodeInspectorPane(QWidget *parent)
     : QWidget(parent)
     , m_backend(new GodboltAgent(ciApp->networkAccessManager(), this))
 {
-    QVBoxLayout *mainLayout = new QVBoxLayout();
+    auto *mainLayout = new QVBoxLayout();
     setLayout(mainLayout);
     mainLayout->setContentsMargins(0,0,0,0);
     mainLayout->setSpacing(0);
     
-    QHBoxLayout* topBarLayout = new QHBoxLayout();
+    auto *topBarLayout = new QHBoxLayout();
     topBarLayout->setContentsMargins(0,0,0,0);
     topBarLayout->setSpacing(0);
     
@@ -22,8 +22,10 @@ CodeInspectorPane::CodeInspectorPane(QWidget *parent)
     topBarLayout->addWidget(m_compilerList);
     
     m_compilerArguments = new QLineEdit(this);
+    m_compilerArguments->setPlaceholderText(tr("Build Options"));
     topBarLayout->addWidget(m_compilerArguments);
-    
+    topBarLayout->setStretch(0, 1);
+    topBarLayout->setStretch(1, 1);
     mainLayout->addLayout(topBarLayout);
     
     m_splitter = new QSplitter(Qt::Vertical, this);
@@ -34,11 +36,11 @@ CodeInspectorPane::CodeInspectorPane(QWidget *parent)
     
     QWidget *outputPane = new QWidget(this);
     
-    QHBoxLayout* outputBarLayout = new QHBoxLayout();
+    auto* outputBarLayout = new QHBoxLayout();
     outputBarLayout->setContentsMargins(0,0,0,0);
     outputBarLayout->setSpacing(0);
     
-    QVBoxLayout* outputPaneLayout = new QVBoxLayout();
+    auto* outputPaneLayout = new QVBoxLayout();
     outputPaneLayout->setContentsMargins(0,0,0,0);
     outputPaneLayout->setSpacing(0);
     outputPane->setLayout(outputPaneLayout);
@@ -66,6 +68,20 @@ CodeInspectorPane::CodeInspectorPane(QWidget *parent)
     connect(m_btnToggleOutput, &QPushButton::clicked, this, &CodeInspectorPane::onToggleOutput);
     connect(m_compilerList, &QComboBox::currentTextChanged, this, &CodeInspectorPane::currentCompilerChanged);
     connect(m_compilerArguments, &QLineEdit::textChanged, this, &CodeInspectorPane::currentCompilerArgumentsChanged);
+}
+
+void CodeInspectorPane::initialize()
+{
+
+}
+
+void CodeInspectorPane::setCompilerList(CompilerListPtr cl)
+{
+    m_compilerList->clear();
+    for (const auto c : *cl)
+    {
+        m_compilerList->addItem(c->name);
+    }
 }
 
 void CodeInspectorPane::onToggleOutput()

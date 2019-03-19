@@ -2,6 +2,7 @@
 #define CODEINSPECTORPANE_H
 
 #include <QWidget>
+#include "compiler.hpp"
 
 QT_BEGIN_NAMESPACE
 class QPushButton;
@@ -19,7 +20,8 @@ class CodeInspectorPane : public QWidget
     Q_OBJECT
 public:
     explicit CodeInspectorPane(QWidget *parent = nullptr);
-    
+    void initialize();
+    void setCompilerList(CompilerListPtr cl);
 signals:
     void currentCompilerChanged(QString);
     void currentCompilerArgumentsChanged();

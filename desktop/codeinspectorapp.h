@@ -18,14 +18,14 @@ public:
     QNetworkAccessManager &networkAccessManager();
     
     void initialize();
-    LanguageList &getLanguageList();
-    CompilerListPtr getCompilerList(const QString& languageName);
-    LibraryListPtr getLibraryList(const QString& languageName);
-    CompilerPtr getCompiler(const QString& language, const QString& compiler);
-    const QString& getExample(const QString& language) const;
-    const QString& getDefaultCompilerName(const QString& languageName);
-    bool canCompile(const QString &language, const QString &compiler);
-    const QString& getCompilerId(CompilerListPtr compilerList, const QString& name);
+    LanguageList &getLanguageList() override;
+    CompilerListPtr getCompilerList(const QString& languageName) override;
+    LibraryListPtr getLibraryList(const QString& languageName) override;
+    CompilerPtr getCompiler(const QString& language, const QString& compiler) override;
+    const QString& getExample(const QString& language) const override;
+    const QString& getDefaultCompilerName(const QString& languageName) override;
+    bool canCompile(const QString &language, const QString &compiler) override;
+    const QString& getCompilerId(CompilerListPtr compilerList, const QString& name) override;
 signals:
     void compilerListReady();
     void languageListReady();

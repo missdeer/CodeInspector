@@ -8,7 +8,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    ui->tabWidget->addTab(new SessionWidget(this), tr("Untitled 1"));
+    auto session = new SessionWidget(this);
+    session->initialize();
+    ui->tabWidget->addTab(session, tr("Untitled 1"));
 }
 
 MainWindow::~MainWindow()

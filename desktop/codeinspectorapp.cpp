@@ -72,8 +72,10 @@ CompilerListPtr CodeInspectorApp::getCompilerList(const QString &languageName)
     auto it = m_compilerMap.find(languageName);
     if (m_compilerMap.end() == it)
     {
-        m_compilerMap.insert(languageName, CompilerListPtr(new CompilerList));
-        it = m_compilerMap.find(languageName);
+        CompilerListPtr cl(new CompilerList);
+        m_compilerMap.insert(languageName, cl);
+        requestCompilerList(languageName);
+        return cl;
     }
 
     return it.value();

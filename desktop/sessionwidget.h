@@ -11,7 +11,7 @@ class SessionWidget : public QWidget
     Q_OBJECT
 public:
     explicit SessionWidget(QWidget *parent = nullptr);
-    
+    void initialize();
 signals:
     
 public slots:

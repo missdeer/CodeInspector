@@ -17,7 +17,8 @@ class CodeEditorPane : public QWidget
     Q_OBJECT
 public:
     explicit CodeEditorPane(QWidget *parent = nullptr);
-    
+    void initialize();
+    QString currentLanguageName();
 signals:
     void contentModified();
     void currentLanguageChanged(QString);
