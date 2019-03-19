@@ -19,7 +19,8 @@ public:
     explicit CodeEditorPane(QWidget *parent = nullptr);
     
 signals:
-    
+    void contentModified();
+    void currentLanguageChanged(QString);
 public slots:
     
 private:

@@ -24,4 +24,7 @@ CodeEditorPane::CodeEditorPane(QWidget *parent)
     m_codeEditor->initialize();
 
     mainLayout->addWidget(m_codeEditor);
+    
+    connect(m_codeEditor, &CodeEditor::contentModified, this, &CodeEditorPane::contentModified);
+    connect(m_languageList, &QComboBox::currentTextChanged, this, &CodeEditorPane::currentLanguageChanged);
 }

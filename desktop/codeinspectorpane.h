@@ -7,6 +7,7 @@ QT_BEGIN_NAMESPACE
 class QPushButton;
 class QComboBox;
 class QLineEdit;
+class QSplitter;
 QT_END_NAMESPACE
 
 class CodeInspectorTabWidget;
@@ -20,9 +21,12 @@ public:
     explicit CodeInspectorPane(QWidget *parent = nullptr);
     
 signals:
-    
+    void currentCompilerChanged(QString);
+    void currentCompilerArgumentsChanged();
 public slots:
     
+private slots:
+    void onToggleOutput();
 private:
     QComboBox* m_compilerList;
     QLineEdit* m_compilerArguments;
@@ -30,6 +34,7 @@ private:
     CodeInspectorTabWidget* m_codeInspectorTabWidget;
     OutputWindow* m_output;
     GodboltAgent* m_backend;
+    QSplitter *m_splitter;
 };
 
 #endif // CODEINSPECTORPANE_H

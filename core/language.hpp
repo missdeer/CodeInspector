@@ -13,6 +13,7 @@ struct Language
     QStringList extensions;
     QStringList alias;
     QString example;
+    QString defaultCompiler;
 };
 
 using LanguagePtr = QSharedPointer<Language>;

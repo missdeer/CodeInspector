@@ -349,6 +349,7 @@ bool CodeInspectorApp::parseLanguageListFromJSON(const QByteArray &content)
         lang->name = o["name"].toString();
         lang->monaco = o["monaco"].toString();
         lang->example = o["example"].toString();
+        lang->defaultCompiler = o["defaultCompiler"].toString();
         QJsonArray extensions = o["extensions"].toArray();
         for (auto ext : extensions)
         {
@@ -394,6 +395,7 @@ bool CodeInspectorApp::parseLanguageListFromConfiguration(QJsonObject &obj)
         lang->name = o["name"].toString();
         lang->monaco = o["monaco"].toString();
         lang->example = o["example"].toString();
+        lang->defaultCompiler = o["defaultCompiler"].toString();
         QJsonArray extensions = o["extensions"].toArray();
         for (auto ext : extensions)
         {

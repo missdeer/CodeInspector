@@ -26,11 +26,11 @@ CodeInspectorPane::CodeInspectorPane(QWidget *parent)
     
     mainLayout->addLayout(topBarLayout);
     
-    QSplitter *splitter = new QSplitter(Qt::Vertical, this);
-    mainLayout->addWidget(splitter);
+    m_splitter = new QSplitter(Qt::Vertical, this);
+    mainLayout->addWidget(m_splitter);
     
     m_codeInspectorTabWidget = new CodeInspectorTabWidget(this);
-    splitter->addWidget(m_codeInspectorTabWidget);
+    m_splitter->addWidget(m_codeInspectorTabWidget);
     
     QWidget *outputPane = new QWidget(this);
     
@@ -56,11 +56,19 @@ CodeInspectorPane::CodeInspectorPane(QWidget *parent)
     m_output->initialize();
     outputPaneLayout->addWidget(m_output);
     
-    splitter->addWidget(outputPane);
+    m_splitter->addWidget(outputPane);
     
-//    m_output->setVisible(false);
-//    m_btnToggleOutput->setVisible(false);
-    connect(m_btnToggleOutput, &QPushButton::clicked, [&]{m_output->setVisible(!m_output->isVisible());});
+    m_output->setVisible(false);
+    m_btnToggleOutput->setVisible(false);
+    m_splitter->setSizes(QList<int>() << 4096 << 0);
     
     m_backend->initialize(ciApp);
+    connect(m_btnToggleOutput, &QPushButton::clicked, this, &CodeInspectorPane::onToggleOutput);
+    connect(m_compilerList, &QComboBox::currentTextChanged, this, &CodeInspectorPane::currentCompilerChanged);
+    connect(m_compilerArguments, &QLineEdit::textChanged, this, &CodeInspectorPane::currentCompilerArgumentsChanged);
+}
+
+void CodeInspectorPane::onToggleOutput()
+{
+    m_output->setVisible(!m_output->isVisible());
 }
