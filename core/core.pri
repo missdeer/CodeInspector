@@ -26,12 +26,7 @@ SOURCES += \
     $$PWD/astoutput.cpp \
     $$PWD/gcctreertloutput.cpp \
     $$PWD/llvmmachinecodeanalyzeroutput.cpp \
-    $$PWD/codeeditorpane.cpp \
-    $$PWD/outputwindow.cpp \
-    $$PWD/codeinspectortabwidget.cpp \
-    $$PWD/codeinspectorpane.cpp \
-    $$PWD/compilationtabwidget.cpp \
-    $$PWD/sessionwidget.cpp
+    $$PWD/outputwindow.cpp
 
 HEADERS += \
     $$PWD/scintillaconfig.h \
@@ -46,12 +41,7 @@ HEADERS += \
     $$PWD/astoutput.h \
     $$PWD/gcctreertloutput.h \
     $$PWD/llvmmachinecodeanalyzeroutput.h \
-    $$PWD/codeeditorpane.h \
     $$PWD/outputwindow.h \
-    $$PWD/codeinspectortabwidget.h \
-    $$PWD/codeinspectorpane.h \
-    $$PWD/compilationtabwidget.h \
-    $$PWD/sessionwidget.h
 
 	
 RESOURCES += \

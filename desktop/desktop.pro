@@ -12,10 +12,20 @@ include($$PWD/../core/core.pri)
 RC_FILE = CodeInspector.rc
 
 SOURCES += main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    codeeditorpane.cpp \
+    codeinspectortabwidget.cpp \
+    codeinspectorpane.cpp \
+    compilationtabwidget.cpp \
+    sessionwidget.cpp
 
 HEADERS += stdafx.h \
-    mainwindow.h
+    mainwindow.h \
+    codeeditorpane.h \
+    codeinspectortabwidget.h \
+    codeinspectorpane.h \
+    compilationtabwidget.h \
+    sessionwidget.h
 
 FORMS += \ 
     mainwindow.ui
