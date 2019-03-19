@@ -33,8 +33,8 @@ CONFIG += mobility
 MOBILITY = 
 
 RESOURCES += \
-    image.qrc \
-    qml.qrc 
+    qml.qrc \ 
+    image.qrc
 
 ios {
     QMAKE_ASSET_CATALOGS = $$PWD/appicon/ios/Images.xcassets

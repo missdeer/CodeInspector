@@ -1,0 +1,29 @@
+<RCC>
+    <qresource prefix="/">
+        <file>resource/image/accessories-text-editor.png</file>
+        <file>resource/image/application-exit.png</file>
+        <file>resource/image/browsefile.png</file>
+        <file>resource/image/document-export.png</file>
+        <file>resource/image/document-new.png</file>
+        <file>resource/image/document-open.png</file>
+        <file>resource/image/document-save.png</file>
+        <file>resource/image/document-save-as.png</file>
+        <file>resource/image/edit-copy.png</file>
+        <file>resource/image/edit-cut.png</file>
+        <file>resource/image/edit-paste.png</file>
+        <file>resource/image/edit-redo.png</file>
+        <file>resource/image/edit-undo.png</file>
+        <file>resource/image/help-about.png</file>
+        <file>resource/image/preferences-activities.png</file>
+        <file>resource/image/view-refresh.png</file>
+        <file>resource/image/zoom-in.png</file>
+        <file>resource/image/zoom-original.png</file>
+        <file>resource/image/zoom-out.png</file>
+        <file>resource/image/tab/analyzer.png</file>
+        <file>resource/image/tab/ast.png</file>
+        <file>resource/image/tab/gcc.png</file>
+        <file>resource/image/tab/inspector.png</file>
+        <file>resource/image/tab/llvm.png</file>
+        <file>resource/image/tab/optimization.png</file>
+    </qresource>
+</RCC>

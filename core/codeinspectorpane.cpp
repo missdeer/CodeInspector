@@ -30,7 +30,7 @@ CodeInspectorPane::CodeInspectorPane(QWidget *parent)
     outputBarLayout->setContentsMargins(0,0,0,0);
     outputBarLayout->setSpacing(0);
 
-    m_btnToggleOutput = new QPushButton(QIcon(":/resource/image/errmsg.png"), "");
+    m_btnToggleOutput = new QPushButton(QIcon(":/resource/image/errmsg.png"), tr("Output Window"));
 #if defined(Q_OS_ANDROID)
     m_btnToggleOutput->setIconSize(QSize(120, 120));
 #else
@@ -47,5 +47,5 @@ CodeInspectorPane::CodeInspectorPane(QWidget *parent)
     m_output->initialize();
     mainLayout->addWidget(m_output);
     m_output->setVisible(false);
-    m_btnToggleOutput->setVisible(false);
+    //m_btnToggleOutput->setVisible(false);
 }

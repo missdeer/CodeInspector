@@ -57,4 +57,5 @@ HEADERS += \
 RESOURCES += \
     $$PWD/CodeInspector.qrc \
     $$PWD/example.qrc \
-    $$PWD/scintilla.qrc 
+    $$PWD/scintilla.qrc \
+    $$PWD/coreImage.qrc

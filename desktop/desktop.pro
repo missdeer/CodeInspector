@@ -21,7 +21,8 @@ FORMS += \
     mainwindow.ui
 
 
-RESOURCES += 
+RESOURCES += \ 
+    image.qrc
 
 win32-msvc* {
     QMAKE_LFLAGS += "/LTCG"

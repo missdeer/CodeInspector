@@ -10,9 +10,9 @@ CodeInspectorTabWidget::CodeInspectorTabWidget(QWidget *parent)
     : QTabWidget (parent)
 {
     setTabPosition(East);
-    addTab(new CodeInspector(this), tr("Inspector"));
-    addTab(new LLVMMachineCodeAnalyzerOutput(this), tr("LLVM MCA"));
-    addTab(new ASTOutput(this), tr("AST"));
-    addTab(new OptimizationOutput(this), tr("Optimization"));
-    addTab(new GCCTreeRTLOutput(this), tr("GCC Tree/RTL Output"));
+    addTab(new CodeInspector(this), QIcon(":/resource/image/tab/inspector.png"), tr("Inspector"));
+    addTab(new LLVMMachineCodeAnalyzerOutput(this), QIcon(":/resource/image/tab/llvm.png"), tr("LLVM MCA"));
+    addTab(new ASTOutput(this), QIcon(":/resource/image/tab/ast.png"), tr("AST"));
+    addTab(new OptimizationOutput(this), QIcon(":/resource/image/tab/optimization.png"), tr("Optimization"));
+    addTab(new GCCTreeRTLOutput(this), QIcon(":/resource/image/tab/gcc.png"), tr("GCC Tree/RTL Output"));
 }
