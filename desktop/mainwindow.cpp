@@ -17,3 +17,18 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+void MainWindow::on_actionExit_triggered()
+{
+    qApp->quit();
+}
+
+void MainWindow::on_actionVisitHomepage_triggered()
+{
+    QDesktopServices::openUrl(QUrl("https://minidump.info/codeinspector/"));
+}
+
+void MainWindow::on_actionAbout_triggered()
+{
+    QMessageBox::about(this, tr("CodeInspector"), tr("Help you to learn how machine runs your code."));
+}
