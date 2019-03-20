@@ -6,9 +6,9 @@
 
 QT       += core gui widgets
 
-CONFIG += c++11
+CONFIG += c++17
 
-VERSION = 3.7.6
+VERSION = 4.1.4
 
 SOURCES += \
     $$PWD/ScintillaEdit.cpp \
@@ -16,51 +16,18 @@ SOURCES += \
     $$PWD/../ScintillaEditBase/PlatQt.cpp \
     $$PWD/../ScintillaEditBase/ScintillaQt.cpp \
     $$PWD/../ScintillaEditBase/ScintillaEditBase.cpp \
-    $$PWD/../../src/XPM.cxx \
-    $$PWD/../../src/ViewStyle.cxx \
-    $$PWD/../../src/UniConversion.cxx \
-    $$PWD/../../src/Style.cxx \
-    $$PWD/../../src/Selection.cxx \
-    $$PWD/../../src/ScintillaBase.cxx \
-    $$PWD/../../src/RunStyles.cxx \
-    $$PWD/../../src/RESearch.cxx \
-    $$PWD/../../src/PositionCache.cxx \
-    $$PWD/../../src/PerLine.cxx \
-    $$PWD/../../src/MarginView.cxx \
-    $$PWD/../../src/LineMarker.cxx \
-    $$PWD/../../src/KeyMap.cxx \
-    $$PWD/../../src/Indicator.cxx \
-    $$PWD/../../src/ExternalLexer.cxx \
-    $$PWD/../../src/EditView.cxx \
-    $$PWD/../../src/Editor.cxx \
-    $$PWD/../../src/EditModel.cxx \
-    $$PWD/../../src/Document.cxx \
-    $$PWD/../../src/Decoration.cxx \
-    $$PWD/../../src/ContractionState.cxx \
-    $$PWD/../../src/CharClassify.cxx \
-    $$PWD/../../src/CellBuffer.cxx \
-    $$PWD/../../src/Catalogue.cxx \
-    $$PWD/../../src/CaseFolder.cxx \
-    $$PWD/../../src/CaseConvert.cxx \
-    $$PWD/../../src/CallTip.cxx \
-    $$PWD/../../src/AutoComplete.cxx \
-    $$PWD/../../lexlib/WordList.cxx \
-    $$PWD/../../lexlib/StyleContext.cxx \
-    $$PWD/../../lexlib/PropSetSimple.cxx \
-    $$PWD/../../lexlib/LexerSimple.cxx \
-    $$PWD/../../lexlib/LexerNoExceptions.cxx \
-    $$PWD/../../lexlib/LexerModule.cxx \
-    $$PWD/../../lexlib/LexerBase.cxx \
-    $$PWD/../../lexlib/CharacterSet.cxx \
-    $$PWD/../../lexlib/CharacterCategory.cxx \
-    $$PWD/../../lexlib/Accessor.cxx \
+    $$PWD/../../src/*.cxx \
+    $$PWD/../../lexlib/*.cxx \
     $$PWD/../../lexers/*.cxx
 
 HEADERS  += \
     $$PWD/ScintillaEdit.h \
     $$PWD/ScintillaDocument.h \
     $$PWD/../ScintillaEditBase/ScintillaEditBase.h \
-    $$PWD/../ScintillaEditBase/ScintillaQt.h
+    $$PWD/../ScintillaEditBase/ScintillaQt.h \
+    $$PWD/../../src/*.h \
+    $$PWD/../../lexlib/*.h \
+    $$PWD/../../include/*.h
 
 OTHER_FILES +=
 

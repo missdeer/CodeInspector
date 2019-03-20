@@ -11,22 +11,32 @@
 #ifndef PLATQT_H
 #define PLATQT_H
 
+#include <cstddef>
+
+#include <string_view>
+#include <vector>
+#include <memory>
+
 #include "Platform.h"
 
+#include <QUrl>
 #include <QPaintDevice>
 #include <QPainter>
 #include <QHash>
 
-#ifdef SCI_NAMESPACE
 namespace Scintilla {
-#endif
 
 const char *CharacterSetID(int characterSet);
 
 inline QColor QColorFromCA(ColourDesired ca)
 {
-	long c = ca.AsLong();
+	long c = ca.AsInteger();
 	return QColor(c & 0xff, (c >> 8) & 0xff, (c >> 16) & 0xff);
+}
+
+inline QColor QColorFromColourAlpha(ColourAlpha ca)
+{
+	return QColor(ca.GetRed(), ca.GetGreen(), ca.GetBlue(), ca.GetAlpha());
 }
 
 inline QRect QRectFromPRect(PRectangle pr)
@@ -61,6 +71,8 @@ private:
 	const char *codecName;
 	QTextCodec *codec;
 
+	void Clear();
+
 public:
 	SurfaceImpl();
 	virtual ~SurfaceImpl();
@@ -77,7 +89,7 @@ public:
 	int DeviceHeightFont(int points) override;
 	void MoveTo(int x_, int y_) override;
 	void LineTo(int x_, int y_) override;
-	void Polygon(Point *pts, int npts, ColourDesired fore,
+	void Polygon(Point *pts, size_t npts, ColourDesired fore,
 		ColourDesired back) override;
 	void RectangleDraw(PRectangle rc, ColourDesired fore,
 		ColourDesired back) override;
@@ -87,26 +99,27 @@ public:
 		ColourDesired back) override;
 	void AlphaRectangle(PRectangle rc, int cornerSize, ColourDesired fill,
 		int alphaFill, ColourDesired outline, int alphaOutline, int flags) override;
+	void GradientRectangle(PRectangle rc, const std::vector<ColourStop> &stops, GradientOptions options) override;
 	void DrawRGBAImage(PRectangle rc, int width, int height,
 		const unsigned char *pixelsImage) override;
 	void Ellipse(PRectangle rc, ColourDesired fore,
 		ColourDesired back) override;
 	void Copy(PRectangle rc, Point from, Surface &surfaceSource) override;
 
+	std::unique_ptr<IScreenLineLayout> Layout(const IScreenLine *screenLine) override;
+
 	void DrawTextNoClip(PRectangle rc, Font &font, XYPOSITION ybase,
-		const char *s, int len, ColourDesired fore, ColourDesired back) override;
+		std::string_view text, ColourDesired fore, ColourDesired back) override;
 	void DrawTextClipped(PRectangle rc, Font &font, XYPOSITION ybase,
-		const char *s, int len, ColourDesired fore, ColourDesired back) override;
+		std::string_view text, ColourDesired fore, ColourDesired back) override;
 	void DrawTextTransparent(PRectangle rc, Font &font, XYPOSITION ybase,
-		const char *s, int len, ColourDesired fore) override;
-	void MeasureWidths(Font &font, const char *s, int len,
+		std::string_view text, ColourDesired fore) override;
+	void MeasureWidths(Font &font, std::string_view text,
 		XYPOSITION *positions) override;
-	XYPOSITION WidthText(Font &font, const char *s, int len) override;
-	XYPOSITION WidthChar(Font &font, char ch) override;
+	XYPOSITION WidthText(Font &font, std::string_view text) override;
 	XYPOSITION Ascent(Font &font) override;
 	XYPOSITION Descent(Font &font) override;
 	XYPOSITION InternalLeading(Font &font) override;
-	XYPOSITION ExternalLeading(Font &font) override;
 	XYPOSITION Height(Font &font) override;
 	XYPOSITION AverageCharWidth(Font &font) override;
 
@@ -115,6 +128,7 @@ public:
 
 	void SetUnicodeMode(bool unicodeMode_) override;
 	void SetDBCSMode(int codePage_) override;
+	void SetBidiR2L(bool bidiR2L_) override;
 
 	void BrushColour(ColourDesired back);
 	void SetCodec(Font &font);
@@ -125,8 +139,6 @@ public:
 	QPainter *GetPainter();
 };
 
-#ifdef SCI_NAMESPACE
 }
-#endif
 
 #endif

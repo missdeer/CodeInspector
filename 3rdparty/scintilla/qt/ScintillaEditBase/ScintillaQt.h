@@ -21,6 +21,7 @@
 #include <cmath>
 #include <stdexcept>
 #include <string>
+#include <string_view>
 #include <vector>
 #include <map>
 #include <algorithm>
@@ -28,6 +29,7 @@
 
 #include "Scintilla.h"
 #include "Platform.h"
+#include "ILoader.h"
 #include "ILexer.h"
 #include "Position.h"
 #include "UniqueString.h"
@@ -39,7 +41,6 @@
 #include "CallTip.h"
 #include "KeyMap.h"
 #include "Indicator.h"
-#include "XPM.h"
 #include "LineMarker.h"
 #include "Style.h"
 #include "AutoComplete.h"
@@ -68,9 +69,9 @@
 #include <QClipboard>
 #include <QPaintEvent>
 
-#ifdef SCI_NAMESPACE
+class ScintillaEditBase;
+
 namespace Scintilla {
-#endif
 
 class ScintillaQt : public QObject, public ScintillaBase {
 	Q_OBJECT
@@ -106,7 +107,7 @@ private:
 	bool ValidCodePage(int codePage) const override;
 
 private:
-	void ScrollText(int linesToMove) override;
+	void ScrollText(Sci::Line linesToMove) override;
 	void SetVerticalScrollPos() override;
 	void SetHorizontalScrollPos() override;
 	bool ModifyScrollBars(Sci::Line nMax, Sci::Line nPage) override;
@@ -120,8 +121,8 @@ private:
 	void NotifyChange() override;
 	void NotifyFocus(bool focus) override;
 	void NotifyParent(SCNotification scn) override;
+	void NotifyURIDropped(const char *uri);
 	int timers[tickDwell+1];
-	bool FineTickerAvailable() override;
 	bool FineTickerRunning(TickReason reason) override;
 	void FineTickerStart(TickReason reason, int millis, int tolerance) override;
 	void FineTickerCancel(TickReason reason) override;
@@ -152,6 +153,7 @@ protected:
 	void DragMove(const Point &point);
 	void DragLeave();
 	void Drop(const Point &point, const QMimeData *data, bool move);
+	void DropUrls(const QMimeData *data);
 
 	void timerEvent(QTimerEvent *event) override;
 
@@ -165,11 +167,9 @@ private:
 	bool dragWasDropped;
 	int rectangularSelectionModifier;
 
-	friend class ScintillaEditBase;
+	friend class ::ScintillaEditBase;
 };
 
-#ifdef SCI_NAMESPACE
 }
-#endif
 
 #endif // SCINTILLAQT_H

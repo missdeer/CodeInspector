@@ -1,10 +1,14 @@
 QT       += core gui widgets 
 
 lessThan(QT_MAJOR_VERSION, 5): error("Qt 5 is required")
+*msvc* {
+    MSVC_VER = $$(VisualStudioVersion)
+    lessThan(MSVC_VER, 14.1): error("Compiler supports C++17 is required")
+}
 
 TARGET = CodeInspector
 TEMPLATE = app
-CONFIG += c++11 precompile_header
+CONFIG += c++17 precompile_header
 PRECOMPILED_HEADER = stdafx.h
 
 include($$PWD/../core/core.pri)

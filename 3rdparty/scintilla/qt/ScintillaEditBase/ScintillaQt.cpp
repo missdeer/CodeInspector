@@ -8,8 +8,8 @@
 // Additions Copyright (c) 2011 Archaeopteryx Software, Inc. d/b/a Wingware
 // ScintillaQt.cpp - Qt specific subclass of ScintillaBase
 
-#include "PlatQt.h"
 #include "ScintillaQt.h"
+#include "PlatQt.h"
 #ifdef SCI_LEXER
 #include "LexerModule.h"
 #include "ExternalLexer.h"
@@ -22,13 +22,11 @@
 #endif
 #include <QMimeData>
 #include <QMenu>
+#include <QTextCodec>
 #include <QScrollBar>
 #include <QTimer>
-#include <QTextCodec>
 
-#ifdef SCI_NAMESPACE
 using namespace Scintilla;
-#endif
 
 
 ScintillaQt::ScintillaQt(QAbstractScrollArea *parent)
@@ -130,11 +128,7 @@ static ScintillaRectangularMime *singletonMime = 0;
 
 void ScintillaQt::Init()
 {
-#if defined(Q_OS_WIN) || defined(Q_OS_MAC)
 	rectangularSelectionModifier = SCMOD_ALT;
-#else
-	rectangularSelectionModifier = SCMOD_CTRL;
-#endif
 
 #if defined(Q_OS_MAC) && QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 	if (!singletonMime) {
@@ -350,7 +344,7 @@ void ScintillaQt::PasteFromMode(QClipboard::Mode clipboardMode_)
 
 	UndoGroup ug(pdoc);
 	ClearSelection(multiPasteMode == SC_MULTIPASTE_EACH);
-	InsertPasteShape(selText.Data(), static_cast<int>(selText.Length()),
+	InsertPasteShape(selText.Data(), selText.Length(),
 		selText.rectangular ? pasteRectangular : pasteStream);
 	EnsureCaretVisible();
 }
@@ -386,10 +380,12 @@ void ScintillaQt::NotifyChange()
 
 void ScintillaQt::NotifyFocus(bool focus)
 {
-	emit command(
-			Platform::LongFromTwoShorts
-					(GetCtrlID(), focus ? SCEN_SETFOCUS : SCEN_KILLFOCUS),
-			reinterpret_cast<sptr_t>(wMain.GetID()));
+	if (commandEvents) {
+		emit command(
+				Platform::LongFromTwoShorts
+						(GetCtrlID(), focus ? SCEN_SETFOCUS : SCEN_KILLFOCUS),
+				reinterpret_cast<sptr_t>(wMain.GetID()));
+	}
 
 	Editor::NotifyFocus(focus);
 }
@@ -401,12 +397,13 @@ void ScintillaQt::NotifyParent(SCNotification scn)
 	emit notifyParent(scn);
 }
 
-/**
-* Report that this Editor subclass has a working implementation of FineTickerStart.
-*/
-bool ScintillaQt::FineTickerAvailable()
+void ScintillaQt::NotifyURIDropped(const char *uri)
 {
-	return true;
+	SCNotification scn = {};
+	scn.nmhdr.code = SCN_URIDROPPED;
+	scn.text = uri;
+
+	NotifyParent(scn);
 }
 
 bool ScintillaQt::FineTickerRunning(TickReason reason)
@@ -616,11 +613,38 @@ void ScintillaQt::StartDrag()
 	SetDragPosition(SelectionPosition(Sci::invalidPosition));
 }
 
+class CallTipImpl : public QWidget {
+public:
+	CallTipImpl(CallTip *pct_)
+		: QWidget(nullptr, Qt::ToolTip),
+		  pct(pct_)
+	{
+#if QT_VERSION >= QT_VERSION_CHECK(5, 9, 0)
+		setWindowFlag(Qt::WindowTransparentForInput);
+#endif
+	}
+
+	void paintEvent(QPaintEvent *) override
+	{
+		if (pct->inCallTipMode) {
+			Surface *surfaceWindow = Surface::Allocate(0);
+			surfaceWindow->Init(this);
+			surfaceWindow->SetUnicodeMode(SC_CP_UTF8 == pct->codePage);
+			surfaceWindow->SetDBCSMode(pct->codePage);
+			pct->PaintCT(surfaceWindow);
+			delete surfaceWindow;
+		}
+	}
+
+private:
+	CallTip *pct;
+};
+
 void ScintillaQt::CreateCallTipWindow(PRectangle rc)
 {
 
 	if (!ct.wCallTip.Created()) {
-		QWidget *pCallTip =  new QWidget(0, Qt::ToolTip);
+		QWidget *pCallTip = new CallTipImpl(&ct);
 		ct.wCallTip = pCallTip;
 		pCallTip->move(rc.left, rc.top);
 		pCallTip->resize(rc.Width(), rc.Height());
@@ -681,7 +705,7 @@ sptr_t ScintillaQt::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam)
 	} catch (...) {
 		errorStatus = SC_STATUS_FAILURE;
 	}
-	return 0l;
+	return 0;
 }
 
 sptr_t ScintillaQt::DefWndProc(unsigned int, uptr_t, sptr_t)
@@ -704,9 +728,9 @@ void ScintillaQt::PartialPaint(const PRectangle &rect)
 	PRectangle rcClient = GetClientRectangle();
 	paintingAllText = rcPaint.Contains(rcClient);
 
-	AutoSurface surface(this);
-	Paint(surface, rcPaint);
-	surface->Release();
+	AutoSurface surfacePaint(this);
+	Paint(surfacePaint, rcPaint);
+	surfacePaint->Release();
 
 	if (paintState == paintAbandoned) {
 		// FIXME: Failure to paint the requested rectangle in each
@@ -754,6 +778,13 @@ void ScintillaQt::Drop(const Point &point, const QMimeData *data, bool move)
 				false, false, UserVirtualSpace());
 
 	DropAt(movePos, bytes, len, move, rectangular);
+}
+
+void ScintillaQt::DropUrls(const QMimeData *data)
+{
+	foreach(const QUrl &url, data->urls()) {
+		NotifyURIDropped(url.toString().toUtf8().constData());
+	}
 }
 
 void ScintillaQt::timerEvent(QTimerEvent *event)
