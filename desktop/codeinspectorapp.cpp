@@ -708,7 +708,7 @@ void CodeInspectorApp::onCompilerListRequestFinished()
 
 bool CodeInspectorApp::canCompile(const QString& language, const QString& compiler)
 {
-    qDebug() << __FUNCTION__;
+    qDebug() << __FUNCTION__ << language << compiler;
     if (m_compilerMap.find(language) == m_compilerMap.end())
         return false;
     auto compilerList = m_compilerMap.find(language).value();

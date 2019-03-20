@@ -17,5 +17,6 @@ struct CompileInfo
     bool binary{};
     bool intel{};
     bool demangle{};
+    bool functions{};
 };
 #endif // COMPILERINFO_HPP

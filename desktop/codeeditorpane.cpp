@@ -40,6 +40,11 @@ void CodeEditorPane::updateLanguageList()
     }    
 }
 
+CodeEditor *CodeEditorPane::codeEditor() const
+{
+    return m_codeEditor;
+}
+
 void CodeEditorPane::initialize()
 {
     updateLanguageList();

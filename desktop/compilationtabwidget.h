@@ -3,16 +3,19 @@
 
 #include <QTabWidget>
 
+class CodeEditor;
+
 class CompilationTabWidget : public QTabWidget
 {
     Q_OBJECT
 public:
-    explicit CompilationTabWidget(QWidget* parent = nullptr);
+    explicit CompilationTabWidget(CodeEditor* codeEditor, QWidget* parent = nullptr);
 public slots:
     void languageChanged(const QString &languageName);
     void currentCompilerChanged(const QString &compilerName);
     
 private:
+    CodeEditor* m_codeEditor;
     void addCodeInspectorPaneTab();
 };
 

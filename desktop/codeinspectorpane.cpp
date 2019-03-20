@@ -1,13 +1,15 @@
 #include "stdafx.h"
 #include "settings.h"
 #include "codeinspectorapp.h"
+#include "codeeditor.h"
 #include "godboltagent.h"
 #include "codeinspectortabwidget.h"
 #include "outputwindow.h"
 #include "codeinspectorpane.h"
 
-CodeInspectorPane::CodeInspectorPane(QWidget *parent)
+CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
     : QWidget(parent)
+    , m_codeEditor(codeEditor)
     , m_backend(new GodboltAgent(ciApp->networkAccessManager(), this))
     , m_timer(new QTimer)
 {
@@ -28,61 +30,61 @@ CodeInspectorPane::CodeInspectorPane(QWidget *parent)
     topBarLayout->addWidget(m_compilerArguments);
             
     QMenu* popupMenu = new QMenu(this);
-    QAction* actionBinrary  = new QAction(tr("Binary"), this);
-    actionBinrary->setIcon(QIcon(":/resource/image/binary.png"));
-    actionBinrary->setToolTip(tr("Compile to binary and disassemble the output"));
-    actionBinrary->setCheckable(true);
-    connect(actionBinrary, &QAction::triggered, this, &CodeInspectorPane::onActionBinaryTriggered);
-    popupMenu->addAction(actionBinrary);
+    m_actionBinrary  = new QAction(tr("Binary"), this);
+    m_actionBinrary->setIcon(QIcon(":/resource/image/binary.png"));
+    m_actionBinrary->setToolTip(tr("Compile to binary and disassemble the output"));
+    m_actionBinrary->setCheckable(true);
+    connect(m_actionBinrary, &QAction::triggered, this, &CodeInspectorPane::onActionBinaryTriggered);
+    popupMenu->addAction(m_actionBinrary);
     
-    QAction* actionLabel  = new QAction(tr("Label"), this);
-    actionLabel->setIcon(QIcon(":/resource/image/label.png"));
-    actionLabel->setToolTip(tr("Filter unused labels from the output"));
-    actionLabel->setCheckable(true);
-    connect(actionLabel, &QAction::triggered, this, &CodeInspectorPane::onActionLabelTriggered);
-    popupMenu->addAction(actionLabel);
+    m_actionLabel  = new QAction(tr("Label"), this);
+    m_actionLabel->setIcon(QIcon(":/resource/image/label.png"));
+    m_actionLabel->setToolTip(tr("Filter unused labels from the output"));
+    m_actionLabel->setCheckable(true);
+    connect(m_actionLabel, &QAction::triggered, this, &CodeInspectorPane::onActionLabelTriggered);
+    popupMenu->addAction(m_actionLabel);
     
-    QAction* actionFunctions  = new QAction(tr("Functions"), this);
-    actionFunctions->setIcon(QIcon(":/resource/image/function.png"));
-    actionFunctions->setToolTip(tr("Filter functions from other libraries from the output"));
-    actionFunctions->setCheckable(true);
-    connect(actionFunctions, &QAction::triggered, this, &CodeInspectorPane::onActionFunctionsTriggered);
-    popupMenu->addAction(actionFunctions);
+    m_actionFunctions  = new QAction(tr("Functions"), this);
+    m_actionFunctions->setIcon(QIcon(":/resource/image/function.png"));
+    m_actionFunctions->setToolTip(tr("Filter functions from other libraries from the output"));
+    m_actionFunctions->setCheckable(true);
+    connect(m_actionFunctions, &QAction::triggered, this, &CodeInspectorPane::onActionFunctionsTriggered);
+    popupMenu->addAction(m_actionFunctions);
     
-    QAction* actionDirectives  = new QAction(tr("Directives"), this);
-    actionDirectives->setIcon(QIcon(":/resource/image/directives.png"));
-    actionDirectives->setToolTip(tr("Filter all assembler directives from the output"));
-    actionDirectives->setCheckable(true);
-    connect(actionDirectives, &QAction::triggered, this, &CodeInspectorPane::onActionDirectivesTriggered);
-    popupMenu->addAction(actionDirectives);
+    m_actionDirectives  = new QAction(tr("Directives"), this);
+    m_actionDirectives->setIcon(QIcon(":/resource/image/directives.png"));
+    m_actionDirectives->setToolTip(tr("Filter all assembler directives from the output"));
+    m_actionDirectives->setCheckable(true);
+    connect(m_actionDirectives, &QAction::triggered, this, &CodeInspectorPane::onActionDirectivesTriggered);
+    popupMenu->addAction(m_actionDirectives);
     
-    QAction* actionComments  = new QAction(tr("Comments"), this);
-    actionComments->setIcon(QIcon(":/resource/image/comment.png"));
-    actionComments->setToolTip(tr("Remove all lines which are only comments from the output"));
-    actionComments->setCheckable(true);
-    connect(actionComments, &QAction::triggered, this, &CodeInspectorPane::onActionCommentsTriggered);
-    popupMenu->addAction(actionComments);
+    m_actionComments  = new QAction(tr("Comments"), this);
+    m_actionComments->setIcon(QIcon(":/resource/image/comment.png"));
+    m_actionComments->setToolTip(tr("Remove all lines which are only comments from the output"));
+    m_actionComments->setCheckable(true);
+    connect(m_actionComments, &QAction::triggered, this, &CodeInspectorPane::onActionCommentsTriggered);
+    popupMenu->addAction(m_actionComments);
     
-    QAction* actionTrim  = new QAction(tr("Trim"), this);
-    actionTrim->setIcon(QIcon(":/resource/image/trim.png"));
-    actionTrim->setToolTip(tr("Trim intra-line whitespace"));
-    actionTrim->setCheckable(true);
-    connect(actionTrim, &QAction::triggered, this, &CodeInspectorPane::onActionTrimTriggered);
-    popupMenu->addAction(actionTrim);
+    m_actionTrim  = new QAction(tr("Trim"), this);
+    m_actionTrim->setIcon(QIcon(":/resource/image/trim.png"));
+    m_actionTrim->setToolTip(tr("Trim intra-line whitespace"));
+    m_actionTrim->setCheckable(true);
+    connect(m_actionTrim, &QAction::triggered, this, &CodeInspectorPane::onActionTrimTriggered);
+    popupMenu->addAction(m_actionTrim);
     
-    QAction* actionIntel  = new QAction(tr("Intel"), this);
-    actionIntel->setIcon(QIcon(":/resource/image/intel.png"));
-    actionIntel->setToolTip(tr("Output disassembly in Intel syntax"));
-    actionIntel->setCheckable(true);
-    connect(actionIntel, &QAction::triggered, this, &CodeInspectorPane::onActionIntelTriggered);
-    popupMenu->addAction(actionIntel);
+    m_actionIntel  = new QAction(tr("Intel"), this);
+    m_actionIntel->setIcon(QIcon(":/resource/image/intel.png"));
+    m_actionIntel->setToolTip(tr("Output disassembly in Intel syntax"));
+    m_actionIntel->setCheckable(true);
+    connect(m_actionIntel, &QAction::triggered, this, &CodeInspectorPane::onActionIntelTriggered);
+    popupMenu->addAction(m_actionIntel);
     
-    QAction* actionDemangle  = new QAction(tr("Demangle"), this);
-    actionDemangle->setIcon(QIcon(":/resource/image/demangle.png"));
-    actionDemangle->setToolTip(tr("Demangle output"));
-    actionDemangle->setCheckable(true);
-    connect(actionDemangle, &QAction::triggered, this, &CodeInspectorPane::onActionDemangleTriggered);
-    popupMenu->addAction(actionDemangle);
+    m_actionDemangle  = new QAction(tr("Demangle"), this);
+    m_actionDemangle->setIcon(QIcon(":/resource/image/demangle.png"));
+    m_actionDemangle->setToolTip(tr("Demangle output"));
+    m_actionDemangle->setCheckable(true);
+    connect(m_actionDemangle, &QAction::triggered, this, &CodeInspectorPane::onActionDemangleTriggered);
+    popupMenu->addAction(m_actionDemangle);
     
     m_btnInspectorOptions = new QPushButton(this);
     m_btnInspectorOptions->setIcon(QIcon(":/resource/image/preferences-activities.png"));
@@ -131,9 +133,11 @@ CodeInspectorPane::CodeInspectorPane(QWidget *parent)
     
     m_backend->initialize(ciApp);
     connect(m_btnToggleOutput, &QPushButton::clicked, this, &CodeInspectorPane::onToggleOutput);
-    connect(m_compilerList, &QComboBox::currentTextChanged, this, &CodeInspectorPane::currentCompilerChanged);
-    connect(m_compilerArguments, &QLineEdit::textChanged, this, &CodeInspectorPane::currentCompilerArgumentsChanged);
+    connect(m_compilerList, &QComboBox::currentTextChanged, this, &CodeInspectorPane::onCurrentCompilerChanged);
+    connect(m_compilerArguments, &QLineEdit::textChanged, this, &CodeInspectorPane::onCurrentCompilerArgumentsChanged);
     connect(m_timer, &QTimer::timeout, this, &CodeInspectorPane::onNeedCompile);
+    connect(m_codeEditor, &CodeEditor::contentModified, this, &CodeInspectorPane::onDelayCompile);
+    connect(m_backend, &GodboltAgent::compiled, this, &CodeInspectorPane::onCompiled);
 }
 
 void CodeInspectorPane::initialize()
@@ -150,18 +154,95 @@ void CodeInspectorPane::setCompilerList(CompilerListPtr cl)
     }
 }
 
+void CodeInspectorPane::setCurrentLanguage(const QString &languageName)
+{
+    m_languageName = languageName;
+}
+
 void CodeInspectorPane::onNeedCompile()
 {
+    if (!ciApp->canCompile(m_languageName, m_compilerList->currentText()))
+        return;
+    qDebug() << __FUNCTION__;
     
+    Q_ASSERT(m_codeEditor);
+    CompileInfo ci;
+    ci.source = m_codeEditor->getText(m_codeEditor->textLength() + 1);
+    if (ci.source.isEmpty())
+        return;
+    CompilerPtr compiler = ciApp->getCompiler(m_languageName, m_compilerList->currentText());
+    QStringList userArguments = {
+        m_compilerArguments->text(),
+    };
+    //        auto libs = m_quickAPI->libs();
+    //        if (libs)
+    //        {
+    //            for (auto lib : *libs)
+    //            {
+    //                auto versions = lib->getVersions();
+    //                for (auto ver : versions)
+    //                {
+    //                    if (ver->getSelected())
+    //                    {
+    //                        auto paths = ver->getPath();
+    //                        for (auto& path : paths)
+    //                            userArguments.append(compiler->includeFlag + path);
+    //                    }
+    //                }
+    //            }
+    //        }
+    
+    ci.userArguments = userArguments.join(" ");
+    ci.binary = m_actionBinrary->isChecked();
+    ci.commentOnly = m_actionComments->isChecked();
+    ci.labels = m_actionLabel->isChecked();
+    ci.trim = m_actionTrim->isChecked();
+    ci.directives = m_actionDirectives->isChecked();
+    ci.intel = m_actionIntel->isChecked();
+    ci.demangle = m_actionDemangle->isChecked();
+    ci.functions = m_actionFunctions->isChecked();
+    ci.language = m_languageName;
+    ci.compiler = m_compilerList->currentText();
+    m_backend->compile(ci);
+    
+    m_codeEditor->setSavePoint();
+    Q_ASSERT(m_codeInspectorTabWidget);
+    m_codeInspectorTabWidget->setCodeInspectorContent(tr("<Compiling...>"), m_actionBinrary->isChecked());
+    
+    storeToCache(ci.language, ci);
+    storeToCache("lastSession", ci);
+    qDebug() << "store:" << ci.compiler;
 }
 
 void CodeInspectorPane::onCompiled()
 {
-    
+    qDebug() << __FUNCTION__;
+    auto content = m_backend->getAsmContent();
+    Q_ASSERT(m_codeInspectorTabWidget);
+    m_codeInspectorTabWidget->setCodeInspectorContent(content, m_actionBinrary->isChecked());
+    auto asmItems = m_backend->getAsmItems();
+    auto markerMap = m_codeInspectorTabWidget->setCodeInspectorAsmItems(asmItems, m_actionBinrary->isChecked());
+    Q_ASSERT(m_codeEditor);
+    m_codeEditor->setMarkerColor(markerMap);
+
+    auto output = m_backend->getCompileOutput();
+    if (output.isEmpty())
+    {
+        if (m_btnToggleOutput->isVisible())
+            m_btnToggleOutput->setVisible(false);
+        if (m_output->isVisible())
+            m_output->setVisible(false);
+    }
+
+    if (!output.isEmpty() && !m_btnToggleOutput->isVisible())
+        m_btnToggleOutput->setVisible(true);
+
+    m_output->setContent(output);
 }
 
 void CodeInspectorPane::onDelayCompile()
 {
+    qDebug() << __FUNCTION__;
     if (m_timer->isActive())
         m_timer->stop();
 
@@ -181,46 +262,114 @@ void CodeInspectorPane::onToggleOutput()
 
 void CodeInspectorPane::onActionBinaryTriggered()
 {
-    
+    onDelayCompile();
 }
 
 void CodeInspectorPane::onActionLabelTriggered()
 {
-    
+    onDelayCompile();
 }
 
 void CodeInspectorPane::onActionFunctionsTriggered()
 {
-    
+    onDelayCompile();
 }
 
 void CodeInspectorPane::onActionDirectivesTriggered()
 {
-    
+    onDelayCompile();
 }
 
 void CodeInspectorPane::onActionCommentsTriggered()
 {
-    
+    onDelayCompile();
 }
 
 void CodeInspectorPane::onActionTrimTriggered()
 {
-    
+    onDelayCompile();
 }
 
 void CodeInspectorPane::onActionIntelTriggered()
 {
-    
+    onDelayCompile();
 }
 
 void CodeInspectorPane::onActionDemangleTriggered()
 {
-    
+    onDelayCompile();
 }
 
 void CodeInspectorPane::onCurrentCompilerArgumentsChanged()
 {
     onDelayCompile();
     emit currentCompilerArgumentsChanged();
+}
+
+void CodeInspectorPane::onCurrentCompilerChanged(const QString &compilerName)
+{
+    onDelayCompile();
+    emit currentCompilerChanged(compilerName);
+}
+
+void CodeInspectorPane::storeToCache(const QString &name, const CompileInfo &ci)
+{
+    QString d = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+    QDir dir(d);
+    if (!dir.exists())
+        dir.mkpath(d);
+    QString path = QString("%1/%2").arg(d).arg(name);
+    QFile f(path);
+    if (!f.open(QIODevice::WriteOnly))
+    {
+        qDebug() << "open file " << path << " for writting failed";
+        return;
+    }
+
+    QDataStream stream(&f);
+    stream.startTransaction();
+    stream.setVersion(QDataStream::Qt_4_5);
+
+    stream << ci.binary
+           << ci.commentOnly
+           << ci.compiler
+           << ci.directives
+           << ci.intel
+           << ci.labels
+           << ci.language
+           << ci.source
+           << ci.trim
+           << ci.demangle
+           << ci.userArguments;
+    stream.commitTransaction();
+    qDebug() << "commit transaction";
+    f.close();
+}
+
+bool CodeInspectorPane::restoreFromCache(const QString& name, CompileInfo &ci)
+{
+    QString d = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+    QString path = QString("%1/%2").arg(d).arg(name);
+    if (!QFile::exists(path))
+        return false;
+    QFile f(path);
+    if (!f.open(QIODevice::ReadOnly))
+        return false;
+
+    QDataStream stream(&f);
+    stream.setVersion(QDataStream::Qt_4_5);
+
+    stream >> ci.binary
+           >> ci.commentOnly
+           >> ci.compiler
+           >> ci.directives
+           >> ci.intel
+           >> ci.labels
+           >> ci.language
+           >> ci.source
+           >> ci.trim
+           >> ci.demangle
+           >> ci.userArguments;
+
+    return true;
 }

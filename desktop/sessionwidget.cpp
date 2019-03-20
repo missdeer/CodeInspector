@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "settings.h"
 #include "codeinspectorapp.h"
+#include "codeeditor.h"
 #include "codeeditorpane.h"
 #include "compilationtabwidget.h"
 #include "sessionwidget.h"
@@ -17,7 +18,7 @@ SessionWidget::SessionWidget(QWidget *parent) : QWidget(parent)
     
     m_codeEditorPane = new CodeEditorPane(splitter);
     splitter->addWidget(m_codeEditorPane);
-    m_compilationTabWidget = new CompilationTabWidget(splitter);
+    m_compilationTabWidget = new CompilationTabWidget(m_codeEditorPane->codeEditor(), splitter);
     splitter->addWidget(m_compilationTabWidget);
 
     connect(m_codeEditorPane, &CodeEditorPane::currentLanguageChanged,
@@ -25,10 +26,6 @@ SessionWidget::SessionWidget(QWidget *parent) : QWidget(parent)
 
     connect(ciApp, &CodeInspectorApp::compilerListReady,
             [=](){m_compilationTabWidget->languageChanged(m_codeEditorPane->currentLanguageName());});
-    
-//    connect(m_codeEditorPane, &CodeEditorPane::contentModified, [=](){
-//        QTimer::singleShot(g_settings->autoRefreshInterval(), this, &SessionWidget::onNeedCompile);
-//    });
 }
 
 void SessionWidget::initialize()

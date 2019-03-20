@@ -4,12 +4,13 @@
 #include "compilationtabwidget.h"
 
 
-CompilationTabWidget::CompilationTabWidget(QWidget *parent)
+CompilationTabWidget::CompilationTabWidget(CodeEditor *codeEditor, QWidget *parent)
     : QTabWidget (parent)
+    , m_codeEditor(codeEditor)
 {
     setTabPosition(South);
     setTabsClosable(true);
-    
+    setTabBarAutoHide(true);
     addCodeInspectorPaneTab();
 }
 
@@ -19,6 +20,7 @@ void CompilationTabWidget::languageChanged(const QString &languageName)
     for (int i = 0; i < count(); i++)
     {
         auto *w = qobject_cast<CodeInspectorPane*>(widget(i));
+        w->setCurrentLanguage(languageName);
         w->setCompilerList(cl);
     }
 }
@@ -38,7 +40,7 @@ void CompilationTabWidget::currentCompilerChanged(const QString &compilerName)
 
 void CompilationTabWidget::addCodeInspectorPaneTab()
 {
-    auto pane = new CodeInspectorPane(this);
+    auto pane = new CodeInspectorPane(m_codeEditor, this);
     pane->initialize();
     connect(pane, &CodeInspectorPane::currentCompilerChanged, this, &CompilationTabWidget::currentCompilerChanged);
     addTab(pane, tr("Compilation 1"));    

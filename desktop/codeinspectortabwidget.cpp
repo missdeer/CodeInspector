@@ -9,11 +9,68 @@
 
 CodeInspectorTabWidget::CodeInspectorTabWidget(QWidget *parent)
     : QTabWidget (parent)
+    , m_codeInspector(new CodeInspector(this))
+    , m_llvmMCA(nullptr)
+    , m_ast(nullptr)
+    , m_optimization(nullptr)
+    , m_gccTreeRTL(nullptr)
 {
     setTabPosition(East);
-    addTab(new CodeInspector(this), QIcon(":/resource/image/tab/inspector.png"), tr("Inspector"));
-    addTab(new LLVMMachineCodeAnalyzerOutput(this), QIcon(":/resource/image/tab/llvm.png"), tr("LLVM MCA"));
-    addTab(new ASTOutput(this), QIcon(":/resource/image/tab/ast.png"), tr("AST"));
-    addTab(new OptimizationOutput(this), QIcon(":/resource/image/tab/optimization.png"), tr("Optimization"));
-    addTab(new GCCTreeRTLOutput(this), QIcon(":/resource/image/tab/gcc.png"), tr("GCC Tree/RTL Output"));
+    addTab(m_codeInspector, QIcon(":/resource/image/tab/inspector.png"), tr("Inspector"));
+}
+
+QMap<int, sptr_t> CodeInspectorTabWidget::setCodeInspectorAsmItems(const AsmItemList &items, bool binary)
+{
+    Q_ASSERT(m_codeInspector);
+    return m_codeInspector->setAsmItems(items, binary);
+}
+
+void CodeInspectorTabWidget::setCodeInspectorContent(const QString &content, bool binary)
+{
+    Q_ASSERT(m_codeInspector);
+    m_codeInspector->setContent(content, binary);
+}
+
+void CodeInspectorTabWidget::setLLVMMACContent(const QString &content)
+{
+    if (!m_llvmMCA)
+    {
+        m_llvmMCA = new LLVMMachineCodeAnalyzerOutput(this);
+        addTab(m_llvmMCA, QIcon(":/resource/image/tab/llvm.png"), tr("LLVM MCA"));
+    }
+    Q_ASSERT(m_llvmMCA);
+    m_llvmMCA->setContent(content);
+}
+
+void CodeInspectorTabWidget::setASTContent(const QString &content)
+{
+    if (!m_ast)
+    {
+        m_ast = new ASTOutput(this);
+        addTab(m_ast, QIcon(":/resource/image/tab/ast.png"), tr("AST"));
+    }
+    Q_ASSERT(m_ast);
+    m_ast->setContent(content);
+}
+
+void CodeInspectorTabWidget::setOptimizationContent(const QString &content)
+{
+    if (!m_optimization)
+    {
+        m_optimization = new OptimizationOutput(this);
+        addTab(m_optimization, QIcon(":/resource/image/tab/optimization.png"), tr("Optimization"));
+    }
+    Q_ASSERT(m_optimization);
+    m_optimization->setContent(content);
+}
+
+void CodeInspectorTabWidget::setGCCTreeRTLContent(const QString &content)
+{
+    if (!m_gccTreeRTL)
+    {
+        m_gccTreeRTL = new GCCTreeRTLOutput(this);
+        addTab(m_gccTreeRTL, QIcon(":/resource/image/tab/gcc.png"), tr("GCC Tree/RTL Output"));
+    }
+    Q_ASSERT(m_gccTreeRTL);
+    m_gccTreeRTL->setContent(content);
 }
