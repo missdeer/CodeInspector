@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "settings.h"
 #include "codeinspectorapp.h"
 #include "godboltagent.h"
 #include "codeinspectortabwidget.h"
@@ -8,6 +9,7 @@
 CodeInspectorPane::CodeInspectorPane(QWidget *parent)
     : QWidget(parent)
     , m_backend(new GodboltAgent(ciApp->networkAccessManager(), this))
+    , m_timer(new QTimer)
 {
     auto *mainLayout = new QVBoxLayout();
     setLayout(mainLayout);
@@ -131,6 +133,7 @@ CodeInspectorPane::CodeInspectorPane(QWidget *parent)
     connect(m_btnToggleOutput, &QPushButton::clicked, this, &CodeInspectorPane::onToggleOutput);
     connect(m_compilerList, &QComboBox::currentTextChanged, this, &CodeInspectorPane::currentCompilerChanged);
     connect(m_compilerArguments, &QLineEdit::textChanged, this, &CodeInspectorPane::currentCompilerArgumentsChanged);
+    connect(m_timer, &QTimer::timeout, this, &CodeInspectorPane::onNeedCompile);
 }
 
 void CodeInspectorPane::initialize()
@@ -145,6 +148,25 @@ void CodeInspectorPane::setCompilerList(CompilerListPtr cl)
     {
         m_compilerList->addItem(c->name);
     }
+}
+
+void CodeInspectorPane::onNeedCompile()
+{
+    
+}
+
+void CodeInspectorPane::onCompiled()
+{
+    
+}
+
+void CodeInspectorPane::onDelayCompile()
+{
+    if (m_timer->isActive())
+        m_timer->stop();
+
+    m_timer->setSingleShot(true);
+    m_timer->start(g_settings->autoRefreshInterval());
 }
 
 void CodeInspectorPane::onToggleOutput()
@@ -195,4 +217,10 @@ void CodeInspectorPane::onActionIntelTriggered()
 void CodeInspectorPane::onActionDemangleTriggered()
 {
     
+}
+
+void CodeInspectorPane::onCurrentCompilerArgumentsChanged()
+{
+    onDelayCompile();
+    emit currentCompilerArgumentsChanged();
 }

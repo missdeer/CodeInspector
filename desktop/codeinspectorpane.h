@@ -9,6 +9,7 @@ class QPushButton;
 class QComboBox;
 class QLineEdit;
 class QSplitter;
+class QTimer;
 QT_END_NAMESPACE
 
 class CodeInspectorTabWidget;
@@ -28,6 +29,9 @@ signals:
 public slots:
     
 private slots:
+    void onNeedCompile();
+    void onCompiled();
+    void onDelayCompile();
     void onToggleOutput();
     void onActionBinaryTriggered();
     void onActionLabelTriggered();
@@ -37,6 +41,7 @@ private slots:
     void onActionTrimTriggered();
     void onActionIntelTriggered();
     void onActionDemangleTriggered();
+    void onCurrentCompilerArgumentsChanged();
 private:
     QComboBox* m_compilerList;
     QLineEdit* m_compilerArguments;
@@ -46,6 +51,7 @@ private:
     OutputWindow* m_output;
     GodboltAgent* m_backend;
     QSplitter *m_splitter;
+    QTimer* m_timer;
 };
 
 #endif // CODEINSPECTORPANE_H
