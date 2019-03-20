@@ -3,7 +3,6 @@
 #include "godboltagent.h"
 #include "codeinspectortabwidget.h"
 #include "outputwindow.h"
-#include "popupmenutoolbutton.h"
 #include "codeinspectorpane.h"
 
 CodeInspectorPane::CodeInspectorPane(QWidget *parent)
@@ -17,7 +16,7 @@ CodeInspectorPane::CodeInspectorPane(QWidget *parent)
     
     auto *topBarLayout = new QHBoxLayout();
     topBarLayout->setContentsMargins(0,0,0,0);
-    topBarLayout->setSpacing(0);
+    topBarLayout->setSpacing(1);
     
     m_compilerList = new QComboBox(this);
     topBarLayout->addWidget(m_compilerList);
@@ -83,7 +82,7 @@ CodeInspectorPane::CodeInspectorPane(QWidget *parent)
     connect(actionDemangle, &QAction::triggered, this, &CodeInspectorPane::onActionDemangleTriggered);
     popupMenu->addAction(actionDemangle);
     
-    m_btnInspectorOptions = new PopupMenuToolButton(this);
+    m_btnInspectorOptions = new QPushButton(this);
     m_btnInspectorOptions->setIcon(QIcon(":/resource/image/preferences-activities.png"));
     m_btnInspectorOptions->setMenu(popupMenu);
     topBarLayout->addWidget(m_btnInspectorOptions);

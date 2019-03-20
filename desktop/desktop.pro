@@ -22,8 +22,7 @@ SOURCES += main.cpp \
     codeinspectorpane.cpp \
     compilationtabwidget.cpp \
     sessionwidget.cpp \
-    codeinspectorapp.cpp \
-    popupmenutoolbutton.cpp
+    codeinspectorapp.cpp
 
 HEADERS += stdafx.h \
     mainwindow.h \
@@ -32,8 +31,7 @@ HEADERS += stdafx.h \
     codeinspectorpane.h \
     compilationtabwidget.h \
     sessionwidget.h \
-    codeinspectorapp.h \
-    popupmenutoolbutton.h
+    codeinspectorapp.h
 
 FORMS += \ 
     mainwindow.ui
