@@ -19,6 +19,7 @@ public slots:
 private:
     CodeEditorPane* m_codeEditorPane;
     CompilationTabWidget* m_compilationTabWidget;
+    
 };
 
 #endif // SESSIONWIDGET_H

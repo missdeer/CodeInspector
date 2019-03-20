@@ -8,14 +8,19 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    auto session = new SessionWidget(this);
-    session->initialize();
-    ui->tabWidget->addTab(session, tr("Untitled 1"));
+    addSessionTab();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::addSessionTab()
+{
+    auto session = new SessionWidget(this);
+    session->initialize();
+    ui->tabWidget->addTab(session, tr("Untitled 1"));    
 }
 
 void MainWindow::on_actionExit_triggered()

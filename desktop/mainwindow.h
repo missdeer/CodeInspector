@@ -24,6 +24,7 @@ private slots:
     
 private:
     Ui::MainWindow *ui;
+    void addSessionTab();
 };
 
 #endif // MAINWINDOW_H

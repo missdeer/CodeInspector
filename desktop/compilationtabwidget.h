@@ -10,6 +10,10 @@ public:
     explicit CompilationTabWidget(QWidget* parent = nullptr);
 public slots:
     void languageChanged(const QString &languageName);
+    void currentCompilerChanged(const QString &compilerName);
+    
+private:
+    void addCodeInspectorPaneTab();
 };
 
 #endif // COMPILATIONTABWIDGET_H

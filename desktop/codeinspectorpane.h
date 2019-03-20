@@ -14,6 +14,7 @@ QT_END_NAMESPACE
 class CodeInspectorTabWidget;
 class OutputWindow;
 class GodboltAgent;
+class PopupMenuToolButton;
 
 class CodeInspectorPane : public QWidget
 {
@@ -29,10 +30,19 @@ public slots:
     
 private slots:
     void onToggleOutput();
+    void onActionBinaryTriggered();
+    void onActionLabelTriggered();
+    void onActionFunctionsTriggered();
+    void onActionDirectivesTriggered();
+    void onActionCommentsTriggered();
+    void onActionTrimTriggered();
+    void onActionIntelTriggered();
+    void onActionDemangleTriggered();
 private:
     QComboBox* m_compilerList;
     QLineEdit* m_compilerArguments;
     QPushButton* m_btnToggleOutput;
+    PopupMenuToolButton* m_btnInspectorOptions;
     CodeInspectorTabWidget* m_codeInspectorTabWidget;
     OutputWindow* m_output;
     GodboltAgent* m_backend;

@@ -325,5 +325,13 @@
         <file>resource/image/white/return.png</file>
         <file>resource/image/white/return@2x.png</file>
         <file>resource/image/white/return@3x.png</file>
+        <file>resource/image/binary.png</file>
+        <file>resource/image/comment.png</file>
+        <file>resource/image/directives.png</file>
+        <file>resource/image/intel.png</file>
+        <file>resource/image/label.png</file>
+        <file>resource/image/trim.png</file>
+        <file>resource/image/demangle.png</file>
+        <file>resource/image/function.png</file>
     </qresource>
 </RCC>

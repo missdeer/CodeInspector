@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include <QTabBar>
 #include "codeinspector.h"
 #include "gcctreertloutput.h"
 #include "llvmmachinecodeanalyzeroutput.h"
