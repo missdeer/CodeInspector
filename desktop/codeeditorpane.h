@@ -28,7 +28,7 @@ public slots:
     
 private slots:
     void updateLanguageList();
-    
+    void onCurrentLanguageChanged(int index);
 private:
     CodeEditor *m_codeEditor;
     QComboBox *m_languageList;

@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "settings.h"
 #include "codeinspectorapp.h"
 #include "codeeditor.h"
 #include "outputwindow.h"
@@ -37,7 +38,15 @@ void CodeEditorPane::updateLanguageList()
     for (const auto language : languages)
     {
         m_languageList->addItem(language->name);
-    }    
+    }
+    m_languageList->setCurrentIndex(g_settings->defaultLanguageIndex());
+}
+
+void CodeEditorPane::onCurrentLanguageChanged(int index)
+{
+    QString text = m_languageList->currentText();
+    g_settings->setDefaultLanguageIndex(index);
+    emit currentLanguageChanged(text);
 }
 
 CodeEditor *CodeEditorPane::codeEditor() const
