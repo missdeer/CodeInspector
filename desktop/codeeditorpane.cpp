@@ -28,15 +28,21 @@ CodeEditorPane::CodeEditorPane(QWidget *parent)
     
     connect(m_codeEditor, &CodeEditor::contentModified, this, &CodeEditorPane::contentModified);
     connect(m_languageList, &QComboBox::currentTextChanged, this, &CodeEditorPane::currentLanguageChanged);
+    connect(ciApp, &CodeInspectorApp::languageListReady, [this](){ updateLanguageList();});
 }
 
-void CodeEditorPane::initialize()
+void CodeEditorPane::updateLanguageList()
 {
     auto languages = ciApp->getLanguageList();
     for (const auto language : languages)
     {
         m_languageList->addItem(language->name);
-    }
+    }    
+}
+
+void CodeEditorPane::initialize()
+{
+    updateLanguageList();
 }
 
 QString CodeEditorPane::currentLanguageName()

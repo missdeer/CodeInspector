@@ -24,6 +24,9 @@ signals:
     void currentLanguageChanged(QString);
 public slots:
     
+private slots:
+    void updateLanguageList();
+    
 private:
     CodeEditor* m_codeEditor;
     QComboBox* m_languageList;
