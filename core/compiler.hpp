@@ -11,6 +11,8 @@ struct Compiler
     QString name;
     QString version;
     QString includeFlag;
+    QString group;
+    QString groupName;
     bool supportsBinary;
     bool supportsExecute;
     bool supportsIntel;

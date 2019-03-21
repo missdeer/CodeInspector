@@ -302,6 +302,19 @@ void CodeInspectorPane::onCurrentCompilerArgumentsChanged()
 
 void CodeInspectorPane::onCurrentCompilerChanged(const QString &compilerName)
 {
+    if (compilerName.isEmpty())
+        return;
+    CompilerPtr compiler = ciApp->getCompiler(m_languageName, compilerName);
+    m_compilerList->setToolTip(compiler->version);
+    m_btnBinrary->setEnabled(compiler->supportsBinary);
+    m_btnIntel->setEnabled(compiler->supportsIntel);
+    m_btnDemangle->setEnabled(compiler->supportsDemangle);
+    
+    m_codeInspectorTabWidget->setEnableAST(compiler->supportsAstView);
+    m_codeInspectorTabWidget->setEnableLLVMMCA(compilerName.contains("clang", Qt::CaseInsensitive));
+    m_codeInspectorTabWidget->setEnableGCCTreeRTL(compiler->supportsGccDump);
+    m_codeInspectorTabWidget->setEnableOptimization(compiler->supportsOptimizationOutput);
+    
     onDelayCompile();
     emit currentCompilerChanged(compilerName);
 }

@@ -10,10 +10,6 @@
 CodeInspectorTabWidget::CodeInspectorTabWidget(QWidget *parent)
     : QTabWidget (parent)
     , m_codeInspector(new CodeInspector(this))
-    , m_llvmMCA(nullptr)
-    , m_ast(nullptr)
-    , m_optimization(nullptr)
-    , m_gccTreeRTL(nullptr)
 {
     setTabPosition(East);
     setContextMenuPolicy(Qt::CustomContextMenu);
@@ -81,21 +77,53 @@ void CodeInspectorTabWidget::onCustomContextMenuRequested(const QPoint &pos)
 {
     QMenu menu(this);
     
-    QAction* pOptimizationAction = new QAction(QIcon(":/resource/image/tab/optimization.png"), tr("Optimization Output"), &menu);
-    connect(pOptimizationAction, &QAction::triggered, this, &CodeInspectorTabWidget::requestOptimization);
-    menu.addAction(pOptimizationAction);
+    if (m_enableOptimization)
+    {
+        QAction* pOptimizationAction = new QAction(QIcon(":/resource/image/tab/optimization.png"), tr("Optimization Output"), &menu);
+        connect(pOptimizationAction, &QAction::triggered, this, &CodeInspectorTabWidget::requestOptimization);
+        menu.addAction(pOptimizationAction);        
+    }
     
-    QAction* pASTAction = new QAction(QIcon(":/resource/image/tab/ast.png"), tr("AST"), &menu);
-    connect(pASTAction, &QAction::triggered, this, &CodeInspectorTabWidget::requestAST);
-    menu.addAction(pASTAction);
+    if (m_enableAST)
+    {
+        QAction* pASTAction = new QAction(QIcon(":/resource/image/tab/ast.png"), tr("AST"), &menu);
+        connect(pASTAction, &QAction::triggered, this, &CodeInspectorTabWidget::requestAST);
+        menu.addAction(pASTAction);
+    }
     
-    QAction* pGCCTreeRTLAction = new QAction(QIcon(":/resource/image/tab/gcc.png"), tr("GCC Tree/RTL Output"), &menu);
-    connect(pGCCTreeRTLAction, &QAction::triggered, this, &CodeInspectorTabWidget::requestGCCTreeRTL);
-    menu.addAction(pGCCTreeRTLAction);
+    if (m_enableGCCTreeRTL)
+    {
+        QAction* pGCCTreeRTLAction = new QAction(QIcon(":/resource/image/tab/gcc.png"), tr("GCC Tree/RTL Output"), &menu);
+        connect(pGCCTreeRTLAction, &QAction::triggered, this, &CodeInspectorTabWidget::requestGCCTreeRTL);
+        menu.addAction(pGCCTreeRTLAction);
+    }
     
-    QAction* pLLVMMCAAction = new QAction(QIcon(":/resource/image/tab/llvm.png"), tr("LLVM MCA"), &menu);
-    connect(pLLVMMCAAction, &QAction::triggered, this, &CodeInspectorTabWidget::requestLLVMMCA);
-    menu.addAction(pLLVMMCAAction);
+    if (m_enableLLVMMCA)
+    {
+        QAction* pLLVMMCAAction = new QAction(QIcon(":/resource/image/tab/llvm.png"), tr("LLVM MCA"), &menu);
+        connect(pLLVMMCAAction, &QAction::triggered, this, &CodeInspectorTabWidget::requestLLVMMCA);
+        menu.addAction(pLLVMMCAAction);        
+    }    
     
     menu.exec(mapToGlobal(pos));    
+}
+
+void CodeInspectorTabWidget::setEnableGCCTreeRTL(bool enableGCCTreeRTL)
+{
+    m_enableGCCTreeRTL = enableGCCTreeRTL;
+}
+
+void CodeInspectorTabWidget::setEnableOptimization(bool enableOptimization)
+{
+    m_enableOptimization = enableOptimization;
+}
+
+void CodeInspectorTabWidget::setEnableAST(bool enableAST)
+{
+    m_enableAST = enableAST;
+}
+
+void CodeInspectorTabWidget::setEnableLLVMMCA(bool enableLLVMMCA)
+{
+    m_enableLLVMMCA = enableLLVMMCA;
 }

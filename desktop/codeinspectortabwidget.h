@@ -23,6 +23,10 @@ public:
     void setASTContent(const QString &content);
     void setOptimizationContent(const QString &content);
     void setGCCTreeRTLContent(const QString &content);
+    void setEnableLLVMMCA(bool enableLLVMMCA);    
+    void setEnableAST(bool enableAST);    
+    void setEnableOptimization(bool enableOptimization);    
+    void setEnableGCCTreeRTL(bool enableGCCTreeRTL);    
 signals:
     void requestLLVMMCA();
     void requestAST();
@@ -32,11 +36,14 @@ private slots:
     void onCustomContextMenuRequested(const QPoint &pos);
 private:
     CodeInspector *m_codeInspector;
-    LLVMMachineCodeAnalyzerOutput *m_llvmMCA;
-    ASTOutput *m_ast;
-    OptimizationOutput *m_optimization;
-    GCCTreeRTLOutput *m_gccTreeRTL;
-    
+    LLVMMachineCodeAnalyzerOutput *m_llvmMCA{nullptr};
+    ASTOutput *m_ast{nullptr};
+    OptimizationOutput *m_optimization{nullptr};
+    GCCTreeRTLOutput *m_gccTreeRTL{nullptr};
+    bool m_enableLLVMMCA{true};
+    bool m_enableAST{false};
+    bool m_enableOptimization{false};
+    bool m_enableGCCTreeRTL{false};
 };
 
 #endif // CODEINSPECTORTABWIDGET_H

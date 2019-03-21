@@ -264,6 +264,8 @@ bool CodeInspectorApp::parseCompilerListFromConfiguration(QJsonArray &array)
         c->supportsCfg = o["supportsCfg"].toBool();
         if (o["supportsGccDump"].isBool())
             c->supportsGccDump = o["supportsGccDump"].toBool();
+        c->group = o["group"].toString();
+        c->groupName = o["groupName"].toString();
 
         auto it = std::find_if(compilerList->begin(), compilerList->end(),
                                [&c](CompilerPtr compiler){
