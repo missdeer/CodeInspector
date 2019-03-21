@@ -34,6 +34,7 @@ CodeEditorPane::CodeEditorPane(QWidget *parent)
 
 void CodeEditorPane::updateLanguageList()
 {
+    m_languageList->clear();
     auto languages = ciApp->getLanguageList();
     for (const auto language : languages)
     {

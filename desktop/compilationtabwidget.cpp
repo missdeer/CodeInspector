@@ -18,6 +18,8 @@ CompilationTabWidget::CompilationTabWidget(CodeEditor *codeEditor, QWidget *pare
 
 void CompilationTabWidget::onLanguageChanged(const QString &languageName)
 {
+    if (languageName.isEmpty())
+        return;
     m_currentLanguageName = languageName;
     auto cl = ciApp->getCompilerList(languageName);
     for (int i = 0; i < count(); i++)

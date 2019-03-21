@@ -503,6 +503,8 @@ bool CodeInspectorApp::parseDefaultCompilerFromConfiguration(QJsonObject &obj)
 
 const QString &CodeInspectorApp::getLanguageId(const QString &name)
 {
+    if (name.isEmpty())
+        return name;
     auto it = std::find_if(m_languageList.begin(), m_languageList.end(),
                            [&name](LanguagePtr l) { return l->name == name;});
     Q_ASSERT(m_languageList.end() != it);
@@ -511,6 +513,8 @@ const QString &CodeInspectorApp::getLanguageId(const QString &name)
 
 const QString &CodeInspectorApp::getLanguageName(const QString &id)
 {
+    if (id.isEmpty())
+        return id;
     auto it = std::find_if(m_languageList.begin(), m_languageList.end(),
                            [&id](LanguagePtr l) { return l->id == id;});
     Q_ASSERT(m_languageList.end() != it);
@@ -519,6 +523,8 @@ const QString &CodeInspectorApp::getLanguageName(const QString &id)
 
 const QString &CodeInspectorApp::getCompilerId(CompilerListPtr compilerList, const QString &name)
 {
+    if (name.isEmpty())
+        return name;
     auto it = std::find_if(compilerList->begin(), compilerList->end(),
                            [&name](CompilerPtr c) { return c->name == name;});
     Q_ASSERT(compilerList->end() != it);
@@ -658,9 +664,18 @@ void CodeInspectorApp::onConfigurationRequestFinished()
     content = content.mid(index + leading.size());
     index = content.indexOf(ending);
     content = content.left(index);
+    
+    index = content.indexOf("\"");
+    content = content.mid(index + 1);
+    index = content.indexOf("\"");
+    content = content.left(index);
 
-    if (parseConfiguration(content))
-        storeConfiguration(content);
+    QByteArray c = QByteArray::fromPercentEncoding(content);
+#if !defined (QT_NO_DEBUG)
+    qDebug() << __FUNCTION__ << QString(c);
+#endif
+    if (parseConfiguration(c))
+        storeConfiguration(c);
 }
 
 
