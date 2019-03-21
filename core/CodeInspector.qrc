@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>resource/configurations</file>
+        <file>CodeInspector.png</file>
     </qresource>
 </RCC>

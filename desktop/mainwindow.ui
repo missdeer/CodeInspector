@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>CodeInspector</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../core/CodeInspector.qrc">
+    <normaloff>:/CodeInspector.png</normaloff>:/CodeInspector.png</iconset>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
     <property name="leftMargin">
@@ -164,6 +168,7 @@
  </widget>
  <resources>
   <include location="image.qrc"/>
+  <include location="../core/CodeInspector.qrc"/>
  </resources>
  <connections/>
 </ui>
