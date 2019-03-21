@@ -130,6 +130,8 @@ CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
     m_output->setVisible(false);
     m_btnToggleOutput->setVisible(false);
     m_splitter->setSizes(QList<int>() << 4096 << 0);
+    auto h = m_splitter->handle(1);
+    h->setEnabled(false);
     
     m_backend->initialize(ciApp);
     connect(m_btnToggleOutput, &QPushButton::clicked, this, &CodeInspectorPane::onToggleOutput);
