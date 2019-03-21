@@ -24,6 +24,7 @@ void GodboltAgent::compile(const CompileInfo &ci)
 
     QJsonObject compilerOptionsObj;
     compilerOptionsObj.insert("produceOptInfo", false);
+    compilerOptionsObj.insert("produceCfg", false);
 
     QJsonObject filtersObj;
     struct {

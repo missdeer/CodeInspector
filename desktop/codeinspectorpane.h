@@ -46,6 +46,10 @@ private slots:
     void onActionDemangleTriggered();
     void onCurrentCompilerArgumentsChanged();
     void onCurrentCompilerChanged(const QString& compilerName);
+    void onRequestLLVMMCA();
+    void onRequestAST();
+    void onRequestOptimization();
+    void onRequestGCCTreeRTL();
 private:
     CodeEditor *m_codeEditor;
     QComboBox *m_compilerList;

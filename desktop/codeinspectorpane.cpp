@@ -142,6 +142,10 @@ CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
     connect(m_timer, &QTimer::timeout, this, &CodeInspectorPane::onNeedCompile);
     connect(m_codeEditor, &CodeEditor::contentModified, this, &CodeInspectorPane::onDelayCompile);
     connect(m_backend, &GodboltAgent::compiled, this, &CodeInspectorPane::onCompiled);
+    connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::requestAST, this, &CodeInspectorPane::onRequestAST);
+    connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::requestLLVMMCA, this, &CodeInspectorPane::onRequestLLVMMCA);
+    connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::requestGCCTreeRTL, this, &CodeInspectorPane::onRequestGCCTreeRTL);
+    connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::requestOptimization, this, &CodeInspectorPane::onRequestOptimization);
 }
 
 void CodeInspectorPane::initialize()
@@ -318,6 +322,26 @@ void CodeInspectorPane::onCurrentCompilerChanged(const QString &compilerName)
     
     onDelayCompile();
     emit currentCompilerChanged(compilerName);
+}
+
+void CodeInspectorPane::onRequestLLVMMCA()
+{
+    
+}
+
+void CodeInspectorPane::onRequestAST()
+{
+    
+}
+
+void CodeInspectorPane::onRequestOptimization()
+{
+    
+}
+
+void CodeInspectorPane::onRequestGCCTreeRTL()
+{
+    
 }
 
 void CodeInspectorPane::storeToCache(const QString &name, const CompileInfo &ci)
