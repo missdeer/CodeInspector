@@ -29,76 +29,70 @@ CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
     m_compilerArguments->setPlaceholderText(tr("Build Options"));
     topBarLayout->addWidget(m_compilerArguments);
             
-    QMenu* popupMenu = new QMenu(this);
-    m_actionBinrary  = new QAction(tr("Binary"), this);
-    m_actionBinrary->setIcon(QIcon(":/resource/image/binary.png"));
-    m_actionBinrary->setToolTip(tr("Compile to binary and disassemble the output"));
-    m_actionBinrary->setCheckable(true);
-    m_actionBinrary->setChecked(g_settings->binary());
-    connect(m_actionBinrary, &QAction::triggered, this, &CodeInspectorPane::onActionBinaryTriggered);
-    popupMenu->addAction(m_actionBinrary);
+    m_btnBinrary  = new QPushButton(this);
+    m_btnBinrary->setIcon(QIcon(":/resource/image/binary.png"));
+    m_btnBinrary->setToolTip(tr("Compile to binary and disassemble the output"));
+    m_btnBinrary->setCheckable(true);
+    m_btnBinrary->setChecked(g_settings->binary());
+    connect(m_btnBinrary, &QPushButton::clicked, this, &CodeInspectorPane::onActionBinaryTriggered);
+    topBarLayout->addWidget(m_btnBinrary);
     
-    m_actionLabel  = new QAction(tr("Label"), this);
-    m_actionLabel->setIcon(QIcon(":/resource/image/label.png"));
-    m_actionLabel->setToolTip(tr("Filter unused labels from the output"));
-    m_actionLabel->setCheckable(true);
-    m_actionLabel->setChecked(g_settings->label());
-    connect(m_actionLabel, &QAction::triggered, this, &CodeInspectorPane::onActionLabelTriggered);
-    popupMenu->addAction(m_actionLabel);
+    m_btnLabel  = new QPushButton(this);
+    m_btnLabel->setIcon(QIcon(":/resource/image/label.png"));
+    m_btnLabel->setToolTip(tr("Filter unused labels from the output"));
+    m_btnLabel->setCheckable(true);
+    m_btnLabel->setChecked(g_settings->label());
+    connect(m_btnLabel, &QPushButton::clicked, this, &CodeInspectorPane::onActionLabelTriggered);
+    topBarLayout->addWidget(m_btnLabel);
     
-    m_actionFunctions  = new QAction(tr("Functions"), this);
-    m_actionFunctions->setIcon(QIcon(":/resource/image/function.png"));
-    m_actionFunctions->setToolTip(tr("Filter functions from other libraries from the output"));
-    m_actionFunctions->setCheckable(true);
-    m_actionFunctions->setChecked(g_settings->functions());
-    connect(m_actionFunctions, &QAction::triggered, this, &CodeInspectorPane::onActionFunctionsTriggered);
-    popupMenu->addAction(m_actionFunctions);
+    m_btnFunctions  = new QPushButton(this);
+    m_btnFunctions->setIcon(QIcon(":/resource/image/function.png"));
+    m_btnFunctions->setToolTip(tr("Filter functions from other libraries from the output"));
+    m_btnFunctions->setCheckable(true);
+    m_btnFunctions->setChecked(g_settings->functions());
+    connect(m_btnFunctions, &QPushButton::clicked, this, &CodeInspectorPane::onActionFunctionsTriggered);
+    topBarLayout->addWidget(m_btnFunctions);
     
-    m_actionDirectives  = new QAction(tr("Directives"), this);
-    m_actionDirectives->setIcon(QIcon(":/resource/image/directives.png"));
-    m_actionDirectives->setToolTip(tr("Filter all assembler directives from the output"));
-    m_actionDirectives->setCheckable(true);
-    m_actionDirectives->setChecked(g_settings->directives());
-    connect(m_actionDirectives, &QAction::triggered, this, &CodeInspectorPane::onActionDirectivesTriggered);
-    popupMenu->addAction(m_actionDirectives);
+    m_btnDirectives  = new QPushButton(this);
+    m_btnDirectives->setIcon(QIcon(":/resource/image/directives.png"));
+    m_btnDirectives->setToolTip(tr("Filter all assembler directives from the output"));
+    m_btnDirectives->setCheckable(true);
+    m_btnDirectives->setChecked(g_settings->directives());
+    connect(m_btnDirectives, &QPushButton::clicked, this, &CodeInspectorPane::onActionDirectivesTriggered);
+    topBarLayout->addWidget(m_btnDirectives);
     
-    m_actionComments  = new QAction(tr("Comments"), this);
-    m_actionComments->setIcon(QIcon(":/resource/image/comment.png"));
-    m_actionComments->setToolTip(tr("Remove all lines which are only comments from the output"));
-    m_actionComments->setCheckable(true);
-    m_actionComments->setChecked(g_settings->comments());
-    connect(m_actionComments, &QAction::triggered, this, &CodeInspectorPane::onActionCommentsTriggered);
-    popupMenu->addAction(m_actionComments);
+    m_btnComments  = new QPushButton(this);
+    m_btnComments->setIcon(QIcon(":/resource/image/comment.png"));
+    m_btnComments->setToolTip(tr("Remove all lines which are only comments from the output"));
+    m_btnComments->setCheckable(true);
+    m_btnComments->setChecked(g_settings->comments());
+    connect(m_btnComments, &QPushButton::clicked, this, &CodeInspectorPane::onActionCommentsTriggered);
+    topBarLayout->addWidget(m_btnComments);
     
-    m_actionTrim  = new QAction(tr("Trim"), this);
-    m_actionTrim->setIcon(QIcon(":/resource/image/trim.png"));
-    m_actionTrim->setToolTip(tr("Trim intra-line whitespace"));
-    m_actionTrim->setCheckable(true);
-    m_actionTrim->setChecked(g_settings->trim());
-    connect(m_actionTrim, &QAction::triggered, this, &CodeInspectorPane::onActionTrimTriggered);
-    popupMenu->addAction(m_actionTrim);
+    m_btnTrim  = new QPushButton(this);
+    m_btnTrim->setIcon(QIcon(":/resource/image/trim.png"));
+    m_btnTrim->setToolTip(tr("Trim intra-line whitespace"));
+    m_btnTrim->setCheckable(true);
+    m_btnTrim->setChecked(g_settings->trim());
+    connect(m_btnTrim, &QPushButton::clicked, this, &CodeInspectorPane::onActionTrimTriggered);
+    topBarLayout->addWidget(m_btnTrim);
     
-    m_actionIntel  = new QAction(tr("Intel"), this);
-    m_actionIntel->setIcon(QIcon(":/resource/image/intel.png"));
-    m_actionIntel->setToolTip(tr("Output disassembly in Intel syntax"));
-    m_actionIntel->setCheckable(true);
-    m_actionIntel->setChecked(g_settings->intel());
-    connect(m_actionIntel, &QAction::triggered, this, &CodeInspectorPane::onActionIntelTriggered);
-    popupMenu->addAction(m_actionIntel);
+    m_btnIntel  = new QPushButton(this);
+    m_btnIntel->setIcon(QIcon(":/resource/image/intel.png"));
+    m_btnIntel->setToolTip(tr("Output disassembly in Intel syntax"));
+    m_btnIntel->setCheckable(true);
+    m_btnIntel->setChecked(g_settings->intel());
+    connect(m_btnIntel, &QPushButton::clicked, this, &CodeInspectorPane::onActionIntelTriggered);
+    topBarLayout->addWidget(m_btnIntel);
     
-    m_actionDemangle  = new QAction(tr("Demangle"), this);
-    m_actionDemangle->setIcon(QIcon(":/resource/image/demangle.png"));
-    m_actionDemangle->setToolTip(tr("Demangle output"));
-    m_actionDemangle->setCheckable(true);
-    m_actionDemangle->setChecked(g_settings->demangle());
-    connect(m_actionDemangle, &QAction::triggered, this, &CodeInspectorPane::onActionDemangleTriggered);
-    popupMenu->addAction(m_actionDemangle);
-    
-    m_btnInspectorOptions = new QPushButton(this);
-    m_btnInspectorOptions->setIcon(QIcon(":/resource/image/preferences-activities.png"));
-    m_btnInspectorOptions->setMenu(popupMenu);
-    topBarLayout->addWidget(m_btnInspectorOptions);
-    
+    m_btnDemangle  = new QPushButton(this);
+    m_btnDemangle->setIcon(QIcon(":/resource/image/demangle.png"));
+    m_btnDemangle->setToolTip(tr("Demangle output"));
+    m_btnDemangle->setCheckable(true);
+    m_btnDemangle->setChecked(g_settings->demangle());
+    connect(m_btnDemangle, &QPushButton::clicked, this, &CodeInspectorPane::onActionDemangleTriggered);
+    topBarLayout->addWidget(m_btnDemangle);
+        
     topBarLayout->setStretch(0, 1);
     topBarLayout->setStretch(1, 1);
     mainLayout->addLayout(topBarLayout);
@@ -132,6 +126,7 @@ CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
     m_output = new OutputWindow(this);
     m_output->initialize();
     outputPaneLayout->addWidget(m_output);
+    m_output->setVisible(false);
     
     m_splitter->addWidget(outputPane);
     
@@ -201,21 +196,21 @@ void CodeInspectorPane::onNeedCompile()
     //        }
     
     ci.userArguments = userArguments.join(" ");
-    ci.binary = m_actionBinrary->isChecked();
-    ci.commentOnly = m_actionComments->isChecked();
-    ci.labels = m_actionLabel->isChecked();
-    ci.trim = m_actionTrim->isChecked();
-    ci.directives = m_actionDirectives->isChecked();
-    ci.intel = m_actionIntel->isChecked();
-    ci.demangle = m_actionDemangle->isChecked();
-    ci.functions = m_actionFunctions->isChecked();
+    ci.binary = m_btnBinrary->isChecked();
+    ci.commentOnly = m_btnComments->isChecked();
+    ci.labels = m_btnLabel->isChecked();
+    ci.trim = m_btnTrim->isChecked();
+    ci.directives = m_btnDirectives->isChecked();
+    ci.intel = m_btnIntel->isChecked();
+    ci.demangle = m_btnDemangle->isChecked();
+    ci.functions = m_btnFunctions->isChecked();
     ci.language = m_languageName;
     ci.compiler = m_compilerList->currentText();
     m_backend->compile(ci);
     
     m_codeEditor->setSavePoint();
     Q_ASSERT(m_codeInspectorTabWidget);
-    m_codeInspectorTabWidget->setCodeInspectorContent(tr("<Compiling...>"), m_actionBinrary->isChecked());
+    m_codeInspectorTabWidget->setCodeInspectorContent(tr("<Compiling...>"), m_btnBinrary->isChecked());
     
     storeToCache(ci.language, ci);
     storeToCache("lastSession", ci);
@@ -227,9 +222,9 @@ void CodeInspectorPane::onCompiled()
     qDebug() << __FUNCTION__;
     auto content = m_backend->getAsmContent();
     Q_ASSERT(m_codeInspectorTabWidget);
-    m_codeInspectorTabWidget->setCodeInspectorContent(content, m_actionBinrary->isChecked());
+    m_codeInspectorTabWidget->setCodeInspectorContent(content, m_btnBinrary->isChecked());
     auto asmItems = m_backend->getAsmItems();
-    auto markerMap = m_codeInspectorTabWidget->setCodeInspectorAsmItems(asmItems, m_actionBinrary->isChecked());
+    auto markerMap = m_codeInspectorTabWidget->setCodeInspectorAsmItems(asmItems, m_btnBinrary->isChecked());
     Q_ASSERT(m_codeEditor);
     m_codeEditor->setMarkerColor(markerMap);
 
@@ -378,4 +373,6 @@ void CodeInspectorPane::showOutputWindow(bool show)
     m_splitter->setSizes(QList<int>() << 4096 << (show ? 32 : 0));
     auto h = m_splitter->handle(1);
     h->setEnabled(show);
+    if (!show)
+        m_output->setVisible(false);
 }

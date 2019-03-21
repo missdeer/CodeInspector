@@ -39,7 +39,7 @@ void Settings::load()
 {
     QSettings settings(QSettings::IniFormat, QSettings::UserScope, "dfordsoft.com", "CodeInspector");
     m_rememberLastSession = settings.value("rememberLastSession", true).toBool();
-    m_binary = settings.value("binary", true).toBool();
+    m_binary = settings.value("binary", false).toBool();
     m_label = settings.value("label", true).toBool();
     m_functions = settings.value("functions", true).toBool();
     m_directives = settings.value("directives", true).toBool();

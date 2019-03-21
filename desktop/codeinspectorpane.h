@@ -51,21 +51,20 @@ private:
     QComboBox *m_compilerList;
     QLineEdit *m_compilerArguments;
     QPushButton *m_btnToggleOutput;
-    QPushButton *m_btnInspectorOptions;
     CodeInspectorTabWidget *m_codeInspectorTabWidget;
     OutputWindow *m_output;
     GodboltAgent *m_backend;
     QSplitter *m_splitter;
     QTimer *m_timer;
     
-    QAction *m_actionBinrary;
-    QAction *m_actionLabel;
-    QAction *m_actionFunctions;
-    QAction *m_actionDirectives;
-    QAction *m_actionComments;
-    QAction *m_actionTrim;
-    QAction *m_actionIntel;
-    QAction *m_actionDemangle;
+    QPushButton *m_btnBinrary;
+    QPushButton *m_btnLabel;
+    QPushButton *m_btnFunctions;
+    QPushButton *m_btnDirectives;
+    QPushButton *m_btnComments;
+    QPushButton *m_btnTrim;
+    QPushButton *m_btnIntel;
+    QPushButton *m_btnDemangle;
     
     QString m_languageName;
     
