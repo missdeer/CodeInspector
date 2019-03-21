@@ -39,6 +39,8 @@ void GodboltAgent::compile(const CompileInfo &ci)
         { "intel", ci.intel},
         { "commentOnly", ci.commentOnly},
         { "demangle", ci.demangle},
+        { "libraryCode", ci.functions},
+        { "execute", false},
     };
     for (const auto& f : filterMap)
     {
