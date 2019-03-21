@@ -22,13 +22,12 @@ public:
     CodeEditor *codeEditor() const;
     
 signals:
-    void contentModified();
     void currentLanguageChanged(QString);
 public slots:
     
 private slots:
     void updateLanguageList();
-    void onCurrentLanguageChanged(int index);
+    void onCurrentLanguageChanged(const QString &text);
 private:
     CodeEditor *m_codeEditor;
     QComboBox *m_languageList;

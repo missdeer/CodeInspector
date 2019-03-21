@@ -16,7 +16,8 @@ int main(int argc, char *argv[])
     CodeInspectorApp app;
     ciApp = &app;
 
-    g_settings = new Settings;
+    Settings settings;
+    g_settings = &settings;
     g_settings->initialize();
 
     MainWindow w;

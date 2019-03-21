@@ -19,6 +19,7 @@ CodeEditorPane::CodeEditorPane(QWidget *parent)
 
     m_languageList = new QComboBox(this);
     topBarLayout->addWidget(m_languageList);
+    m_languageList->clear();
     
     mainLayout->addLayout(topBarLayout);
 
@@ -27,9 +28,8 @@ CodeEditorPane::CodeEditorPane(QWidget *parent)
 
     mainLayout->addWidget(m_codeEditor);
     
-    connect(m_codeEditor, &CodeEditor::contentModified, this, &CodeEditorPane::contentModified);
-    connect(m_languageList, &QComboBox::currentTextChanged, this, &CodeEditorPane::currentLanguageChanged);
-    connect(ciApp, &CodeInspectorApp::languageListReady, [this](){ updateLanguageList();});
+    connect(m_languageList, &QComboBox::currentTextChanged, this, &CodeEditorPane::onCurrentLanguageChanged);
+    connect(ciApp, &CodeInspectorApp::languageListReady, this, &CodeEditorPane::updateLanguageList);
 }
 
 void CodeEditorPane::updateLanguageList()
@@ -39,13 +39,14 @@ void CodeEditorPane::updateLanguageList()
     {
         m_languageList->addItem(language->name);
     }
-    m_languageList->setCurrentIndex(g_settings->defaultLanguageIndex());
+    if (m_languageList->count())
+        m_languageList->setCurrentIndex(g_settings->defaultLanguageIndex());
 }
 
-void CodeEditorPane::onCurrentLanguageChanged(int index)
+void CodeEditorPane::onCurrentLanguageChanged(const QString &text)
 {
-    QString text = m_languageList->currentText();
-    g_settings->setDefaultLanguageIndex(index);
+    if (m_languageList->count() > 1)
+        g_settings->setDefaultLanguageIndex(m_languageList->currentIndex());
     emit currentLanguageChanged(text);
 }
 

@@ -3,11 +3,6 @@
 
 Settings* g_settings = nullptr;
 
-Settings::Settings()
-{
-
-}
-
 Settings::~Settings()
 {
     save();
@@ -20,7 +15,7 @@ void Settings::initialize()
 
 void Settings::save()
 {
-    QSettings settings;
+    QSettings settings(QSettings::IniFormat, QSettings::UserScope, "dfordsoft.com", "CodeInspector");
     settings.setValue("rememberLastSession", m_rememberLastSession);
     settings.setValue("autoRefreshInterval", m_autoRefreshInterval);
     settings.setValue("editorZoomFactor", m_editorZoomFactor);
@@ -34,7 +29,7 @@ void Settings::save()
 
 void Settings::load()
 {
-    QSettings settings;
+    QSettings settings(QSettings::IniFormat, QSettings::UserScope, "dfordsoft.com", "CodeInspector");
     m_rememberLastSession = settings.value("rememberLastSession", true).toBool();
     m_defaultLanguageIndex = settings.value("defaultLanguageIndex", 0).toInt();
 #if defined(Q_OS_IOS) || defined(Q_OS_ANDROID)

@@ -6,7 +6,7 @@
 class Settings
 {
 public:
-    Settings();
+    Settings() = default;
     Settings(const Settings&) = delete;
     void operator=(const Settings&) = delete;
     Settings(Settings&&) = delete;
