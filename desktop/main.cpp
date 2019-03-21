@@ -13,8 +13,9 @@ int main(int argc, char *argv[])
 
     QApplication a(argc, argv);
     
-    CodeInspectorApp app;
+    CodeInspectorApp app;    
     ciApp = &app;
+    ciApp->initialize();
 
     Settings settings;
     g_settings = &settings;
