@@ -127,8 +127,6 @@ CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
     
     m_splitter->addWidget(outputPane);
     
-    m_output->setVisible(false);
-    m_btnToggleOutput->setVisible(false);
     m_splitter->setSizes(QList<int>() << 4096 << 0);
     auto h = m_splitter->handle(1);
     h->setEnabled(false);
@@ -228,16 +226,7 @@ void CodeInspectorPane::onCompiled()
     m_codeEditor->setMarkerColor(markerMap);
 
     auto output = m_backend->getCompileOutput();
-    if (output.isEmpty())
-    {
-        if (m_btnToggleOutput->isVisible())
-            m_btnToggleOutput->setVisible(false);
-        if (m_output->isVisible())
-            m_output->setVisible(false);
-    }
-
-    if (!output.isEmpty() && !m_btnToggleOutput->isVisible())
-        m_btnToggleOutput->setVisible(true);
+    showOutputWindow(!output.isEmpty());    
 
     m_output->setContent(output);
 }
@@ -374,4 +363,11 @@ bool CodeInspectorPane::restoreFromCache(const QString& name, CompileInfo &ci)
            >> ci.userArguments;
 
     return true;
+}
+
+void CodeInspectorPane::showOutputWindow(bool show)
+{
+    m_splitter->setSizes(QList<int>() << 4096 << (show ? 32 : 0));
+    auto h = m_splitter->handle(1);
+    h->setEnabled(show);
 }

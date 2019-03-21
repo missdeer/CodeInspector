@@ -71,6 +71,7 @@ private:
     
     void storeToCache(const QString &name, const CompileInfo &ci);
     bool restoreFromCache(const QString& name, CompileInfo &ci);
+    void showOutputWindow(bool show);
 };
 
 #endif // CODEINSPECTORPANE_H
