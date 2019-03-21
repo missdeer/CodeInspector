@@ -24,6 +24,14 @@ void Settings::save()
     settings.setValue("codeEditorTheme", m_codeEditorTheme);
     settings.setValue("codeInspectorFontFamily", m_codeInspectorFontFamily);
     settings.setValue("codeInspectorTheme", m_codeInspectorTheme);
+    settings.setValue("binary", m_binary);
+    settings.setValue("label", m_label);
+    settings.setValue("functions", m_functions);
+    settings.setValue("directives", m_directives);
+    settings.setValue("comments", m_comments);
+    settings.setValue("trim", m_trim);
+    settings.setValue("intel", m_intel);
+    settings.setValue("demangle", m_demangle);
     settings.sync();
 }
 
@@ -31,6 +39,14 @@ void Settings::load()
 {
     QSettings settings(QSettings::IniFormat, QSettings::UserScope, "dfordsoft.com", "CodeInspector");
     m_rememberLastSession = settings.value("rememberLastSession", true).toBool();
+    m_binary = settings.value("binary", true).toBool();
+    m_label = settings.value("label", true).toBool();
+    m_functions = settings.value("functions", true).toBool();
+    m_directives = settings.value("directives", true).toBool();
+    m_comments = settings.value("comments", true).toBool();
+    m_trim = settings.value("trim", true).toBool();
+    m_intel = settings.value("intel", true).toBool();
+    m_demangle = settings.value("demangle", true).toBool();
     m_defaultLanguageIndex = settings.value("defaultLanguageIndex", 0).toInt();
 #if defined(Q_OS_IOS) || defined(Q_OS_ANDROID)
     m_autoRefreshInterval = settings.value("autoRefreshInterval", 1500).toInt();
@@ -122,6 +138,86 @@ int Settings::editorZoomFactor() const
 void Settings::setEditorZoomFactor(int editorZoomFactor)
 {
     m_editorZoomFactor = editorZoomFactor;
+}
+
+bool Settings::binary() const
+{
+    return m_binary;
+}
+
+void Settings::setBinary(bool binary)
+{
+    m_binary = binary;
+}
+
+bool Settings::label() const
+{
+    return m_label;
+}
+
+void Settings::setLabel(bool label)
+{
+    m_label = label;
+}
+
+bool Settings::functions() const
+{
+    return m_functions;
+}
+
+void Settings::setFunctions(bool functions)
+{
+    m_functions = functions;
+}
+
+bool Settings::directives() const
+{
+    return m_directives;
+}
+
+void Settings::setDirectives(bool directives)
+{
+    m_directives = directives;
+}
+
+bool Settings::comments() const
+{
+    return m_comments;
+}
+
+void Settings::setComments(bool comments)
+{
+    m_comments = comments;
+}
+
+bool Settings::trim() const
+{
+    return m_trim;
+}
+
+void Settings::setTrim(bool trim)
+{
+    m_trim = trim;
+}
+
+bool Settings::intel() const
+{
+    return m_intel;
+}
+
+void Settings::setIntel(bool intel)
+{
+    m_intel = intel;
+}
+
+bool Settings::demangle() const
+{
+    return m_demangle;
+}
+
+void Settings::setDemangle(bool demangle)
+{
+    m_demangle = demangle;
 }
 
 

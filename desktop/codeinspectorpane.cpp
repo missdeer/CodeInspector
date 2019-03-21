@@ -34,6 +34,7 @@ CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
     m_actionBinrary->setIcon(QIcon(":/resource/image/binary.png"));
     m_actionBinrary->setToolTip(tr("Compile to binary and disassemble the output"));
     m_actionBinrary->setCheckable(true);
+    m_actionBinrary->setChecked(g_settings->binary());
     connect(m_actionBinrary, &QAction::triggered, this, &CodeInspectorPane::onActionBinaryTriggered);
     popupMenu->addAction(m_actionBinrary);
     
@@ -41,6 +42,7 @@ CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
     m_actionLabel->setIcon(QIcon(":/resource/image/label.png"));
     m_actionLabel->setToolTip(tr("Filter unused labels from the output"));
     m_actionLabel->setCheckable(true);
+    m_actionLabel->setChecked(g_settings->label());
     connect(m_actionLabel, &QAction::triggered, this, &CodeInspectorPane::onActionLabelTriggered);
     popupMenu->addAction(m_actionLabel);
     
@@ -48,6 +50,7 @@ CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
     m_actionFunctions->setIcon(QIcon(":/resource/image/function.png"));
     m_actionFunctions->setToolTip(tr("Filter functions from other libraries from the output"));
     m_actionFunctions->setCheckable(true);
+    m_actionFunctions->setChecked(g_settings->functions());
     connect(m_actionFunctions, &QAction::triggered, this, &CodeInspectorPane::onActionFunctionsTriggered);
     popupMenu->addAction(m_actionFunctions);
     
@@ -55,6 +58,7 @@ CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
     m_actionDirectives->setIcon(QIcon(":/resource/image/directives.png"));
     m_actionDirectives->setToolTip(tr("Filter all assembler directives from the output"));
     m_actionDirectives->setCheckable(true);
+    m_actionDirectives->setChecked(g_settings->directives());
     connect(m_actionDirectives, &QAction::triggered, this, &CodeInspectorPane::onActionDirectivesTriggered);
     popupMenu->addAction(m_actionDirectives);
     
@@ -62,6 +66,7 @@ CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
     m_actionComments->setIcon(QIcon(":/resource/image/comment.png"));
     m_actionComments->setToolTip(tr("Remove all lines which are only comments from the output"));
     m_actionComments->setCheckable(true);
+    m_actionComments->setChecked(g_settings->comments());
     connect(m_actionComments, &QAction::triggered, this, &CodeInspectorPane::onActionCommentsTriggered);
     popupMenu->addAction(m_actionComments);
     
@@ -69,6 +74,7 @@ CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
     m_actionTrim->setIcon(QIcon(":/resource/image/trim.png"));
     m_actionTrim->setToolTip(tr("Trim intra-line whitespace"));
     m_actionTrim->setCheckable(true);
+    m_actionTrim->setChecked(g_settings->trim());
     connect(m_actionTrim, &QAction::triggered, this, &CodeInspectorPane::onActionTrimTriggered);
     popupMenu->addAction(m_actionTrim);
     
@@ -76,6 +82,7 @@ CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
     m_actionIntel->setIcon(QIcon(":/resource/image/intel.png"));
     m_actionIntel->setToolTip(tr("Output disassembly in Intel syntax"));
     m_actionIntel->setCheckable(true);
+    m_actionIntel->setChecked(g_settings->intel());
     connect(m_actionIntel, &QAction::triggered, this, &CodeInspectorPane::onActionIntelTriggered);
     popupMenu->addAction(m_actionIntel);
     
@@ -83,6 +90,7 @@ CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
     m_actionDemangle->setIcon(QIcon(":/resource/image/demangle.png"));
     m_actionDemangle->setToolTip(tr("Demangle output"));
     m_actionDemangle->setCheckable(true);
+    m_actionDemangle->setChecked(g_settings->demangle());
     connect(m_actionDemangle, &QAction::triggered, this, &CodeInspectorPane::onActionDemangleTriggered);
     popupMenu->addAction(m_actionDemangle);
     
