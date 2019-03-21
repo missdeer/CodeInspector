@@ -22,10 +22,10 @@ SessionWidget::SessionWidget(QWidget *parent) : QWidget(parent)
     splitter->addWidget(m_compilationTabWidget);
 
     connect(m_codeEditorPane, &CodeEditorPane::currentLanguageChanged,
-            m_compilationTabWidget, &CompilationTabWidget::languageChanged);
+            m_compilationTabWidget, &CompilationTabWidget::onLanguageChanged);
 
     connect(ciApp, &CodeInspectorApp::compilerListReady,
-            [=](){m_compilationTabWidget->languageChanged(m_codeEditorPane->currentLanguageName());});
+            [=](){m_compilationTabWidget->onLanguageChanged(m_codeEditorPane->currentLanguageName());});
 }
 
 void SessionWidget::initialize()

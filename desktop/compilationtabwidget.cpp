@@ -9,13 +9,16 @@ CompilationTabWidget::CompilationTabWidget(CodeEditor *codeEditor, QWidget *pare
     , m_codeEditor(codeEditor)
 {
     setTabPosition(South);
-    setTabsClosable(true);
-    setTabBarAutoHide(true);
+    setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(this, &QWidget::customContextMenuRequested, this, &CompilationTabWidget::onCustomContextMenuRequested);
+    connect(this, &QTabWidget::tabCloseRequested, this, &CompilationTabWidget::onTabCloseRequested);
+    
     addCodeInspectorPaneTab();
 }
 
-void CompilationTabWidget::languageChanged(const QString &languageName)
+void CompilationTabWidget::onLanguageChanged(const QString &languageName)
 {
+    m_currentLanguageName = languageName;
     auto cl = ciApp->getCompilerList(languageName);
     for (int i = 0; i < count(); i++)
     {
@@ -25,7 +28,7 @@ void CompilationTabWidget::languageChanged(const QString &languageName)
     }
 }
 
-void CompilationTabWidget::currentCompilerChanged(const QString &compilerName)
+void CompilationTabWidget::onCurrentCompilerChanged(const QString &compilerName)
 {
     QWidget* w = qobject_cast<QWidget*>(sender());
     for (int i = 0; i < count(); i++)
@@ -38,10 +41,37 @@ void CompilationTabWidget::currentCompilerChanged(const QString &compilerName)
     }
 }
 
+void CompilationTabWidget::onCustomContextMenuRequested(const QPoint &pos)
+{
+    QMenu menu(this);
+    
+    QAction* pNewAction = new QAction(QIcon(":/resource/image/tab/inspector.png"), tr("New Compiler"), &menu);
+    connect(pNewAction, &QAction::triggered, [this](){addCodeInspectorPaneTab();});
+    menu.addAction(pNewAction);
+    
+    menu.exec(mapToGlobal(pos));
+}
+
 void CompilationTabWidget::addCodeInspectorPaneTab()
 {
     auto pane = new CodeInspectorPane(m_codeEditor, this);
     pane->initialize();
-    connect(pane, &CodeInspectorPane::currentCompilerChanged, this, &CompilationTabWidget::currentCompilerChanged);
-    addTab(pane, tr("Compilation 1"));    
+    connect(pane, &CodeInspectorPane::currentCompilerChanged, this, &CompilationTabWidget::onCurrentCompilerChanged);
+    addTab(pane, tr("New Compiler"));
+    if (!m_currentLanguageName.isEmpty())
+    {
+        auto cl = ciApp->getCompilerList(m_currentLanguageName);
+        pane->setCurrentLanguage(m_currentLanguageName);
+        pane->setCompilerList(cl);
+    }
+    if (count() > 1)        
+        setTabsClosable(true);
+}
+
+void CompilationTabWidget::onTabCloseRequested(int index)
+{
+    if (count() > 1)
+        removeTab(index);
+    if (count() == 1)        
+        setTabsClosable(false);
 }

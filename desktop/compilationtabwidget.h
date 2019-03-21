@@ -11,12 +11,15 @@ class CompilationTabWidget : public QTabWidget
 public:
     explicit CompilationTabWidget(CodeEditor* codeEditor, QWidget* parent = nullptr);
 public slots:
-    void languageChanged(const QString &languageName);
-    void currentCompilerChanged(const QString &compilerName);
-    
+    void onLanguageChanged(const QString &languageName);
+    void onCurrentCompilerChanged(const QString &compilerName);
+private slots:
+    void onCustomContextMenuRequested(const QPoint &pos);
+    void addCodeInspectorPaneTab();
+    void onTabCloseRequested(int index);
 private:
     CodeEditor* m_codeEditor;
-    void addCodeInspectorPaneTab();
+    QString m_currentLanguageName;
 };
 
 #endif // COMPILATIONTABWIDGET_H
