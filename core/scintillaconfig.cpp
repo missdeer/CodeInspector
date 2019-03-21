@@ -25,9 +25,9 @@ void ScintillaConfig::initScintilla()
     m_sci->setViewEOL(false);
     m_sci->setViewWS(SCWS_INVISIBLE);
     m_sci->setCaretFore(0x0000FF);
-    m_sci->setCaretLineVisible(true);
-    m_sci->setCaretLineBack(0xFFFFD0);
-    m_sci->setCaretLineBackAlpha(256);
+    //m_sci->setCaretLineVisible(true);
+    //m_sci->setCaretLineBack(0xFFFFD0);
+    //m_sci->setCaretLineBackAlpha(256);
     m_sci->setCaretPeriod(500);
     m_sci->setCaretWidth(2);
     m_sci->setCaretSticky(0);
