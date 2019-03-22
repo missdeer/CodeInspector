@@ -1,18 +1,6 @@
 #ifndef STDAFX_H
 #define STDAFX_H
 
-
-#if defined(_WIN32)
-#define NOMINMAX
-#include <Windows.h>
-#include <shellapi.h>
-#include <ShObjIdl.h>
-#include <ShlGuid.h>
-#include <ShlObj.h>
-#include <strsafe.h>
-#include <Psapi.h>
-#endif
-
 #if defined (__cplusplus)
 
 #include <QtCore>
@@ -32,6 +20,11 @@
 #include <QStringBuilder>
 #include <QStandardPaths>
 #include <QCryptographicHash>
+#include <QSharedPointer>
+#include <QTimer>
+#include <QProcess>
+#include <QCommandLineOption>
+#include <QCommandLineParser>
 
 #include <QtGui>
 #include <QDialog>
@@ -43,7 +36,6 @@
 #include <QHeaderView>
 #include <QDesktopWidget>
 #include <QInputDialog>
-#include <QSharedPointer>
 #include <QTabWidget>
 #include <QItemSelection>
 #include <QAbstractTableModel>
@@ -53,37 +45,21 @@
 #include <QToolButton>
 #include <QPushButton>
 #include <QComboBox>
+#include <QLineEdit>
+#include <QDropEvent>
+#include <QDragEnterEvent>
+#include <QHBoxLayout>
 
-#include <QTimer>
-#include <QProcess>
 #include <QDomDocument>
 
 #include <QJsonDocument>
 #include <QJsonObject>
-
-#include <QtConcurrent>
-#include <QFuture>
-#include <QWaitCondition>
-#include <QThreadPool>
-
-#include <QSqlDatabase>
-#include <QSqlQuery>
-#include <QSqlRecord>
-#include <QSqlError>
-#include <QSqlDriver>
 
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QNetworkRequest>
 #include <QUrl>
 #include <QSslError>
-
-#include <QCommandLineOption>
-#include <QCommandLineParser>
-#include <QLineEdit>
-#include <QDropEvent>
-#include <QDragEnterEvent>
-#include <QHBoxLayout>
 
 #endif
 
