@@ -34,7 +34,7 @@ void CodeInspector::setContent(const QString &content, bool binary)
 QMap<int, sptr_t> CodeInspector::setAsmItems(const AsmItemList &items, bool binary)
 {
     const sptr_t marginStyleId = STYLE_LASTPREDEFINED + 1;
-    int textLength = 0;
+    sptr_t textLength = 0;
 
     QMap<int, sptr_t> markerMap;
     int markerIndex = 0;
@@ -93,7 +93,7 @@ QMap<int, sptr_t> CodeInspector::setAsmItems(const AsmItemList &items, bool bina
                 marginSetStyle(i, marginStyleId);
                 auto t = text.toUtf8();
                 marginSetText(i, t.data());
-                int tl = this->textWidth(marginStyleId, t.data());
+                auto tl = textWidth(marginStyleId, t.data());
                 textLength = std::max(tl, textLength);
             }
         }
@@ -104,10 +104,9 @@ QMap<int, sptr_t> CodeInspector::setAsmItems(const AsmItemList &items, bool bina
 
     if (!binary)
     {
-        int linesAdded = lineCount();
         sptr_t left = marginLeft() + 2;
         sptr_t right = marginRight() + 2;
-        auto b = QString("%1").arg(linesAdded).toUtf8();
+        auto b = QString::number(lineCount()).toUtf8();
         sptr_t width = left + right + textWidth(STYLE_LINENUMBER, b.data());
         if (width > 32)
             setMarginWidthN(0, width);
