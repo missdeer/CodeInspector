@@ -14,7 +14,6 @@ void CodeInspector::initialize()
     m_sc.initLexerStyle("asm");
 
     connect(this, &ScintillaEdit::marginClicked, this, &CodeInspector::marginClicked);
-    
     setReadOnly(true);
 }
 
@@ -117,4 +116,10 @@ QMap<int, sptr_t> CodeInspector::setAsmItems(const AsmItemList &items, bool bina
         qDebug() << "source:" << it.key() << ", marker:" << it.value();
     }
     return markerMap;
+}
+
+QVariant CodeInspector::inputMethodQuery(Qt::InputMethodQuery /*query*/) const
+{
+    // so that it won't show input method pane on mobile device
+    return QVariant(QRectF(0,0, 0, 0));
 }

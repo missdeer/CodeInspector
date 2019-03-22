@@ -27,3 +27,11 @@ void LLVMMachineCodeAnalyzerOutput::setContent(const QString &content)
     m_sc.initLexerStyle("asm");
     colourise(0, -1);
 }
+
+QVariant LLVMMachineCodeAnalyzerOutput::inputMethodQuery(Qt::InputMethodQuery /*query*/) const
+{
+    // so that it won't show input method pane on mobile device
+    return QVariant(QRectF(0,0, 0, 0));
+}
+
+

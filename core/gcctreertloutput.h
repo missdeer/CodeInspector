@@ -12,6 +12,8 @@ public:
     explicit GCCTreeRTLOutput(QWidget *parent = nullptr);
     void initialize();
     void setContent(const QString& content);
+protected:
+     QVariant inputMethodQuery(Qt::InputMethodQuery) const override;
 private:
     ScintillaConfig m_sc;
 };
