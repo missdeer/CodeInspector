@@ -160,6 +160,12 @@ void CodeInspectorPane::setCompilerList(CompilerListPtr cl)
     {
         m_compilerList->addItem(c->name);
     }
+    if (m_compilerList->count())
+    {
+        auto c = ciApp->getDefaultCompilerName(m_languageName);
+        if (!c.isEmpty())
+            m_compilerList->setCurrentText(c);
+    }
 }
 
 void CodeInspectorPane::setCurrentLanguage(const QString &languageName)
