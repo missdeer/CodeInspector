@@ -14,6 +14,8 @@ CodeInspectorTabWidget::CodeInspectorTabWidget(QWidget *parent)
     setTabPosition(East);
     setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this, &QWidget::customContextMenuRequested, this, &CodeInspectorTabWidget::onCustomContextMenuRequested);
+    
+    m_codeInspector->initialize();
     addTab(m_codeInspector, QIcon(":/resource/image/tab/inspector.png"), tr("Inspector"));
 }
 
@@ -34,6 +36,7 @@ void CodeInspectorTabWidget::setLLVMMACContent(const QString &content)
     if (!m_llvmMCA)
     {
         m_llvmMCA = new LLVMMachineCodeAnalyzerOutput(this);
+        m_llvmMCA->initialize();
         addTab(m_llvmMCA, QIcon(":/resource/image/tab/llvm.png"), tr("LLVM MCA"));
     }
     Q_ASSERT(m_llvmMCA);
@@ -45,6 +48,7 @@ void CodeInspectorTabWidget::setASTContent(const QString &content)
     if (!m_ast)
     {
         m_ast = new ASTOutput(this);
+        m_ast->initialize();
         addTab(m_ast, QIcon(":/resource/image/tab/ast.png"), tr("AST"));
     }
     Q_ASSERT(m_ast);
@@ -56,6 +60,7 @@ void CodeInspectorTabWidget::setOptimizationContent(const QString &content)
     if (!m_optimization)
     {
         m_optimization = new OptimizationOutput(this);
+        m_optimization->initialize();
         addTab(m_optimization, QIcon(":/resource/image/tab/optimization.png"), tr("Optimization"));
     }
     Q_ASSERT(m_optimization);
@@ -67,6 +72,7 @@ void CodeInspectorTabWidget::setGCCTreeRTLContent(const QString &content)
     if (!m_gccTreeRTL)
     {
         m_gccTreeRTL = new GCCTreeRTLOutput(this);
+        m_gccTreeRTL->initialize();
         addTab(m_gccTreeRTL, QIcon(":/resource/image/tab/gcc.png"), tr("GCC Tree/RTL Output"));
     }
     Q_ASSERT(m_gccTreeRTL);
