@@ -20,7 +20,10 @@ SessionWidget::SessionWidget(QWidget *parent) : QWidget(parent)
     splitter->addWidget(m_codeEditorPane);
     m_compilationTabWidget = new CompilationTabWidget(m_codeEditorPane->codeEditor(), splitter);
     splitter->addWidget(m_compilationTabWidget);
-
+    
+    QRect rc = parent->geometry();
+    splitter->setSizes(QList<int>() << rc.width()/2 << rc.width()/2);
+    
     connect(m_codeEditorPane, &CodeEditorPane::currentLanguageChanged,
             m_compilationTabWidget, &CompilationTabWidget::onLanguageChanged);
 
