@@ -27,6 +27,7 @@ CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
     
     m_compilerArguments = new QLineEdit(this);
     m_compilerArguments->setPlaceholderText(tr("Build Options"));
+    m_compilerArguments->setClearButtonEnabled(true);
     topBarLayout->addWidget(m_compilerArguments);
             
     m_btnBinrary  = new QPushButton(this);
