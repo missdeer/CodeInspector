@@ -7,6 +7,7 @@
 class LibraryVersion : public QObject
 {
     Q_OBJECT
+    
     Q_PROPERTY(QString version READ getVersion WRITE setVersion NOTIFY versionChanged)
     Q_PROPERTY(QStringList path READ getPath WRITE setPath NOTIFY pathChanged)
     Q_PROPERTY(bool selected READ getSelected WRITE setSelected NOTIFY selectedChanged)

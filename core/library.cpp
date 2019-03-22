@@ -50,16 +50,6 @@ void Library::setUrl(const QString &value)
     emit urlChanged();
 }
 
-QQmlListProperty<LibraryVersion> Library::getQmlListPropertyVersions()
-{
-    return QQmlListProperty<LibraryVersion>(this, this,
-                                     &Library::appendLibVersion,
-                                     &Library::libVersionCount,
-                                     &Library::libVersion,
-                                     &Library::clearLibVersions
-                                     );
-}
-
 const QList<LibraryVersionPtr> &Library::getVersions()
 {
     return versions;
@@ -75,6 +65,17 @@ void Library::appendVersion(LibraryVersionPtr ver)
 {
     versions.append(ver);
     emit versionsChanged();
+}
+
+#if defined(Q_OS_IOS) || defined(Q_OS_ANDROID)
+QQmlListProperty<LibraryVersion> Library::getQmlListPropertyVersions()
+{
+    return QQmlListProperty<LibraryVersion>(this, this,
+                                     &Library::appendLibVersion,
+                                     &Library::libVersionCount,
+                                     &Library::libVersion,
+                                     &Library::clearLibVersions
+                                     );
 }
 
 void Library::appendLibVersion(QQmlListProperty<LibraryVersion> *list, LibraryVersion *p)
@@ -112,3 +113,4 @@ LibraryVersion *Library::libVersion(int index) const
 }
 
 void Library::clearLibVersions() {}
+#endif

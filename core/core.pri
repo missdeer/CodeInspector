@@ -1,4 +1,4 @@
-QT       += core gui widgets xml network concurrent sql qml
+QT       += core gui widgets xml network 
 
 include($$PWD/../3rdparty/scintilla/qt/ScintillaEdit/ScintillaEdit.pri)
 # The following define makes your compiler emit warnings if you use
