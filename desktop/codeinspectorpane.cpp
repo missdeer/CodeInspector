@@ -93,8 +93,7 @@ CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
     m_btnDemangle->setChecked(g_settings->demangle());
     connect(m_btnDemangle, &QPushButton::clicked, this, &CodeInspectorPane::onActionDemangleTriggered);
     topBarLayout->addWidget(m_btnDemangle);
-        
-    topBarLayout->setStretch(0, 1);
+
     topBarLayout->setStretch(1, 1);
     mainLayout->addLayout(topBarLayout);
     
