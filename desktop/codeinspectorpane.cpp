@@ -103,7 +103,7 @@ CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
     m_codeInspectorTabWidget = new CodeInspectorTabWidget(this);
     m_splitter->addWidget(m_codeInspectorTabWidget);
     
-    QWidget *outputPane = new QWidget(this);
+    auto *outputPane = new QWidget(this);
     
     auto* outputBarLayout = new QHBoxLayout();
     outputBarLayout->setContentsMargins(0,0,0,0);
@@ -355,7 +355,7 @@ void CodeInspectorPane::storeToCache(const QString &name, const CompileInfo &ci)
     QDir dir(d);
     if (!dir.exists())
         dir.mkpath(d);
-    QString path = QString("%1/%2").arg(d).arg(name);
+    QString path = QString("%1/%2").arg(d, name);
     QFile f(path);
     if (!f.open(QIODevice::WriteOnly))
     {
@@ -386,7 +386,7 @@ void CodeInspectorPane::storeToCache(const QString &name, const CompileInfo &ci)
 bool CodeInspectorPane::restoreFromCache(const QString& name, CompileInfo &ci)
 {
     QString d = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
-    QString path = QString("%1/%2").arg(d).arg(name);
+    QString path = QString("%1/%2").arg(d, name);
     if (!QFile::exists(path))
         return false;
     QFile f(path);
