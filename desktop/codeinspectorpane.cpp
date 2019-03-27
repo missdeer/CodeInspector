@@ -145,6 +145,8 @@ CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
     connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::requestLLVMMCA, this, &CodeInspectorPane::onRequestLLVMMCA);
     connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::requestGCCTreeRTL, this, &CodeInspectorPane::onRequestGCCTreeRTL);
     connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::requestOptimization, this, &CodeInspectorPane::onRequestOptimization);
+    connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::requestClangTidy, this, &CodeInspectorPane::onRequestClangTidy);
+    connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::requestPahole, this, &CodeInspectorPane::onRequestPahole);
 }
 
 void CodeInspectorPane::initialize()
@@ -238,7 +240,7 @@ void CodeInspectorPane::onCompiled()
     Q_ASSERT(m_codeEditor);
     m_codeEditor->setMarkerColor(markerMap);
 
-    auto output = m_backend->getCompileOutput();
+    auto output = m_backend->getCompileStderr();
     showOutputWindow(!output.isEmpty());    
 
     m_output->setContent(output);
@@ -321,9 +323,17 @@ void CodeInspectorPane::onCurrentCompilerChanged(const QString &compilerName)
     m_btnDemangle->setEnabled(compiler->supportsDemangle);
     
     m_codeInspectorTabWidget->setEnableAST(compiler->supportsAstView);
-    m_codeInspectorTabWidget->setEnableLLVMMCA(compilerName.contains("clang", Qt::CaseInsensitive));
+    m_codeInspectorTabWidget->setEnableLLVMMCA(compilerName.contains("clang", Qt::CaseInsensitive) || compilerName.contains("gcc", Qt::CaseInsensitive) );
     m_codeInspectorTabWidget->setEnableGCCTreeRTL(compiler->supportsGccDump);
     m_codeInspectorTabWidget->setEnableOptimization(compiler->supportsOptimizationOutput);
+    m_codeInspectorTabWidget->setEnableClangTidy(compilerName.contains("clang", Qt::CaseInsensitive) || compilerName.contains("gcc", Qt::CaseInsensitive) );
+    m_codeInspectorTabWidget->setEnablePahole(compilerName.contains("clang", Qt::CaseInsensitive) || compilerName.contains("gcc", Qt::CaseInsensitive) );
+    m_backend->setEnableAST(compiler->supportsAstView);
+    m_backend->setEnableLLVMMCA(compilerName.contains("clang", Qt::CaseInsensitive) || compilerName.contains("gcc", Qt::CaseInsensitive) );
+    m_backend->setEnableGCCTreeRTL(compiler->supportsGccDump);
+    m_backend->setEnableOptimization(compiler->supportsOptimizationOutput);
+    m_backend->setEnableClangTidy(compilerName.contains("clang", Qt::CaseInsensitive) || compilerName.contains("gcc", Qt::CaseInsensitive) );
+    m_backend->setEnablePahole(compilerName.contains("clang", Qt::CaseInsensitive) || compilerName.contains("gcc", Qt::CaseInsensitive) );
     
     onDelayCompile();
     emit currentCompilerChanged(compilerName);
@@ -331,22 +341,38 @@ void CodeInspectorPane::onCurrentCompilerChanged(const QString &compilerName)
 
 void CodeInspectorPane::onRequestLLVMMCA()
 {
-    
+    m_backend->setEnableLLVMMCA(true);
+    onDelayCompile();
 }
 
 void CodeInspectorPane::onRequestAST()
 {
-    
+    m_backend->setEnableAST(true);
+    onDelayCompile();
 }
 
 void CodeInspectorPane::onRequestOptimization()
 {
-    
+    m_backend->setEnableOptimization(true);
+    onDelayCompile();
 }
 
 void CodeInspectorPane::onRequestGCCTreeRTL()
 {
-    
+    m_backend->setEnableGCCTreeRTL(true);
+    onDelayCompile();
+}
+
+void CodeInspectorPane::onRequestPahole()
+{
+    m_backend->setEnablePahole(true);
+    onDelayCompile();
+}
+
+void CodeInspectorPane::onRequestClangTidy()
+{
+    m_backend->setEnableClangTidy(true);
+    onDelayCompile();
 }
 
 void CodeInspectorPane::storeToCache(const QString &name, const CompileInfo &ci)

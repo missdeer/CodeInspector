@@ -50,6 +50,8 @@ private slots:
     void onRequestAST();
     void onRequestOptimization();
     void onRequestGCCTreeRTL();
+    void onRequestPahole();
+    void onRequestClangTidy();
 private:
     CodeEditor *m_codeEditor;
     QComboBox *m_compilerList;

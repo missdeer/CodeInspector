@@ -109,27 +109,51 @@ void CodeInspectorTabWidget::onCustomContextMenuRequested(const QPoint &pos)
         QAction* pLLVMMCAAction = new QAction(QIcon(":/resource/image/tab/llvm.png"), tr("LLVM MCA"), &menu);
         connect(pLLVMMCAAction, &QAction::triggered, this, &CodeInspectorTabWidget::requestLLVMMCA);
         menu.addAction(pLLVMMCAAction);        
-    }    
+    }
+    
+    if (m_enableClangTidy)
+    {
+        QAction* pClangTidyAction = new QAction(tr("Clang Tidy"), &menu);
+        connect(pClangTidyAction, &QAction::triggered, this, &CodeInspectorTabWidget::requestClangTidy);
+        menu.addAction(pClangTidyAction);
+    }
+    
+    if (m_enablePahole)
+    {
+        QAction* pPaholeAction = new QAction(tr("Pahole"), &menu);
+        connect(pPaholeAction, &QAction::triggered, this, &CodeInspectorTabWidget::requestPahole);
+        menu.addAction(pPaholeAction);
+    }
     
     menu.exec(mapToGlobal(pos));    
 }
 
-void CodeInspectorTabWidget::setEnableGCCTreeRTL(bool enableGCCTreeRTL)
+void CodeInspectorTabWidget::setEnableGCCTreeRTL(bool enabled)
 {
-    m_enableGCCTreeRTL = enableGCCTreeRTL;
+    m_enableGCCTreeRTL = enabled;
 }
 
-void CodeInspectorTabWidget::setEnableOptimization(bool enableOptimization)
+void CodeInspectorTabWidget::setEnablePahole(bool enabled)
 {
-    m_enableOptimization = enableOptimization;
+    m_enablePahole = enabled;
 }
 
-void CodeInspectorTabWidget::setEnableAST(bool enableAST)
+void CodeInspectorTabWidget::setEnableClangTidy(bool enabled)
 {
-    m_enableAST = enableAST;
+    m_enableClangTidy = enabled;
 }
 
-void CodeInspectorTabWidget::setEnableLLVMMCA(bool enableLLVMMCA)
+void CodeInspectorTabWidget::setEnableOptimization(bool enabled)
 {
-    m_enableLLVMMCA = enableLLVMMCA;
+    m_enableOptimization = enabled;
+}
+
+void CodeInspectorTabWidget::setEnableAST(bool enabled)
+{
+    m_enableAST = enabled;
+}
+
+void CodeInspectorTabWidget::setEnableLLVMMCA(bool enabled)
+{
+    m_enableLLVMMCA = enabled;
 }
