@@ -25,5 +25,7 @@
         <file>resource/image/tab/inspector.png</file>
         <file>resource/image/tab/llvm.png</file>
         <file>resource/image/tab/optimization.png</file>
+        <file>resource/image/tab/clangtidy.png</file>
+        <file>resource/image/tab/pahole.png</file>
     </qresource>
 </RCC>

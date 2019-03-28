@@ -126,14 +126,14 @@ void CodeInspectorTabWidget::onCustomContextMenuRequested(const QPoint &pos)
     
     if (m_enableClangTidy)
     {
-        QAction* pClangTidyAction = new QAction(tr("Clang Tidy"), &menu);
+        QAction* pClangTidyAction = new QAction(QIcon(":/resource/image/tab/clangtidy.png"), tr("Clang Tidy"), &menu);
         connect(pClangTidyAction, &QAction::triggered, this, &CodeInspectorTabWidget::requestClangTidy);
         menu.addAction(pClangTidyAction);
     }
     
     if (m_enablePahole)
     {
-        QAction* pPaholeAction = new QAction(tr("Pahole"), &menu);
+        QAction* pPaholeAction = new QAction(QIcon(":/resource/image/tab/pahole.png"), tr("Pahole"), &menu);
         connect(pPaholeAction, &QAction::triggered, this, &CodeInspectorTabWidget::requestPahole);
         menu.addAction(pPaholeAction);
     }
