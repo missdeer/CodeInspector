@@ -149,6 +149,19 @@ void CodeInspectorTabWidget::onRefreshGCCDumpOutput()
 void CodeInspectorTabWidget::setEnableGCCTreeRTL(bool enabled)
 {
     m_enableGCCTreeRTL = enabled;
+    if (!enabled && m_gccTreeRTL)
+    {
+        for (int i = 0; i < count(); i++)
+        {
+            if (widget(i) == m_gccTreeRTL)
+            {
+                removeTab(i);
+                delete m_gccTreeRTL;
+                m_gccTreeRTL = nullptr;
+                break;
+            }
+        }
+    }
 }
 
 void CodeInspectorTabWidget::setEnablePahole(bool enabled)
@@ -164,14 +177,53 @@ void CodeInspectorTabWidget::setEnableClangTidy(bool enabled)
 void CodeInspectorTabWidget::setEnableOptimization(bool enabled)
 {
     m_enableOptimization = enabled;
+    if (!enabled && m_optimization)
+    {
+        for (int i = 0; i < count(); i++)
+        {
+            if (widget(i) == m_optimization)
+            {
+                removeTab(i);
+                delete m_optimization;
+                m_optimization = nullptr;
+                break;
+            }
+        }
+    }
 }
 
 void CodeInspectorTabWidget::setEnableAST(bool enabled)
 {
     m_enableAST = enabled;
+    if (!enabled && m_ast)
+    {
+        for (int i = 0; i < count(); i++)
+        {
+            if (widget(i) == m_ast)
+            {
+                removeTab(i);
+                delete m_ast;
+                m_ast = nullptr;
+                break;
+            }
+        }
+    }
 }
 
 void CodeInspectorTabWidget::setEnableLLVMMCA(bool enabled)
 {
     m_enableLLVMMCA = enabled;
+    if (!enabled && m_llvmMCA)
+    {
+        for (int i = 0; i < count(); i++)
+        {
+            if (widget(i) == m_llvmMCA)
+            {
+                removeTab(i);
+                delete m_llvmMCA;
+                m_llvmMCA = nullptr;
+                break;
+            }
+        }
+    }
 }
