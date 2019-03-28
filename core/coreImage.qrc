@@ -333,5 +333,20 @@
         <file>resource/image/trim.png</file>
         <file>resource/image/demangle.png</file>
         <file>resource/image/function.png</file>
+        <file>resource/image/language/assembly.png</file>
+        <file>resource/image/language/c.png</file>
+        <file>resource/image/language/c++.png</file>
+        <file>resource/image/language/go.png</file>
+        <file>resource/image/language/llvm.png</file>
+        <file>resource/image/language/pascal.png</file>
+        <file>resource/image/language/rust.png</file>
+        <file>resource/image/language/swift.png</file>
+        <file>resource/image/language/zig.png</file>
+        <file>resource/image/language/d.png</file>
+        <file>resource/image/language/haskell.png</file>
+        <file>resource/image/language/cuda.png</file>
+        <file>resource/image/language/fortran.png</file>
+        <file>resource/image/language/ada.png</file>
+        <file>resource/image/language/ocaml.png</file>
     </qresource>
 </RCC>

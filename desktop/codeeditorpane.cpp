@@ -20,6 +20,9 @@ CodeEditorPane::CodeEditorPane(QWidget *parent)
     m_languageList = new QComboBox(this);
     topBarLayout->addWidget(m_languageList);
     m_languageList->clear();
+#if defined(Q_OS_WIN)
+    m_languageList->setMaxVisibleItems(100);
+#endif
     
     mainLayout->addLayout(topBarLayout);
 
@@ -38,7 +41,7 @@ void CodeEditorPane::updateLanguageList()
     auto languages = ciApp->getLanguageList();
     for (const auto language : languages)
     {
-        m_languageList->addItem(language->name);
+        m_languageList->addItem(QIcon(QString(":/resource/image/language/%1.png").arg(language->id)), language->name);
     }
     if (m_languageList->count())
         m_languageList->setCurrentIndex(g_settings->defaultLanguageIndex());
