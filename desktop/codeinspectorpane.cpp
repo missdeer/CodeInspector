@@ -141,12 +141,19 @@ CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
     connect(m_timer, &QTimer::timeout, this, &CodeInspectorPane::onNeedCompile);
     connect(m_codeEditor, &CodeEditor::contentModified, this, &CodeInspectorPane::onDelayCompile);
     connect(m_backend, &GodboltAgent::compiled, this, &CodeInspectorPane::onCompiled);
+    connect(m_backend, &GodboltAgent::hasGccDumpOutput, this, &CodeInspectorPane::onHasGccDumpOutput);
+    connect(m_backend, &GodboltAgent::hasLLVMMCAOutput, this, &CodeInspectorPane::onHasLLVMMCAOutput);
+    connect(m_backend, &GodboltAgent::hasOptimizationOutput, this, &CodeInspectorPane::onHasOptimizationOutput);
+    connect(m_backend, &GodboltAgent::hasPaholeOutput, this, &CodeInspectorPane::onHasPaholeOutput);
+    connect(m_backend, &GodboltAgent::hasClangTidyOutput, this, &CodeInspectorPane::onHasClangTidyOutput);
+    connect(m_backend, &GodboltAgent::hasASTOutput, this, &CodeInspectorPane::onHasASTOutput);
     connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::requestAST, this, &CodeInspectorPane::onRequestAST);
     connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::requestLLVMMCA, this, &CodeInspectorPane::onRequestLLVMMCA);
     connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::requestGCCTreeRTL, this, &CodeInspectorPane::onRequestGCCTreeRTL);
     connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::requestOptimization, this, &CodeInspectorPane::onRequestOptimization);
     connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::requestClangTidy, this, &CodeInspectorPane::onRequestClangTidy);
     connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::requestPahole, this, &CodeInspectorPane::onRequestPahole);
+    connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::refreshGCCDumpOutput, this, &CodeInspectorPane::onRefreshGCCDumpOutput);
 }
 
 void CodeInspectorPane::initialize()
@@ -244,6 +251,38 @@ void CodeInspectorPane::onCompiled()
     showOutputWindow(!output.isEmpty());    
 
     m_output->setContent(output);
+}
+
+void CodeInspectorPane::onHasGccDumpOutput()
+{
+    m_codeInspectorTabWidget->setGCCTreeRTLContent(m_backend->getCurrentGCCDumpPassOutput());
+    m_codeInspectorTabWidget->setGccDumpAllPasses(m_backend->getGccDumpAllPasses());
+    m_codeInspectorTabWidget->setSelectedGCCDumpPass(m_backend->getSelectedGCCDumpPass());
+}
+
+void CodeInspectorPane::onHasLLVMMCAOutput()
+{
+    m_codeInspectorTabWidget->setLLVMMACContent(m_backend->getLLVMMCAStdout());
+}
+
+void CodeInspectorPane::onHasOptimizationOutput()
+{
+    
+}
+
+void CodeInspectorPane::onHasPaholeOutput()
+{
+    QString o = m_backend->getPaholeStdout();
+}
+
+void CodeInspectorPane::onHasClangTidyOutput()
+{
+    QString o = m_backend->getClangTidyStdout();
+}
+
+void CodeInspectorPane::onHasASTOutput()
+{
+    
 }
 
 void CodeInspectorPane::onDelayCompile()
@@ -372,6 +411,12 @@ void CodeInspectorPane::onRequestPahole()
 void CodeInspectorPane::onRequestClangTidy()
 {
     m_backend->setEnableClangTidy(true);
+    onDelayCompile();
+}
+
+void CodeInspectorPane::onRefreshGCCDumpOutput(QString pass, bool gccTree, bool rtl)
+{
+    m_backend->setGCCTreeRTLArguments(pass, gccTree, rtl);
     onDelayCompile();
 }
 

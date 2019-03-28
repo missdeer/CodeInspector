@@ -34,6 +34,12 @@ public slots:
 private slots:
     void onNeedCompile();
     void onCompiled();
+    void onHasGccDumpOutput();
+    void onHasLLVMMCAOutput();
+    void onHasOptimizationOutput();
+    void onHasPaholeOutput();
+    void onHasClangTidyOutput();
+    void onHasASTOutput();
     void onDelayCompile();
     void onToggleOutput();
     void onActionBinaryTriggered();
@@ -52,6 +58,7 @@ private slots:
     void onRequestGCCTreeRTL();
     void onRequestPahole();
     void onRequestClangTidy();
+    void onRefreshGCCDumpOutput(QString pass, bool gccTree, bool rtl);
 private:
     CodeEditor *m_codeEditor;
     QComboBox *m_compilerList;

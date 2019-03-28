@@ -74,9 +74,22 @@ void CodeInspectorTabWidget::setGCCTreeRTLContent(const QString &content)
         m_gccTreeRTL = new GCCTreeRTLOutput(this);
         m_gccTreeRTL->initialize();
         addTab(m_gccTreeRTL, QIcon(":/resource/image/tab/gcc.png"), tr("GCC Tree/RTL Output"));
+        connect(m_gccTreeRTL, &GCCTreeRTLOutput::refresh, this, &CodeInspectorTabWidget::onRefreshGCCDumpOutput);
     }
     Q_ASSERT(m_gccTreeRTL);
     m_gccTreeRTL->setContent(content);
+}
+
+void CodeInspectorTabWidget::setGccDumpAllPasses(const QStringList &passes)
+{
+    Q_ASSERT(m_gccTreeRTL);
+    m_gccTreeRTL->setPasses(passes);
+}
+
+void CodeInspectorTabWidget::setSelectedGCCDumpPass(const QString &pass)
+{
+    Q_ASSERT(m_gccTreeRTL);
+    m_gccTreeRTL->setCurrentSelectedPass(pass);
 }
 
 void CodeInspectorTabWidget::onCustomContextMenuRequested(const QPoint &pos)
@@ -126,6 +139,11 @@ void CodeInspectorTabWidget::onCustomContextMenuRequested(const QPoint &pos)
     }
     
     menu.exec(mapToGlobal(pos));    
+}
+
+void CodeInspectorTabWidget::onRefreshGCCDumpOutput()
+{
+    emit refreshGCCDumpOutput(m_gccTreeRTL->getCurrentSelectedPass(), m_gccTreeRTL->isGCCTreeEnabled(), m_gccTreeRTL->isRTLEnabled());
 }
 
 void CodeInspectorTabWidget::setEnableGCCTreeRTL(bool enabled)

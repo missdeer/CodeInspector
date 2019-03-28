@@ -33,9 +33,9 @@ void GodboltAgent::compile(const CompileInfo &ci)
     {
         QJsonObject produceGccDumpObj;
         produceGccDumpObj.insert("opened", true);
-        produceGccDumpObj.insert("pass", "");
-        produceGccDumpObj.insert("treeDump", true);
-        produceGccDumpObj.insert("rtlDump", true);
+        produceGccDumpObj.insert("pass", m_selectedGCCDumpPass);
+        produceGccDumpObj.insert("treeDump", m_gccTreeEnabled);
+        produceGccDumpObj.insert("rtlDump", m_rtlEnabled);
         compilerOptionsObj.insert("produceGccDump", QJsonValue::fromVariant(produceGccDumpObj));
     }
     
@@ -120,6 +120,12 @@ void GodboltAgent::onCompileRequestFinished()
     qDebug() << __FUNCTION__;
     m_compileStderr.clear();
     m_compileStdout.clear();
+    m_llvmMCAStderr.clear();
+    m_llvmMCAStdout.clear();
+    m_paholeStderr.clear();
+    m_paholeStdout.clear();
+    m_clangTidyStderr.clear();
+    m_clangTidyStdout.clear();    
     m_asmContent.clear();
     m_asmItems.clear();
 
@@ -283,6 +289,7 @@ void GodboltAgent::onCompileRequestFinished()
         {
             if (!t.isObject())
                 continue;
+            QString toolStdout, toolStderr;
             QJsonObject toolObj = t.toObject();
             QJsonValue stderrVal = toolObj["stderr"];
             if (stderrVal.isArray())
@@ -296,7 +303,7 @@ void GodboltAgent::onCompileRequestFinished()
                         QJsonValue textVal = errObj["text"];
                         if (textVal.isString())
                         {
-                            m_compileStderr.append(textVal.toString() + "\n");
+                            toolStderr.append(textVal.toString() + "\n");
                         }
                     }
                 }
@@ -305,7 +312,7 @@ void GodboltAgent::onCompileRequestFinished()
             if (stdoutVal.isArray())
             {
                 QJsonArray stdoutArray = stdoutVal.toArray();
-                for (auto o : stderrArray)
+                for (auto o : stdoutArray)
                 {
                     if (o.isObject())
                     {
@@ -313,7 +320,7 @@ void GodboltAgent::onCompileRequestFinished()
                         QJsonValue textVal = outObj["text"];
                         if (textVal.isString())
                         {
-                            m_compileStdout.append(textVal.toString() + "\n");
+                            toolStdout.append(textVal.toString() + "\n");
                         }
                     }
                 }
@@ -322,18 +329,54 @@ void GodboltAgent::onCompileRequestFinished()
             QString name = toolObj["name"].toString();
             if (name == "clang-tidy")
             {
+                m_clangTidyStderr = toolStderr;
+                m_clangTidyStdout = toolStdout;
                 emit hasClangTidyOutput();
             }
             else if (name == "llvm-mca")
             {
+                m_llvmMCAStdout = toolStdout;
+                m_llvmMCAStderr = toolStderr;
                 emit hasLLVMMCAOutput();
             }
             else if (name == "pahole")
             {
+                m_paholeStderr = toolStderr;
+                m_paholeStdout = toolStdout;
                 emit hasPaholeOutput();
             }
         }
     }
+}
+
+const QString &GodboltAgent::getPaholeStdout() const
+{
+    return m_paholeStdout;
+}
+
+const QString &GodboltAgent::getPaholeStderr() const
+{
+    return m_paholeStderr;
+}
+
+const QString &GodboltAgent::getLLVMMCAStdout() const
+{
+    return m_llvmMCAStdout;
+}
+
+const QString &GodboltAgent::getLLVMMCAStderr() const
+{
+    return m_llvmMCAStderr;
+}
+
+const QString &GodboltAgent::getClangTidyStdout() const
+{
+    return m_clangTidyStdout;
+}
+
+const QString &GodboltAgent::getClangTidyStderr() const
+{
+    return m_clangTidyStderr;
 }
 
 const QString &GodboltAgent::getSelectedGCCDumpPass() const
@@ -402,6 +445,13 @@ void GodboltAgent::setEnableClangTidy(bool enabled)
         m_compilerOptions |= CO_CLANGTIDY;
     else
         m_compilerOptions &= ~CO_CLANGTIDY;
+}
+
+void GodboltAgent::setGCCTreeRTLArguments(const QString &pass, bool gccTree, bool rtl)
+{
+    m_selectedGCCDumpPass = pass;
+    m_gccTreeEnabled = gccTree;
+    m_rtlEnabled = rtl;
 }
 
 const QString &GodboltAgent::getAsmContent() const

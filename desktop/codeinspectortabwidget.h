@@ -23,6 +23,9 @@ public:
     void setASTContent(const QString &content);
     void setOptimizationContent(const QString &content);
     void setGCCTreeRTLContent(const QString &content);
+    void setGccDumpAllPasses(const QStringList &passes);
+    void setSelectedGCCDumpPass(const QString &pass);
+
     void setEnableLLVMMCA(bool enabled);    
     void setEnableAST(bool enabled);    
     void setEnableOptimization(bool enabled);    
@@ -36,8 +39,10 @@ signals:
     void requestGCCTreeRTL();
     void requestPahole();
     void requestClangTidy();
+    void refreshGCCDumpOutput(QString, bool, bool);
 private slots:
     void onCustomContextMenuRequested(const QPoint &pos);
+    void onRefreshGCCDumpOutput();
 private:
     CodeInspector *m_codeInspector;
     LLVMMachineCodeAnalyzerOutput *m_llvmMCA{nullptr};

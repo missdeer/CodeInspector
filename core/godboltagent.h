@@ -30,6 +30,7 @@ public:
     void setEnableGCCTreeRTL(bool enabled);
     void setEnablePahole(bool enabled);
     void setEnableClangTidy(bool enabled);
+    void setGCCTreeRTLArguments(const QString& pass, bool gccTree, bool rtl);
     
     const QString &getCompileStderr() const;
     const QString &getCompileStdout() const;
@@ -38,6 +39,12 @@ public:
     const QStringList &getGccDumpAllPasses() const;    
     const QString &getCurrentGCCDumpPassOutput() const;    
     const QString &getSelectedGCCDumpPass() const;    
+    const QString &getClangTidyStderr() const;    
+    const QString &getClangTidyStdout() const;    
+    const QString &getLLVMMCAStderr() const;    
+    const QString &getLLVMMCAStdout() const;    
+    const QString &getPaholeStderr() const;    
+    const QString &getPaholeStdout() const;    
 signals:
     void compiled();
     void hasGccDumpOutput();
@@ -62,12 +69,20 @@ private:
     BackendInterface* m_backend;
     QString m_compileStderr;
     QString m_compileStdout;
+    QString m_clangTidyStderr;
+    QString m_clangTidyStdout;
+    QString m_llvmMCAStderr;
+    QString m_llvmMCAStdout;
+    QString m_paholeStderr;
+    QString m_paholeStdout;
     QString m_asmContent;
     AsmItemList m_asmItems;
     QStringList m_gccDumpAllPasses;
     QString m_currentGCCDumpPassOutput;
     QString m_selectedGCCDumpPass;
-    int m_compilerOptions;
+    int m_compilerOptions { CO_NONE };
+    bool m_gccTreeEnabled { true };
+    bool m_rtlEnabled { true };
 };
 
 #endif // GODBOLTAGENT_H
