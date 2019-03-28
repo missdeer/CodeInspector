@@ -24,6 +24,9 @@ CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
     
     m_compilerList = new QComboBox(this);
     topBarLayout->addWidget(m_compilerList);
+#if defined(Q_OS_WIN)
+    m_compilerList->setMaxVisibleItems(100);
+#endif
     
     m_compilerArguments = new QLineEdit(this);
     m_compilerArguments->setPlaceholderText(tr("Build Options"));
@@ -94,6 +97,7 @@ CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
     connect(m_btnDemangle, &QPushButton::clicked, this, &CodeInspectorPane::onActionDemangleTriggered);
     topBarLayout->addWidget(m_btnDemangle);
 
+    topBarLayout->setStretch(0, 1);
     topBarLayout->setStretch(1, 1);
     mainLayout->addLayout(topBarLayout);
     

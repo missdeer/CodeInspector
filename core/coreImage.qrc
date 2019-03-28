@@ -348,5 +348,9 @@
         <file>resource/image/language/fortran.png</file>
         <file>resource/image/language/ada.png</file>
         <file>resource/image/language/ocaml.png</file>
+        <file>resource/image/language/analysis.png</file>
+        <file>resource/image/language/cppx.png</file>
+        <file>resource/image/language/ispc.png</file>
+        <file>resource/image/language/clean.png</file>
     </qresource>
 </RCC>
