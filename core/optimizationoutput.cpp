@@ -2,56 +2,41 @@
 #include "optimizationoutput.h"
 
 OptimizationOutput::OptimizationOutput(QWidget *parent)
-    : ScintillaEdit (parent)
-    , m_sc(this)
+    : QTableWidget (parent)
 {
     
 }
 
 void OptimizationOutput::initialize()
 {
-    m_sc.initScintilla();
-    m_sc.initLexerStyle("asm");
-
-    setReadOnly(true);
+    setColumnCount(5);
+    setHorizontalHeaderItem(0, new QTableWidgetItem(tr("Pass")));
+    setHorizontalHeaderItem(1, new QTableWidgetItem(tr("Name")));
+    setHorizontalHeaderItem(2, new QTableWidgetItem(tr("Type")));
+    setHorizontalHeaderItem(3, new QTableWidgetItem(tr("Function")));
+    setHorizontalHeaderItem(4, new QTableWidgetItem(tr("Conclusion")));
+    horizontalHeader()->setStretchLastSection(true);
+    horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
 }
 
 void OptimizationOutput::setContent(const OptimizationItemList &content)
 {
-    QString c;
+    clear();
+    initialize();
+    setRowCount(content.size());
+    int index = 0;
     for (const auto & oi : content)
     {
-        c.append(tr("Pass: "));
-        c.append(oi->pass);
-        c.append(tr("\nName: "));
-        c.append(oi->name);
-        c.append(tr("\nType: "));
-        c.append(oi->type);
-        c.append(tr("\nFunction: "));
-        c.append(oi->function);
-        c.append(tr("\nConclusion: "));
-        c.append(oi->display);
-        c.append("\n\n");
+        QTableWidgetItem *pass = new QTableWidgetItem(oi->pass);
+        setItem(index, 0, pass);
+        QTableWidgetItem *name = new QTableWidgetItem(oi->name);
+        setItem(index, 1, name);
+        QTableWidgetItem *type = new QTableWidgetItem(oi->type);
+        setItem(index, 2, type);
+        QTableWidgetItem *function = new QTableWidgetItem(oi->function);
+        setItem(index, 3, function);
+        QTableWidgetItem *conclusion = new QTableWidgetItem(oi->display);
+        setItem(index, 4, conclusion);
+        index++;
     }
-    setContent(c);
 }
-
-void OptimizationOutput::setContent(const QString &content)
-{
-    auto b = content.toUtf8();
-    setReadOnly(false);
-    setText(b.data());
-    setReadOnly(true);
-
-    emptyUndoBuffer();
-    m_sc.initLexerStyle("asm");
-    colourise(0, -1);
-}
-
-QVariant OptimizationOutput::inputMethodQuery(Qt::InputMethodQuery /*query*/) const
-{
-    // so that it won't show input method pane on mobile device
-    return QVariant(QRectF(0,0, 0, 0));
-}
-
-

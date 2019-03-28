@@ -275,16 +275,14 @@ void GodboltAgent::onCompileRequestFinished()
                 m_optimizationItems.push_back(oi);
             }
         }
-        if (!m_optimizationItems.isEmpty())
-            emit hasOptimizationOutput();
+        emit hasOptimizationOutput();
     }
     
     QJsonValue astOutputVal = docObj["astOutput"];
     if (astOutputVal.isString())
     {
         m_astOutput = astOutputVal.toString();
-        if (!m_astOutput.isEmpty())
-            emit hasASTOutput();
+        emit hasASTOutput();
     }
     
     QJsonValue gccDumpOutputVal = docObj["gccDumpOutput"];

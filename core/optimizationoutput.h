@@ -1,12 +1,10 @@
 #ifndef OPTIMIZATIONOUTPUT_H
 #define OPTIMIZATIONOUTPUT_H
 
-#include <QObject>
-#include "ScintillaEdit.h"
-#include "scintillaconfig.h"
+#include <QTableWidget>
 #include "optimizationitem.hpp"
 
-class OptimizationOutput : public ScintillaEdit
+class OptimizationOutput : public QTableWidget
 {
     Q_OBJECT
 public:
@@ -14,10 +12,7 @@ public:
     void initialize();
     void setContent(const OptimizationItemList &content);
 protected:
-     QVariant inputMethodQuery(Qt::InputMethodQuery) const override;
 private:
-    ScintillaConfig m_sc;
-    void setContent(const QString& content);
 };
 
 #endif // OPTIMIZATIONOUTPUT_H
