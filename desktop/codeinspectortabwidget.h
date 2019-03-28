@@ -4,6 +4,7 @@
 #include <QTabWidget>
 #include "ScintillaEdit.h"
 #include "asmitem.hpp"
+#include "optimizationitem.hpp"
 
 class CodeInspector;
 class LLVMMachineCodeAnalyzerOutput;
@@ -21,7 +22,7 @@ public:
     void setCodeInspectorContent(const QString &content, bool binary);
     void setLLVMMACContent(const QString &content);
     void setASTContent(const QString &content);
-    void setOptimizationContent(const QString &content);
+    void setOptimizationContent(const OptimizationItemList &content);
     void setGCCTreeRTLContent(const QString &content);
     void setGccDumpAllPasses(const QStringList &passes);
     void setSelectedGCCDumpPass(const QString &pass);

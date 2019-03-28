@@ -128,6 +128,11 @@ void GodboltAgent::onCompileRequestFinished()
     m_clangTidyStdout.clear();    
     m_asmContent.clear();
     m_asmItems.clear();
+    m_gccDumpAllPasses.clear();
+    m_currentGCCDumpPassOutput.clear();
+    m_selectedGCCDumpPass.clear();
+    m_astOutput.clear();
+    m_optimizationItems.clear();
 
     auto* reply = qobject_cast<NetworkReplyHelper*>(sender());
     reply->deleteLater();
@@ -252,9 +257,36 @@ void GodboltAgent::onCompileRequestFinished()
         m_asmContent.append(asmItem->text + "\n");
     }
     
-    m_gccDumpAllPasses.clear();
-    m_currentGCCDumpPassOutput.clear();
-    m_selectedGCCDumpPass.clear();
+    QJsonValue optOutputVal = docObj["optOutput"];
+    if (optOutputVal.isArray())
+    {
+        QJsonArray optOutputArray = optOutputVal.toArray();
+        for (auto oo : optOutputArray)
+        {
+            if (oo.isObject())
+            {
+                QJsonObject ooo = oo.toObject();
+                OptimizationItemPtr oi(new OptimizationItem);
+                oi->pass = ooo["Pass"].toString();
+                oi->name = ooo["Name"].toString();
+                oi->type = ooo["optType"].toString();
+                oi->function = ooo["Function"].toString();
+                oi->display = ooo["displayString"].toString();
+                m_optimizationItems.push_back(oi);
+            }
+        }
+        if (!m_optimizationItems.isEmpty())
+            emit hasOptimizationOutput();
+    }
+    
+    QJsonValue astOutputVal = docObj["astOutput"];
+    if (astOutputVal.isString())
+    {
+        m_astOutput = astOutputVal.toString();
+        if (!m_astOutput.isEmpty())
+            emit hasASTOutput();
+    }
+    
     QJsonValue gccDumpOutputVal = docObj["gccDumpOutput"];
     if (gccDumpOutputVal.isObject())
     {
@@ -347,6 +379,11 @@ void GodboltAgent::onCompileRequestFinished()
             }
         }
     }
+}
+
+const QString &GodboltAgent::getASTOutput() const
+{
+    return m_astOutput;
 }
 
 const QString &GodboltAgent::getPaholeStdout() const
@@ -467,4 +504,9 @@ const QString &GodboltAgent::getCompileStderr() const
 const QString &GodboltAgent::getCompileStdout() const
 {
     return m_compileStdout;
+}
+
+const OptimizationItemList &GodboltAgent::getOptimizationItems() const
+{
+    return m_optimizationItems;
 }

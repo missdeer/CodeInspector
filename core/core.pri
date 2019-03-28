@@ -47,7 +47,8 @@ HEADERS += \
     $$PWD/compilerinfo.hpp \
     $$PWD/asmlink.hpp \
     $$PWD/asmitem.hpp \
-    $$PWD/backendinterface.hpp
+    $$PWD/backendinterface.hpp \
+    $$PWD/optimizationitem.hpp
 
 	
 RESOURCES += \

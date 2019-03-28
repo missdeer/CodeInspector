@@ -7,6 +7,7 @@
 #include "library.h"
 #include "compilerinfo.hpp"
 #include "asmitem.hpp"
+#include "optimizationitem.hpp"
 
 class BackendInterface;
 
@@ -45,6 +46,9 @@ public:
     const QString &getLLVMMCAStdout() const;    
     const QString &getPaholeStderr() const;    
     const QString &getPaholeStdout() const;    
+    const QString &getASTOutput() const;
+    const OptimizationItemList &getOptimizationItems() const;
+    
 signals:
     void compiled();
     void hasGccDumpOutput();
@@ -80,6 +84,8 @@ private:
     QStringList m_gccDumpAllPasses;
     QString m_currentGCCDumpPassOutput;
     QString m_selectedGCCDumpPass;
+    QString m_astOutput;
+    OptimizationItemList m_optimizationItems;
     int m_compilerOptions { CO_NONE };
     bool m_gccTreeEnabled { true };
     bool m_rtlEnabled { true };

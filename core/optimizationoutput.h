@@ -4,6 +4,7 @@
 #include <QObject>
 #include "ScintillaEdit.h"
 #include "scintillaconfig.h"
+#include "optimizationitem.hpp"
 
 class OptimizationOutput : public ScintillaEdit
 {
@@ -11,11 +12,12 @@ class OptimizationOutput : public ScintillaEdit
 public:
     explicit OptimizationOutput(QWidget *parent = nullptr);
     void initialize();
-    void setContent(const QString& content);
+    void setContent(const OptimizationItemList &content);
 protected:
      QVariant inputMethodQuery(Qt::InputMethodQuery) const override;
 private:
     ScintillaConfig m_sc;
+    void setContent(const QString& content);
 };
 
 #endif // OPTIMIZATIONOUTPUT_H

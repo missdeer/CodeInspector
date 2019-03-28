@@ -55,7 +55,7 @@ void CodeInspectorTabWidget::setASTContent(const QString &content)
     m_ast->setContent(content);
 }
 
-void CodeInspectorTabWidget::setOptimizationContent(const QString &content)
+void CodeInspectorTabWidget::setOptimizationContent(const OptimizationItemList &content)
 {
     if (!m_optimization)
     {

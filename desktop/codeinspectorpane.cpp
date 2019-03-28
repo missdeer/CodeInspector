@@ -267,7 +267,7 @@ void CodeInspectorPane::onHasLLVMMCAOutput()
 
 void CodeInspectorPane::onHasOptimizationOutput()
 {
-    
+    m_codeInspectorTabWidget->setOptimizationContent(m_backend->getOptimizationItems());
 }
 
 void CodeInspectorPane::onHasPaholeOutput()
@@ -282,7 +282,7 @@ void CodeInspectorPane::onHasClangTidyOutput()
 
 void CodeInspectorPane::onHasASTOutput()
 {
-    
+    m_codeInspectorTabWidget->setASTContent(m_backend->getASTOutput());
 }
 
 void CodeInspectorPane::onDelayCompile()
