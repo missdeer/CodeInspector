@@ -5,10 +5,8 @@
         <file>resource/example/cpp/square.cpp</file>
         <file>resource/example/cpp/sumoverarray.cpp</file>
         <file>resource/example/cpp/sumoverarrayopt.cpp</file>
-        <file>resource/example/d/maxarray.d</file>
         <file>resource/example/d/maxarrayopt.d</file>
         <file>resource/example/d/square.d</file>
-        <file>resource/example/d/sumoverarray.d</file>
         <file>resource/example/d/sumoverarrayopt.d</file>
         <file>resource/example/go/maxarray.go</file>
         <file>resource/example/go/square.go</file>
@@ -24,8 +22,6 @@
         <file>resource/example/swift/square.swift</file>
         <file>resource/example/analysis/basic.asm</file>
         <file>resource/example/assembly/infiniteLoop.asm</file>
-        <file>resource/example/c/maxArray.c</file>
-        <file>resource/example/c/sumOverArray.c</file>
         <file>resource/example/cppx/basic.cpp</file>
         <file>resource/example/cppx/interface.cpp</file>
         <file>resource/example/cuda/square.cu</file>
@@ -60,27 +56,18 @@
         <file>resource/example/fortran/default.f90</file>
         <file>resource/example/fortran/dot_product.f90</file>
         <file>resource/example/go/default.go</file>
-        <file>resource/example/go/Max_array.go</file>
         <file>resource/example/haskell/default.hs</file>
         <file>resource/example/haskell/Sum_over_array.hs</file>
         <file>resource/example/ispc/default.ispc</file>
-        <file>resource/example/ispc/Max_array.ispc</file>
-        <file>resource/example/ispc/Sum_array.ispc</file>
         <file>resource/example/llvm/default.ll</file>
         <file>resource/example/ocaml/default.ml</file>
         <file>resource/example/ocaml/max_array.ml</file>
         <file>resource/example/ocaml/sum.ml</file>
         <file>resource/example/pascal/default.pas</file>
-        <file>resource/example/pascal/Max_array.pas</file>
-        <file>resource/example/pascal/Sum_over_array.pas</file>
         <file>resource/example/rust/default.rs</file>
-        <file>resource/example/rust/Max_array.rs</file>
-        <file>resource/example/rust/Max_array_(Optimized).rs</file>
         <file>resource/example/rust/Sum_over_array.rs</file>
         <file>resource/example/rust/Sum_over_array_(Optimized).rs</file>
         <file>resource/example/swift/default.swift</file>
-        <file>resource/example/swift/Max_array.swift</file>
-        <file>resource/example/swift/Sum_over_array.swift</file>
         <file>resource/example/zig/default.zig</file>
         <file>resource/example/zig/Sum_over_array.zig</file>
     </qresource>
