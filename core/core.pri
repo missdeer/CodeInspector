@@ -26,7 +26,9 @@ SOURCES += \
     $$PWD/astoutput.cpp \
     $$PWD/gcctreertloutput.cpp \
     $$PWD/llvmmachinecodeanalyzeroutput.cpp \
-    $$PWD/outputwindow.cpp
+    $$PWD/outputwindow.cpp \
+    $$PWD/paholeoutput.cpp \
+    $$PWD/clangtidyoutput.cpp
 
 HEADERS += \
     $$PWD/scintillaconfig.h \
@@ -48,7 +50,9 @@ HEADERS += \
     $$PWD/asmlink.hpp \
     $$PWD/asmitem.hpp \
     $$PWD/backendinterface.hpp \
-    $$PWD/optimizationitem.hpp
+    $$PWD/optimizationitem.hpp \
+    $$PWD/paholeoutput.h \
+    $$PWD/clangtidyoutput.h
 
 	
 RESOURCES += \

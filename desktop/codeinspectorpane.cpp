@@ -276,12 +276,12 @@ void CodeInspectorPane::onHasOptimizationOutput()
 
 void CodeInspectorPane::onHasPaholeOutput()
 {
-    QString o = m_backend->getPaholeStdout();
+    m_codeInspectorTabWidget->setPaholeContent(m_backend->getPaholeStdout());
 }
 
 void CodeInspectorPane::onHasClangTidyOutput()
 {
-    QString o = m_backend->getClangTidyStdout();
+    m_codeInspectorTabWidget->setClangTidyContent(m_backend->getClangTidyStdout());
 }
 
 void CodeInspectorPane::onHasASTOutput()

@@ -5,6 +5,8 @@
 #include "llvmmachinecodeanalyzeroutput.h"
 #include "astoutput.h"
 #include "optimizationoutput.h"
+#include "paholeoutput.h"
+#include "clangtidyoutput.h"
 #include "codeinspectortabwidget.h"
 
 CodeInspectorTabWidget::CodeInspectorTabWidget(QWidget *parent)
@@ -35,6 +37,18 @@ void CodeInspectorTabWidget::setLLVMMACContent(const QString &content)
 {
     Q_ASSERT(m_llvmMCA);
     m_llvmMCA->setContent(content);
+}
+
+void CodeInspectorTabWidget::setClangTidyContent(const QString &content)
+{
+    Q_ASSERT(m_clangTidy);
+    m_clangTidy->setContent(content);
+}
+
+void CodeInspectorTabWidget::setPaholeContent(const QString &content)
+{
+    Q_ASSERT(m_pahole);
+    m_pahole->setContent(content);
 }
 
 void CodeInspectorTabWidget::setASTContent(const QString &content)
@@ -169,12 +183,41 @@ void CodeInspectorTabWidget::onRequestGCCTreeRTL()
 
 void CodeInspectorTabWidget::onRequestPahole()
 {
+    if (!m_pahole)
+    {
+        m_pahole = new PaholeOutput(this);
+        m_pahole->initialize();
+        addTab(m_pahole, QIcon(":/resource/image/tab/pahole.png"), tr("Pahole"));
+    }
     emit requestPahole();
 }
 
 void CodeInspectorTabWidget::onRequestClangTidy()
 {
+    if (!m_clangTidy)
+    {
+        m_clangTidy = new ClangTidyOutput(this);
+        m_clangTidy->initialize();
+        addTab(m_clangTidy, QIcon(":/resource/image/tab/clangtidy.png"), tr("Clang Tidy"));
+    }
     emit requestClangTidy();
+}
+
+void CodeInspectorTabWidget::removePage(QWidget **w)
+{
+    if (*w)
+    {
+        for (int i = 0; i < count(); i++)
+        {
+            if (widget(i) == *w)
+            {
+                removeTab(i);
+                delete *w;
+                *w = nullptr;
+                break;
+            }
+        }
+    }
 }
 
 bool CodeInspectorTabWidget::enableClangTidy() const
@@ -210,81 +253,41 @@ bool CodeInspectorTabWidget::enableLLVMMCA() const
 void CodeInspectorTabWidget::setEnableGCCTreeRTL(bool enabled)
 {
     m_enableGCCTreeRTL = enabled;
-    if (!enabled && m_gccTreeRTL)
-    {
-        for (int i = 0; i < count(); i++)
-        {
-            if (widget(i) == m_gccTreeRTL)
-            {
-                removeTab(i);
-                delete m_gccTreeRTL;
-                m_gccTreeRTL = nullptr;
-                break;
-            }
-        }
-    }
+    if (!enabled)
+        removePage(reinterpret_cast<QWidget **>(&m_gccTreeRTL));
 }
 
 void CodeInspectorTabWidget::setEnablePahole(bool enabled)
 {
     m_enablePahole = enabled;
+    if (!enabled)
+        removePage(reinterpret_cast<QWidget **>(&m_pahole));
 }
 
 void CodeInspectorTabWidget::setEnableClangTidy(bool enabled)
 {
     m_enableClangTidy = enabled;
+    if (!enabled)
+        removePage(reinterpret_cast<QWidget **>(&m_clangTidy));
 }
 
 void CodeInspectorTabWidget::setEnableOptimization(bool enabled)
 {
     m_enableOptimization = enabled;
-    if (!enabled && m_optimization)
-    {
-        for (int i = 0; i < count(); i++)
-        {
-            if (widget(i) == m_optimization)
-            {
-                removeTab(i);
-                delete m_optimization;
-                m_optimization = nullptr;
-                break;
-            }
-        }
-    }
+    if (!enabled)
+        removePage(reinterpret_cast<QWidget **>(&m_optimization));
 }
 
 void CodeInspectorTabWidget::setEnableAST(bool enabled)
 {
     m_enableAST = enabled;
-    if (!enabled && m_ast)
-    {
-        for (int i = 0; i < count(); i++)
-        {
-            if (widget(i) == m_ast)
-            {
-                removeTab(i);
-                delete m_ast;
-                m_ast = nullptr;
-                break;
-            }
-        }
-    }
+    if (!enabled)
+        removePage(reinterpret_cast<QWidget **>(&m_ast));
 }
 
 void CodeInspectorTabWidget::setEnableLLVMMCA(bool enabled)
 {
     m_enableLLVMMCA = enabled;
-    if (!enabled && m_llvmMCA)
-    {
-        for (int i = 0; i < count(); i++)
-        {
-            if (widget(i) == m_llvmMCA)
-            {
-                removeTab(i);
-                delete m_llvmMCA;
-                m_llvmMCA = nullptr;
-                break;
-            }
-        }
-    }
+    if (!enabled)
+        removePage(reinterpret_cast<QWidget **>(&m_llvmMCA));
 }

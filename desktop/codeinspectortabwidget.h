@@ -11,6 +11,8 @@ class LLVMMachineCodeAnalyzerOutput;
 class ASTOutput;
 class OptimizationOutput;
 class GCCTreeRTLOutput;
+class PaholeOutput;
+class ClangTidyOutput;
 
 class CodeInspectorTabWidget : public QTabWidget
 {
@@ -21,6 +23,8 @@ public:
     QMap<int, sptr_t> setCodeInspectorAsmItems(const AsmItemList &items, bool binary);
     void setCodeInspectorContent(const QString &content, bool binary);
     void setLLVMMACContent(const QString &content);
+    void setClangTidyContent(const QString &content);
+    void setPaholeContent(const QString &content);
     void setASTContent(const QString &content);
     void setOptimizationContent(const OptimizationItemList &content);
     void setGCCTreeRTLContent(const QString &content);
@@ -62,12 +66,15 @@ private:
     ASTOutput *m_ast{nullptr};
     OptimizationOutput *m_optimization{nullptr};
     GCCTreeRTLOutput *m_gccTreeRTL{nullptr};
+    PaholeOutput *m_pahole{nullptr};
+    ClangTidyOutput *m_clangTidy{nullptr};
     bool m_enableLLVMMCA{true};
     bool m_enableAST{false};
     bool m_enableOptimization{false};
     bool m_enableGCCTreeRTL{false};
     bool m_enablePahole{false};
     bool m_enableClangTidy{false};
+    void removePage(QWidget **w);
 };
 
 #endif // CODEINSPECTORTABWIDGET_H
