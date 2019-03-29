@@ -15,7 +15,7 @@ CodeEditorPane::CodeEditorPane(QWidget *parent)
     
     auto* topBarLayout = new QHBoxLayout();
     topBarLayout->setContentsMargins(0,0,0,0);
-    topBarLayout->setSpacing(0);
+    topBarLayout->setSpacing(1);
 
     m_languageList = new QComboBox(this);
     topBarLayout->addWidget(m_languageList);
@@ -23,6 +23,18 @@ CodeEditorPane::CodeEditorPane(QWidget *parent)
 #if defined(Q_OS_WIN)
     m_languageList->setMaxVisibleItems(100);
 #endif
+    
+    m_btnLibraries = new QPushButton(QIcon(":/resource/image/library.png"), "", this);
+    m_btnLibraries->setToolTip(tr("Include libraries"));
+    connect(m_btnLibraries, &QPushButton::clicked, this, &CodeEditorPane::onShowLibraryList);
+    topBarLayout->addWidget(m_btnLibraries);
+    
+    m_btnLoadExample = new QPushButton(QIcon(":/resource/image/loadexample.png"), "", this);
+    m_btnLoadExample->setToolTip(tr("Load example"));
+    connect(m_btnLoadExample, &QPushButton::clicked, this, &CodeEditorPane::onShowExampleList);
+    topBarLayout->addWidget(m_btnLoadExample);
+    
+    topBarLayout->setStretch(0, 1);
     
     mainLayout->addLayout(topBarLayout);
 
@@ -52,6 +64,64 @@ void CodeEditorPane::onCurrentLanguageChanged(const QString &text)
     if (m_languageList->count() > 1)
         g_settings->setDefaultLanguageIndex(m_languageList->currentIndex());
     emit currentLanguageChanged(text);
+//    makeLibariesMenu();
+    makeExamplesMenu();
+}
+
+void CodeEditorPane::onShowExampleList()
+{
+    if (m_menuExamples)
+    {
+        QPoint pt = mapToGlobal( QPoint(m_btnLoadExample->x(), m_btnLoadExample->y() + m_btnLoadExample->height()));
+        m_menuExamples->exec(pt);
+    }
+}
+
+void CodeEditorPane::onShowLibraryList()
+{
+    if (m_menuLibraries)
+    {
+        m_menuLibraries->exec(QCursor::pos());
+    }
+}
+
+void CodeEditorPane::onExampleTriggered()
+{
+    QAction *action = qobject_cast<QAction*>(sender());
+    QString name = action->text();
+    QString content = ciApp->getExampleContent(m_languageList->currentText(), name);
+    m_codeEditor->setContent(content);
+}
+
+void CodeEditorPane::makeLibariesMenu()
+{
+    auto libraries = ciApp->getLibraryList(m_languageList->currentText());
+    if (m_menuLibraries)
+    {
+        delete m_menuLibraries;
+        m_menuLibraries = nullptr;
+    }
+    m_menuLibraries = new QMenu(this);
+    for (const auto l : *libraries)
+    {
+        
+    }
+}
+
+void CodeEditorPane::makeExamplesMenu()
+{
+    auto examples = ciApp->getExampleList(m_languageList->currentText());
+    if (m_menuExamples)
+    {
+        delete m_menuExamples;
+        m_menuExamples = nullptr;
+    }
+    m_menuExamples = new QMenu(this);
+    for (const auto & e : examples)
+    {
+        QAction *action = m_menuExamples->addAction(e);
+        connect(action, &QAction::triggered, this, &CodeEditorPane::onExampleTriggered);
+    }
 }
 
 CodeEditor *CodeEditorPane::codeEditor() const

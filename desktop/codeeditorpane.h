@@ -7,6 +7,7 @@ QT_BEGIN_NAMESPACE
 class QPushButton;
 class QComboBox;
 class QLineEdit;
+class QMenu;
 QT_END_NAMESPACE
 
 class CodeEditor;
@@ -28,9 +29,19 @@ public slots:
 private slots:
     void updateLanguageList();
     void onCurrentLanguageChanged(const QString &text);
+    void onShowExampleList();
+    void onShowLibraryList();
+    void onExampleTriggered();
 private:
     CodeEditor *m_codeEditor;
     QComboBox *m_languageList;
+    QPushButton *m_btnLibraries;
+    QPushButton *m_btnLoadExample;
+    QMenu *m_menuLibraries{nullptr};
+    QMenu *m_menuExamples{nullptr};
+    
+    void makeLibariesMenu();
+    void makeExamplesMenu();
 };
 
 #endif // CODEEDITORPANE_H

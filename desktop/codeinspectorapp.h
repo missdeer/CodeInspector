@@ -26,6 +26,8 @@ public:
     const QString& getDefaultCompilerName(const QString& languageName) override;
     bool canCompile(const QString &language, const QString &compiler) override;
     const QString& getCompilerId(CompilerListPtr compilerList, const QString& name) override;
+    QStringList getExampleList(const QString& languageName);
+    QString getExampleContent(const QString &languageName, const QString &exampleName);
 signals:
     void compilerListReady();
     void languageListReady();

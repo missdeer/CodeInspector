@@ -533,6 +533,26 @@ const QString &CodeInspectorApp::getCompilerId(CompilerListPtr compilerList, con
     return (*it)->id;
 }
 
+QStringList CodeInspectorApp::getExampleList(const QString &languageName)
+{
+    auto languageId = getLanguageId(languageName);
+    QDir dir(":/resource/example/" + languageId);
+    return dir.entryList();
+}
+
+QString CodeInspectorApp::getExampleContent(const QString &languageName, const QString &exampleName)
+{
+    auto languageId = getLanguageId(languageName);
+    QFile f(QString(":/resource/example/%1/%2").arg(languageId, exampleName));
+    if (f.open(QIODevice::ReadOnly))
+    {
+        QByteArray b = f.readAll();
+        f.close();
+        return QString(b);
+    }
+    return "";
+}
+
 const QString &CodeInspectorApp::getDefaultCompilerName(const QString &languageName)
 {
     qDebug() << __FUNCTION__ << languageName;
