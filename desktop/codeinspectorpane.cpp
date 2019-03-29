@@ -203,23 +203,23 @@ void CodeInspectorPane::onNeedCompile()
     QStringList userArguments = {
         m_compilerArguments->text(),
     };
-    //        auto libs = m_quickAPI->libs();
-    //        if (libs)
-    //        {
-    //            for (auto lib : *libs)
-    //            {
-    //                auto versions = lib->getVersions();
-    //                for (auto ver : versions)
-    //                {
-    //                    if (ver->getSelected())
-    //                    {
-    //                        auto paths = ver->getPath();
-    //                        for (auto& path : paths)
-    //                            userArguments.append(compiler->includeFlag + path);
-    //                    }
-    //                }
-    //            }
-    //        }
+    auto libs = ciApp->getLibraryList(m_languageName);
+    if (libs)
+    {
+        for (auto lib : *libs)
+        {
+            auto versions = lib->getVersions();
+            for (auto ver : versions)
+            {
+                if (ver->getSelected())
+                {
+                    auto paths = ver->getPath();
+                    for (auto& path : paths)
+                        userArguments.append(compiler->includeFlag + path);
+                }
+            }
+        }
+    }
     
     ci.userArguments = userArguments.join(" ");
     ci.binary = m_btnBinrary->isChecked();

@@ -100,7 +100,24 @@ void CodeEditorPane::onExampleTriggered()
 
 void CodeEditorPane::onLibraryVersionTriggered()
 {
-    
+    QAction *action = qobject_cast<QAction*>(sender());
+    auto libraries = ciApp->getLibraryList(m_languageList->currentText());
+    if (!libraries)
+        return;
+    QString libraryName = action->data().toString();
+    auto it = std::find_if(libraries->begin(), libraries->end(), [&](const LibraryPtr l) {
+        return l->getName() == libraryName;
+    });
+    if (libraries->end() != it)
+    {
+        const auto l = *it;
+        const auto &versions = l->getVersions();
+        QString version = action->text();
+        for (const auto v : versions)
+        {
+            v->setSelected(v->getVersion() == version);
+        }
+    }
 }
 
 void CodeEditorPane::makeLibariesMenu()
@@ -125,11 +142,13 @@ void CodeEditorPane::makeLibariesMenu()
         QAction * action = menu->addAction(" - ");
         connect(action, &QAction::triggered, this, &CodeEditorPane::onLibraryVersionTriggered);
         ag->addAction(action);
+        action->setData(l->getName());
         action->setCheckable(true);
         action->setChecked(true);
         for (const auto v : versions)
         {
             QAction * action = menu->addAction(v->getVersion());
+            action->setData(l->getName());
             action->setCheckable(true);
             ag->addAction(action);
             connect(action, &QAction::triggered, this, &CodeEditorPane::onLibraryVersionTriggered);
