@@ -31,7 +31,10 @@ public:
     void setEnableGCCTreeRTL(bool enabled);
     void setEnablePahole(bool enabled);
     void setEnableClangTidy(bool enabled);
-    void setGCCTreeRTLArguments(const QString& pass, bool gccTree, bool rtl);
+    void setGCCTreeRTLOptions(const QString& pass, bool gccTree, bool rtl);
+    void setLLVMMCAOptions(const QString &options);
+    void setPaholeOptions(const QString &options);
+    void setClangTidyOptions(const QString &options);
     
     const QString &getCompileStderr() const;
     const QString &getCompileStdout() const;
@@ -75,10 +78,13 @@ private:
     QString m_compileStdout;
     QString m_clangTidyStderr;
     QString m_clangTidyStdout;
+    QString m_clangTidyOptions;
     QString m_llvmMCAStderr;
     QString m_llvmMCAStdout;
+    QString m_llvmMCAOptions;
     QString m_paholeStderr;
     QString m_paholeStdout;
+    QString m_paholeOptions;
     QString m_asmContent;
     AsmItemList m_asmItems;
     QStringList m_gccDumpAllPasses;

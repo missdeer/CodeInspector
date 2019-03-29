@@ -44,21 +44,21 @@ void GodboltAgent::compile(const CompileInfo &ci)
     {
         QJsonObject toolObj;
         toolObj.insert("id", "llvm-mcatrunk");
-        toolObj.insert("args", "");
+        toolObj.insert("args", m_llvmMCAOptions);
         toolsArray.append(QJsonValue::fromVariant(toolObj));
     }
     if (m_compilerOptions & CO_CLANGTIDY)
     {        
         QJsonObject toolObj;
         toolObj.insert("id", "clangtidytrunk");
-        toolObj.insert("args", "");
+        toolObj.insert("args", m_clangTidyOptions);
         toolsArray.append(QJsonValue::fromVariant(toolObj));
     }
     if (m_compilerOptions & CO_PAHOLE)
     {        
         QJsonObject toolObj;
         toolObj.insert("id", "pahole");
-        toolObj.insert("args", "");
+        toolObj.insert("args", m_paholeOptions);
         toolsArray.append(QJsonValue::fromVariant(toolObj));
     }
     
@@ -482,11 +482,26 @@ void GodboltAgent::setEnableClangTidy(bool enabled)
         m_compilerOptions &= ~CO_CLANGTIDY;
 }
 
-void GodboltAgent::setGCCTreeRTLArguments(const QString &pass, bool gccTree, bool rtl)
+void GodboltAgent::setGCCTreeRTLOptions(const QString &pass, bool gccTree, bool rtl)
 {
     m_selectedGCCDumpPass = pass;
     m_gccTreeEnabled = gccTree;
     m_rtlEnabled = rtl;
+}
+
+void GodboltAgent::setLLVMMCAOptions(const QString &options)
+{
+    m_llvmMCAOptions = options;
+}
+
+void GodboltAgent::setPaholeOptions(const QString &options)
+{
+    m_paholeOptions = options;
+}
+
+void GodboltAgent::setClangTidyOptions(const QString &options)
+{
+    m_clangTidyOptions = options;
 }
 
 const QString &GodboltAgent::getAsmContent() const

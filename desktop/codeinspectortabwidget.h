@@ -43,6 +43,10 @@ public:
     bool enableGCCTreeRTL() const;    
     bool enablePahole() const;    
     bool enableClangTidy() const;    
+    
+    QString getLLVMMCAOptions();
+    QString getPaholeOptions();
+    QString getClangTidyOptions();
 signals:
     void requestLLVMMCA();
     void requestAST();
@@ -51,6 +55,9 @@ signals:
     void requestPahole();
     void requestClangTidy();
     void refreshGCCDumpOutput(QString, bool, bool);
+    void refreshLLVMMCAOptions(const QString &);
+    void refreshPaholeOptions(const QString &);
+    void refreshClangTidyOptions(const QString &);
 private slots:
     void onCustomContextMenuRequested(const QPoint &pos);
     void onRefreshGCCDumpOutput();

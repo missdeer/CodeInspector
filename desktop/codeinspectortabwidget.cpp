@@ -143,6 +143,7 @@ void CodeInspectorTabWidget::onRequestLLVMMCA()
         m_llvmMCA = new LLVMMachineCodeAnalyzerOutput(this);
         m_llvmMCA->initialize();
         addTab(m_llvmMCA, QIcon(":/resource/image/tab/llvm.png"), tr("LLVM MCA"));
+        connect(m_llvmMCA, &LLVMMachineCodeAnalyzerOutput::optionsChanged, this, &CodeInspectorTabWidget::refreshLLVMMCAOptions);
     }
     emit requestLLVMMCA();
 }
@@ -188,6 +189,7 @@ void CodeInspectorTabWidget::onRequestPahole()
         m_pahole = new PaholeOutput(this);
         m_pahole->initialize();
         addTab(m_pahole, QIcon(":/resource/image/tab/pahole.png"), tr("Pahole"));
+        connect(m_pahole, &PaholeOutput::optionsChanged, this, &CodeInspectorTabWidget::refreshPaholeOptions);
     }
     emit requestPahole();
 }
@@ -199,6 +201,7 @@ void CodeInspectorTabWidget::onRequestClangTidy()
         m_clangTidy = new ClangTidyOutput(this);
         m_clangTidy->initialize();
         addTab(m_clangTidy, QIcon(":/resource/image/tab/clangtidy.png"), tr("Clang Tidy"));
+        connect(m_clangTidy, &ClangTidyOutput::optionsChanged, this, &CodeInspectorTabWidget::refreshClangTidyOptions);
     }
     emit requestClangTidy();
 }
@@ -223,6 +226,27 @@ void CodeInspectorTabWidget::removePage(QWidget **w)
 bool CodeInspectorTabWidget::enableClangTidy() const
 {
     return m_enableClangTidy;
+}
+
+QString CodeInspectorTabWidget::getLLVMMCAOptions()
+{
+    if (m_llvmMCA)
+        return m_llvmMCA->getToolOptions();
+    return "";
+}
+
+QString CodeInspectorTabWidget::getPaholeOptions()
+{
+    if (m_pahole)
+        return m_pahole->getToolOptions();
+    return "";
+}
+
+QString CodeInspectorTabWidget::getClangTidyOptions()
+{
+    if (m_clangTidy)
+        return m_clangTidy->getToolOptions();
+    return "";
 }
 
 bool CodeInspectorTabWidget::enablePahole() const

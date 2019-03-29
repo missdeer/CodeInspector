@@ -10,10 +10,12 @@ ClangTidyOutput::ClangTidyOutput(QWidget *parent) : QWidget(parent)
     mainLayout->setContentsMargins(0,0,0,0);
     m_toolOptions = new QLineEdit(this);
     m_toolOptions->setPlaceholderText(tr("Clang Tidy Options"));
+    m_toolOptions->setClearButtonEnabled(true);
     mainLayout->addWidget(m_toolOptions);
     m_scintillaEdit = new ScintillaEdit(this);
     mainLayout->addWidget(m_scintillaEdit);
     m_sc = new ScintillaConfig(m_scintillaEdit);
+    connect(m_toolOptions, &QLineEdit::textChanged, this, &ClangTidyOutput::optionsChanged);
 }
 
 void ClangTidyOutput::initialize()
@@ -34,4 +36,9 @@ void ClangTidyOutput::setContent(const QString &content)
     m_scintillaEdit->emptyUndoBuffer();
     m_sc->initLexerStyle("asm");
     m_scintillaEdit->colourise(0, -1);
+}
+
+QString ClangTidyOutput::getToolOptions()
+{
+    return m_toolOptions->text();
 }

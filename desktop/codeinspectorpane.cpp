@@ -158,6 +158,9 @@ CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
     connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::requestClangTidy, this, &CodeInspectorPane::onRequestClangTidy);
     connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::requestPahole, this, &CodeInspectorPane::onRequestPahole);
     connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::refreshGCCDumpOutput, this, &CodeInspectorPane::onRefreshGCCDumpOutput);
+    connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::refreshPaholeOptions, this, &CodeInspectorPane::onRequestPahole);
+    connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::refreshClangTidyOptions, this, &CodeInspectorPane::onRequestClangTidy);
+    connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::refreshLLVMMCAOptions, this, &CodeInspectorPane::onRequestLLVMMCA);
 }
 
 void CodeInspectorPane::initialize()
@@ -398,6 +401,7 @@ void CodeInspectorPane::onCurrentCompilerChanged(const QString &compilerName)
 void CodeInspectorPane::onRequestLLVMMCA()
 {
     m_backend->setEnableLLVMMCA(true);
+    m_backend->setLLVMMCAOptions(m_codeInspectorTabWidget->getLLVMMCAOptions());
     onDelayCompile();
 }
 
@@ -422,18 +426,20 @@ void CodeInspectorPane::onRequestGCCTreeRTL()
 void CodeInspectorPane::onRequestPahole()
 {
     m_backend->setEnablePahole(true);
+    m_backend->setPaholeOptions(m_codeInspectorTabWidget->getPaholeOptions());
     onDelayCompile();
 }
 
 void CodeInspectorPane::onRequestClangTidy()
 {
     m_backend->setEnableClangTidy(true);
+    m_backend->setClangTidyOptions(m_codeInspectorTabWidget->getClangTidyOptions());
     onDelayCompile();
 }
 
 void CodeInspectorPane::onRefreshGCCDumpOutput(QString pass, bool gccTree, bool rtl)
 {
-    m_backend->setGCCTreeRTLArguments(pass, gccTree, rtl);
+    m_backend->setGCCTreeRTLOptions(pass, gccTree, rtl);
     onDelayCompile();
 }
 

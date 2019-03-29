@@ -15,6 +15,9 @@ public:
     explicit LLVMMachineCodeAnalyzerOutput(QWidget *parent = nullptr);
     void initialize();
     void setContent(const QString& content);
+    QString getToolOptions();
+signals:    
+    void optionsChanged(const QString &);
 private:
     ScintillaEdit *m_scintillaEdit;
     ScintillaConfig *m_sc;
