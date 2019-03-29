@@ -1,37 +1,38 @@
 #include "stdafx.h"
+#include "ScintillaEdit.h"
+#include "scintillaconfig.h"
 #include "llvmmachinecodeanalyzeroutput.h"
 
 LLVMMachineCodeAnalyzerOutput::LLVMMachineCodeAnalyzerOutput(QWidget *parent)
-    : ScintillaEdit (parent)
-    , m_sc(this)
+    : QWidget (parent)
 {
-    
+    QVBoxLayout *mainLayout = new QVBoxLayout();
+    setLayout(mainLayout);
+    mainLayout->setContentsMargins(0,0,0,0);
+    m_toolOptions = new QLineEdit(this);
+    m_toolOptions->setPlaceholderText(tr("LLVM Machine Code Analyzer Options"));
+    mainLayout->addWidget(m_toolOptions);
+    m_scintillaEdit = new ScintillaEdit(this);
+    mainLayout->addWidget(m_scintillaEdit);
+    m_sc = new ScintillaConfig(m_scintillaEdit);
 }
 
 void LLVMMachineCodeAnalyzerOutput::initialize()
 {
-    m_sc.initScintilla();
-    m_sc.initLexerStyle("asm");
+    m_sc->initScintilla();
+    m_sc->initLexerStyle("asm");
 
-    setReadOnly(true);
+    m_scintillaEdit->setReadOnly(true);
 }
 
 void LLVMMachineCodeAnalyzerOutput::setContent(const QString &content)
 {
     auto b = content.toUtf8();
-    setReadOnly(false);
-    setText(b.data());
-    setReadOnly(true);
+    m_scintillaEdit->setReadOnly(false);
+    m_scintillaEdit->setText(b.data());
+    m_scintillaEdit->setReadOnly(true);
 
-    emptyUndoBuffer();
-    m_sc.initLexerStyle("asm");
-    colourise(0, -1);
+    m_scintillaEdit->emptyUndoBuffer();
+    m_sc->initLexerStyle("asm");
+    m_scintillaEdit->colourise(0, -1);
 }
-
-QVariant LLVMMachineCodeAnalyzerOutput::inputMethodQuery(Qt::InputMethodQuery /*query*/) const
-{
-    // so that it won't show input method pane on mobile device
-    return QVariant(QRectF(0,0, 0, 0));
-}
-
-

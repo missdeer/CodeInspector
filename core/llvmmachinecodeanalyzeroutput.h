@@ -1,21 +1,24 @@
 #ifndef LLVMMACHINECODEANALYZEROUTPUT_H
 #define LLVMMACHINECODEANALYZEROUTPUT_H
 
-#include <QObject>
-#include "ScintillaEdit.h"
-#include "scintillaconfig.h"
+#include <QWidget>
 
-class LLVMMachineCodeAnalyzerOutput : public ScintillaEdit
+QT_FORWARD_DECLARE_CLASS(QLineEdit)
+
+class ScintillaEdit;
+class ScintillaConfig;
+
+class LLVMMachineCodeAnalyzerOutput : public QWidget
 {
     Q_OBJECT
 public:
     explicit LLVMMachineCodeAnalyzerOutput(QWidget *parent = nullptr);
     void initialize();
     void setContent(const QString& content);
-protected:
-     QVariant inputMethodQuery(Qt::InputMethodQuery) const override;
 private:
-    ScintillaConfig m_sc;
+    ScintillaEdit *m_scintillaEdit;
+    ScintillaConfig *m_sc;
+    QLineEdit *m_toolOptions;
 };
 
 #endif // LLVMMACHINECODEANALYZEROUTPUT_H
