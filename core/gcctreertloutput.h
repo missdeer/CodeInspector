@@ -2,12 +2,12 @@
 #define GCCTREERTLOUTPUT_H
 
 #include <QWidget>
-#include "scintillaconfig.h"
 
 QT_FORWARD_DECLARE_CLASS(QComboBox)
 QT_FORWARD_DECLARE_CLASS(QCheckBox)
 
 class ScintillaEdit;
+class ScintillaConfig;
 
 class GCCTreeRTLOutput : public QWidget
 {
@@ -21,9 +21,6 @@ public:
     QString getCurrentSelectedPass();
     bool isGCCTreeEnabled();
     bool isRTLEnabled();
-protected:
-    QVariant inputMethodQuery(Qt::InputMethodQuery) const override;
-    
 signals:
     void refresh();
     
@@ -32,10 +29,10 @@ private slots:
     void onStateChanged(int);
 private:
     ScintillaEdit *m_scintillaEdit;
+    ScintillaConfig *m_sc;
     QComboBox *m_passes;
     QCheckBox *m_gccTree;
     QCheckBox *m_rtl;
-    ScintillaConfig *m_sc;
 };
 
 #endif // GCCTREERTLOUTPUT_H
