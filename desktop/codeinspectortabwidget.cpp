@@ -33,49 +33,24 @@ void CodeInspectorTabWidget::setCodeInspectorContent(const QString &content, boo
 
 void CodeInspectorTabWidget::setLLVMMACContent(const QString &content)
 {
-    if (!m_llvmMCA)
-    {
-        m_llvmMCA = new LLVMMachineCodeAnalyzerOutput(this);
-        m_llvmMCA->initialize();
-        addTab(m_llvmMCA, QIcon(":/resource/image/tab/llvm.png"), tr("LLVM MCA"));
-    }
     Q_ASSERT(m_llvmMCA);
     m_llvmMCA->setContent(content);
 }
 
 void CodeInspectorTabWidget::setASTContent(const QString &content)
 {
-    if (!m_ast)
-    {
-        m_ast = new ASTOutput(this);
-        m_ast->initialize();
-        addTab(m_ast, QIcon(":/resource/image/tab/ast.png"), tr("AST"));
-    }
     Q_ASSERT(m_ast);
     m_ast->setContent(content);
 }
 
 void CodeInspectorTabWidget::setOptimizationContent(const OptimizationItemList &content)
 {
-    if (!m_optimization)
-    {
-        m_optimization = new OptimizationOutput(this);
-        m_optimization->initialize();
-        addTab(m_optimization, QIcon(":/resource/image/tab/optimization.png"), tr("Optimization"));
-    }
     Q_ASSERT(m_optimization);
     m_optimization->setContent(content);
 }
 
 void CodeInspectorTabWidget::setGCCTreeRTLContent(const QString &content)
 {
-    if (!m_gccTreeRTL)
-    {
-        m_gccTreeRTL = new GCCTreeRTLOutput(this);
-        m_gccTreeRTL->initialize();
-        addTab(m_gccTreeRTL, QIcon(":/resource/image/tab/gcc.png"), tr("GCC Tree/RTL Output"));
-        connect(m_gccTreeRTL, &GCCTreeRTLOutput::refresh, this, &CodeInspectorTabWidget::onRefreshGCCDumpOutput);
-    }
     Q_ASSERT(m_gccTreeRTL);
     m_gccTreeRTL->setContent(content);
 }
@@ -99,42 +74,42 @@ void CodeInspectorTabWidget::onCustomContextMenuRequested(const QPoint &pos)
     if (m_enableOptimization)
     {
         QAction* pOptimizationAction = new QAction(QIcon(":/resource/image/tab/optimization.png"), tr("Optimization Output"), &menu);
-        connect(pOptimizationAction, &QAction::triggered, this, &CodeInspectorTabWidget::requestOptimization);
+        connect(pOptimizationAction, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestOptimization);
         menu.addAction(pOptimizationAction);        
     }
     
     if (m_enableAST)
     {
         QAction* pASTAction = new QAction(QIcon(":/resource/image/tab/ast.png"), tr("AST"), &menu);
-        connect(pASTAction, &QAction::triggered, this, &CodeInspectorTabWidget::requestAST);
+        connect(pASTAction, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestAST);
         menu.addAction(pASTAction);
     }
     
     if (m_enableGCCTreeRTL)
     {
         QAction* pGCCTreeRTLAction = new QAction(QIcon(":/resource/image/tab/gcc.png"), tr("GCC Tree/RTL Output"), &menu);
-        connect(pGCCTreeRTLAction, &QAction::triggered, this, &CodeInspectorTabWidget::requestGCCTreeRTL);
+        connect(pGCCTreeRTLAction, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestGCCTreeRTL);
         menu.addAction(pGCCTreeRTLAction);
     }
     
     if (m_enableLLVMMCA)
     {
         QAction* pLLVMMCAAction = new QAction(QIcon(":/resource/image/tab/llvm.png"), tr("LLVM MCA"), &menu);
-        connect(pLLVMMCAAction, &QAction::triggered, this, &CodeInspectorTabWidget::requestLLVMMCA);
+        connect(pLLVMMCAAction, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestLLVMMCA);
         menu.addAction(pLLVMMCAAction);        
     }
     
     if (m_enableClangTidy)
     {
         QAction* pClangTidyAction = new QAction(QIcon(":/resource/image/tab/clangtidy.png"), tr("Clang Tidy"), &menu);
-        connect(pClangTidyAction, &QAction::triggered, this, &CodeInspectorTabWidget::requestClangTidy);
+        connect(pClangTidyAction, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestClangTidy);
         menu.addAction(pClangTidyAction);
     }
     
     if (m_enablePahole)
     {
         QAction* pPaholeAction = new QAction(QIcon(":/resource/image/tab/pahole.png"), tr("Pahole"), &menu);
-        connect(pPaholeAction, &QAction::triggered, this, &CodeInspectorTabWidget::requestPahole);
+        connect(pPaholeAction, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestPahole);
         menu.addAction(pPaholeAction);
     }
     
@@ -143,7 +118,63 @@ void CodeInspectorTabWidget::onCustomContextMenuRequested(const QPoint &pos)
 
 void CodeInspectorTabWidget::onRefreshGCCDumpOutput()
 {
+    Q_ASSERT(m_gccTreeRTL);
     emit refreshGCCDumpOutput(m_gccTreeRTL->getCurrentSelectedPass(), m_gccTreeRTL->isGCCTreeEnabled(), m_gccTreeRTL->isRTLEnabled());
+}
+
+void CodeInspectorTabWidget::onRequestLLVMMCA()
+{
+    if (!m_llvmMCA)
+    {
+        m_llvmMCA = new LLVMMachineCodeAnalyzerOutput(this);
+        m_llvmMCA->initialize();
+        addTab(m_llvmMCA, QIcon(":/resource/image/tab/llvm.png"), tr("LLVM MCA"));
+    }
+    emit requestLLVMMCA();
+}
+
+void CodeInspectorTabWidget::onRequestAST()
+{
+    if (!m_ast)
+    {
+        m_ast = new ASTOutput(this);
+        m_ast->initialize();
+        addTab(m_ast, QIcon(":/resource/image/tab/ast.png"), tr("AST"));
+    }
+    emit requestAST();
+}
+
+void CodeInspectorTabWidget::onRequestOptimization()
+{
+    if (!m_optimization)
+    {
+        m_optimization = new OptimizationOutput(this);
+        m_optimization->initialize();
+        addTab(m_optimization, QIcon(":/resource/image/tab/optimization.png"), tr("Optimization"));
+    }
+    emit requestOptimization();
+}
+
+void CodeInspectorTabWidget::onRequestGCCTreeRTL()
+{
+    if (!m_gccTreeRTL)
+    {
+        m_gccTreeRTL = new GCCTreeRTLOutput(this);
+        m_gccTreeRTL->initialize();
+        addTab(m_gccTreeRTL, QIcon(":/resource/image/tab/gcc.png"), tr("GCC Tree/RTL Output"));
+        connect(m_gccTreeRTL, &GCCTreeRTLOutput::refresh, this, &CodeInspectorTabWidget::onRefreshGCCDumpOutput);
+    }
+    emit requestGCCTreeRTL();
+}
+
+void CodeInspectorTabWidget::onRequestPahole()
+{
+    emit requestPahole();
+}
+
+void CodeInspectorTabWidget::onRequestClangTidy()
+{
+    emit requestClangTidy();
 }
 
 void CodeInspectorTabWidget::setEnableGCCTreeRTL(bool enabled)

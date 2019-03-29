@@ -44,6 +44,12 @@ signals:
 private slots:
     void onCustomContextMenuRequested(const QPoint &pos);
     void onRefreshGCCDumpOutput();
+    void onRequestLLVMMCA();
+    void onRequestAST();
+    void onRequestOptimization();
+    void onRequestGCCTreeRTL();
+    void onRequestPahole();
+    void onRequestClangTidy();
 private:
     CodeInspector *m_codeInspector;
     LLVMMachineCodeAnalyzerOutput *m_llvmMCA{nullptr};

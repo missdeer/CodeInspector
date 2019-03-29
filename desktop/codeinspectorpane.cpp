@@ -312,7 +312,6 @@ void CodeInspectorPane::onToggleOutput()
 void CodeInspectorPane::onActionBinaryTriggered()
 {
     m_codeInspectorTabWidget->setEnablePahole(m_btnBinrary->isEnabled() && m_btnBinrary->isChecked());
-    m_backend->setEnablePahole(m_btnBinrary->isEnabled() && m_btnBinrary->isChecked());
     onDelayCompile();
 }
 
@@ -373,12 +372,6 @@ void CodeInspectorPane::onCurrentCompilerChanged(const QString &compilerName)
     m_codeInspectorTabWidget->setEnableOptimization(compiler->supportsOptimizationOutput);
     m_codeInspectorTabWidget->setEnableClangTidy(compilerName.contains("clang", Qt::CaseInsensitive) || compilerName.contains("gcc", Qt::CaseInsensitive) );
     m_codeInspectorTabWidget->setEnablePahole(compiler->supportsBinary && m_btnBinrary->isChecked());
-    m_backend->setEnableAST(compiler->supportsAstView);
-    m_backend->setEnableLLVMMCA(compilerName.contains("clang", Qt::CaseInsensitive) || compilerName.contains("gcc", Qt::CaseInsensitive) );
-    m_backend->setEnableGCCTreeRTL(compiler->supportsGccDump);
-    m_backend->setEnableOptimization(compiler->supportsOptimizationOutput);
-    m_backend->setEnableClangTidy(compilerName.contains("clang", Qt::CaseInsensitive) || compilerName.contains("gcc", Qt::CaseInsensitive) );
-    m_backend->setEnablePahole(compiler->supportsBinary && m_btnBinrary->isChecked());
     
     onDelayCompile();
     emit currentCompilerChanged(compilerName);
