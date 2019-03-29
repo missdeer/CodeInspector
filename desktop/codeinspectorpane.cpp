@@ -312,6 +312,12 @@ void CodeInspectorPane::onToggleOutput()
 void CodeInspectorPane::onActionBinaryTriggered()
 {
     m_codeInspectorTabWidget->setEnablePahole(m_btnBinrary->isEnabled() && m_btnBinrary->isChecked());
+    if (!m_codeInspectorTabWidget->enablePahole())
+        m_backend->setEnablePahole(false);
+    m_codeInspectorTabWidget->setEnableLLVMMCA(!m_btnBinrary->isEnabled() ||  !m_btnBinrary->isChecked());
+    if (!m_codeInspectorTabWidget->enableLLVMMCA())
+        m_backend->setEnableLLVMMCA(false);
+
     onDelayCompile();
 }
 
@@ -367,11 +373,23 @@ void CodeInspectorPane::onCurrentCompilerChanged(const QString &compilerName)
     m_btnDemangle->setEnabled(compiler->supportsDemangle);
     
     m_codeInspectorTabWidget->setEnableAST(compiler->supportsAstView);
-    m_codeInspectorTabWidget->setEnableLLVMMCA(compilerName.contains("clang", Qt::CaseInsensitive) || compilerName.contains("gcc", Qt::CaseInsensitive) );
+    if (!m_codeInspectorTabWidget->enableAST())
+        m_backend->setEnableAST(false);
+    m_codeInspectorTabWidget->setEnableLLVMMCA(!compiler->supportsBinary && (compilerName.contains("clang", Qt::CaseInsensitive) || compilerName.contains("gcc", Qt::CaseInsensitive)) );
+    if (!m_codeInspectorTabWidget->enableLLVMMCA())
+        m_backend->setEnableLLVMMCA(false);
     m_codeInspectorTabWidget->setEnableGCCTreeRTL(compiler->supportsGccDump);
+    if (!m_codeInspectorTabWidget->enableGCCTreeRTL())
+        m_backend->setEnableGCCTreeRTL(false);
     m_codeInspectorTabWidget->setEnableOptimization(compiler->supportsOptimizationOutput);
+    if (!m_codeInspectorTabWidget->enableOptimization())
+        m_backend->setEnableOptimization(false);
     m_codeInspectorTabWidget->setEnableClangTidy(compilerName.contains("clang", Qt::CaseInsensitive) || compilerName.contains("gcc", Qt::CaseInsensitive) );
+    if (!m_codeInspectorTabWidget->enableClangTidy())
+        m_backend->setEnableClangTidy(false);
     m_codeInspectorTabWidget->setEnablePahole(compiler->supportsBinary && m_btnBinrary->isChecked());
+    if (!m_codeInspectorTabWidget->enablePahole())
+        m_backend->setEnablePahole(false);
     
     onDelayCompile();
     emit currentCompilerChanged(compilerName);

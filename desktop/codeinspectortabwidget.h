@@ -33,6 +33,12 @@ public:
     void setEnableGCCTreeRTL(bool enabled); 
     void setEnablePahole(bool enabled);
     void setEnableClangTidy(bool enabled);   
+    bool enableLLVMMCA() const;    
+    bool enableAST() const;    
+    bool enableOptimization() const;    
+    bool enableGCCTreeRTL() const;    
+    bool enablePahole() const;    
+    bool enableClangTidy() const;    
 signals:
     void requestLLVMMCA();
     void requestAST();

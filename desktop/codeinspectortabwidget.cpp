@@ -177,6 +177,36 @@ void CodeInspectorTabWidget::onRequestClangTidy()
     emit requestClangTidy();
 }
 
+bool CodeInspectorTabWidget::enableClangTidy() const
+{
+    return m_enableClangTidy;
+}
+
+bool CodeInspectorTabWidget::enablePahole() const
+{
+    return m_enablePahole;
+}
+
+bool CodeInspectorTabWidget::enableGCCTreeRTL() const
+{
+    return m_enableGCCTreeRTL;
+}
+
+bool CodeInspectorTabWidget::enableOptimization() const
+{
+    return m_enableOptimization;
+}
+
+bool CodeInspectorTabWidget::enableAST() const
+{
+    return m_enableAST;
+}
+
+bool CodeInspectorTabWidget::enableLLVMMCA() const
+{
+    return m_enableLLVMMCA;
+}
+
 void CodeInspectorTabWidget::setEnableGCCTreeRTL(bool enabled)
 {
     m_enableGCCTreeRTL = enabled;
