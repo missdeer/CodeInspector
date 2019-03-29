@@ -32,6 +32,7 @@ private slots:
     void onShowExampleList();
     void onShowLibraryList();
     void onExampleTriggered();
+    void onLibraryVersionTriggered();
 private:
     CodeEditor *m_codeEditor;
     QComboBox *m_languageList;

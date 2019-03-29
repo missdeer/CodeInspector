@@ -64,12 +64,14 @@ void CodeEditorPane::onCurrentLanguageChanged(const QString &text)
     if (m_languageList->count() > 1)
         g_settings->setDefaultLanguageIndex(m_languageList->currentIndex());
     emit currentLanguageChanged(text);
-//    makeLibariesMenu();
+    makeLibariesMenu();
     makeExamplesMenu();
 }
 
 void CodeEditorPane::onShowExampleList()
 {
+    if (!m_menuExamples)
+        makeExamplesMenu();
     if (m_menuExamples)
     {
         QPoint pt = mapToGlobal( QPoint(m_btnLoadExample->x(), m_btnLoadExample->y() + m_btnLoadExample->height()));
@@ -79,9 +81,12 @@ void CodeEditorPane::onShowExampleList()
 
 void CodeEditorPane::onShowLibraryList()
 {
-    if (m_menuLibraries)
+    if (!m_menuLibraries)        
+        makeLibariesMenu();
+    if (m_menuLibraries)  
     {
-        m_menuLibraries->exec(QCursor::pos());
+        QPoint pt = mapToGlobal( QPoint(m_btnLibraries->x(), m_btnLibraries->y() + m_btnLibraries->height()));
+        m_menuLibraries->exec(pt);
     }
 }
 
@@ -93,29 +98,55 @@ void CodeEditorPane::onExampleTriggered()
     m_codeEditor->setContent(content);
 }
 
+void CodeEditorPane::onLibraryVersionTriggered()
+{
+    
+}
+
 void CodeEditorPane::makeLibariesMenu()
 {
-    auto libraries = ciApp->getLibraryList(m_languageList->currentText());
     if (m_menuLibraries)
     {
         delete m_menuLibraries;
         m_menuLibraries = nullptr;
     }
+    auto libraries = ciApp->getLibraryList(m_languageList->currentText());
+    if (!libraries)
+        return;
     m_menuLibraries = new QMenu(this);
     for (const auto l : *libraries)
     {
-        
+        const auto &versions = l->getVersions();
+        if (versions.isEmpty())
+            continue;
+        QActionGroup *ag = new QActionGroup(this);
+        ag->setExclusive(true);
+        QMenu *menu = m_menuLibraries->addMenu(l->getName());
+        QAction * action = menu->addAction(" - ");
+        connect(action, &QAction::triggered, this, &CodeEditorPane::onLibraryVersionTriggered);
+        ag->addAction(action);
+        action->setCheckable(true);
+        action->setChecked(true);
+        for (const auto v : versions)
+        {
+            QAction * action = menu->addAction(v->getVersion());
+            action->setCheckable(true);
+            ag->addAction(action);
+            connect(action, &QAction::triggered, this, &CodeEditorPane::onLibraryVersionTriggered);
+        }
     }
 }
 
 void CodeEditorPane::makeExamplesMenu()
 {
-    auto examples = ciApp->getExampleList(m_languageList->currentText());
     if (m_menuExamples)
     {
         delete m_menuExamples;
         m_menuExamples = nullptr;
     }
+    auto examples = ciApp->getExampleList(m_languageList->currentText());
+    if (examples.isEmpty())
+        return;
     m_menuExamples = new QMenu(this);
     for (const auto & e : examples)
     {
