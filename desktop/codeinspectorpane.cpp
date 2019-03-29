@@ -375,7 +375,7 @@ void CodeInspectorPane::onCurrentCompilerChanged(const QString &compilerName)
     m_codeInspectorTabWidget->setEnableAST(compiler->supportsAstView);
     if (!m_codeInspectorTabWidget->enableAST())
         m_backend->setEnableAST(false);
-    m_codeInspectorTabWidget->setEnableLLVMMCA(!compiler->supportsBinary && (compilerName.contains("clang", Qt::CaseInsensitive) || compilerName.contains("gcc", Qt::CaseInsensitive)) );
+    m_codeInspectorTabWidget->setEnableLLVMMCA((!compiler->supportsBinary || !m_btnBinrary->isChecked()) && (compilerName.contains("clang", Qt::CaseInsensitive) || compilerName.contains("gcc", Qt::CaseInsensitive)) );
     if (!m_codeInspectorTabWidget->enableLLVMMCA())
         m_backend->setEnableLLVMMCA(false);
     m_codeInspectorTabWidget->setEnableGCCTreeRTL(compiler->supportsGccDump);
