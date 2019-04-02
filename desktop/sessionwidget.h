@@ -12,6 +12,12 @@ class SessionWidget : public QWidget
 public:
     explicit SessionWidget(QWidget *parent = nullptr);
     void initialize();
+    
+    void open(const QString &fileName);
+    void save();
+    void save(const QString &fileName);
+    bool isSaved();
+    bool hasUnsavedModified();
 signals:
     
 public slots:

@@ -36,3 +36,28 @@ void SessionWidget::initialize()
     m_codeEditorPane->initialize();
 }
 
+void SessionWidget::open(const QString &fileName)
+{
+    
+}
+
+void SessionWidget::save()
+{
+    
+}
+
+void SessionWidget::save(const QString &fileName)
+{
+    
+}
+
+bool SessionWidget::isSaved()
+{
+    return false;
+}
+
+bool SessionWidget::hasUnsavedModified()
+{
+    return false;
+}
+
