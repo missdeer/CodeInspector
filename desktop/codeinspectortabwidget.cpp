@@ -85,47 +85,35 @@ void CodeInspectorTabWidget::onCustomContextMenuRequested(const QPoint &pos)
 {
     QMenu menu(this);
     
-    if (m_enableOptimization)
-    {
-        QAction* pOptimizationAction = new QAction(QIcon(":/resource/image/tab/optimization.png"), tr("Optimization Output"), &menu);
-        connect(pOptimizationAction, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestOptimization);
-        menu.addAction(pOptimizationAction);        
-    }
+    QAction* pOptimizationAction = new QAction(QIcon(":/resource/image/tab/optimization.png"), tr("Optimization"), &menu);
+    pOptimizationAction->setEnabled(m_enableOptimization);
+    connect(pOptimizationAction, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestOptimization);
+    menu.addAction(pOptimizationAction);
     
-    if (m_enableAST)
-    {
-        QAction* pASTAction = new QAction(QIcon(":/resource/image/tab/ast.png"), tr("AST"), &menu);
-        connect(pASTAction, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestAST);
-        menu.addAction(pASTAction);
-    }
+    QAction* pASTAction = new QAction(QIcon(":/resource/image/tab/ast.png"), tr("AST"), &menu);
+    pASTAction->setEnabled(m_enableAST);
+    connect(pASTAction, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestAST);
+    menu.addAction(pASTAction);
     
-    if (m_enableGCCTreeRTL)
-    {
-        QAction* pGCCTreeRTLAction = new QAction(QIcon(":/resource/image/tab/gcc.png"), tr("GCC Tree/RTL Output"), &menu);
-        connect(pGCCTreeRTLAction, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestGCCTreeRTL);
-        menu.addAction(pGCCTreeRTLAction);
-    }
+    QAction* pGCCTreeRTLAction = new QAction(QIcon(":/resource/image/tab/gcc.png"), tr("GCC Tree/RTL"), &menu);
+    pGCCTreeRTLAction->setEnabled(m_enableGCCTreeRTL);
+    connect(pGCCTreeRTLAction, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestGCCTreeRTL);
+    menu.addAction(pGCCTreeRTLAction);
     
-    if (m_enableLLVMMCA)
-    {
-        QAction* pLLVMMCAAction = new QAction(QIcon(":/resource/image/tab/llvm.png"), tr("LLVM MCA"), &menu);
-        connect(pLLVMMCAAction, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestLLVMMCA);
-        menu.addAction(pLLVMMCAAction);        
-    }
+    QAction* pLLVMMCAAction = new QAction(QIcon(":/resource/image/tab/llvm.png"), tr("LLVM MCA"), &menu);
+    pLLVMMCAAction->setEnabled(m_enableLLVMMCA);
+    connect(pLLVMMCAAction, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestLLVMMCA);
+    menu.addAction(pLLVMMCAAction);
     
-    if (m_enableClangTidy)
-    {
-        QAction* pClangTidyAction = new QAction(QIcon(":/resource/image/tab/clangtidy.png"), tr("Clang Tidy"), &menu);
-        connect(pClangTidyAction, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestClangTidy);
-        menu.addAction(pClangTidyAction);
-    }
+    QAction* pClangTidyAction = new QAction(QIcon(":/resource/image/tab/clangtidy.png"), tr("Clang Tidy"), &menu);
+    pClangTidyAction->setEnabled(m_enableClangTidy);
+    connect(pClangTidyAction, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestClangTidy);
+    menu.addAction(pClangTidyAction);
     
-    if (m_enablePahole)
-    {
-        QAction* pPaholeAction = new QAction(QIcon(":/resource/image/tab/pahole.png"), tr("Pahole"), &menu);
-        connect(pPaholeAction, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestPahole);
-        menu.addAction(pPaholeAction);
-    }
+    QAction* pPaholeAction = new QAction(QIcon(":/resource/image/tab/pahole.png"), tr("Pahole"), &menu);
+    pPaholeAction->setEnabled(m_enablePahole);
+    connect(pPaholeAction, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestPahole);
+    menu.addAction(pPaholeAction);
     
     menu.exec(mapToGlobal(pos));    
 }
@@ -176,7 +164,7 @@ void CodeInspectorTabWidget::onRequestGCCTreeRTL()
     {
         m_gccTreeRTL = new GCCTreeRTLOutput(this);
         m_gccTreeRTL->initialize();
-        addTab(m_gccTreeRTL, QIcon(":/resource/image/tab/gcc.png"), tr("GCC Tree/RTL Output"));
+        addTab(m_gccTreeRTL, QIcon(":/resource/image/tab/gcc.png"), tr("GCC Tree/RTL"));
         connect(m_gccTreeRTL, &GCCTreeRTLOutput::refresh, this, &CodeInspectorTabWidget::onRefreshGCCDumpOutput);
     }
     emit requestGCCTreeRTL();
