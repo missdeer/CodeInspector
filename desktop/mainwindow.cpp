@@ -36,11 +36,11 @@ void MainWindow::on_tabWidget_tabCloseRequested(int index)
     ui->tabWidget->removeTab(index);
 }
 
-void MainWindow::addSessionTab()
+int MainWindow::addSessionTab()
 {
     auto session = new SessionWidget(this);
     session->initialize();
-    ui->tabWidget->addTab(session, tr("Untitled %1").arg(ui->tabWidget->count() + 1));    
+    return ui->tabWidget->addTab(session, tr("Untitled %1").arg(ui->tabWidget->count() + 1));    
 }
 
 void MainWindow::on_actionExit_triggered()
@@ -68,7 +68,8 @@ void MainWindow::on_actionOpenSession_triggered()
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open Session"),  QString(), tr("Session Files (*.cis)"));
     if (QFile::exists(fileName))
     {
-        auto session = qobject_cast<SessionWidget*>(ui->tabWidget->currentWidget());
+        int index = addSessionTab();
+        auto session = qobject_cast<SessionWidget*>(ui->tabWidget->widget(index));        
         session->open(fileName);
     }
 }
