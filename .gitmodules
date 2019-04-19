@@ -1,6 +1,6 @@
-[submodule "3rdparty/scintilla"]
-	path = 3rdparty/scintilla
-	url = https://github.com/mirror/scintilla.git
 [submodule "3rdparty/scintilla-iOS"]
 	path = 3rdparty/scintilla-iOS
 	url = https://github.com/missdeer/Scintilla-iOS.git
+[submodule "3rdparty/scintilla"]
+	path = 3rdparty/scintilla
+	url = https://github.com/mirror/scintilla.git
