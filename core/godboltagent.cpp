@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "scopedguard.h"
 #include "networkreplyhelper.h"
 #include "compiler.hpp"
 #include "backendinterface.hpp"
@@ -137,23 +138,7 @@ void GodboltAgent::onCompileRequestFinished()
     auto* reply = qobject_cast<NetworkReplyHelper*>(sender());
     reply->deleteLater();
 
-    class Guard
-    {
-    public:
-        explicit Guard(GodboltAgent* ga)
-            : m_ga(ga)
-        {}
-        ~Guard() {
-            emit m_ga->compiled();
-        }
-        Guard(const Guard&) = delete;
-        void operator=(const Guard&) = delete;
-        Guard(Guard&&) = delete;
-        void operator=(Guard&&) = delete;
-    private:
-        GodboltAgent* m_ga;
-    };
-    Guard g(this);
+    ScopedGuard emitCompiled([this](){emit compiled();});
 
     QByteArray& content = reply->content();
 

@@ -15,6 +15,7 @@ INCLUDEPATH += $$PWD
 
 SOURCES += \
     $$PWD/scintillaconfig.cpp \
+    $$PWD/scopedguard.cpp \
     $$PWD/settings.cpp \
     $$PWD/codeeditor.cpp \
     $$PWD/codeinspector.cpp \
@@ -32,6 +33,7 @@ SOURCES += \
 
 HEADERS += \
     $$PWD/scintillaconfig.h \
+    $$PWD/scopedguard.h \
     $$PWD/settings.h \
     $$PWD/codeeditor.h \
     $$PWD/codeinspector.h \
