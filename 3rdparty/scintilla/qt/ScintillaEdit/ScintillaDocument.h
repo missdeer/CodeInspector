@@ -23,7 +23,7 @@ class WatcherHelper;
 #endif
 #endif
 
-class ScintillaDocument : public QObject
+class EXPORT_IMPORT_API ScintillaDocument : public QObject
 {
     Q_OBJECT
 

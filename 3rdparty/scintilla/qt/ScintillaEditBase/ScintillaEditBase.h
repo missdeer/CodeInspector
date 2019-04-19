@@ -46,7 +46,7 @@ class SurfaceImpl;
 #endif
 #endif
 
-class ScintillaEditBase : public QAbstractScrollArea {
+class EXPORT_IMPORT_API ScintillaEditBase : public QAbstractScrollArea {
 	Q_OBJECT
 
 public:
