@@ -38,7 +38,7 @@ INCLUDEPATH += $$PWD/scintilla/qt/ScintillaEdit \
     $$PWD/scintilla/lexlib \
     $$PWD/scintilla/include
 
-DEFINES += SCINTILLA_QT=1 SCI_LEXER=1 _CRT_SECURE_NO_DEPRECATE=1 SCI_STATIC_LINK=1
+DEFINES += SCINTILLA_QT=1 SCI_LEXER=1 _CRT_SECURE_NO_DEPRECATE=1 SCI_STATIC_LINK=1 EXPORT_IMPORT_API=
 CONFIG(release, debug|release) {
     DEFINES += NDEBUG=1
 }
