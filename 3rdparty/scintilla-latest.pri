@@ -8,7 +8,7 @@ QT       += core gui widgets
 
 CONFIG += c++17
 
-VERSION = 4.1.4
+VERSION = 4.1.7
 
 SOURCES += \
     $$PWD/scintilla/qt/ScintillaEdit/ScintillaEdit.cpp \
@@ -28,6 +28,7 @@ HEADERS  += \
     $$PWD/scintlla/src/*.h \
     $$PWD/scintlla/lexlib/*.h \
     $$PWD/scintlla/include/*.h
+
 
 OTHER_FILES +=
 
