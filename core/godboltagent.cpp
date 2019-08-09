@@ -107,6 +107,7 @@ void GodboltAgent::compile(const CompileInfo &ci)
     request.setRawHeader("Referer", "https://godbolt.org/");
     request.setRawHeader("Accept", "application/json, text/javascript, */*; q=0.01");
     request.setRawHeader("X-Requested-With", "XMLHttpRequest");
+    request.setAttribute(QNetworkRequest::HTTP2AllowedAttribute, QVariant(true));
 
     QJsonDocument doc;
     doc.setObject(rootObj);
