@@ -5,7 +5,7 @@
 #include "backendinterface.hpp"
 #include "godboltagent.h"
 
-static const QString baseUrl = QLatin1String("https://godbolt.org");
+static const QString baseUrl = QLatin1String("https://ci.minidump.info");
 
 GodboltAgent::GodboltAgent(QNetworkAccessManager &nam, QObject *parent)
     : QObject(parent)

@@ -3,7 +3,7 @@
 #include "codeinspectorapp.h"
 
 CodeInspectorApp *ciApp = nullptr;
-static const QString baseUrl = QLatin1String("https://godbolt.org");
+static const QString baseUrl = QLatin1String("https://ci.minidump.info");
 
 CodeInspectorApp::CodeInspectorApp(QObject *parent) 
     : QObject(parent)
@@ -631,7 +631,7 @@ void CodeInspectorApp::requestConfigurations()
 #if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__;
 #endif
-    QNetworkRequest request(QUrl("https://ci.minidump.info/configurations.json"));
+    QNetworkRequest request(QUrl(baseUrl + "/configurations.json"));
     request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
 
     QNetworkReply* reply = m_nam.get(request);
