@@ -219,7 +219,9 @@ void ScintillaConfig::applyLanguageStyle(const QString &configPath, const QStrin
     int errLine;
     if (!doc.setContent(&file, &errMsg, &errLine))
     {
+#if !defined(QT_NO_DEBUG)
         qDebug() << "parsing xml document failed:" << configPath << errMsg << errLine;
+#endif
         file.close();
         return;
     }
@@ -265,7 +267,9 @@ void ScintillaConfig::applyThemeStyle(const QString &themePath, const QString& l
     int errLine;
     if (!doc.setContent(&file, &errMsg, &errLine))
     {
+#if !defined(QT_NO_DEBUG)
         qDebug() << "parsing xml document failed:" << themePath << errMsg << errLine;
+#endif
         file.close();
         return;
     }
@@ -306,14 +310,14 @@ void ScintillaConfig::applyStyle(const QDomElement &styleElem)
         QString foreColor = styleElem.attribute("fgColor");
         if (!foreColor.isEmpty())
         {
-            int color = foreColor.toLong(NULL, 16);
+            int color = foreColor.toLong(nullptr, 16);
             color = ((color & 0xFF0000) >> 16) | (color & 0xFF00) | ((color & 0xFF) << 16);
             m_sci->styleSetFore(id, color);
         }
         QString backColor = styleElem.attribute("bgColor");
         if (!backColor.isEmpty())
         {
-            int color = backColor.toLong(NULL, 16);
+            int color = backColor.toLong(nullptr, 16);
             color = ((color & 0xFF0000) >> 16) | (color & 0xFF00) | ((color & 0xFF) << 16);
             m_sci->styleSetBack(id, color);
         }

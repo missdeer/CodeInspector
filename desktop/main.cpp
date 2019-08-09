@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
     QPixmap pixmap(":/CodeInspector.png");
     QSplashScreen splash(pixmap);
     splash.show();
-    a.processEvents();
+    QApplication::processEvents();
     
     splash.showMessage(QObject::tr("Creating application instance..."));
     CodeInspectorApp app;    
@@ -37,5 +37,5 @@ int main(int argc, char *argv[])
     w.showMaximized();
     
     splash.finish(&w);
-    return a.exec();
+    return QApplication::exec();
 }

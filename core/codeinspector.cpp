@@ -110,11 +110,13 @@ QMap<int, sptr_t> CodeInspector::setAsmItems(const AsmItemList &items, bool bina
         if (width > 32)
             setMarginWidthN(0, width);
     }
-
+    
+#if !defined(QT_NO_DEBUG)
     for ( auto it = markerMap.begin(); it != markerMap.end(); ++it)
     {
         qDebug() << "source:" << it.key() << ", marker:" << it.value();
     }
+#endif
     return markerMap;
 }
 

@@ -38,7 +38,9 @@ void CodeInspectorApp::initialize()
 
 void CodeInspectorApp::requestLanguageList()
 {
+#if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__;
+#endif
     QString requestUrl = baseUrl + "/api/languages";
     QNetworkRequest request(requestUrl);
     request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
@@ -52,7 +54,9 @@ void CodeInspectorApp::requestLanguageList()
 
 LanguageList &CodeInspectorApp::getLanguageList()
 {
+#if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__;
+#endif
     if (m_languageList.empty())
     {
         QByteArray content;
@@ -68,7 +72,9 @@ LanguageList &CodeInspectorApp::getLanguageList()
 
 CompilerListPtr CodeInspectorApp::getCompilerList(const QString &languageName)
 {
+#if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__ << languageName << m_compilerMap.size();
+#endif
     auto it = m_compilerMap.find(languageName);
     if (m_compilerMap.end() == it)
     {
@@ -101,7 +107,9 @@ CompilerPtr CodeInspectorApp::getCompiler(const QString &language, const QString
 
 void CodeInspectorApp::requestCompilerList(const QString &language)
 {
+#if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__;
+#endif
     QString requestUrl = baseUrl + "/api/compilers/" + getLanguageId(language);
     QNetworkRequest request(requestUrl);
     request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
@@ -116,15 +124,18 @@ void CodeInspectorApp::requestCompilerList(const QString &language)
 
 bool CodeInspectorApp::storeCompilerList(const QString& name, const QByteArray &content)
 {
+#if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__;
-
+#endif
     QString d = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/compilerlist";
     QDir dir(d);
     if (!dir.exists())
     {
         if (!dir.mkpath(d))
         {
+#if !defined(QT_NO_DEBUG)
             qDebug() << "creating directory failed:" << d;
+#endif
             return false;
         }
     }
@@ -132,7 +143,9 @@ bool CodeInspectorApp::storeCompilerList(const QString& name, const QByteArray &
     QFile f(path);
     if (!f.open(QIODevice::WriteOnly))
     {
+#if !defined(QT_NO_DEBUG)
         qDebug() << "open file " << path << " for writting failed";
+#endif
         return false;
     }
     f.write(content);
@@ -142,8 +155,9 @@ bool CodeInspectorApp::storeCompilerList(const QString& name, const QByteArray &
 
 bool CodeInspectorApp::loadCompilerList(const QString &name, QByteArray &content)
 {
+#if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__;
-
+#endif
     QString d = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
     QString path = QString("%1/compilerlist/%2").arg(d, name);
     if (!QFile::exists(path))
@@ -158,13 +172,16 @@ bool CodeInspectorApp::loadCompilerList(const QString &name, QByteArray &content
 
 bool CodeInspectorApp::parseCompilerListFromJSON(const QString& language, const QByteArray &content)
 {
+#if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__;
-
+#endif
     QJsonDocument doc = QJsonDocument::fromJson(content);
 
     if (!doc.isArray())
     {
+#if !defined(QT_NO_DEBUG)
         qDebug() << "compiler list is expected to be an array:" << QString(content);
+#endif
         return false;
     }
 
@@ -177,7 +194,9 @@ bool CodeInspectorApp::parseCompilerListFromJSON(const QString& language, const 
     {
         if (!a.isObject())
         {
+#if !defined(QT_NO_DEBUG)
             qDebug() << "compiler list item is expected to be an object:"  << QString(content);
+#endif
             return false;
         }
         QJsonObject o = a.toObject();
@@ -230,14 +249,17 @@ bool CodeInspectorApp::parseCompilerListFromJSON(const QString& language, const 
 
 bool CodeInspectorApp::parseCompilerListFromConfiguration(QJsonArray &array)
 {
+#if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__;
-
+#endif
     CompilerListPtr compilerList;
     for ( auto a : array)
     {
         if (!a.isObject())
         {
+#if !defined(QT_NO_DEBUG)
             qDebug() << "compiler list item is expected to be an object" ;
+#endif
             return false;
         }
         QJsonObject o = a.toObject();
@@ -282,15 +304,18 @@ bool CodeInspectorApp::parseCompilerListFromConfiguration(QJsonArray &array)
 
 bool CodeInspectorApp::storeLanguageList(const QByteArray &content)
 {
+#if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__;
-
+#endif
     QString d = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) ;
     QDir dir(d);
     if (!dir.exists())
     {
         if (!dir.mkpath(d))
         {
+#if !defined(QT_NO_DEBUG)
             qDebug() << "creating directory failed:" << d;
+#endif
             return false;
         }
     }
@@ -298,7 +323,9 @@ bool CodeInspectorApp::storeLanguageList(const QByteArray &content)
     QFile f(path);
     if (!f.open(QIODevice::WriteOnly))
     {
+#if !defined(QT_NO_DEBUG)
         qDebug() << "open file " << path << " for writting failed";
+#endif
         return false;
     }
     f.write(content);
@@ -308,15 +335,18 @@ bool CodeInspectorApp::storeLanguageList(const QByteArray &content)
 
 bool CodeInspectorApp::loadLanguageList(QByteArray &content)
 {
+#if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__;
-
+#endif
     QString path = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/languages";
     if (!QFile::exists(path))
         return false;
     QFile f(path);
     if (!f.open(QIODevice::ReadOnly))
     {
+#if !defined(QT_NO_DEBUG)
         qDebug() << "open file " << path << " for reading failed";
+#endif
         return false;
     }
     content = f.readAll();
@@ -326,13 +356,16 @@ bool CodeInspectorApp::loadLanguageList(QByteArray &content)
 
 bool CodeInspectorApp::parseLanguageListFromJSON(const QByteArray &content)
 {
+#if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__;
-
+#endif
     QJsonDocument doc = QJsonDocument::fromJson(content);
 
     if (!doc.isArray())
     {
+#if !defined(QT_NO_DEBUG)
         qDebug() << "language list is expected to be an array:" << QString(content);
+#endif
         return false;
     }
 
@@ -343,7 +376,9 @@ bool CodeInspectorApp::parseLanguageListFromJSON(const QByteArray &content)
     {
         if (!l.isObject())
         {
+#if !defined(QT_NO_DEBUG)
             qDebug() << "language list item is expected to be an object:"  << QString(content);
+#endif
             return false;
         }
 
@@ -359,7 +394,9 @@ bool CodeInspectorApp::parseLanguageListFromJSON(const QByteArray &content)
         {
             if (!ext.isString())
             {
+#if !defined(QT_NO_DEBUG)
                 qDebug() << "extensions item is expected to be a string:" << QString(content);
+#endif
                 return false;
             }
             lang->extensions.append(ext.toString());
@@ -369,7 +406,9 @@ bool CodeInspectorApp::parseLanguageListFromJSON(const QByteArray &content)
         {
             if (!a.isString())
             {
+#if !defined(QT_NO_DEBUG)
                 qDebug() << "alias item is expected to be a string:" << QString(content);
+#endif
                 return false;
             }
             lang->alias.append(a.toString());
@@ -383,14 +422,17 @@ bool CodeInspectorApp::parseLanguageListFromJSON(const QByteArray &content)
 
 bool CodeInspectorApp::parseLanguageListFromConfiguration(QJsonObject &obj)
 {
+#if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__;
-
+#endif
     m_languageList.clear();
     for (auto v : obj)
     {
         if (!v.isObject())
         {
+#if !defined(QT_NO_DEBUG)
             qDebug() << "language item is expected to be an object";
+#endif
             return false;
         }
         QJsonObject o = v.toObject();
@@ -405,7 +447,9 @@ bool CodeInspectorApp::parseLanguageListFromConfiguration(QJsonObject &obj)
         {
             if (!ext.isString())
             {
+#if !defined(QT_NO_DEBUG)
                 qDebug() << "extensions item is expected to be a string";
+#endif
                 return false;
             }
             lang->extensions.append(ext.toString());
@@ -415,7 +459,9 @@ bool CodeInspectorApp::parseLanguageListFromConfiguration(QJsonObject &obj)
         {
             if (!a.isString())
             {
+#if !defined(QT_NO_DEBUG)
                 qDebug() << "alias item is expected to be a string";
+#endif
                 return false;
             }
             lang->alias.append(a.toString());
@@ -428,8 +474,9 @@ bool CodeInspectorApp::parseLanguageListFromConfiguration(QJsonObject &obj)
 
 bool CodeInspectorApp::parseLibListFromConfiguration(QJsonObject &obj)
 {
+#if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__;
-
+#endif
     m_libs.clear();
     auto languagesId = obj.keys();
     for (auto& language : languagesId)
@@ -437,7 +484,9 @@ bool CodeInspectorApp::parseLibListFromConfiguration(QJsonObject &obj)
         auto libs = obj[language];
         if (!libs.isObject())
         {
+#if !defined(QT_NO_DEBUG)
             qDebug() << "libs is expected to be an object";
+#endif
             return false;
         }
         LibraryListPtr libraryList(new LibraryList);
@@ -449,7 +498,9 @@ bool CodeInspectorApp::parseLibListFromConfiguration(QJsonObject &obj)
             auto lib = libsObj[libId];
             if (!lib.isObject())
             {
+#if !defined(QT_NO_DEBUG)
                 qDebug() << "lib is expected to be an object";
+#endif
                 return false;
             }
             LibraryPtr library(new Library);
@@ -467,7 +518,9 @@ bool CodeInspectorApp::parseLibListFromConfiguration(QJsonObject &obj)
                 auto version = versions[versionId];
                 if (!version.isObject())
                 {
+#if !defined(QT_NO_DEBUG)
                     qDebug() << "version is expected to be an object";
+#endif
                     return false;
                 }
                 auto versionObj = version.toObject();
@@ -491,8 +544,9 @@ bool CodeInspectorApp::parseLibListFromConfiguration(QJsonObject &obj)
 
 bool CodeInspectorApp::parseDefaultCompilerFromConfiguration(QJsonObject &obj)
 {
+#if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__;
-
+#endif
     auto languages = obj.keys();
     m_defaultCompiler.clear();
     for (const auto& l : languages)
@@ -555,7 +609,9 @@ QString CodeInspectorApp::getExampleContent(const QString &languageName, const Q
 
 const QString &CodeInspectorApp::getDefaultCompilerName(const QString &languageName)
 {
+#if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__ << languageName;
+#endif
     static QString emptyString;
     auto languageId = getLanguageId(languageName);
     auto langIt = m_defaultCompiler.find(languageId);
@@ -572,7 +628,9 @@ const QString &CodeInspectorApp::getDefaultCompilerName(const QString &languageN
 
 void CodeInspectorApp::requestConfigurations()
 {
+#if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__;
+#endif
     QString requestUrl = baseUrl + "/";
     QNetworkRequest request(requestUrl);
     request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
@@ -585,14 +643,18 @@ void CodeInspectorApp::requestConfigurations()
 
 bool CodeInspectorApp::storeConfiguration(const QByteArray &content)
 {
+#if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__;
+#endif
     QString d = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
     QDir dir(d);
     if (!dir.exists())
     {
         if (!dir.mkpath(d))
         {
+#if !defined(QT_NO_DEBUG)
             qDebug() << "creating directory failed:" << d;
+#endif
             return false;
         }
     }
@@ -600,7 +662,9 @@ bool CodeInspectorApp::storeConfiguration(const QByteArray &content)
     QFile f(path);
     if (!f.open(QIODevice::WriteOnly))
     {
+#if !defined(QT_NO_DEBUG)
         qDebug() << "open file " << path << " for writting failed";
+#endif
         return false;
     }
     f.write(content);
@@ -610,14 +674,20 @@ bool CodeInspectorApp::storeConfiguration(const QByteArray &content)
 
 bool CodeInspectorApp::loadConfiguration(const QString& path, QByteArray &content)
 {
+#if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__;
+#endif
     QFile f(path);
     if (!f.open(QIODevice::ReadOnly))
     {
+#if !defined(QT_NO_DEBUG)
         qDebug() << "open file " << path << " for reading failed";
+#endif
         return false;
     }
+#if !defined(QT_NO_DEBUG)
     qDebug() << "load configurations from" << path;
+#endif
     content = f.readAll();
     f.close();
     return true;
@@ -625,12 +695,15 @@ bool CodeInspectorApp::loadConfiguration(const QString& path, QByteArray &conten
 
 bool CodeInspectorApp::parseConfiguration(const QByteArray &content)
 {
+#if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__;
-
+#endif
     QJsonDocument doc = QJsonDocument::fromJson(content);
     if (!doc.isObject())
     {
+#if !defined(QT_NO_DEBUG)
         qDebug() << "configuration is expected to be an object:" << content;
+#endif
         return false;
     }
 
@@ -657,13 +730,17 @@ const QString &CodeInspectorApp::getExample(const QString &language) const
     auto it = std::find_if(m_languageList.begin(), m_languageList.end(),
                            [&language](LanguagePtr l) { return l->name == language;});
     Q_ASSERT(m_languageList.end() != it);
+#if !defined(QT_NO_DEBUG)
     qDebug() << "get example:" << (*it)->example;
+#endif
     return (*it)->example;
 }
 
 void CodeInspectorApp::onLanguageListRequestFinished()
 {
+#if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__;
+#endif
     auto* reply = qobject_cast<NetworkReplyHelper*>(sender());
     reply->deleteLater();
 
@@ -675,7 +752,9 @@ void CodeInspectorApp::onLanguageListRequestFinished()
 
 void CodeInspectorApp::onConfigurationRequestFinished()
 {
+#if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__;
+#endif
     auto* reply = qobject_cast<NetworkReplyHelper*>(sender());
     reply->deleteLater();
 
@@ -703,7 +782,9 @@ void CodeInspectorApp::onConfigurationRequestFinished()
 
 void CodeInspectorApp::switchLanguage(const QString &language)
 {
+#if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__ << m_compilerMap.size();
+#endif
     auto it = m_compilerMap.find(language);
     if (m_compilerMap.end() != it && !it.value()->isEmpty())
     {
@@ -723,7 +804,9 @@ void CodeInspectorApp::switchLanguage(const QString &language)
 
 void CodeInspectorApp::onCompilerListRequestFinished()
 {
+#if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__;
+#endif
     auto* reply = qobject_cast<NetworkReplyHelper*>(sender());
     reply->deleteLater();
 
@@ -745,7 +828,9 @@ void CodeInspectorApp::onCompilerListRequestFinished()
 
 bool CodeInspectorApp::canCompile(const QString& language, const QString& compiler)
 {
+#if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__ << language << compiler;
+#endif
     if (m_compilerMap.find(language) == m_compilerMap.end())
         return false;
     auto compilerList = m_compilerMap.find(language).value();

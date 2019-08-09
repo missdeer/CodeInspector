@@ -192,8 +192,9 @@ void CodeInspectorPane::onNeedCompile()
 {
     if (!ciApp->canCompile(m_languageName, m_compilerList->currentText()))
         return;
+#if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__;
-    
+#endif
     Q_ASSERT(m_codeEditor);
     CompileInfo ci;
     ci.source = m_codeEditor->getText(m_codeEditor->textLength() + 1);
@@ -240,12 +241,16 @@ void CodeInspectorPane::onNeedCompile()
     
     storeToCache(ci.language, ci);
     storeToCache("lastSession", ci);
+#if !defined(QT_NO_DEBUG)
     qDebug() << "store:" << ci.compiler;
+#endif
 }
 
 void CodeInspectorPane::onCompiled()
 {
+#if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__;
+#endif
     auto content = m_backend->getAsmContent();
     Q_ASSERT(m_codeInspectorTabWidget);
     m_codeInspectorTabWidget->setCodeInspectorContent(content, m_btnBinrary->isChecked());
@@ -294,7 +299,9 @@ void CodeInspectorPane::onHasASTOutput()
 
 void CodeInspectorPane::onDelayCompile()
 {
+#if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__;
+#endif
     if (m_timer->isActive())
         m_timer->stop();
 
@@ -453,7 +460,9 @@ void CodeInspectorPane::storeToCache(const QString &name, const CompileInfo &ci)
     QFile f(path);
     if (!f.open(QIODevice::WriteOnly))
     {
+#if !defined(QT_NO_DEBUG)
         qDebug() << "open file " << path << " for writting failed";
+#endif
         return;
     }
 
@@ -473,7 +482,9 @@ void CodeInspectorPane::storeToCache(const QString &name, const CompileInfo &ci)
            << ci.demangle
            << ci.userArguments;
     stream.commitTransaction();
+#if !defined(QT_NO_DEBUG)
     qDebug() << "commit transaction";
+#endif
     f.close();
 }
 

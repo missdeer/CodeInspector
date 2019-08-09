@@ -45,7 +45,7 @@ int MainWindow::addSessionTab()
 
 void MainWindow::on_actionExit_triggered()
 {
-    qApp->quit();
+    QCoreApplication::quit();
 }
 
 void MainWindow::on_actionVisitHomepage_triggered()
@@ -55,7 +55,7 @@ void MainWindow::on_actionVisitHomepage_triggered()
 
 void MainWindow::on_actionAbout_triggered()
 {
-    QMessageBox::about(this, tr("CodeInspector"), tr("Help you to learn how machine runs your code."));
+    QMessageBox::about(this, tr("CodeInspector"), tr("Let you know how machine understands your code."));
 }
 
 void MainWindow::on_actionNewSession_triggered()

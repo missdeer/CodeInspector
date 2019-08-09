@@ -27,15 +27,15 @@ void OptimizationOutput::setContent(const OptimizationItemList &content)
     int index = 0;
     for (const auto & oi : content)
     {
-        QTableWidgetItem *pass = new QTableWidgetItem(oi->pass);
+        auto *pass = new QTableWidgetItem(oi->pass);
         setItem(index, 0, pass);
-        QTableWidgetItem *name = new QTableWidgetItem(oi->name);
+        auto *name = new QTableWidgetItem(oi->name);
         setItem(index, 1, name);
-        QTableWidgetItem *type = new QTableWidgetItem(oi->type);
+        auto *type = new QTableWidgetItem(oi->type);
         setItem(index, 2, type);
-        QTableWidgetItem *function = new QTableWidgetItem(oi->function);
+        auto *function = new QTableWidgetItem(oi->function);
         setItem(index, 3, function);
-        QTableWidgetItem *conclusion = new QTableWidgetItem(oi->display);
+        auto *conclusion = new QTableWidgetItem(oi->display);
         setItem(index, 4, conclusion);
         index++;
     }
