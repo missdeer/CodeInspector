@@ -631,8 +631,7 @@ void CodeInspectorApp::requestConfigurations()
 #if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__;
 #endif
-    QString requestUrl = baseUrl + "/";
-    QNetworkRequest request(requestUrl);
+    QNetworkRequest request(QUrl("https://ci.minidump.info/configurations.json"));
     request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
 
     QNetworkReply* reply = m_nam.get(request);
@@ -759,24 +758,11 @@ void CodeInspectorApp::onConfigurationRequestFinished()
     reply->deleteLater();
 
     QByteArray& content = reply->content();
-    QByteArray leading("<script>window.compilerExplorerOptions = ");
-    QByteArray ending("</script>");
-    int index = content.indexOf(leading);
-    content = content.mid(index + leading.size());
-    index = content.indexOf(ending);
-    content = content.left(index);
-    
-    index = content.indexOf("\"");
-    content = content.mid(index + 1);
-    index = content.indexOf("\"");
-    content = content.left(index);
-
-    QByteArray c = QByteArray::fromPercentEncoding(content);
 #if !defined (QT_NO_DEBUG)
-    qDebug() << __FUNCTION__ << QString(c);
+    qDebug() << __FUNCTION__ << QString(content);
 #endif
-    if (parseConfiguration(c))
-        storeConfiguration(c);
+    if (parseConfiguration(content))
+        storeConfiguration(content);
 }
 
 
