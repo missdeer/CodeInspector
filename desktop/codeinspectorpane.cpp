@@ -8,6 +8,11 @@
 #include "outputwindow.h"
 #include "codeinspectorpane.h"
 
+enum CompilerUserRole {
+    CURId = Qt::UserRole,
+    CURName,
+};
+
 CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
     : QWidget(parent)
     , m_codeEditor(codeEditor)
@@ -180,7 +185,7 @@ void CodeInspectorPane::setCompilerList(CompilerListPtr cl)
         if (!groupNames.contains(c->groupName.isEmpty() ? c->group : c->groupName))
         {            
             groupNames.append(c->groupName.isEmpty() ? c->group : c->groupName);
-            qDebug() << (c->groupName.isEmpty() ? c->group : c->groupName);
+            
             QStandardItem* item = new QStandardItem( c->groupName.isEmpty() ? c->group.toUpper() : c->groupName.toUpper() );
             item->setFlags( item->flags() & ~( Qt::ItemIsEnabled | Qt::ItemIsSelectable ) );
             item->setData( "parent", Qt::AccessibleDescriptionRole );
@@ -193,9 +198,10 @@ void CodeInspectorPane::setCompilerList(CompilerListPtr cl)
             {
                 if (compiler->group == c->group)
                 {
-                    m_compilerList->addItem(compiler->name);
                     QStandardItem* item = new QStandardItem( compiler->name + QString( 4, QChar( ' ' ) ) );
                     item->setData( "child", Qt::AccessibleDescriptionRole );
+                    item->setData( compiler->id, CURId);
+                    item->setData( compiler->name, CURName);
                     model->appendRow( item );
                 }
             }
@@ -207,7 +213,11 @@ void CodeInspectorPane::setCompilerList(CompilerListPtr cl)
     {
         auto c = ciApp->getDefaultCompilerName(m_languageName);
         if (!c.isEmpty())
-            m_compilerList->setCurrentText(c);
+        {
+            int index = m_compilerList->findData(c, Qt::UserRole + 1);
+            if (index >= 0)
+                m_compilerList->setCurrentIndex(index);
+        }
     }
 }
 
@@ -218,7 +228,7 @@ void CodeInspectorPane::setCurrentLanguage(const QString &languageName)
 
 void CodeInspectorPane::onNeedCompile()
 {
-    if (!ciApp->canCompile(m_languageName, m_compilerList->currentText()))
+    if (!ciApp->canCompile(m_languageName, m_compilerList->itemData(m_compilerList->currentIndex(), CURName).toString()))
         return;
 #if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__;
@@ -228,7 +238,7 @@ void CodeInspectorPane::onNeedCompile()
     ci.source = m_codeEditor->getText(m_codeEditor->textLength() + 1);
     if (ci.source.isEmpty())
         return;
-    CompilerPtr compiler = ciApp->getCompiler(m_languageName, m_compilerList->currentText());
+    CompilerPtr compiler = ciApp->getCompiler(m_languageName, m_compilerList->itemData(m_compilerList->currentIndex(), CURName).toString());
     QStringList userArguments = {
         m_compilerArguments->text(),
     };
@@ -260,7 +270,7 @@ void CodeInspectorPane::onNeedCompile()
     ci.demangle = m_btnDemangle->isChecked();
     ci.functions = m_btnFunctions->isChecked();
     ci.language = m_languageName;
-    ci.compiler = m_compilerList->currentText();
+    ci.compiler = m_compilerList->itemData(m_compilerList->currentIndex(), CURName).toString();
     m_backend->compile(ci);
     
     m_codeEditor->setSavePoint();
