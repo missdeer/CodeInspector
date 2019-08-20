@@ -13,14 +13,22 @@ struct Compiler
     QString includeFlag;
     QString group;
     QString groupName;
-    bool supportsBinary;
-    bool supportsExecute;
-    bool supportsIntel;
-    bool supportsDemangle;
-    bool supportsCfg;
-    bool supportsAstView;
-    bool supportsOptimizationOutput;
-    bool supportsGccDump;
+    
+    bool supportsBinary{false};
+    bool supportsExecute{false};
+    bool supportsIntel{false};
+    bool supportsDemangle{false};
+    bool supportsCfg{false};
+    bool supportsAstView{false};
+    bool supportsOptimizationOutput{false};
+    bool supportsGccDump{false};
+    
+    bool supportClangTidy{false};
+    bool supportLLVMMCA{false};
+    bool supportPahole{false};
+    bool supportClangQuery{false};
+    bool supportReadElf{false};
+    bool supportX86To6502{false};
 };
 
 using CompilerPtr = QSharedPointer<Compiler>;

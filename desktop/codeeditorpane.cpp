@@ -66,6 +66,14 @@ void CodeEditorPane::onCurrentLanguageChanged(const QString &text)
     emit currentLanguageChanged(text);
     makeLibariesMenu();
     makeExamplesMenu();
+    
+    // load an default example
+    auto actions = m_menuExamples->actions();
+    if (!actions.isEmpty())
+    {
+        auto action = actions.at(0);
+        emit action->triggered();
+    }
 }
 
 void CodeEditorPane::onShowExampleList()
