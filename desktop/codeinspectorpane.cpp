@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "comboboxdelegate.h"
 #include "settings.h"
 #include "codeinspectorapp.h"
 #include "codeeditor.h"
@@ -27,6 +28,7 @@ CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
 #if defined(Q_OS_WIN)
     m_compilerList->setMaxVisibleItems(100);
 #endif
+    m_compilerList->setItemDelegate(new ComboBoxDelegate);
     
     m_compilerArguments = new QLineEdit(this);
     m_compilerArguments->setPlaceholderText(tr("Build Options"));
@@ -171,10 +173,36 @@ void CodeInspectorPane::initialize()
 void CodeInspectorPane::setCompilerList(CompilerListPtr cl)
 {
     m_compilerList->clear();
+    QStandardItemModel * model = new QStandardItemModel;
+    QStringList groupNames;    
     for (const auto c : *cl)
     {
-        m_compilerList->addItem(c->name);
+        if (!groupNames.contains(c->groupName.isEmpty() ? c->group : c->groupName))
+        {            
+            groupNames.append(c->groupName.isEmpty() ? c->group : c->groupName);
+            qDebug() << (c->groupName.isEmpty() ? c->group : c->groupName);
+            QStandardItem* item = new QStandardItem( c->groupName.isEmpty() ? c->group.toUpper() : c->groupName.toUpper() );
+            item->setFlags( item->flags() & ~( Qt::ItemIsEnabled | Qt::ItemIsSelectable ) );
+            item->setData( "parent", Qt::AccessibleDescriptionRole );
+            QFont font = item->font();
+            font.setBold( true );
+            item->setFont( font );
+            model->appendRow( item );
+            
+            for (const auto compiler : * cl )
+            {
+                if (compiler->group == c->group)
+                {
+                    m_compilerList->addItem(compiler->name);
+                    QStandardItem* item = new QStandardItem( compiler->name + QString( 4, QChar( ' ' ) ) );
+                    item->setData( "child", Qt::AccessibleDescriptionRole );
+                    model->appendRow( item );
+                }
+            }
+            continue;
+        }        
     }
+    m_compilerList->setModel(model);
     if (m_compilerList->count())
     {
         auto c = ciApp->getDefaultCompilerName(m_languageName);
@@ -376,7 +404,10 @@ void CodeInspectorPane::onCurrentCompilerChanged(const QString &compilerName)
 {
     if (compilerName.isEmpty())
         return;
-    CompilerPtr compiler = ciApp->getCompiler(m_languageName, compilerName);
+    QString cn = compilerName.trimmed();
+    CompilerPtr compiler = ciApp->getCompiler(m_languageName, cn);
+    if (!compiler)
+        return;
     m_compilerList->setToolTip(compiler->version);
     m_btnBinrary->setEnabled(compiler->supportsBinary);
     m_btnIntel->setEnabled(compiler->supportsIntel);
@@ -385,7 +416,7 @@ void CodeInspectorPane::onCurrentCompilerChanged(const QString &compilerName)
     m_codeInspectorTabWidget->setEnableAST(compiler->supportsAstView);
     if (!m_codeInspectorTabWidget->enableAST())
         m_backend->setEnableAST(false);
-    m_codeInspectorTabWidget->setEnableLLVMMCA((!compiler->supportsBinary || !m_btnBinrary->isChecked()) && (compilerName.contains("clang", Qt::CaseInsensitive) || compilerName.contains("gcc", Qt::CaseInsensitive)) );
+    m_codeInspectorTabWidget->setEnableLLVMMCA((!compiler->supportsBinary || !m_btnBinrary->isChecked()) && (cn.contains("clang", Qt::CaseInsensitive) || cn.contains("gcc", Qt::CaseInsensitive)) );
     if (!m_codeInspectorTabWidget->enableLLVMMCA())
         m_backend->setEnableLLVMMCA(false);
     m_codeInspectorTabWidget->setEnableGCCTreeRTL(compiler->supportsGccDump);
@@ -394,7 +425,7 @@ void CodeInspectorPane::onCurrentCompilerChanged(const QString &compilerName)
     m_codeInspectorTabWidget->setEnableOptimization(compiler->supportsOptimizationOutput);
     if (!m_codeInspectorTabWidget->enableOptimization())
         m_backend->setEnableOptimization(false);
-    m_codeInspectorTabWidget->setEnableClangTidy(compilerName.contains("clang", Qt::CaseInsensitive) || compilerName.contains("gcc", Qt::CaseInsensitive) );
+    m_codeInspectorTabWidget->setEnableClangTidy(cn.contains("clang", Qt::CaseInsensitive) || cn.contains("gcc", Qt::CaseInsensitive) );
     if (!m_codeInspectorTabWidget->enableClangTidy())
         m_backend->setEnableClangTidy(false);
     m_codeInspectorTabWidget->setEnablePahole(compiler->supportsBinary && m_btnBinrary->isChecked());
@@ -402,7 +433,7 @@ void CodeInspectorPane::onCurrentCompilerChanged(const QString &compilerName)
         m_backend->setEnablePahole(false);
     
     onDelayCompile();
-    emit currentCompilerChanged(compilerName);
+    emit currentCompilerChanged(cn);
 }
 
 void CodeInspectorPane::onRequestLLVMMCA()

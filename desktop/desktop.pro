@@ -16,6 +16,7 @@ include($$PWD/../core/core.pri)
 RC_FILE = CodeInspector.rc
 
 SOURCES += main.cpp \
+    comboboxdelegate.cpp \
     mainwindow.cpp \
     codeeditorpane.cpp \
     codeinspectortabwidget.cpp \
@@ -25,6 +26,7 @@ SOURCES += main.cpp \
     codeinspectorapp.cpp
 
 HEADERS += stdafx.h \
+    comboboxdelegate.h \
     mainwindow.h \
     codeeditorpane.h \
     codeinspectortabwidget.h \

@@ -207,6 +207,8 @@ bool CodeInspectorApp::parseCompilerListFromJSON(const QString& language, const 
         c->name = o["name"].toString();
         c->version = o["version"].toString();
         c->includeFlag = o["includeFlag"].toString();
+        c->group = o["group"].toString();
+        c->groupName = o["groupName"].toString();
         c->supportsBinary = o["supportsBinary"].toBool();
         c->supportsExecute = o["supportsExecute"].toBool();
         c->supportsIntel = o["supportsIntel"].toBool();
@@ -279,6 +281,8 @@ bool CodeInspectorApp::parseCompilerListFromConfiguration(QJsonArray &array)
         c->name = o["name"].toString();
         c->version = o["version"].toString();
         c->includeFlag = o["includeFlag"].toString();
+        c->group = o["group"].toString();
+        c->groupName = o["groupName"].toString();
         c->supportsBinary = o["supportsBinary"].toBool();
         c->supportsExecute = o["supportsExecute"].toBool();
         c->supportsIntel = o["supportsIntel"].toBool();
