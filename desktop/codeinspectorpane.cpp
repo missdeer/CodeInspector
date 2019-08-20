@@ -182,32 +182,38 @@ void CodeInspectorPane::setCompilerList(CompilerListPtr cl)
     QStringList groupNames;    
     for (const auto c : *cl)
     {
-        if (!groupNames.contains(c->groupName.isEmpty() ? c->group : c->groupName))
-        {            
-            groupNames.append(c->groupName.isEmpty() ? c->group : c->groupName);
-            
-            QStandardItem* item = new QStandardItem( c->groupName.isEmpty() ? c->group.toUpper() : c->groupName.toUpper() );
-            item->setFlags( item->flags() & ~( Qt::ItemIsEnabled | Qt::ItemIsSelectable ) );
-            item->setData( "parent", Qt::AccessibleDescriptionRole );
-            QFont font = item->font();
-            font.setBold( true );
-            item->setFont( font );
-            model->appendRow( item );
-            
-            for (const auto compiler : * cl )
-            {
-                if (compiler->group == c->group)
-                {
-                    QStandardItem* item = new QStandardItem( compiler->name + QString( 4, QChar( ' ' ) ) );
-                    item->setData( "child", Qt::AccessibleDescriptionRole );
-                    item->setData( compiler->id, CURId);
-                    item->setData( compiler->name, CURName);
-                    model->appendRow( item );
-                }
-            }
-            continue;
-        }        
+        auto gn = c->groupName.isEmpty() ? c->group.toUpper() : c->groupName.toUpper();
+        if (!groupNames.contains(gn))
+        {
+            groupNames.append(gn);
+        }
     }
+
+    std::sort(groupNames.begin(), groupNames.end());
+
+    for (const auto & groupName : groupNames)
+    {
+        auto* item = new QStandardItem( groupName );
+        item->setFlags( item->flags() & ~( Qt::ItemIsEnabled | Qt::ItemIsSelectable ) );
+        item->setData( "parent", Qt::AccessibleDescriptionRole );
+        QFont font = item->font();
+        font.setBold( true );
+        item->setFont( font );
+        model->appendRow( item );
+
+        for (const auto compiler : * cl )
+        {
+            if (compiler->groupName.toUpper() == groupName || compiler->group.toUpper() == groupName)
+            {
+                auto* item = new QStandardItem( compiler->name + QString( 4, QChar( ' ' ) ) );
+                item->setData( "child", Qt::AccessibleDescriptionRole );
+                item->setData( compiler->id, CURId);
+                item->setData( compiler->name, CURName);
+                model->appendRow( item );
+            }
+        }
+    }
+
     m_compilerList->setModel(model);
     if (m_compilerList->count())
     {
