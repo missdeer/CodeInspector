@@ -51,6 +51,21 @@ void CodeInspectorTabWidget::setPaholeContent(const QString &content)
     m_pahole->setContent(content);
 }
 
+void CodeInspectorTabWidget::setClangQueryContent(const QString &content)
+{
+    
+}
+
+void CodeInspectorTabWidget::setReadElfContent(const QString &content)
+{
+    
+}
+
+void CodeInspectorTabWidget::setX86To6502Content(const QString &content)
+{
+    
+}
+
 void CodeInspectorTabWidget::setASTContent(const QString &content)
 {
     Q_ASSERT(m_ast);
@@ -194,6 +209,21 @@ void CodeInspectorTabWidget::onRequestClangTidy()
     emit requestClangTidy();
 }
 
+void CodeInspectorTabWidget::onRequestClangQuery()
+{
+    emit requestClangQuery();
+}
+
+void CodeInspectorTabWidget::onRequestReadElf()
+{
+    emit requestReadElf();
+}
+
+void CodeInspectorTabWidget::onRequestX86To6502()
+{
+    emit requestX86To6502();
+}
+
 void CodeInspectorTabWidget::removePage(QWidget **w)
 {
     if (*w)
@@ -216,6 +246,21 @@ bool CodeInspectorTabWidget::enableClangTidy() const
     return m_enableClangTidy;
 }
 
+bool CodeInspectorTabWidget::enableClangQuery() const
+{
+    return m_enableClangQuery;
+}
+
+bool CodeInspectorTabWidget::enableReadElf() const
+{
+    return m_enableReadElf;
+}
+
+bool CodeInspectorTabWidget::enableX86To6502() const
+{
+    return m_enableX86To6502;
+}
+
 QString CodeInspectorTabWidget::getLLVMMCAOptions()
 {
     if (m_llvmMCA)
@@ -234,6 +279,21 @@ QString CodeInspectorTabWidget::getClangTidyOptions()
 {
     if (m_clangTidy)
         return m_clangTidy->getToolOptions();
+    return "";
+}
+
+QString CodeInspectorTabWidget::getClangQueryOptions()
+{
+    return "";
+}
+
+QString CodeInspectorTabWidget::getReadElfOptions()
+{
+    return "";
+}
+
+QString CodeInspectorTabWidget::getX86To6502Options()
+{
     return "";
 }
 
@@ -281,6 +341,21 @@ void CodeInspectorTabWidget::setEnableClangTidy(bool enabled)
     m_enableClangTidy = enabled;
     if (!enabled)
         removePage(reinterpret_cast<QWidget **>(&m_clangTidy));
+}
+
+void CodeInspectorTabWidget::setEnableClangQuery(bool enabled)
+{
+    m_enableClangQuery = enabled;
+}
+
+void CodeInspectorTabWidget::setEnableReadElf(bool enabled)
+{
+    m_enableReadElf = enabled;
+}
+
+void CodeInspectorTabWidget::setEnableX86To6502(bool enabled)
+{
+    m_enableX86To6502 = enabled;
 }
 
 void CodeInspectorTabWidget::setEnableOptimization(bool enabled)

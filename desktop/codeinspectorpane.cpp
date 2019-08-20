@@ -178,7 +178,7 @@ void CodeInspectorPane::initialize()
 void CodeInspectorPane::setCompilerList(CompilerListPtr cl)
 {
     m_compilerList->clear();
-    QStandardItemModel * model = new QStandardItemModel;
+    auto * model = new QStandardItemModel;
     QStringList groupNames;    
     for (const auto c : *cl)
     {
