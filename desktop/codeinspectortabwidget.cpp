@@ -130,6 +130,21 @@ void CodeInspectorTabWidget::onCustomContextMenuRequested(const QPoint &pos)
     connect(pPaholeAction, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestPahole);
     menu.addAction(pPaholeAction);
     
+    QAction* pClangQueryAction = new QAction(QIcon(":/resource/image/tab/clangquery.png"), tr("ClangQuery"), &menu);
+    pClangQueryAction->setEnabled(m_enableClangQuery);
+    connect(pClangQueryAction, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestClangQuery);
+    menu.addAction(pClangQueryAction);
+    
+    QAction* pReadElfAction = new QAction(QIcon(":/resource/image/tab/readelf.png"), tr("ReadElf"), &menu);
+    pReadElfAction->setEnabled(m_enableReadElf);
+    connect(pReadElfAction, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestReadElf);
+    menu.addAction(pReadElfAction);
+    
+    QAction* pX86To6502Action = new QAction(QIcon(":/resource/image/tab/x86to6502.png"), tr("x86 To 6502"), &menu);
+    pX86To6502Action->setEnabled(m_enableX86To6502);
+    connect(pX86To6502Action, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestX86To6502);
+    menu.addAction(pX86To6502Action);
+    
     menu.exec(mapToGlobal(pos));    
 }
 
