@@ -13,6 +13,9 @@ class OptimizationOutput;
 class GCCTreeRTLOutput;
 class PaholeOutput;
 class ClangTidyOutput;
+class ClangQueryOutput;
+class ReadElfOutput;
+class X86To6502Output;
 
 class CodeInspectorTabWidget : public QTabWidget
 {
@@ -92,12 +95,17 @@ private slots:
     void onRequestX86To6502();
 private:
     CodeInspector *m_codeInspector;
-    LLVMMachineCodeAnalyzerOutput *m_llvmMCA{nullptr};
+    
     ASTOutput *m_ast{nullptr};
     OptimizationOutput *m_optimization{nullptr};
     GCCTreeRTLOutput *m_gccTreeRTL{nullptr};
     PaholeOutput *m_pahole{nullptr};
     ClangTidyOutput *m_clangTidy{nullptr};
+    LLVMMachineCodeAnalyzerOutput *m_llvmMCA{nullptr};
+    ClangQueryOutput *m_clangQuery{nullptr};
+    ReadElfOutput *m_readElf{nullptr};
+    X86To6502Output *m_x86To6502{nullptr};
+    
     bool m_enableAST{false};
     bool m_enableOptimization{false};
     bool m_enableGCCTreeRTL{false};

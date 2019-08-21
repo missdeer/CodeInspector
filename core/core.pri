@@ -5,6 +5,8 @@ include($$PWD/../3rdparty/scintilla-latest.pri)
 INCLUDEPATH += $$PWD
 
 SOURCES += \
+    $$PWD/clangqueryoutput.cpp \
+    $$PWD/readelfoutput.cpp \
     $$PWD/scintillaconfig.cpp \
     $$PWD/scopedguard.cpp \
     $$PWD/settings.cpp \
@@ -20,9 +22,12 @@ SOURCES += \
     $$PWD/llvmmachinecodeanalyzeroutput.cpp \
     $$PWD/outputwindow.cpp \
     $$PWD/paholeoutput.cpp \
-    $$PWD/clangtidyoutput.cpp
+    $$PWD/clangtidyoutput.cpp \
+    $$PWD/x86to6502output.cpp
 
 HEADERS += \
+    $$PWD/clangqueryoutput.h \
+    $$PWD/readelfoutput.h \
     $$PWD/scintillaconfig.h \
     $$PWD/scopedguard.h \
     $$PWD/settings.h \
@@ -45,7 +50,8 @@ HEADERS += \
     $$PWD/backendinterface.hpp \
     $$PWD/optimizationitem.hpp \
     $$PWD/paholeoutput.h \
-    $$PWD/clangtidyoutput.h
+    $$PWD/clangtidyoutput.h \
+    $$PWD/x86to6502output.h
 
 	
 RESOURCES += \

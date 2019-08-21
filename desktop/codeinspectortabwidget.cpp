@@ -7,6 +7,9 @@
 #include "optimizationoutput.h"
 #include "paholeoutput.h"
 #include "clangtidyoutput.h"
+#include "clangqueryoutput.h"
+#include "readelfoutput.h"
+#include "x86to6502output.h"
 #include "codeinspectortabwidget.h"
 
 CodeInspectorTabWidget::CodeInspectorTabWidget(QWidget *parent)
@@ -53,17 +56,20 @@ void CodeInspectorTabWidget::setPaholeContent(const QString &content)
 
 void CodeInspectorTabWidget::setClangQueryContent(const QString &content)
 {
-    
+    Q_ASSERT(m_clangQuery);
+    m_clangQuery->setContent(content);
 }
 
 void CodeInspectorTabWidget::setReadElfContent(const QString &content)
 {
-    
+    Q_ASSERT(m_readElf);
+    m_readElf->setContent(content);
 }
 
 void CodeInspectorTabWidget::setX86To6502Content(const QString &content)
 {
-    
+    Q_ASSERT(m_x86To6502);
+    m_x86To6502->setContent(content);
 }
 
 void CodeInspectorTabWidget::setASTContent(const QString &content)
@@ -226,16 +232,37 @@ void CodeInspectorTabWidget::onRequestClangTidy()
 
 void CodeInspectorTabWidget::onRequestClangQuery()
 {
+    if (!m_clangQuery)
+    {
+        m_clangQuery = new ClangQueryOutput(this);
+        m_clangQuery->initialize();
+        addTab(m_clangQuery, QIcon(":/resource/image/tab/clangquery.png"), tr("ClangQuery"));
+        connect(m_clangQuery, &ClangQueryOutput::optionsChanged, this, &CodeInspectorTabWidget::refreshClangQuery);
+    }
     emit requestClangQuery();
 }
 
 void CodeInspectorTabWidget::onRequestReadElf()
 {
+    if (!m_readElf)
+    {
+        m_readElf = new ReadElfOutput(this);
+        m_readElf->initialize();
+        addTab(m_readElf, QIcon(":/resource/image/tab/readelf.png"), tr("ReadElf"));
+        connect(m_readElf, &ReadElfOutput::optionsChanged, this, &CodeInspectorTabWidget::refreshReadElf);
+    }
     emit requestReadElf();
 }
 
 void CodeInspectorTabWidget::onRequestX86To6502()
 {
+    if (!m_x86To6502)
+    {
+        m_x86To6502 = new X86To6502Output(this);
+        m_x86To6502->initialize();
+        addTab(m_x86To6502, QIcon(":/resource/image/tab/x86to6502.png"), tr("x86 To 6502"));
+        connect(m_x86To6502, &X86To6502Output::optionsChanged, this, &CodeInspectorTabWidget::refreshX86To6502);
+    }
     emit requestX86To6502();
 }
 
@@ -299,16 +326,22 @@ QString CodeInspectorTabWidget::getClangTidyOptions()
 
 QString CodeInspectorTabWidget::getClangQueryOptions()
 {
+    if (m_clangQuery)
+        return m_clangQuery->getToolOptions();
     return "";
 }
 
 QString CodeInspectorTabWidget::getReadElfOptions()
 {
+    if (m_readElf)
+        return m_readElf->getToolOptions();
     return "";
 }
 
 QString CodeInspectorTabWidget::getX86To6502Options()
 {
+    if (m_x86To6502)
+        return m_x86To6502->getToolOptions();
     return "";
 }
 
@@ -361,16 +394,22 @@ void CodeInspectorTabWidget::setEnableClangTidy(bool enabled)
 void CodeInspectorTabWidget::setEnableClangQuery(bool enabled)
 {
     m_enableClangQuery = enabled;
+    if (!enabled)
+        removePage(reinterpret_cast<QWidget **>(&m_clangQuery));
 }
 
 void CodeInspectorTabWidget::setEnableReadElf(bool enabled)
 {
     m_enableReadElf = enabled;
+    if (!enabled)
+        removePage(reinterpret_cast<QWidget **>(&m_readElf));
 }
 
 void CodeInspectorTabWidget::setEnableX86To6502(bool enabled)
 {
     m_enableX86To6502 = enabled;
+    if (!enabled)
+        removePage(reinterpret_cast<QWidget **>(&m_x86To6502));
 }
 
 void CodeInspectorTabWidget::setEnableOptimization(bool enabled)
