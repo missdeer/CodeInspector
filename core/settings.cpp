@@ -15,7 +15,7 @@ void Settings::initialize()
 
 void Settings::save()
 {
-    QSettings settings(QSettings::IniFormat, QSettings::UserScope, "dfordsoft.com", "CodeInspector");
+    QSettings settings(QSettings::IniFormat, QSettings::UserScope, "minidump.info", "CodeInspector");
     settings.setValue("rememberLastSession", m_rememberLastSession);
     settings.setValue("autoRefreshInterval", m_autoRefreshInterval);
     settings.setValue("editorZoomFactor", m_editorZoomFactor);
@@ -37,7 +37,7 @@ void Settings::save()
 
 void Settings::load()
 {
-    QSettings settings(QSettings::IniFormat, QSettings::UserScope, "dfordsoft.com", "CodeInspector");
+    QSettings settings(QSettings::IniFormat, QSettings::UserScope, "minidump.info", "CodeInspector");
     m_rememberLastSession = settings.value("rememberLastSession", true).toBool();
     m_binary = settings.value("binary", false).toBool();
     m_label = settings.value("label", true).toBool();
