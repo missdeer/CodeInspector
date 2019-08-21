@@ -50,12 +50,14 @@ void MainWindow::on_actionExit_triggered()
 
 void MainWindow::on_actionVisitHomepage_triggered()
 {
-    QDesktopServices::openUrl(QUrl("https://minidump.info/codeinspector/"));
+    QDesktopServices::openUrl(QUrl("https://ci.minidump.info/"));
 }
 
 void MainWindow::on_actionAbout_triggered()
 {
-    QMessageBox::about(this, tr("CodeInspector"), tr("Let you know how machine understands your code."));
+    QMessageBox::about(this, tr("CodeInspector"), tr("Let you know how machine understands your code.<br>"
+                                                     "Special thanks to <strong>Compiler Explorer</strong>:<br>"
+                                                     "<a href=\"https://github.com/mattgodbolt/compiler-explorer\">https://github.com/mattgodbolt/compiler-explorer</a>"));
 }
 
 void MainWindow::on_actionNewSession_triggered()
