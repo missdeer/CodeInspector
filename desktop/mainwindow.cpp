@@ -56,8 +56,11 @@ void MainWindow::on_actionVisitHomepage_triggered()
 void MainWindow::on_actionAbout_triggered()
 {
     QMessageBox::about(this, tr("CodeInspector"), tr("Let you know how machine understands your code.<br>"
-                                                     "Special thanks to <strong>Compiler Explorer</strong>:<br>"
-                                                     "<a href=\"https://github.com/mattgodbolt/compiler-explorer\">https://github.com/mattgodbolt/compiler-explorer</a>"));
+                                                     "Special thanks to<br>"
+                                                     "<strong>Compiler Explorer</strong>: <a href=\"https://github.com/mattgodbolt/compiler-explorer\">https://github.com/mattgodbolt/compiler-explorer</a><br>"
+                                                     "<strong>Wandbox</strong>: <a href=\"https://github.com/melpon/wandbox\">https://github.com/melpon/wandbox</a><br>"
+                                                     "<strong>Rextester</strong>: <a href=\"https://rextester.com/\">https://rextester.com/</a>"
+                                                     ));
 }
 
 void MainWindow::on_actionNewSession_triggered()
