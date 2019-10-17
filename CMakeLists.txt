@@ -59,7 +59,6 @@ file(GLOB
 set(SOURCES
         desktop/main.cpp
         desktop/mainwindow.cpp
-        desktop/mainwindow.moc
         desktop/comboboxdelegate.cpp
         desktop/codeeditorpane.cpp
         desktop/codeinspectortabwidget.cpp
@@ -113,3 +112,5 @@ add_executable(CodeInspector
         )
 
 target_link_libraries(CodeInspector Qt5::Widgets Qt5::Gui Qt5::Core Qt5::Network Qt5::Xml)
+
+set_target_properties(CodeInspector PROPERTIES BUNDLE TRUE)
