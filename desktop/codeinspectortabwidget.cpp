@@ -242,6 +242,11 @@ void CodeInspectorTabWidget::onRequestClangQuery()
     emit requestClangQuery();
 }
 
+void CodeInspectorTabWidget::onRequestIR()
+{
+    emit requestIR();
+}
+
 void CodeInspectorTabWidget::onRequestReadElf()
 {
     if (!m_readElf)
