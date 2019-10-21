@@ -20,6 +20,7 @@ struct Compiler
     bool supportsDemangle{false};
     bool supportsCfg{false};
     bool supportsAstView{false};
+    bool supportsIrView{false};
     bool supportsOptimizationOutput{false};
     bool supportsGccDump{false};
     

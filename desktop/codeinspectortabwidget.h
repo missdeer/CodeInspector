@@ -26,6 +26,7 @@ public:
     QMap<int, sptr_t> setCodeInspectorAsmItems(const AsmItemList &items, bool binary);
     void setCodeInspectorContent(const QString &content, bool binary);
     void setASTContent(const QString &content);
+    void setIRContent(const QString &content);
     void setOptimizationContent(const OptimizationItemList &content);
     void setGCCTreeRTLContent(const QString &content);
     void setGccDumpAllPasses(const QStringList &passes);
@@ -37,7 +38,8 @@ public:
     void setReadElfContent(const QString &content);
     void setX86To6502Content(const QString &content);
 
-    void setEnableAST(bool enabled);    
+    void setEnableAST(bool enabled);
+    void setEnableIR(bool enabled);
     void setEnableOptimization(bool enabled);    
     void setEnableGCCTreeRTL(bool enabled); 
     void setEnableLLVMMCA(bool enabled);    
@@ -47,7 +49,8 @@ public:
     void setEnableReadElf(bool enabled);
     void setEnableX86To6502(bool enabled);
     
-    bool enableAST() const;    
+    bool enableAST() const;
+    bool enableIR() const;
     bool enableOptimization() const;    
     bool enableGCCTreeRTL() const;    
     bool enableLLVMMCA() const;    
@@ -65,6 +68,7 @@ public:
     QString getX86To6502Options();
 signals:
     void requestAST();
+    void requestIR();
     void requestOptimization();
     void requestGCCTreeRTL();
     void requestLLVMMCA();
@@ -85,6 +89,7 @@ private slots:
     void onCustomContextMenuRequested(const QPoint &pos);
     void onRefreshGCCDumpOutput();
     void onRequestAST();
+    void onRequestIR();
     void onRequestOptimization();
     void onRequestGCCTreeRTL();
     void onRequestLLVMMCA();
@@ -107,6 +112,7 @@ private:
     X86To6502Output *m_x86To6502{nullptr};
     
     bool m_enableAST{false};
+    bool m_enableIR{false};
     bool m_enableOptimization{false};
     bool m_enableGCCTreeRTL{false};
     bool m_enableLLVMMCA{true};
