@@ -1,18 +1,20 @@
 #ifndef OPTIMIZATIONOUTPUT_H
 #define OPTIMIZATIONOUTPUT_H
 
-#include <QTableWidget>
 #include "optimizationitem.hpp"
+
+#include <QTableWidget>
 
 class OptimizationOutput : public QTableWidget
 {
     Q_OBJECT
-public:
+  public:
     explicit OptimizationOutput(QWidget *parent = nullptr);
     void initialize();
     void setContent(const OptimizationItemList &content);
-protected:
-private:
+
+  protected:
+  private:
 };
 
 #endif // OPTIMIZATIONOUTPUT_H

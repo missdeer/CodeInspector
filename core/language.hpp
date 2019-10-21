@@ -1,22 +1,22 @@
 #ifndef LANGUAGE_HPP
 #define LANGUAGE_HPP
 
-#include <QString>
-#include <QSharedPointer>
 #include <QList>
+#include <QSharedPointer>
+#include <QString>
 
 struct Language
 {
-    QString id;
-    QString name;
-    QString monaco;
+    QString     id;
+    QString     name;
+    QString     monaco;
     QStringList extensions;
     QStringList alias;
-    QString example;
-    QString defaultCompiler;
+    QString     example;
+    QString     defaultCompiler;
 };
 
-using LanguagePtr = QSharedPointer<Language>;
+using LanguagePtr  = QSharedPointer<Language>;
 using LanguageList = QList<LanguagePtr>;
 
 #endif // LANGUAGE_HPP

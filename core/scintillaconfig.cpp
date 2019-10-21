@@ -1,7 +1,9 @@
 #include "stdafx.h"
-#include "settings.h"
-#include "ScintillaEdit.h"
+
 #include "scintillaconfig.h"
+
+#include "ScintillaEdit.h"
+#include "settings.h"
 
 void ScintillaConfig::initScintilla()
 {
@@ -25,9 +27,9 @@ void ScintillaConfig::initScintilla()
     m_sci->setViewEOL(false);
     m_sci->setViewWS(SCWS_INVISIBLE);
     m_sci->setCaretFore(0x0000FF);
-    //m_sci->setCaretLineVisible(true);
-    //m_sci->setCaretLineBack(0xFFFFD0);
-    //m_sci->setCaretLineBackAlpha(256);
+    // m_sci->setCaretLineVisible(true);
+    // m_sci->setCaretLineBack(0xFFFFD0);
+    // m_sci->setCaretLineBackAlpha(256);
     m_sci->setCaretPeriod(500);
     m_sci->setCaretWidth(2);
     m_sci->setCaretSticky(0);
@@ -48,7 +50,7 @@ void ScintillaConfig::initScintilla()
     m_sci->setIndent(4);
     m_sci->setTabIndents(false);
     m_sci->setBackSpaceUnIndents(false);
-    m_sci->setIndentationGuides( SC_IV_REAL);
+    m_sci->setIndentationGuides(SC_IV_REAL);
     m_sci->setHighlightGuide(1);
     m_sci->setPrintMagnification(1);
     m_sci->setPrintColourMode(0);
@@ -68,7 +70,7 @@ void ScintillaConfig::initScintilla()
     m_sci->usePopUp(true);
 
 #if defined(Q_OS_WIN)
-    m_sci->setTechnology(SC_TECHNOLOGY_DIRECTWRITEDC );
+    m_sci->setTechnology(SC_TECHNOLOGY_DIRECTWRITEDC);
 #endif
     m_sci->setBufferedDraw(false);
     m_sci->setPhasesDraw(SC_PHASES_TWO);
@@ -79,7 +81,7 @@ void ScintillaConfig::initScintilla()
     m_sci->setMouseDwellTime(2500);
 
     m_sci->setSavePoint();
-    m_sci->setFontQuality( SC_EFF_QUALITY_ANTIALIASED);
+    m_sci->setFontQuality(SC_EFF_QUALITY_ANTIALIASED);
 
     // apply global settings
     QString themePath = ":/resource/sci/themes/" % g_settings->codeEditorTheme() % ".xml";
@@ -90,7 +92,7 @@ void ScintillaConfig::initScintilla()
 
 void ScintillaConfig::initEditorFolderStyle()
 {
-    m_sci->setFoldFlags(SC_FOLDFLAG_LINEAFTER_CONTRACTED );
+    m_sci->setFoldFlags(SC_FOLDFLAG_LINEAFTER_CONTRACTED);
 
     m_sci->markerDefine(SC_MARKNUM_FOLDEROPEN, SC_MARK_BOXMINUS);
     m_sci->markerDefine(SC_MARKNUM_FOLDER, SC_MARK_BOXPLUS);
@@ -114,20 +116,20 @@ void ScintillaConfig::initEditorFolderStyle()
     m_sci->markerSetBack(SC_MARKNUM_FOLDEROPENMID, 0x808080);
     m_sci->markerSetFore(SC_MARKNUM_FOLDERMIDTAIL, 0xFFFFFF);
     m_sci->markerSetBack(SC_MARKNUM_FOLDERMIDTAIL, 0x808080);
-    m_sci->setProperty( "fold", "1");
-    m_sci->setProperty( "fold.flags", "16");
-    m_sci->setProperty( "fold.symbols", "1");
-    m_sci->setProperty( "fold.compact", "0");
-    m_sci->setProperty( "fold.at.else", "1");
-    m_sci->setProperty( "fold.preprocessor", "1");
-    m_sci->setProperty( "fold.view", "1");
-    m_sci->setProperty( "fold.comment", "1");
-    m_sci->setProperty( "fold.html", "1");
-    m_sci->setProperty( "fold.comment.python", "1");
-    m_sci->setProperty( "fold.quotes.python", "1");
+    m_sci->setProperty("fold", "1");
+    m_sci->setProperty("fold.flags", "16");
+    m_sci->setProperty("fold.symbols", "1");
+    m_sci->setProperty("fold.compact", "0");
+    m_sci->setProperty("fold.at.else", "1");
+    m_sci->setProperty("fold.preprocessor", "1");
+    m_sci->setProperty("fold.view", "1");
+    m_sci->setProperty("fold.comment", "1");
+    m_sci->setProperty("fold.html", "1");
+    m_sci->setProperty("fold.comment.python", "1");
+    m_sci->setProperty("fold.quotes.python", "1");
 }
 
-void ScintillaConfig::initLexerStyle(const QString& lang)
+void ScintillaConfig::initLexerStyle(const QString &lang)
 {
     // apply language specified settings
     QString themePath = ":/resource/sci/themes/" % g_settings->codeEditorTheme() % ".xml";
@@ -143,7 +145,7 @@ void ScintillaConfig::initLexerStyle(const QString& lang)
 void ScintillaConfig::initEditorMargins()
 {
     m_sci->setMarginLeft(4);
-    //sci->setMarginRight(4);
+    // sci->setMarginRight(4);
     m_sci->setMarginTypeN(0, SC_MARGIN_NUMBER);
     m_sci->setMarginWidthN(0, 32);
     m_sci->setMarginMaskN(0, 0);
@@ -154,7 +156,7 @@ void ScintillaConfig::initEditorMargins()
     m_sci->setMarginSensitiveN(1, true);
     m_sci->setMarginTypeN(2, SC_MARGIN_SYMBOL);
     m_sci->setMarginWidthN(2, 16);
-    m_sci->setMarginMaskN(2, SC_MASK_FOLDERS);// 0xFE000000 or -33554432
+    m_sci->setMarginMaskN(2, SC_MASK_FOLDERS); // 0xFE000000 or -33554432
     m_sci->setMarginSensitiveN(2, true);
 
     m_sci->setFoldMarginColour(true, 0xE9E9E9);
@@ -164,7 +166,7 @@ void ScintillaConfig::initEditorMargins()
 void ScintillaConfig::initInspectorMargins(bool binary)
 {
     m_sci->setMarginLeft(4);
-    //sci->setMarginRight(4);
+    // sci->setMarginRight(4);
     m_sci->setMarginTypeN(0, SC_MARGIN_NUMBER);
     m_sci->setMarginWidthN(0, binary ? 0 : 32);
     m_sci->setMarginMaskN(0, 0);
@@ -185,8 +187,8 @@ void ScintillaConfig::inttOuputWindowMargins()
 
 void ScintillaConfig::initMarkers()
 {
-    const int lineBackgroundColorCount = 12;
-    sptr_t lineBackgroundColors[lineBackgroundColorCount] = {
+    const int lineBackgroundColorCount                       = 12;
+    sptr_t    lineBackgroundColors[lineBackgroundColorCount] = {
         0xD3E4EF,
         0xFEE5C8,
         0xE8E7F1,
@@ -201,7 +203,7 @@ void ScintillaConfig::initMarkers()
         0xFED3CD,
     };
 
-    for ( size_t i = 0; i < lineBackgroundColorCount; i++)
+    for (size_t i = 0; i < lineBackgroundColorCount; i++)
     {
         m_sci->markerDefine(static_cast<sptr_t>(i), SC_MARK_BACKGROUND);
         m_sci->markerSetBack(static_cast<sptr_t>(i), lineBackgroundColors[i]);
@@ -209,14 +211,14 @@ void ScintillaConfig::initMarkers()
     }
 }
 
-void ScintillaConfig::applyLanguageStyle(const QString &configPath, const QString& lang)
+void ScintillaConfig::applyLanguageStyle(const QString &configPath, const QString &lang)
 {
     QDomDocument doc;
-    QFile file(configPath);
+    QFile        file(configPath);
     if (!file.open(QIODevice::ReadOnly))
         return;
     QString errMsg;
-    int errLine;
+    int     errLine;
     if (!doc.setContent(&file, &errMsg, &errLine))
     {
 #if !defined(QT_NO_DEBUG)
@@ -227,7 +229,7 @@ void ScintillaConfig::applyLanguageStyle(const QString &configPath, const QStrin
     }
     file.close();
 
-    QDomElement docElem = doc.documentElement();
+    QDomElement docElem       = doc.documentElement();
     QDomElement languagesElem = docElem.firstChildElement("Languages");
 
     QDomElement langElem = languagesElem.firstChildElement("Language");
@@ -237,16 +239,16 @@ void ScintillaConfig::applyLanguageStyle(const QString &configPath, const QStrin
     if (langElem.isNull())
         return;
 
-    QString commentLine = langElem.attribute("commentLine");
+    QString commentLine  = langElem.attribute("commentLine");
     QString commentStart = langElem.attribute("commentStart");
-    QString commentEnd = langElem.attribute("commentEnd");
-    QString lexer = langElem.attribute("lexer");
+    QString commentEnd   = langElem.attribute("commentEnd");
+    QString lexer        = langElem.attribute("lexer");
     if (lexer.isEmpty())
         lexer = lang;
 
     QDomElement keywordElem = langElem.firstChildElement("Keywords");
-    int keywordSet = 0;
-    while(!keywordElem.isNull())
+    int         keywordSet  = 0;
+    while (!keywordElem.isNull())
     {
         QString keyword = keywordElem.text();
         m_sci->setKeyWords(keywordSet++, keyword.toStdString().c_str());
@@ -257,14 +259,14 @@ void ScintillaConfig::applyLanguageStyle(const QString &configPath, const QStrin
     m_sci->setLexerLanguage(l.data());
 }
 
-void ScintillaConfig::applyThemeStyle(const QString &themePath, const QString& lang)
+void ScintillaConfig::applyThemeStyle(const QString &themePath, const QString &lang)
 {
     QDomDocument doc;
-    QFile file(themePath);
+    QFile        file(themePath);
     if (!file.open(QIODevice::ReadOnly))
         return;
     QString errMsg;
-    int errLine;
+    int     errLine;
     if (!doc.setContent(&file, &errMsg, &errLine))
     {
 #if !defined(QT_NO_DEBUG)
@@ -279,24 +281,22 @@ void ScintillaConfig::applyThemeStyle(const QString &themePath, const QString& l
 
     QDomElement globalStylesElem = docElem.firstChildElement("GlobalStyles");
 
-    for(QDomElement styleElem = globalStylesElem.firstChildElement("WidgetStyle");
-        !styleElem.isNull();
-        styleElem = styleElem.nextSiblingElement("WidgetStyle"))
+    for (QDomElement styleElem = globalStylesElem.firstChildElement("WidgetStyle"); !styleElem.isNull();
+         styleElem             = styleElem.nextSiblingElement("WidgetStyle"))
     {
         applyStyle(styleElem);
     }
 
     QDomElement lexerStylesElem = docElem.firstChildElement("LexerStyles");
-    QDomElement lexerTypeElem = lexerStylesElem.firstChildElement("LexerType");
+    QDomElement lexerTypeElem   = lexerStylesElem.firstChildElement("LexerType");
     while (!lexerTypeElem.isNull() && lexerTypeElem.attribute("name") != lang)
         lexerTypeElem = lexerTypeElem.nextSiblingElement("LexerType");
 
     if (lexerTypeElem.isNull())
         return;
 
-    for (QDomElement styleElem = lexerTypeElem.firstChildElement("WordsStyle");
-         !styleElem.isNull();
-         styleElem = styleElem.nextSiblingElement("WordsStyle"))
+    for (QDomElement styleElem = lexerTypeElem.firstChildElement("WordsStyle"); !styleElem.isNull();
+         styleElem             = styleElem.nextSiblingElement("WordsStyle"))
     {
         applyStyle(styleElem);
     }
@@ -311,14 +311,14 @@ void ScintillaConfig::applyStyle(const QDomElement &styleElem)
         if (!foreColor.isEmpty())
         {
             int color = foreColor.toLong(nullptr, 16);
-            color = ((color & 0xFF0000) >> 16) | (color & 0xFF00) | ((color & 0xFF) << 16);
+            color     = ((color & 0xFF0000) >> 16) | (color & 0xFF00) | ((color & 0xFF) << 16);
             m_sci->styleSetFore(id, color);
         }
         QString backColor = styleElem.attribute("bgColor");
         if (!backColor.isEmpty())
         {
             int color = backColor.toLong(nullptr, 16);
-            color = ((color & 0xFF0000) >> 16) | (color & 0xFF00) | ((color & 0xFF) << 16);
+            color     = ((color & 0xFF0000) >> 16) | (color & 0xFF00) | ((color & 0xFF) << 16);
             m_sci->styleSetBack(id, color);
         }
     }
@@ -327,9 +327,9 @@ void ScintillaConfig::applyStyle(const QDomElement &styleElem)
         return;
     }
 
-    QString fontName = styleElem.attribute("fontName");
+    QString       fontName = styleElem.attribute("fontName");
     QFontDatabase database;
-    QStringList families = database.families();
+    QStringList   families = database.families();
     if (!fontName.isEmpty() && families.contains(fontName))
         m_sci->styleSetFont(id, fontName.toStdString().c_str());
     else
@@ -337,7 +337,7 @@ void ScintillaConfig::applyStyle(const QDomElement &styleElem)
         if (families.contains(g_settings->codeEditorFontFamily()))
             m_sci->styleSetFont(id, g_settings->codeEditorFontFamily().toStdString().c_str());
         else
-#if defined(Q_OS_MAC) || defined (Q_OS_IOS)
+#if defined(Q_OS_MAC) || defined(Q_OS_IOS)
             m_sci->styleSetFont(id, "Menlo");
 #elif defined(Q_OS_WIN)
             m_sci->styleSetFont(id, "Consolas");

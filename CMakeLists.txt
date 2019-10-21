@@ -68,6 +68,7 @@ set(core_headers
         core/paholeoutput.h
         core/readelfoutput.h
         core/x86to6502output.h
+        core/LLVMIRView.h
 )
 
 set(desktop_headers
@@ -117,6 +118,7 @@ set(SOURCES
         core/paholeoutput.cpp
         core/clangtidyoutput.cpp
         core/x86to6502output.cpp
+        core/LLVMIRView.cpp
         3rdparty/scintilla/qt/ScintillaEdit/ScintillaEdit.cpp
         3rdparty/scintilla/qt/ScintillaEdit/ScintillaDocument.cpp
         3rdparty/scintilla/qt/ScintillaEditBase/PlatQt.cpp

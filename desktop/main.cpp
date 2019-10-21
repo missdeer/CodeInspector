@@ -1,8 +1,10 @@
 #include "stdafx.h"
-#include <QSplashScreen>
+
 #include "codeinspectorapp.h"
 #include "mainwindow.h"
 #include "settings.h"
+
+#include <QSplashScreen>
 
 int main(int argc, char *argv[])
 {
@@ -13,29 +15,29 @@ int main(int argc, char *argv[])
     QApplication::setApplicationVersion("1.0");
 
     QApplication a(argc, argv);
-    
-    QPixmap pixmap(":/CodeInspector.png");
+
+    QPixmap       pixmap(":/CodeInspector.png");
     QSplashScreen splash(pixmap);
     splash.show();
     QApplication::processEvents();
-    
+
     splash.showMessage(QObject::tr("Creating application instance..."));
-    CodeInspectorApp app;    
+    CodeInspectorApp app;
     ciApp = &app;
-    
+
     splash.showMessage(QObject::tr("Initializing application instance..."));
     ciApp->initialize();
 
     Settings settings;
     g_settings = &settings;
-    
+
     splash.showMessage(QObject::tr("Reading settings..."));
     g_settings->initialize();
 
     splash.showMessage(QObject::tr("Creating main window..."));
     MainWindow w;
     w.showMaximized();
-    
+
     splash.finish(&w);
     return QApplication::exec();
 }

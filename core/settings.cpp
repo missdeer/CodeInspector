@@ -1,7 +1,8 @@
 #include "stdafx.h"
+
 #include "settings.h"
 
-Settings* g_settings = nullptr;
+Settings *g_settings = nullptr;
 
 Settings::~Settings()
 {
@@ -38,29 +39,29 @@ void Settings::save()
 void Settings::load()
 {
     QSettings settings(QSettings::IniFormat, QSettings::UserScope, "minidump.info", "CodeInspector");
-    m_rememberLastSession = settings.value("rememberLastSession", true).toBool();
-    m_binary = settings.value("binary", false).toBool();
-    m_label = settings.value("label", true).toBool();
-    m_functions = settings.value("functions", true).toBool();
-    m_directives = settings.value("directives", true).toBool();
-    m_comments = settings.value("comments", true).toBool();
-    m_trim = settings.value("trim", true).toBool();
-    m_intel = settings.value("intel", true).toBool();
-    m_demangle = settings.value("demangle", true).toBool();
+    m_rememberLastSession  = settings.value("rememberLastSession", true).toBool();
+    m_binary               = settings.value("binary", false).toBool();
+    m_label                = settings.value("label", true).toBool();
+    m_functions            = settings.value("functions", true).toBool();
+    m_directives           = settings.value("directives", true).toBool();
+    m_comments             = settings.value("comments", true).toBool();
+    m_trim                 = settings.value("trim", true).toBool();
+    m_intel                = settings.value("intel", true).toBool();
+    m_demangle             = settings.value("demangle", true).toBool();
     m_defaultLanguageIndex = settings.value("defaultLanguageIndex", 0).toInt();
 #if defined(Q_OS_IOS) || defined(Q_OS_ANDROID)
     m_autoRefreshInterval = settings.value("autoRefreshInterval", 1500).toInt();
 #else
     m_autoRefreshInterval = settings.value("autoRefreshInterval", 750).toInt();
 #endif
-    m_editorZoomFactor = settings.value("editorZoomFactor", 100).toInt();
-    m_codeEditorFontFamily = settings.value("codeEditorFontFamily", QVariant("Source Code Pro")).toString();
-    m_codeEditorTheme = settings.value("codeEditorTheme", QVariant("Default")).toString();
+    m_editorZoomFactor        = settings.value("editorZoomFactor", 100).toInt();
+    m_codeEditorFontFamily    = settings.value("codeEditorFontFamily", QVariant("Source Code Pro")).toString();
+    m_codeEditorTheme         = settings.value("codeEditorTheme", QVariant("Default")).toString();
     m_codeInspectorFontFamily = settings.value("codeInspectorFontFamily", QVariant("Source Code Pro")).toString();
-    m_codeInspectorTheme = settings.value("codeInspectorTheme", QVariant("Default")).toString();
+    m_codeInspectorTheme      = settings.value("codeInspectorTheme", QVariant("Default")).toString();
 }
 
-const QString & Settings::codeEditorFontFamily() const
+const QString &Settings::codeEditorFontFamily() const
 {
     return m_codeEditorFontFamily;
 }
@@ -70,7 +71,7 @@ void Settings::setCodeEditorFontFamily(const QString &codeEditorFontFamily)
     m_codeEditorFontFamily = codeEditorFontFamily;
 }
 
-const QString & Settings::codeEditorTheme() const
+const QString &Settings::codeEditorTheme() const
 {
     return m_codeEditorTheme;
 }
@@ -80,7 +81,7 @@ void Settings::setCodeEditorTheme(const QString &codeEditorTheme)
     m_codeEditorTheme = codeEditorTheme;
 }
 
-const QString & Settings::codeInspectorFontFamily() const
+const QString &Settings::codeInspectorFontFamily() const
 {
     return m_codeInspectorFontFamily;
 }
@@ -90,7 +91,7 @@ void Settings::setCodeInspectorFontFamily(const QString &codeInspectorFontFamily
     m_codeInspectorFontFamily = codeInspectorFontFamily;
 }
 
-const QString & Settings::codeInspectorTheme() const
+const QString &Settings::codeInspectorTheme() const
 {
     return m_codeInspectorTheme;
 }
@@ -219,7 +220,3 @@ void Settings::setDemangle(bool demangle)
 {
     m_demangle = demangle;
 }
-
-
-
-

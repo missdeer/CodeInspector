@@ -1,31 +1,29 @@
 #include "stdafx.h"
+
 #include "comboboxdelegate.h"
 
-ComboBoxDelegate::ComboBoxDelegate(QObject *parent)
-    :QItemDelegate(parent)
-{
-}
+ComboBoxDelegate::ComboBoxDelegate(QObject *parent) : QItemDelegate(parent) {}
 
 void ComboBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    if(index.data(Qt::AccessibleDescriptionRole).toString() == QLatin1String("separator"))
+    if (index.data(Qt::AccessibleDescriptionRole).toString() == QLatin1String("separator"))
     {
         painter->setPen(Qt::gray);
         painter->drawLine(option.rect.left(), option.rect.center().y(), option.rect.right(), option.rect.center().y());
     }
-    else if(index.data(Qt::AccessibleDescriptionRole).toString() == QLatin1String("parent"))
+    else if (index.data(Qt::AccessibleDescriptionRole).toString() == QLatin1String("parent"))
     {
         QStyleOptionViewItem parentOption = option;
         parentOption.state |= QStyle::State_Enabled;
-        QItemDelegate::paint( painter, parentOption, index );
+        QItemDelegate::paint(painter, parentOption, index);
     }
-    else if ( index.data(Qt::AccessibleDescriptionRole).toString() == QLatin1String( "child" ) ) 
+    else if (index.data(Qt::AccessibleDescriptionRole).toString() == QLatin1String("child"))
     {
         QStyleOptionViewItem childOption = option;
-        int indent = option.fontMetrics.horizontalAdvance( QString( 4, QChar( ' ' ) ) );
-        childOption.rect.adjust( indent, 0, 0, 0 );
+        int                  indent      = option.fontMetrics.horizontalAdvance(QString(4, QChar(' ')));
+        childOption.rect.adjust(indent, 0, 0, 0);
         childOption.textElideMode = Qt::ElideNone;
-        QItemDelegate::paint( painter, childOption, index );
+        QItemDelegate::paint(painter, childOption, index);
     }
     else
     {
@@ -35,7 +33,7 @@ void ComboBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
 
 QSize ComboBoxDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    if(index.data(Qt::AccessibleDescriptionRole).toString() == QLatin1String("separator"))
+    if (index.data(Qt::AccessibleDescriptionRole).toString() == QLatin1String("separator"))
         return QSize(0, 10);
-    return QItemDelegate::sizeHint( option, index );
+    return QItemDelegate::sizeHint(option, index);
 }

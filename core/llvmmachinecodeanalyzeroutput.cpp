@@ -1,14 +1,15 @@
 #include "stdafx.h"
-#include "ScintillaEdit.h"
-#include "scintillaconfig.h"
+
 #include "llvmmachinecodeanalyzeroutput.h"
 
-LLVMMachineCodeAnalyzerOutput::LLVMMachineCodeAnalyzerOutput(QWidget *parent)
-    : QWidget (parent)
+#include "ScintillaEdit.h"
+#include "scintillaconfig.h"
+
+LLVMMachineCodeAnalyzerOutput::LLVMMachineCodeAnalyzerOutput(QWidget *parent) : QWidget(parent)
 {
     QVBoxLayout *mainLayout = new QVBoxLayout();
     setLayout(mainLayout);
-    mainLayout->setContentsMargins(0,0,0,0);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
     m_toolOptions = new QLineEdit(this);
     m_toolOptions->setPlaceholderText(tr("LLVM Machine Code Analyzer Options"));
     m_toolOptions->setClearButtonEnabled(true);

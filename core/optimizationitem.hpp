@@ -1,8 +1,8 @@
 #ifndef OPTIMIZATIONITEM_HPP
 #define OPTIMIZATIONITEM_HPP
 
-#include <QVector>
 #include <QSharedPointer>
+#include <QVector>
 
 struct OptimizationItem
 {
@@ -13,8 +13,8 @@ struct OptimizationItem
     QString display;
 };
 
-using OptimizationItemPtr = QSharedPointer<OptimizationItem>;
-using OptimizationItemList = QVector<OptimizationItemPtr>;
+using OptimizationItemPtr     = QSharedPointer<OptimizationItem>;
+using OptimizationItemList    = QVector<OptimizationItemPtr>;
 using OptimizationItemListPtr = QSharedPointer<OptimizationItemList>;
 
 #endif // OPTIMIZATIONITEM_HPP

@@ -12,27 +12,28 @@ class ScintillaConfig;
 class GCCTreeRTLOutput : public QWidget
 {
     Q_OBJECT
-public:
+  public:
     explicit GCCTreeRTLOutput(QWidget *parent = nullptr);
-    void initialize();
-    void setContent(const QString &content);
-    void setPasses(const QStringList &passes);
-    void setCurrentSelectedPass(const QString &pass);
+    void    initialize();
+    void    setContent(const QString &content);
+    void    setPasses(const QStringList &passes);
+    void    setCurrentSelectedPass(const QString &pass);
     QString getCurrentSelectedPass();
-    bool isGCCTreeEnabled();
-    bool isRTLEnabled();
-signals:
+    bool    isGCCTreeEnabled();
+    bool    isRTLEnabled();
+  signals:
     void refresh();
-    
-private slots:
+
+  private slots:
     void onCurrentTextChanged(const QString &text);
     void onStateChanged(int);
-private:
-    ScintillaEdit *m_scintillaEdit;
+
+  private:
+    ScintillaEdit *  m_scintillaEdit;
     ScintillaConfig *m_sc;
-    QComboBox *m_passes;
-    QCheckBox *m_gccTree;
-    QCheckBox *m_rtl;
+    QComboBox *      m_passes;
+    QCheckBox *      m_gccTree;
+    QCheckBox *      m_rtl;
 };
 
 #endif // GCCTREERTLOUTPUT_H

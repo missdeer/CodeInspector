@@ -1,10 +1,8 @@
 #include "stdafx.h"
+
 #include "library.h"
 
-Library::Library(QObject *parent) : QObject(parent)
-{
-
-}
+Library::Library(QObject *parent) : QObject(parent) {}
 
 const QString &Library::getId() const
 {
@@ -70,32 +68,28 @@ void Library::appendVersion(LibraryVersionPtr ver)
 #if defined(Q_OS_IOS) || defined(Q_OS_ANDROID)
 QQmlListProperty<LibraryVersion> Library::getQmlListPropertyVersions()
 {
-    return QQmlListProperty<LibraryVersion>(this, this,
-                                     &Library::appendLibVersion,
-                                     &Library::libVersionCount,
-                                     &Library::libVersion,
-                                     &Library::clearLibVersions
-                                     );
+    return QQmlListProperty<LibraryVersion>(
+        this, this, &Library::appendLibVersion, &Library::libVersionCount, &Library::libVersion, &Library::clearLibVersions);
 }
 
 void Library::appendLibVersion(QQmlListProperty<LibraryVersion> *list, LibraryVersion *p)
 {
-    reinterpret_cast< Library* >(list->data)->appendLibVersion(p);
+    reinterpret_cast<Library *>(list->data)->appendLibVersion(p);
 }
 
 int Library::libVersionCount(QQmlListProperty<LibraryVersion> *list)
 {
-    return reinterpret_cast< Library* >(list->data)->libVersionCount();
+    return reinterpret_cast<Library *>(list->data)->libVersionCount();
 }
 
 LibraryVersion *Library::libVersion(QQmlListProperty<LibraryVersion> *list, int index)
 {
-    return reinterpret_cast< Library* >(list->data)->libVersion(index);
+    return reinterpret_cast<Library *>(list->data)->libVersion(index);
 }
 
 void Library::clearLibVersions(QQmlListProperty<LibraryVersion> *list)
 {
-    reinterpret_cast< Library* >(list->data)->clearLibVersions();
+    reinterpret_cast<Library *>(list->data)->clearLibVersions();
 }
 
 void Library::appendLibVersion(LibraryVersion *) {}

@@ -2,21 +2,22 @@
 #define CODEINSPECTOR_H
 
 #include "ScintillaEdit.h"
-#include "scintillaconfig.h"
 #include "godboltagent.h"
+#include "scintillaconfig.h"
 
 class CodeInspector : public ScintillaEdit
 {
     Q_OBJECT
-public:
+  public:
     explicit CodeInspector(QWidget *parent = nullptr);
-    void initialize();
-    void setContent(const QString& content, bool binary);
+    void              initialize();
+    void              setContent(const QString &content, bool binary);
     QMap<int, sptr_t> setAsmItems(const AsmItemList &items, bool binary);
-protected:
-     QVariant inputMethodQuery(Qt::InputMethodQuery) const override;
 
-private:
+  protected:
+    QVariant inputMethodQuery(Qt::InputMethodQuery) const override;
+
+  private:
     ScintillaConfig m_sc;
 };
 

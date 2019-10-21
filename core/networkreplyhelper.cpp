@@ -1,10 +1,8 @@
 #include "stdafx.h"
+
 #include "networkreplyhelper.h"
 
-NetworkReplyHelper::NetworkReplyHelper(QNetworkReply *reply, QObject *parent)
-    : QObject(parent)
-    , m_reply(reply)
-    , m_timeoutTimer(nullptr)
+NetworkReplyHelper::NetworkReplyHelper(QNetworkReply *reply, QObject *parent) : QObject(parent), m_reply(reply), m_timeoutTimer(nullptr)
 {
     if (m_reply)
     {
@@ -69,7 +67,7 @@ void NetworkReplyHelper::finished()
 
 void NetworkReplyHelper::sslErrors(const QList<QSslError> &errors)
 {
-    Q_FOREACH(const QSslError &e, errors)
+    Q_FOREACH (const QSslError &e, errors)
     {
 #if !defined(QT_NO_DEBUG)
         qDebug() << "ssl error:" << e.errorString();
@@ -88,10 +86,11 @@ void NetworkReplyHelper::uploadProgress(qint64 bytesSent, qint64 bytesTotal)
 
 void NetworkReplyHelper::readyRead()
 {
-    auto* reply = qobject_cast<QNetworkReply*>(sender());
-    int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    if (statusCode >= 200 && statusCode < 300) {
-        m_content.append( reply->readAll());
+    auto *reply      = qobject_cast<QNetworkReply *>(sender());
+    int   statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    if (statusCode >= 200 && statusCode < 300)
+    {
+        m_content.append(reply->readAll());
     }
 }
 
@@ -126,4 +125,3 @@ void NetworkReplyHelper::setTimeout(int milliseconds)
     }
     m_timeoutTimer->start(milliseconds);
 }
-

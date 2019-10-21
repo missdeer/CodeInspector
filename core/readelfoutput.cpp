@@ -1,13 +1,15 @@
 #include "stdafx.h"
+
+#include "readelfoutput.h"
+
 #include "ScintillaEdit.h"
 #include "scintillaconfig.h"
-#include "readelfoutput.h"
 
 ReadElfOutput::ReadElfOutput(QWidget *parent) : QWidget(parent)
 {
     QVBoxLayout *mainLayout = new QVBoxLayout();
     setLayout(mainLayout);
-    mainLayout->setContentsMargins(0,0,0,0);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
     m_toolOptions = new QLineEdit(this);
     m_toolOptions->setPlaceholderText(tr("ReadElf Input"));
     m_toolOptions->setClearButtonEnabled(true);
@@ -42,4 +44,3 @@ QString ReadElfOutput::getToolOptions()
 {
     return m_toolOptions->text();
 }
-

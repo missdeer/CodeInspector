@@ -1,25 +1,27 @@
 #include "stdafx.h"
-#include <QTabBar>
+
+#include "codeinspectortabwidget.h"
+
+#include "LLVMIRView.h"
+#include "astoutput.h"
+#include "clangqueryoutput.h"
+#include "clangtidyoutput.h"
 #include "codeinspector.h"
 #include "gcctreertloutput.h"
 #include "llvmmachinecodeanalyzeroutput.h"
-#include "astoutput.h"
 #include "optimizationoutput.h"
 #include "paholeoutput.h"
-#include "clangtidyoutput.h"
-#include "clangqueryoutput.h"
 #include "readelfoutput.h"
 #include "x86to6502output.h"
-#include "codeinspectortabwidget.h"
 
-CodeInspectorTabWidget::CodeInspectorTabWidget(QWidget *parent)
-    : QTabWidget (parent)
-    , m_codeInspector(new CodeInspector(this))
+#include <QTabBar>
+
+CodeInspectorTabWidget::CodeInspectorTabWidget(QWidget *parent) : QTabWidget(parent), m_codeInspector(new CodeInspector(this))
 {
     setTabPosition(East);
     setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this, &QWidget::customContextMenuRequested, this, &CodeInspectorTabWidget::onCustomContextMenuRequested);
-    
+
     m_codeInspector->initialize();
     addTab(m_codeInspector, QIcon(":/resource/image/tab/inspector.png"), tr("Inspector"));
 }
@@ -78,6 +80,12 @@ void CodeInspectorTabWidget::setASTContent(const QString &content)
     m_ast->setContent(content);
 }
 
+void CodeInspectorTabWidget::setIRContent(const QString &content)
+{
+    Q_ASSERT(m_llvmIR);
+    m_llvmIR->setContent(content);
+}
+
 void CodeInspectorTabWidget::setOptimizationContent(const OptimizationItemList &content)
 {
     Q_ASSERT(m_optimization);
@@ -105,53 +113,58 @@ void CodeInspectorTabWidget::setSelectedGCCDumpPass(const QString &pass)
 void CodeInspectorTabWidget::onCustomContextMenuRequested(const QPoint &pos)
 {
     QMenu menu(this);
-    
-    QAction* pOptimizationAction = new QAction(QIcon(":/resource/image/tab/optimization.png"), tr("Optimization"), &menu);
+
+    QAction *pOptimizationAction = new QAction(QIcon(":/resource/image/tab/optimization.png"), tr("Optimization"), &menu);
     pOptimizationAction->setEnabled(m_enableOptimization);
     connect(pOptimizationAction, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestOptimization);
     menu.addAction(pOptimizationAction);
-    
-    QAction* pASTAction = new QAction(QIcon(":/resource/image/tab/ast.png"), tr("AST"), &menu);
+
+    QAction *pASTAction = new QAction(QIcon(":/resource/image/tab/ast.png"), tr("AST"), &menu);
     pASTAction->setEnabled(m_enableAST);
     connect(pASTAction, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestAST);
     menu.addAction(pASTAction);
-    
-    QAction* pGCCTreeRTLAction = new QAction(QIcon(":/resource/image/tab/gcc.png"), tr("GCC Tree/RTL"), &menu);
+
+    QAction *pGCCTreeRTLAction = new QAction(QIcon(":/resource/image/tab/gcc.png"), tr("GCC Tree/RTL"), &menu);
     pGCCTreeRTLAction->setEnabled(m_enableGCCTreeRTL);
     connect(pGCCTreeRTLAction, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestGCCTreeRTL);
     menu.addAction(pGCCTreeRTLAction);
-    
-    QAction* pLLVMMCAAction = new QAction(QIcon(":/resource/image/tab/llvm.png"), tr("LLVM MCA"), &menu);
+
+    QAction *pLLVMMCAAction = new QAction(QIcon(":/resource/image/tab/llvm.png"), tr("LLVM MCA"), &menu);
     pLLVMMCAAction->setEnabled(m_enableLLVMMCA);
     connect(pLLVMMCAAction, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestLLVMMCA);
     menu.addAction(pLLVMMCAAction);
-    
-    QAction* pClangTidyAction = new QAction(QIcon(":/resource/image/tab/clangtidy.png"), tr("Clang Tidy"), &menu);
+
+    QAction *pClangTidyAction = new QAction(QIcon(":/resource/image/tab/clangtidy.png"), tr("Clang Tidy"), &menu);
     pClangTidyAction->setEnabled(m_enableClangTidy);
     connect(pClangTidyAction, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestClangTidy);
     menu.addAction(pClangTidyAction);
-    
-    QAction* pPaholeAction = new QAction(QIcon(":/resource/image/tab/pahole.png"), tr("Pahole"), &menu);
+
+    QAction *pPaholeAction = new QAction(QIcon(":/resource/image/tab/pahole.png"), tr("Pahole"), &menu);
     pPaholeAction->setEnabled(m_enablePahole);
     connect(pPaholeAction, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestPahole);
     menu.addAction(pPaholeAction);
-    
-    QAction* pClangQueryAction = new QAction(QIcon(":/resource/image/tab/clangquery.png"), tr("ClangQuery"), &menu);
+
+    QAction *pClangQueryAction = new QAction(QIcon(":/resource/image/tab/clangquery.png"), tr("ClangQuery"), &menu);
     pClangQueryAction->setEnabled(m_enableClangQuery);
     connect(pClangQueryAction, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestClangQuery);
     menu.addAction(pClangQueryAction);
-    
-    QAction* pReadElfAction = new QAction(QIcon(":/resource/image/tab/readelf.png"), tr("ReadElf"), &menu);
+
+    QAction *pReadElfAction = new QAction(QIcon(":/resource/image/tab/readelf.png"), tr("ReadElf"), &menu);
     pReadElfAction->setEnabled(m_enableReadElf);
     connect(pReadElfAction, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestReadElf);
     menu.addAction(pReadElfAction);
-    
-    QAction* pX86To6502Action = new QAction(QIcon(":/resource/image/tab/x86to6502.png"), tr("x86 To 6502"), &menu);
+
+    QAction *pX86To6502Action = new QAction(QIcon(":/resource/image/tab/x86to6502.png"), tr("x86 To 6502"), &menu);
     pX86To6502Action->setEnabled(m_enableX86To6502);
     connect(pX86To6502Action, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestX86To6502);
     menu.addAction(pX86To6502Action);
-    
-    menu.exec(mapToGlobal(pos));    
+
+    QAction *pLLVMIRAction = new QAction(QIcon(":/resource/image/tab/llvm.png"), tr("LLVM IR"), &menu);
+    pLLVMIRAction->setEnabled(m_enableIR);
+    connect(pLLVMIRAction, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestIR);
+    menu.addAction(pLLVMIRAction);
+
+    menu.exec(mapToGlobal(pos));
 }
 
 void CodeInspectorTabWidget::onRefreshGCCDumpOutput()
@@ -244,6 +257,12 @@ void CodeInspectorTabWidget::onRequestClangQuery()
 
 void CodeInspectorTabWidget::onRequestIR()
 {
+    if (!m_llvmIR)
+    {
+        m_llvmIR = new LLVMIRView(this);
+        m_llvmIR->initialize();
+        addTab(m_llvmIR, QIcon(":/resource/image/tab/llvm.png"), tr("LLVM IR"));
+    }
     emit requestIR();
 }
 
@@ -370,6 +389,11 @@ bool CodeInspectorTabWidget::enableAST() const
     return m_enableAST;
 }
 
+bool CodeInspectorTabWidget::enableIR() const
+{
+    return m_enableIR;
+}
+
 bool CodeInspectorTabWidget::enableLLVMMCA() const
 {
     return m_enableLLVMMCA;
@@ -429,6 +453,13 @@ void CodeInspectorTabWidget::setEnableAST(bool enabled)
     m_enableAST = enabled;
     if (!enabled)
         removePage(reinterpret_cast<QWidget **>(&m_ast));
+}
+
+void CodeInspectorTabWidget::setEnableIR(bool enabled)
+{
+    m_enableIR = enabled;
+    if (!enabled)
+        removePage(reinterpret_cast<QWidget **>(&m_llvmIR));
 }
 
 void CodeInspectorTabWidget::setEnableLLVMMCA(bool enabled)

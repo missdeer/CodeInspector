@@ -1,13 +1,15 @@
 #include "stdafx.h"
+
+#include "clangqueryoutput.h"
+
 #include "ScintillaEdit.h"
 #include "scintillaconfig.h"
-#include "clangqueryoutput.h"
 
 ClangQueryOutput::ClangQueryOutput(QWidget *parent) : QWidget(parent)
 {
     QVBoxLayout *mainLayout = new QVBoxLayout();
     setLayout(mainLayout);
-    mainLayout->setContentsMargins(0,0,0,0);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
     m_toolOptions = new QLineEdit(this);
     m_toolOptions->setPlaceholderText(tr("ClangQuery Command"));
     m_toolOptions->setClearButtonEnabled(true);

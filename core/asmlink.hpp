@@ -5,12 +5,11 @@
 
 struct AsmLink
 {
-    int offset{};
-    int length{};
-    unsigned long long to{};
+    int                offset {};
+    int                length {};
+    unsigned long long to {};
 };
 
 using AsmLinkPtr = QSharedPointer<AsmLink>;
-
 
 #endif // ASMLINK_HPP

@@ -1,12 +1,8 @@
 #include "stdafx.h"
+
 #include "outputwindow.h"
 
-OutputWindow::OutputWindow(QWidget *parent)
-    : ScintillaEdit (parent)
-    , m_sc(this)
-{
-
-}
+OutputWindow::OutputWindow(QWidget *parent) : ScintillaEdit(parent), m_sc(this) {}
 
 void OutputWindow::initialize()
 {
@@ -34,5 +30,5 @@ void OutputWindow::setContent(const QByteArray &content)
 
 QVariant OutputWindow::inputMethodQuery(Qt::InputMethodQuery /*query*/) const
 {
-    return QVariant(QRectF(0,0, 0, 0));
+    return QVariant(QRectF(0, 0, 0, 0));
 }

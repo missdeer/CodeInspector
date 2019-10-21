@@ -1,20 +1,21 @@
 #include "stdafx.h"
-#include "settings.h"
-#include "codeinspectorapp.h"
-#include "codeeditor.h"
-#include "outputwindow.h"
+
 #include "codeeditorpane.h"
 
-CodeEditorPane::CodeEditorPane(QWidget *parent) 
-    : QWidget(parent)
-{    
+#include "codeeditor.h"
+#include "codeinspectorapp.h"
+#include "outputwindow.h"
+#include "settings.h"
+
+CodeEditorPane::CodeEditorPane(QWidget *parent) : QWidget(parent)
+{
     auto *mainLayout = new QVBoxLayout();
     setLayout(mainLayout);
-    mainLayout->setContentsMargins(0,0,0,0);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->setSpacing(0);
-    
-    auto* topBarLayout = new QHBoxLayout();
-    topBarLayout->setContentsMargins(0,0,0,0);
+
+    auto *topBarLayout = new QHBoxLayout();
+    topBarLayout->setContentsMargins(0, 0, 0, 0);
     topBarLayout->setSpacing(1);
 
     m_languageList = new QComboBox(this);
@@ -23,26 +24,26 @@ CodeEditorPane::CodeEditorPane(QWidget *parent)
 #if defined(Q_OS_WIN)
     m_languageList->setMaxVisibleItems(100);
 #endif
-    
+
     m_btnLibraries = new QPushButton(QIcon(":/resource/image/library.png"), "", this);
     m_btnLibraries->setToolTip(tr("Include libraries"));
     connect(m_btnLibraries, &QPushButton::clicked, this, &CodeEditorPane::onShowLibraryList);
     topBarLayout->addWidget(m_btnLibraries);
-    
+
     m_btnLoadExample = new QPushButton(QIcon(":/resource/image/loadexample.png"), "", this);
     m_btnLoadExample->setToolTip(tr("Load example"));
     connect(m_btnLoadExample, &QPushButton::clicked, this, &CodeEditorPane::onShowExampleList);
     topBarLayout->addWidget(m_btnLoadExample);
-    
+
     topBarLayout->setStretch(0, 1);
-    
+
     mainLayout->addLayout(topBarLayout);
 
     m_codeEditor = new CodeEditor(this);
     m_codeEditor->initialize();
 
     mainLayout->addWidget(m_codeEditor);
-    
+
     connect(m_languageList, &QComboBox::currentTextChanged, this, &CodeEditorPane::onCurrentLanguageChanged);
     connect(ciApp, &CodeInspectorApp::languageListReady, this, &CodeEditorPane::updateLanguageList);
 }
@@ -66,7 +67,7 @@ void CodeEditorPane::onCurrentLanguageChanged(const QString &text)
     emit currentLanguageChanged(text);
     makeLibariesMenu();
     makeExamplesMenu();
-    
+
     // load an default example
     auto actions = m_menuExamples->actions();
     if (!actions.isEmpty())
@@ -82,45 +83,43 @@ void CodeEditorPane::onShowExampleList()
         makeExamplesMenu();
     if (m_menuExamples)
     {
-        QPoint pt = mapToGlobal( QPoint(m_btnLoadExample->x(), m_btnLoadExample->y() + m_btnLoadExample->height()));
+        QPoint pt = mapToGlobal(QPoint(m_btnLoadExample->x(), m_btnLoadExample->y() + m_btnLoadExample->height()));
         m_menuExamples->exec(pt);
     }
 }
 
 void CodeEditorPane::onShowLibraryList()
 {
-    if (!m_menuLibraries)        
+    if (!m_menuLibraries)
         makeLibariesMenu();
-    if (m_menuLibraries)  
+    if (m_menuLibraries)
     {
-        QPoint pt = mapToGlobal( QPoint(m_btnLibraries->x(), m_btnLibraries->y() + m_btnLibraries->height()));
+        QPoint pt = mapToGlobal(QPoint(m_btnLibraries->x(), m_btnLibraries->y() + m_btnLibraries->height()));
         m_menuLibraries->exec(pt);
     }
 }
 
 void CodeEditorPane::onExampleTriggered()
 {
-    QAction *action = qobject_cast<QAction*>(sender());
-    QString name = action->text();
-    QString content = ciApp->getExampleContent(m_languageList->currentText(), name);
+    QAction *action  = qobject_cast<QAction *>(sender());
+    QString  name    = action->text();
+    QString  content = ciApp->getExampleContent(m_languageList->currentText(), name);
     m_codeEditor->setContent(content);
 }
 
 void CodeEditorPane::onLibraryVersionTriggered()
 {
-    QAction *action = qobject_cast<QAction*>(sender());
-    auto libraries = ciApp->getLibraryList(m_languageList->currentText());
+    QAction *action    = qobject_cast<QAction *>(sender());
+    auto     libraries = ciApp->getLibraryList(m_languageList->currentText());
     if (!libraries)
         return;
     QString libraryName = action->data().toString();
-    auto it = std::find_if(libraries->begin(), libraries->end(), [&](const LibraryPtr l) {
-        return l->getName() == libraryName;
-    });
+    auto    it          = std::find_if(libraries->begin(), libraries->end(), [&](const LibraryPtr l) { return l->getName() == libraryName; });
     if (libraries->end() != it)
     {
-        const auto l = *it;
+        const auto  l        = *it;
         const auto &versions = l->getVersions();
-        QString version = action->text();
+        QString     version  = action->text();
         for (const auto v : versions)
         {
             v->setSelected(v->getVersion() == version);
@@ -146,8 +145,8 @@ void CodeEditorPane::makeLibariesMenu()
             continue;
         QActionGroup *ag = new QActionGroup(this);
         ag->setExclusive(true);
-        QMenu *menu = m_menuLibraries->addMenu(l->getName());
-        QAction * action = menu->addAction(" - ");
+        QMenu *  menu   = m_menuLibraries->addMenu(l->getName());
+        QAction *action = menu->addAction(" - ");
         connect(action, &QAction::triggered, this, &CodeEditorPane::onLibraryVersionTriggered);
         ag->addAction(action);
         action->setData(l->getName());
@@ -155,7 +154,7 @@ void CodeEditorPane::makeLibariesMenu()
         action->setChecked(true);
         for (const auto v : versions)
         {
-            QAction * action = menu->addAction(v->getVersion());
+            QAction *action = menu->addAction(v->getVersion());
             action->setData(l->getName());
             action->setCheckable(true);
             ag->addAction(action);
@@ -175,7 +174,7 @@ void CodeEditorPane::makeExamplesMenu()
     if (examples.isEmpty())
         return;
     m_menuExamples = new QMenu(this);
-    for (const auto & e : examples)
+    for (const auto &e : examples)
     {
         QAction *action = m_menuExamples->addAction(e);
         connect(action, &QAction::triggered, this, &CodeEditorPane::onExampleTriggered);

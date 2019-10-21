@@ -1,13 +1,15 @@
 #include "stdafx.h"
+
+#include "x86to6502output.h"
+
 #include "ScintillaEdit.h"
 #include "scintillaconfig.h"
-#include "x86to6502output.h"
 
 X86To6502Output::X86To6502Output(QWidget *parent) : QWidget(parent)
 {
     QVBoxLayout *mainLayout = new QVBoxLayout();
     setLayout(mainLayout);
-    mainLayout->setContentsMargins(0,0,0,0);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
     m_toolOptions = new QLineEdit(this);
     m_toolOptions->setPlaceholderText(tr("X86To6502 Input"));
     m_toolOptions->setClearButtonEnabled(true);
@@ -42,5 +44,3 @@ QString X86To6502Output::getToolOptions()
 {
     return m_toolOptions->text();
 }
-
-

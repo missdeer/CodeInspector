@@ -11,17 +11,18 @@ class ScintillaConfig;
 class ClangTidyOutput : public QWidget
 {
     Q_OBJECT
-public:
+  public:
     explicit ClangTidyOutput(QWidget *parent = nullptr);
-    void initialize();
-    void setContent(const QString& content);
+    void    initialize();
+    void    setContent(const QString &content);
     QString getToolOptions();
-signals:    
+  signals:
     void optionsChanged(const QString &);
-private:
-    ScintillaEdit *m_scintillaEdit;
+
+  private:
+    ScintillaEdit *  m_scintillaEdit;
     ScintillaConfig *m_sc;
-    QLineEdit *m_toolOptions;
+    QLineEdit *      m_toolOptions;
 };
 
 #endif // CLANGTIDYOUTPUT_H

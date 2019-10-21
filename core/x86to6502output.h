@@ -11,18 +11,18 @@ class ScintillaConfig;
 class X86To6502Output : public QWidget
 {
     Q_OBJECT
-public:
+  public:
     explicit X86To6502Output(QWidget *parent = nullptr);
-    void initialize();
-    void setContent(const QString& content);
+    void    initialize();
+    void    setContent(const QString &content);
     QString getToolOptions();
-signals:    
+  signals:
     void optionsChanged(const QString &);
-    
-private:
-    ScintillaEdit *m_scintillaEdit;
+
+  private:
+    ScintillaEdit *  m_scintillaEdit;
     ScintillaConfig *m_sc;
-    QLineEdit *m_toolOptions;
+    QLineEdit *      m_toolOptions;
 };
 
 #endif // X86TO6502OUTPUT_H

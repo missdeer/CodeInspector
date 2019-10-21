@@ -3,38 +3,39 @@
 
 #include <QMainWindow>
 
-namespace Ui {
-class MainWindow;
+namespace Ui
+{
+    class MainWindow;
 }
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-    
-public:
+
+  public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    
-private slots:
+
+  private slots:
     void on_tabWidget_tabCloseRequested(int index);
-    
+
     void on_actionExit_triggered();
-    
+
     void on_actionVisitHomepage_triggered();
-    
+
     void on_actionAbout_triggered();
-    
+
     void on_actionNewSession_triggered();
-    
+
     void on_actionOpenSession_triggered();
-    
+
     void on_actionSaveSession_triggered();
-    
+
     void on_actionSaveAsSession_triggered();
-    
-private:
+
+  private:
     Ui::MainWindow *ui;
-    int addSessionTab();
+    int             addSessionTab();
 };
 
 #endif // MAINWINDOW_H

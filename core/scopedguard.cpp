@@ -1,12 +1,10 @@
 #include "stdafx.h"
-#include <utility>
+
 #include "scopedguard.h"
 
-ScopedGuard::ScopedGuard(std::function<void(void)> f)
-    : m_f(std::move(f))
-{
-    
-}
+#include <utility>
+
+ScopedGuard::ScopedGuard(std::function<void(void)> f) : m_f(std::move(f)) {}
 
 ScopedGuard::~ScopedGuard()
 {

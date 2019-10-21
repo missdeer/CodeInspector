@@ -1,18 +1,20 @@
 #include "stdafx.h"
-#include <QCheckBox>
-#include "ScintillaEdit.h"
-#include "scintillaconfig.h"
+
 #include "gcctreertloutput.h"
 
-GCCTreeRTLOutput::GCCTreeRTLOutput(QWidget *parent)
-    : QWidget (parent)
+#include "ScintillaEdit.h"
+#include "scintillaconfig.h"
+
+#include <QCheckBox>
+
+GCCTreeRTLOutput::GCCTreeRTLOutput(QWidget *parent) : QWidget(parent)
 {
     QVBoxLayout *mainLayout = new QVBoxLayout();
     setLayout(mainLayout);
-    mainLayout->setContentsMargins(0,0,0,0);
-    
+    mainLayout->setContentsMargins(0, 0, 0, 0);
+
     QHBoxLayout *topLayout = new QHBoxLayout();
-    m_passes = new QComboBox(this);
+    m_passes               = new QComboBox(this);
     topLayout->addWidget(m_passes);
     m_gccTree = new QCheckBox(tr("GCC Tree"), this);
     m_gccTree->setChecked(true);
@@ -22,12 +24,12 @@ GCCTreeRTLOutput::GCCTreeRTLOutput(QWidget *parent)
     topLayout->addWidget(m_rtl);
     topLayout->setStretch(0, 1);
     topLayout->setSpacing(2);
-    
+
     mainLayout->addLayout(topLayout);
     m_scintillaEdit = new ScintillaEdit(this);
     mainLayout->addWidget(m_scintillaEdit);
     m_sc = new ScintillaConfig(m_scintillaEdit);
-        
+
     connect(m_passes, &QComboBox::currentTextChanged, this, &GCCTreeRTLOutput::onCurrentTextChanged);
     connect(m_gccTree, &QCheckBox::stateChanged, this, &GCCTreeRTLOutput::onStateChanged);
     connect(m_rtl, &QCheckBox::stateChanged, this, &GCCTreeRTLOutput::onStateChanged);
@@ -56,7 +58,7 @@ void GCCTreeRTLOutput::setContent(const QString &content)
 void GCCTreeRTLOutput::setPasses(const QStringList &passes)
 {
     bool diff = false;
-    for (const auto & pass : passes)
+    for (const auto &pass : passes)
     {
         if (m_passes->findText(pass) < 0)
         {
@@ -109,4 +111,3 @@ void GCCTreeRTLOutput::onStateChanged(int)
     setContent(tr("<Compiling...>"));
     emit refresh();
 }
-

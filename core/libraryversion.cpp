@@ -1,11 +1,6 @@
 #include "libraryversion.h"
 
-LibraryVersion::LibraryVersion(QObject *parent)
-    : QObject(parent)
-    , selected(false)
-{
-
-}
+LibraryVersion::LibraryVersion(QObject *parent) : QObject(parent), selected(false) {}
 
 const QString &LibraryVersion::getVersion() const
 {

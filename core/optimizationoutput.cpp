@@ -1,11 +1,8 @@
 #include "stdafx.h"
+
 #include "optimizationoutput.h"
 
-OptimizationOutput::OptimizationOutput(QWidget *parent)
-    : QTableWidget (parent)
-{
-    
-}
+OptimizationOutput::OptimizationOutput(QWidget *parent) : QTableWidget(parent) {}
 
 void OptimizationOutput::initialize()
 {
@@ -25,7 +22,7 @@ void OptimizationOutput::setContent(const OptimizationItemList &content)
     initialize();
     setRowCount(content.size());
     int index = 0;
-    for (const auto & oi : content)
+    for (const auto &oi : content)
     {
         auto *pass = new QTableWidgetItem(oi->pass);
         setItem(index, 0, pass);
