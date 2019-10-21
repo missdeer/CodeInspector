@@ -15,10 +15,6 @@ set(CMAKE_AUTORCC ON) # if you have any .qrc files
 # Add compiler flags for building executables (-fPIE)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
 
-qt5_add_resources(RESOURCES
-        desktop/image.qrc
-        )
-
 add_compile_definitions(SCINTILLA_QT=1
         SCI_LEXER=1
         _CRT_SECURE_NO_DEPRECATE=1
@@ -34,6 +30,20 @@ include_directories(core
         3rdparty/scintilla/src
         3rdparty/scintilla/lexlib
         3rdparty/scintilla/include
+        )
+
+file(GLOB
+        desktop_qrc
+        desktop/*.qrc
+        )
+file(GLOB
+        core_qrc
+        core/*.qrc
+        )
+
+qt5_add_resources(RESOURCES
+        ${core_qrc}
+        ${desktop_qrc}
         )
 
 file(GLOB
