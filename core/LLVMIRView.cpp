@@ -10,7 +10,6 @@ void LLVMIRView::initialize()
     m_sc.initInspectorMargins(false);
     m_sc.initLexerStyle("asm");
 
-    connect(this, &ScintillaEdit::marginClicked, this, &LLVMIRView::marginClicked);
     setReadOnly(true);
 }
 

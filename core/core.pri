@@ -23,7 +23,8 @@ SOURCES += \
     $$PWD/outputwindow.cpp \
     $$PWD/paholeoutput.cpp \
     $$PWD/clangtidyoutput.cpp \
-    $$PWD/x86to6502output.cpp
+    $$PWD/x86to6502output.cpp \
+    $$PWD/LLVMIRView.cpp
 
 HEADERS += \
     $$PWD/clangqueryoutput.h \
@@ -51,7 +52,8 @@ HEADERS += \
     $$PWD/optimizationitem.hpp \
     $$PWD/paholeoutput.h \
     $$PWD/clangtidyoutput.h \
-    $$PWD/x86to6502output.h
+    $$PWD/x86to6502output.h \
+    $$PWD/LLVMIRView.h
 
 	
 RESOURCES += \
