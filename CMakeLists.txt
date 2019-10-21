@@ -138,13 +138,35 @@ qt5_wrap_cpp(SOURCES
         ${desktop_headers}
         )
 
-add_executable(CodeInspector
-        desktop/CodeInspector.rc
-        ${UIS}
-        ${SOURCES}
-        ${RESOURCES}
-        )
+if (APPLE)
+    set(MACOSX_BUNDLE_BUNDLE_NAME CodeInspector)
+    set(MACOSX_BUNDLE_GUI_IDENTIFIER "info.minidump.codeinspector")
+    set(MACOSX_BUNDLE_ICON_FILE "CodeInspector.icns")
+    set(MACOSX_BUNDLE_INFO_STRING "Code Inspector")
+    set(MACOSX_BUNDLE_LONG_VERSION_STRING "1.0.0.1")
+    set(MACOSX_BUNDLE_SHORT_VERSION_STRING "1.0")
+    set(MACOSX_BUNDLE_BUNDLE_VERSION "1.0")
+    add_executable(CodeInspector
+            MACOSX_BUNDLE
+            desktop/CodeInspector.rc
+            desktop/CodeInspector.icns
+            ${UIS}
+            ${SOURCES}
+            ${RESOURCES}
+            )
+    set_target_properties(
+            CodeInspector
+            PROPERTIES
+            RESOURCE "desktop/CodeInspector.icns"
+    )
+    set_target_properties(CodeInspector PROPERTIES BUNDLE TRUE)
+else()
+    add_executable(CodeInspector
+            desktop/CodeInspector.rc
+            ${UIS}
+            ${SOURCES}
+            ${RESOURCES}
+            )
+endif()
 
 target_link_libraries(CodeInspector Qt5::Widgets Qt5::Gui Qt5::Core Qt5::Network Qt5::Xml)
-
-set_target_properties(CodeInspector PROPERTIES BUNDLE TRUE)
