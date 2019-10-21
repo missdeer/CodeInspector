@@ -51,14 +51,36 @@ file(GLOB
         desktop/*.ui
         )
 
-file(GLOB
-        core_headers
-        core/*.h
+set(core_headers
+        core/astoutput.h
+        core/clangqueryoutput.h
+        core/clangtidyoutput.h
+        core/codeeditor.h
+        core/codeinspector.h
+        core/gcctreertloutput.h
+        core/godboltagent.h
+        core/library.h
+        core/libraryversion.h
+        core/llvmmachinecodeanalyzeroutput.h
+        core/networkreplyhelper.h
+        core/optimizationoutput.h
+        core/outputwindow.h
+        core/paholeoutput.h
+        core/readelfoutput.h
+        core/x86to6502output.h
+)
+
+set(desktop_headers
+        desktop/codeeditorpane.h
+        desktop/codeinspectorapp.h
+        desktop/codeinspectorpane.h
+        desktop/codeinspectortabwidget.h
+        desktop/comboboxdelegate.h
+        desktop/compilationtabwidget.h
+        desktop/mainwindow.h
+        desktop/sessionwidget.h
         )
-file(GLOB
-        desktop_headers
-        desktop/*.h
-        )
+
 file(GLOB
         scintilla_src
         3rdparty/scintilla/src/*.cxx
