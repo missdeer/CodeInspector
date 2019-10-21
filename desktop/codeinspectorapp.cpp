@@ -182,7 +182,7 @@ bool CodeInspectorApp::parseCompilerListFromJSON(const QString& language, const 
     if (!doc.isArray())
     {
 #if !defined(QT_NO_DEBUG)
-        qDebug() << "compiler list is expected to be an array:" << QString(content);
+        qDebug() << "compiler list is expected to be an array:" << QString(content).left(256);
 #endif
         return false;
     }
@@ -197,7 +197,7 @@ bool CodeInspectorApp::parseCompilerListFromJSON(const QString& language, const 
         if (!a.isObject())
         {
 #if !defined(QT_NO_DEBUG)
-            qDebug() << "compiler list item is expected to be an object:"  << QString(content);
+            qDebug() << "compiler list item is expected to be an object:"  << QString(content).left(256);
 #endif
             return false;
         }
@@ -370,7 +370,7 @@ bool CodeInspectorApp::parseLanguageListFromJSON(const QByteArray &content)
     if (!doc.isArray())
     {
 #if !defined(QT_NO_DEBUG)
-        qDebug() << "language list is expected to be an array:" << QString(content);
+        qDebug() << "language list is expected to be an array:" << QString(content).left(256);
 #endif
         return false;
     }
@@ -383,7 +383,7 @@ bool CodeInspectorApp::parseLanguageListFromJSON(const QByteArray &content)
         if (!l.isObject())
         {
 #if !defined(QT_NO_DEBUG)
-            qDebug() << "language list item is expected to be an object:"  << QString(content);
+            qDebug() << "language list item is expected to be an object:"  << QString(content).left(256);
 #endif
             return false;
         }
@@ -401,7 +401,7 @@ bool CodeInspectorApp::parseLanguageListFromJSON(const QByteArray &content)
             if (!ext.isString())
             {
 #if !defined(QT_NO_DEBUG)
-                qDebug() << "extensions item is expected to be a string:" << QString(content);
+                qDebug() << "extensions item is expected to be a string:" << QString(content).left(256);
 #endif
                 return false;
             }
@@ -413,7 +413,7 @@ bool CodeInspectorApp::parseLanguageListFromJSON(const QByteArray &content)
             if (!a.isString())
             {
 #if !defined(QT_NO_DEBUG)
-                qDebug() << "alias item is expected to be a string:" << QString(content);
+                qDebug() << "alias item is expected to be a string:" << QString(content).left(256);
 #endif
                 return false;
             }
@@ -766,7 +766,7 @@ void CodeInspectorApp::onConfigurationRequestFinished()
 
     QByteArray& content = reply->content();
 #if !defined (QT_NO_DEBUG)
-    qDebug() << __FUNCTION__ << QString(content);
+    qDebug() << __FUNCTION__ << QString(content).left(256);
 #endif
     if (parseConfiguration(content))
         storeConfiguration(content);

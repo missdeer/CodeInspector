@@ -160,7 +160,7 @@ void GodboltAgent::onCompileRequestFinished()
     if (!doc.isObject())
     {
 #if !defined(QT_NO_DEBUG)
-        qDebug() << "compilation result is expected to be an object:" << QString(content);
+        qDebug() << "compilation result is expected to be an object:" << QString(content).left(256);
 #endif
         return;
     }
@@ -173,7 +173,7 @@ void GodboltAgent::onCompileRequestFinished()
     if (!codeVal.isDouble())
     {
 #if !defined(QT_NO_DEBUG)
-        qDebug() << "compilation result code is expected to be an integer:" << QString(content);
+        qDebug() << "compilation result code is expected to be an integer:" << QString(content).left(256);
 #endif
         return;
     }
@@ -182,7 +182,7 @@ void GodboltAgent::onCompileRequestFinished()
     if (!stdoutVal.isArray())
     {
 #if !defined(QT_NO_DEBUG)
-        qDebug() << "compilation result stdout is expected to be an integer:" << QString(content);
+        qDebug() << "compilation result stdout is expected to be an integer:" << QString(content).left(256);
 #endif
         return;
     }
@@ -198,7 +198,7 @@ void GodboltAgent::onCompileRequestFinished()
     if (!stderrVal.isArray())
     {
 #if !defined(QT_NO_DEBUG)
-        qDebug() << "compilation result stderr is expected to be an integer:" << QString(content);
+        qDebug() << "compilation result stderr is expected to be an integer:" << QString(content).left(256);
 #endif
         return;
     }
@@ -214,7 +214,7 @@ void GodboltAgent::onCompileRequestFinished()
     if (!asmVal.isArray())
     {
 #if !defined(QT_NO_DEBUG)
-        qDebug() << "compilation result asm is expected to be an integer:" << QString(content);
+        qDebug() << "compilation result asm is expected to be an integer:" << QString(content).left(256);
 #endif
         return;
     }

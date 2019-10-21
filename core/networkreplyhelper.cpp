@@ -59,7 +59,7 @@ void NetworkReplyHelper::error(QNetworkReply::NetworkError code)
 void NetworkReplyHelper::finished()
 {
 #if !defined(QT_NO_DEBUG)
-    qDebug() << this << " finished: " << QString(m_content) << "\n";
+    qDebug() << this << " finished: " << QString(m_content).left(256) << "\n";
 #endif
     if (m_timeoutTimer)
         m_timeoutTimer->stop();
