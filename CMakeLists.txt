@@ -154,6 +154,8 @@ if (APPLE)
             ${SOURCES}
             ${RESOURCES}
             )
+
+    set_source_files_properties("${CMAKE_CURRENT_SOURCE_DIR}/desktop/CodeInspector.icns" PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
     set_target_properties(
             CodeInspector
             PROPERTIES
