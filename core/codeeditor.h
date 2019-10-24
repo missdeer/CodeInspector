@@ -15,7 +15,7 @@ class CodeEditor : public ScintillaEdit
     void setContent(const QString &content);
     void setContent(const QByteArray &content);
     void clearContent();
-    void setMarkerColor(const QMap<int, sptr_t> &markerColor);
+    void setMarkerColor(const QMap<int, intptr_t> &markerColor);
   signals:
     void contentModified();
   private slots:

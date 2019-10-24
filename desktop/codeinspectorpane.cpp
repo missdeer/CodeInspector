@@ -161,7 +161,9 @@ CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
     connect(m_backend, &GodboltAgent::hasPaholeOutput, this, &CodeInspectorPane::onHasPaholeOutput);
     connect(m_backend, &GodboltAgent::hasClangTidyOutput, this, &CodeInspectorPane::onHasClangTidyOutput);
     connect(m_backend, &GodboltAgent::hasASTOutput, this, &CodeInspectorPane::onHasASTOutput);
+    connect(m_backend, &GodboltAgent::hasLLVMIROutput, this, &CodeInspectorPane::onHasLLVMIROutput);
     connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::requestAST, this, &CodeInspectorPane::onRequestAST);
+    connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::requestLLVMIR, this, &CodeInspectorPane::onRequestLLVMIR);
     connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::requestLLVMMCA, this, &CodeInspectorPane::onRequestLLVMMCA);
     connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::requestGCCTreeRTL, this, &CodeInspectorPane::onRequestGCCTreeRTL);
     connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::requestOptimization, this, &CodeInspectorPane::onRequestOptimization);
@@ -296,12 +298,14 @@ void CodeInspectorPane::onCompiled()
     qDebug() << __FUNCTION__;
 #endif
     auto content = m_backend->getAsmContent();
+
     Q_ASSERT(m_codeInspectorTabWidget);
     m_codeInspectorTabWidget->setCodeInspectorContent(content, m_btnBinrary->isChecked());
-    auto asmItems  = m_backend->getAsmItems();
-    auto markerMap = m_codeInspectorTabWidget->setCodeInspectorAsmItems(asmItems, m_btnBinrary->isChecked());
+    auto asmItems = m_backend->getAsmItems();
+    m_codeInspectorTabWidget->setCodeInspectorAsmItems(asmItems, m_btnBinrary->isChecked(), m_markerMap);
+
     Q_ASSERT(m_codeEditor);
-    m_codeEditor->setMarkerColor(markerMap);
+    m_codeEditor->setMarkerColor(m_markerMap);
 
     auto output = m_backend->getCompileStderr();
     showOutputWindow(!output.isEmpty());
@@ -343,7 +347,10 @@ void CodeInspectorPane::onHasASTOutput()
 
 void CodeInspectorPane::onHasLLVMIROutput()
 {
-    //
+    m_markerMap.clear();
+
+    auto llvmIRItems = m_backend->getLLVMIRItems();
+    m_codeInspectorTabWidget->setLLVMIRItems(llvmIRItems, m_markerMap);
 }
 
 void CodeInspectorPane::onDelayCompile()

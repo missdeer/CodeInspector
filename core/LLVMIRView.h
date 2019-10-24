@@ -7,7 +7,10 @@
 
 #include "ScintillaEdit.h"
 #include "godboltagent.h"
+#include "llvmiritem.hpp"
 #include "scintillaconfig.h"
+
+#include <QMap>
 
 class LLVMIRView : public ScintillaEdit
 {
@@ -16,6 +19,7 @@ class LLVMIRView : public ScintillaEdit
     explicit LLVMIRView(QWidget *parent = nullptr);
     void initialize();
     void setContent(const QString &content);
+    void setLLVMIRItems(const LLVMIRItemList &items, QMap<int, intptr_t> &markerMap);
 
   protected:
     QVariant inputMethodQuery(Qt::InputMethodQuery) const override;

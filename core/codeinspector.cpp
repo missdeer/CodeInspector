@@ -27,13 +27,11 @@ void CodeInspector::setContent(const QString &content, bool binary)
     colourise(0, -1);
 }
 
-QMap<int, sptr_t> CodeInspector::setAsmItems(const AsmItemList &items, bool binary)
+void CodeInspector::setAsmItems(const AsmItemList &items, bool binary, QMap<int, intptr_t> &markerMap)
 {
-    const sptr_t marginStyleId = STYLE_LASTPREDEFINED + 1;
-    sptr_t       textLength    = 0;
-
-    QMap<int, sptr_t> markerMap;
-    int               markerIndex = 0;
+    const intptr_t marginStyleId = STYLE_LASTPREDEFINED + 1;
+    intptr_t       textLength    = 0;
+    intptr_t       markerIndex   = 0;
     m_sc.initMarkers();
 
     for (int i = 0; i < items.length(); i++)
@@ -114,7 +112,6 @@ QMap<int, sptr_t> CodeInspector::setAsmItems(const AsmItemList &items, bool bina
         qDebug() << "source:" << it.key() << ", marker:" << it.value();
     }
 #endif
-    return markerMap;
 }
 
 QVariant CodeInspector::inputMethodQuery(Qt::InputMethodQuery /*query*/) const

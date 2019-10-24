@@ -3,6 +3,7 @@
 
 #include "ScintillaEdit.h"
 #include "asmitem.hpp"
+#include "llvmiritem.hpp"
 #include "optimizationitem.hpp"
 
 #include <QTabWidget>
@@ -25,20 +26,21 @@ class CodeInspectorTabWidget : public QTabWidget
   public:
     explicit CodeInspectorTabWidget(QWidget *parent = nullptr);
 
-    QMap<int, sptr_t> setCodeInspectorAsmItems(const AsmItemList &items, bool binary);
-    void              setCodeInspectorContent(const QString &content, bool binary);
-    void              setASTContent(const QString &content);
-    void              setIRContent(const QString &content);
-    void              setOptimizationContent(const OptimizationItemList &content);
-    void              setGCCTreeRTLContent(const QString &content);
-    void              setGccDumpAllPasses(const QStringList &passes);
-    void              setSelectedGCCDumpPass(const QString &pass);
-    void              setLLVMMACContent(const QString &content);
-    void              setClangTidyContent(const QString &content);
-    void              setPaholeContent(const QString &content);
-    void              setClangQueryContent(const QString &content);
-    void              setReadElfContent(const QString &content);
-    void              setX86To6502Content(const QString &content);
+    void setCodeInspectorAsmItems(const AsmItemList &items, bool binary, QMap<int, intptr_t> &markerMap);
+    void setCodeInspectorContent(const QString &content, bool binary);
+    void setASTContent(const QString &content);
+    void setLLVMIRContent(const QString &content);
+    void setLLVMIRItems(const LLVMIRItemList &items, QMap<int, intptr_t> &markerMap);
+    void setOptimizationContent(const OptimizationItemList &content);
+    void setGCCTreeRTLContent(const QString &content);
+    void setGccDumpAllPasses(const QStringList &passes);
+    void setSelectedGCCDumpPass(const QString &pass);
+    void setLLVMMACContent(const QString &content);
+    void setClangTidyContent(const QString &content);
+    void setPaholeContent(const QString &content);
+    void setClangQueryContent(const QString &content);
+    void setReadElfContent(const QString &content);
+    void setX86To6502Content(const QString &content);
 
     void setEnableAST(bool enabled);
     void setEnableLLVMIR(bool enabled);

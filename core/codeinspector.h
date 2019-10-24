@@ -5,14 +5,16 @@
 #include "godboltagent.h"
 #include "scintillaconfig.h"
 
+#include <QMap>
+
 class CodeInspector : public ScintillaEdit
 {
     Q_OBJECT
   public:
     explicit CodeInspector(QWidget *parent = nullptr);
-    void              initialize();
-    void              setContent(const QString &content, bool binary);
-    QMap<int, sptr_t> setAsmItems(const AsmItemList &items, bool binary);
+    void initialize();
+    void setContent(const QString &content, bool binary);
+    void setAsmItems(const AsmItemList &items, bool binary, QMap<int, intptr_t> &markerMap);
 
   protected:
     QVariant inputMethodQuery(Qt::InputMethodQuery) const override;

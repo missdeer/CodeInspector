@@ -88,11 +88,11 @@ void CodeEditor::clearContent()
     emptyUndoBuffer();
 }
 
-void CodeEditor::setMarkerColor(const QMap<int, sptr_t> &markerColor)
+void CodeEditor::setMarkerColor(const QMap<int, intptr_t> &markerColor)
 {
     m_sc.initMarkers();
 
-    QMapIterator<int, sptr_t> it(markerColor);
+    QMapIterator<int, intptr_t> it(markerColor);
     while (it.hasNext())
     {
         it.next();

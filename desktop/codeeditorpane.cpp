@@ -101,20 +101,20 @@ void CodeEditorPane::onShowLibraryList()
 
 void CodeEditorPane::onExampleTriggered()
 {
-    QAction *action  = qobject_cast<QAction *>(sender());
-    QString  name    = action->text();
-    QString  content = ciApp->getExampleContent(m_languageList->currentText(), name);
+    auto *action  = qobject_cast<QAction *>(sender());
+    auto  name    = action->text();
+    auto  content = ciApp->getExampleContent(m_languageList->currentText(), name);
     m_codeEditor->setContent(content);
 }
 
 void CodeEditorPane::onLibraryVersionTriggered()
 {
-    QAction *action    = qobject_cast<QAction *>(sender());
-    auto     libraries = ciApp->getLibraryList(m_languageList->currentText());
+    auto *action    = qobject_cast<QAction *>(sender());
+    auto  libraries = ciApp->getLibraryList(m_languageList->currentText());
     if (!libraries)
         return;
-    QString libraryName = action->data().toString();
-    auto    it          = std::find_if(libraries->begin(), libraries->end(), [&](const LibraryPtr l) { return l->getName() == libraryName; });
+    auto libraryName = action->data().toString();
+    auto it          = std::find_if(libraries->begin(), libraries->end(), [&libraryName](const LibraryPtr l) { return l->getName() == libraryName; });
     if (libraries->end() != it)
     {
         const auto  l        = *it;
@@ -143,7 +143,7 @@ void CodeEditorPane::makeLibariesMenu()
         const auto &versions = l->getVersions();
         if (versions.isEmpty())
             continue;
-        QActionGroup *ag = new QActionGroup(this);
+        auto *ag = new QActionGroup(this);
         ag->setExclusive(true);
         QMenu *  menu   = m_menuLibraries->addMenu(l->getName());
         QAction *action = menu->addAction(" - ");
@@ -176,7 +176,7 @@ void CodeEditorPane::makeExamplesMenu()
     m_menuExamples = new QMenu(this);
     for (const auto &e : examples)
     {
-        QAction *action = m_menuExamples->addAction(e);
+        auto *action = m_menuExamples->addAction(e);
         connect(action, &QAction::triggered, this, &CodeEditorPane::onExampleTriggered);
     }
 }

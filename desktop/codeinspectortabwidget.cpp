@@ -26,10 +26,10 @@ CodeInspectorTabWidget::CodeInspectorTabWidget(QWidget *parent) : QTabWidget(par
     addTab(m_codeInspector, QIcon(":/resource/image/tab/inspector.png"), tr("Inspector"));
 }
 
-QMap<int, sptr_t> CodeInspectorTabWidget::setCodeInspectorAsmItems(const AsmItemList &items, bool binary)
+void CodeInspectorTabWidget::setCodeInspectorAsmItems(const AsmItemList &items, bool binary, QMap<int, intptr_t> &markerMap)
 {
     Q_ASSERT(m_codeInspector);
-    return m_codeInspector->setAsmItems(items, binary);
+    m_codeInspector->setAsmItems(items, binary, markerMap);
 }
 
 void CodeInspectorTabWidget::setCodeInspectorContent(const QString &content, bool binary)
@@ -80,10 +80,16 @@ void CodeInspectorTabWidget::setASTContent(const QString &content)
     m_ast->setContent(content);
 }
 
-void CodeInspectorTabWidget::setIRContent(const QString &content)
+void CodeInspectorTabWidget::setLLVMIRContent(const QString &content)
 {
     Q_ASSERT(m_llvmIR);
     m_llvmIR->setContent(content);
+}
+
+void CodeInspectorTabWidget::setLLVMIRItems(const LLVMIRItemList &items, QMap<int, intptr_t> &markerMap)
+{
+    Q_ASSERT(m_llvmIR);
+    m_llvmIR->setLLVMIRItems(items, markerMap);
 }
 
 void CodeInspectorTabWidget::setOptimizationContent(const OptimizationItemList &content)

@@ -85,6 +85,8 @@ class CodeInspectorPane : public QWidget
 
     QString m_languageName;
 
+    QMap<int, intptr_t> m_markerMap;
+
     void storeToCache(const QString &name, const CompileInfo &ci);
     bool restoreFromCache(const QString &name, CompileInfo &ci);
     void showOutputWindow(bool show);
