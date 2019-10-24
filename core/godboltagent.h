@@ -4,6 +4,7 @@
 #include "asmitem.hpp"
 #include "compilerinfo.hpp"
 #include "library.h"
+#include "llvmiritem.hpp"
 #include "optimizationitem.hpp"
 
 #include <QList>
@@ -17,51 +18,97 @@ class GodboltAgent : public QObject
     Q_OBJECT
   public:
     explicit GodboltAgent(QNetworkAccessManager &nam, QObject *parent = nullptr);
+
     GodboltAgent(const GodboltAgent &) = delete;
+
     void operator=(const GodboltAgent &) = delete;
-    GodboltAgent(GodboltAgent &&)        = delete;
+
+    GodboltAgent(GodboltAgent &&) = delete;
+
     void operator=(GodboltAgent &&) = delete;
-    ~GodboltAgent() override        = default;
+
+    ~GodboltAgent() override = default;
 
     void initialize(BackendInterface *backend);
+
     void compile(const CompileInfo &ci);
 
     void setEnableLLVMMCA(bool enabled);
+
     void setEnableAST(bool enabled);
+
     void setEnableOptimization(bool enabled);
+
     void setEnableGCCTreeRTL(bool enabled);
+
     void setEnablePahole(bool enabled);
+
     void setEnableClangTidy(bool enabled);
+
+    void setEnableLLVMIR(bool enabled);
+
     void setGCCTreeRTLOptions(const QString &pass, bool gccTree, bool rtl);
+
     void setLLVMMCAOptions(const QString &options);
+
     void setPaholeOptions(const QString &options);
+
     void setClangTidyOptions(const QString &options);
 
-    const QString &             getCompileStderr() const;
-    const QString &             getCompileStdout() const;
-    const QString &             getAsmContent() const;
-    const AsmItemList &         getAsmItems() const;
-    const QStringList &         getGccDumpAllPasses() const;
-    const QString &             getCurrentGCCDumpPassOutput() const;
-    const QString &             getSelectedGCCDumpPass() const;
-    const QString &             getClangTidyStderr() const;
-    const QString &             getClangTidyStdout() const;
-    const QString &             getLLVMMCAStderr() const;
-    const QString &             getLLVMMCAStdout() const;
-    const QString &             getPaholeStderr() const;
-    const QString &             getPaholeStdout() const;
-    const QString &             getASTOutput() const;
+    const QString &getCompileStderr() const;
+
+    const QString &getCompileStdout() const;
+
+    const QString &getAsmContent() const;
+
+    const AsmItemList &getAsmItems() const;
+
+    const QStringList &getGccDumpAllPasses() const;
+
+    const QString &getCurrentGCCDumpPassOutput() const;
+
+    const QString &getSelectedGCCDumpPass() const;
+
+    const QString &getClangTidyStderr() const;
+
+    const QString &getClangTidyStdout() const;
+
+    const QString &getLLVMMCAStderr() const;
+
+    const QString &getLLVMMCAStdout() const;
+
+    const QString &getPaholeStderr() const;
+
+    const QString &getPaholeStdout() const;
+
+    const QString &getASTOutput() const;
+
     const OptimizationItemList &getOptimizationItems() const;
 
+    const QString &getLLVMIRContent() const;
+
+    const LLVMIRItemList &getLLVMIRItems() const;
+
   signals:
+
     void compiled();
+
     void hasGccDumpOutput();
+
     void hasLLVMMCAOutput();
+
     void hasOptimizationOutput();
+
     void hasPaholeOutput();
+
     void hasClangTidyOutput();
+
     void hasASTOutput();
+
+    void hasLLVMIROutput();
+
   private slots:
+
     void onCompileRequestFinished();
 
   private:
@@ -74,6 +121,7 @@ class GodboltAgent : public QObject
         CO_OPTIMIZATION = 0x01 << 3,
         CO_PAHOLE       = 0x01 << 4,
         CO_CLANGTIDY    = 0x01 << 5,
+        CO_LLVMIR       = 0x01 << 6,
     };
     QNetworkAccessManager &m_nam;
     BackendInterface *     m_backend;
@@ -90,6 +138,8 @@ class GodboltAgent : public QObject
     QString                m_paholeOptions;
     QString                m_asmContent;
     AsmItemList            m_asmItems;
+    QString                m_llvmIRContent;
+    LLVMIRItemList         m_llvmIRItems;
     QStringList            m_gccDumpAllPasses;
     QString                m_currentGCCDumpPassOutput;
     QString                m_selectedGCCDumpPass;

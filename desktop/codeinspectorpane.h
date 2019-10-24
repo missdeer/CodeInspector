@@ -41,6 +41,7 @@ class CodeInspectorPane : public QWidget
     void onHasPaholeOutput();
     void onHasClangTidyOutput();
     void onHasASTOutput();
+    void onHasLLVMIROutput();
     void onDelayCompile();
     void onToggleOutput();
     void onActionBinaryTriggered();
@@ -55,6 +56,7 @@ class CodeInspectorPane : public QWidget
     void onCurrentCompilerChanged(const QString &compilerName);
     void onRequestLLVMMCA();
     void onRequestAST();
+    void onRequestLLVMIR();
     void onRequestOptimization();
     void onRequestGCCTreeRTL();
     void onRequestPahole();

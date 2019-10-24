@@ -31,6 +31,8 @@ void GodboltAgent::compile(const CompileInfo &ci)
         compilerOptionsObj.insert("produceAst", true);
     if (m_compilerOptions & CO_OPTIMIZATION)
         compilerOptionsObj.insert("produceOptInfo", true);
+    if (m_compilerOptions & CO_LLVMIR)
+        compilerOptionsObj.insert("produceIr", true);
     if (m_compilerOptions & CO_GCCTREERTL)
     {
         QJsonObject produceGccDumpObj;
@@ -135,6 +137,7 @@ void GodboltAgent::onCompileRequestFinished()
     m_clangTidyStdout.clear();
     m_asmContent.clear();
     m_asmItems.clear();
+    m_llvmIRContent.clear();
     m_gccDumpAllPasses.clear();
     m_currentGCCDumpPassOutput.clear();
     m_selectedGCCDumpPass.clear();
@@ -286,6 +289,12 @@ void GodboltAgent::onCompileRequestFinished()
     {
         m_astOutput = astOutputVal.toString();
         emit hasASTOutput();
+    }
+
+    QJsonValue hasIrOutputVal = docObj["hasIrOutput"];
+    if (hasIrOutputVal.isBool() && hasIrOutputVal.toBool())
+    {
+        emit hasLLVMIROutput();
     }
 
     QJsonValue gccDumpOutputVal = docObj["gccDumpOutput"];
@@ -485,6 +494,14 @@ void GodboltAgent::setEnableClangTidy(bool enabled)
         m_compilerOptions &= ~CO_CLANGTIDY;
 }
 
+void GodboltAgent::setEnableLLVMIR(bool enabled)
+{
+    if (enabled)
+        m_compilerOptions |= CO_LLVMIR;
+    else
+        m_compilerOptions &= ~CO_LLVMIR;
+}
+
 void GodboltAgent::setGCCTreeRTLOptions(const QString &pass, bool gccTree, bool rtl)
 {
     m_selectedGCCDumpPass = pass;
@@ -525,4 +542,14 @@ const QString &GodboltAgent::getCompileStdout() const
 const OptimizationItemList &GodboltAgent::getOptimizationItems() const
 {
     return m_optimizationItems;
+}
+
+const QString &GodboltAgent::getLLVMIRContent() const
+{
+    return m_llvmIRContent;
+}
+
+const LLVMIRItemList &GodboltAgent::getLLVMIRItems() const
+{
+    return m_llvmIRItems;
 }

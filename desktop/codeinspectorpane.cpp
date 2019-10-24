@@ -341,6 +341,11 @@ void CodeInspectorPane::onHasASTOutput()
     m_codeInspectorTabWidget->setASTContent(m_backend->getASTOutput());
 }
 
+void CodeInspectorPane::onHasLLVMIROutput()
+{
+    //
+}
+
 void CodeInspectorPane::onDelayCompile()
 {
 #if !defined(QT_NO_DEBUG)
@@ -430,9 +435,11 @@ void CodeInspectorPane::onCurrentCompilerChanged(const QString &compilerName)
     m_btnDemangle->setEnabled(compiler->supportsDemangle);
 
     m_codeInspectorTabWidget->setEnableAST(compiler->supportsAstView);
-    m_codeInspectorTabWidget->setEnableIR(compiler->supportsIrView);
     if (!m_codeInspectorTabWidget->enableAST())
         m_backend->setEnableAST(false);
+    m_codeInspectorTabWidget->setEnableIR(compiler->supportsIrView);
+    if (!m_codeInspectorTabWidget->enableIR())
+        m_backend->setEnableLLVMIR(false);
     m_codeInspectorTabWidget->setEnableLLVMMCA((!compiler->supportsBinary || !m_btnBinrary->isChecked()) &&
                                                (cn.contains("clang", Qt::CaseInsensitive) || cn.contains("gcc", Qt::CaseInsensitive)));
     if (!m_codeInspectorTabWidget->enableLLVMMCA())
@@ -464,6 +471,12 @@ void CodeInspectorPane::onRequestLLVMMCA()
 void CodeInspectorPane::onRequestAST()
 {
     m_backend->setEnableAST(true);
+    onDelayCompile();
+}
+
+void CodeInspectorPane::onRequestLLVMIR()
+{
+    m_backend->setEnableLLVMIR(true);
     onDelayCompile();
 }
 

@@ -19,3 +19,6 @@ CMakeCache.txt
 CMakeFiles
 .qmake.stash
 .DS_Store
+cmake-build-*
+.idea
+*~
