@@ -437,8 +437,8 @@ void CodeInspectorPane::onCurrentCompilerChanged(const QString &compilerName)
     m_codeInspectorTabWidget->setEnableAST(compiler->supportsAstView);
     if (!m_codeInspectorTabWidget->enableAST())
         m_backend->setEnableAST(false);
-    m_codeInspectorTabWidget->setEnableIR(compiler->supportsIrView);
-    if (!m_codeInspectorTabWidget->enableIR())
+    m_codeInspectorTabWidget->setEnableLLVMIR(compiler->supportsIrView);
+    if (!m_codeInspectorTabWidget->enableLLVMIR())
         m_backend->setEnableLLVMIR(false);
     m_codeInspectorTabWidget->setEnableLLVMMCA((!compiler->supportsBinary || !m_btnBinrary->isChecked()) &&
                                                (cn.contains("clang", Qt::CaseInsensitive) || cn.contains("gcc", Qt::CaseInsensitive)));

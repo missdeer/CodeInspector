@@ -14,12 +14,12 @@ class LibraryVersion : public QObject
   public:
     explicit LibraryVersion(QObject *parent = nullptr);
 
-    const QString &getVersion() const;
-    void           setVersion(const QString &value);
+    [[nodiscard]] const QString &getVersion() const;
+    void                         setVersion(const QString &value);
 
-    const QStringList &getPath() const;
-    void               setPath(const QStringList &value);
-    void               appendPath(const QString &p);
+    [[nodiscard]] const QStringList &getPath() const;
+    void                             setPath(const QStringList &value);
+    void                             appendPath(const QString &p);
 
     bool getSelected() const;
     void setSelected(bool value);

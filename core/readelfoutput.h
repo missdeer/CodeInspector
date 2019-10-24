@@ -13,9 +13,9 @@ class ReadElfOutput : public QWidget
     Q_OBJECT
   public:
     explicit ReadElfOutput(QWidget *parent = nullptr);
-    void    initialize();
-    void    setContent(const QString &content);
-    QString getToolOptions();
+    void                  initialize();
+    void                  setContent(const QString &content);
+    [[nodiscard]] QString getToolOptions();
   signals:
     void optionsChanged(const QString &);
 

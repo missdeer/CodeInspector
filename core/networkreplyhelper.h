@@ -18,13 +18,22 @@ class NetworkReplyHelper : public QObject
     NetworkReplyHelper(NetworkReplyHelper &&)  = delete;
     void operator=(NetworkReplyHelper &&) = delete;
     ~NetworkReplyHelper() override;
-    QByteArray &   content() { return m_content; }
-    QNetworkReply *reply() { return m_reply; }
+    [[nodiscard]] QByteArray &content()
+    {
+        return m_content;
+    }
+    [[nodiscard]] QNetworkReply *reply()
+    {
+        return m_reply;
+    }
 
-    QVariant       data() const;
-    void           setData(const QVariant &data);
-    void           setTimeout(int milliseconds);
-    const QString &getErrorMessage() const { return m_errMsg; }
+    [[nodiscard]] QVariant       data() const;
+    void                         setData(const QVariant &data);
+    void                         setTimeout(int milliseconds);
+    [[nodiscard]] const QString &getErrorMessage() const
+    {
+        return m_errMsg;
+    }
   signals:
     void done();
     void cancel();
@@ -41,7 +50,7 @@ class NetworkReplyHelper : public QObject
 
   private:
     QNetworkReply *m_reply;
-    QTimer *       m_timeoutTimer;
+    QTimer *       m_timeoutTimer {nullptr};
     QVariant       m_data;
     QByteArray     m_content;
     QString        m_errMsg;

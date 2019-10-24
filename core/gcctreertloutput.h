@@ -14,13 +14,13 @@ class GCCTreeRTLOutput : public QWidget
     Q_OBJECT
   public:
     explicit GCCTreeRTLOutput(QWidget *parent = nullptr);
-    void    initialize();
-    void    setContent(const QString &content);
-    void    setPasses(const QStringList &passes);
-    void    setCurrentSelectedPass(const QString &pass);
-    QString getCurrentSelectedPass();
-    bool    isGCCTreeEnabled();
-    bool    isRTLEnabled();
+    void                  initialize();
+    void                  setContent(const QString &content);
+    void                  setPasses(const QStringList &passes);
+    void                  setCurrentSelectedPass(const QString &pass);
+    [[nodiscard]] QString getCurrentSelectedPass();
+    bool                  isGCCTreeEnabled();
+    bool                  isRTLEnabled();
   signals:
     void refresh();
 

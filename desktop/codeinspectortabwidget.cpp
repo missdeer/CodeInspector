@@ -160,8 +160,8 @@ void CodeInspectorTabWidget::onCustomContextMenuRequested(const QPoint &pos)
     menu.addAction(pX86To6502Action);
 
     QAction *pLLVMIRAction = new QAction(QIcon(":/resource/image/tab/llvm.png"), tr("LLVM IR"), &menu);
-    pLLVMIRAction->setEnabled(m_enableIR);
-    connect(pLLVMIRAction, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestIR);
+    pLLVMIRAction->setEnabled(m_enableLLVMIR);
+    connect(pLLVMIRAction, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestLLVMIR);
     menu.addAction(pLLVMIRAction);
 
     menu.exec(mapToGlobal(pos));
@@ -255,7 +255,7 @@ void CodeInspectorTabWidget::onRequestClangQuery()
     emit requestClangQuery();
 }
 
-void CodeInspectorTabWidget::onRequestIR()
+void CodeInspectorTabWidget::onRequestLLVMIR()
 {
     if (!m_llvmIR)
     {
@@ -263,7 +263,7 @@ void CodeInspectorTabWidget::onRequestIR()
         m_llvmIR->initialize();
         addTab(m_llvmIR, QIcon(":/resource/image/tab/llvm.png"), tr("LLVM IR"));
     }
-    emit requestIR();
+    emit requestLLVMIR();
 }
 
 void CodeInspectorTabWidget::onRequestReadElf()
@@ -389,9 +389,9 @@ bool CodeInspectorTabWidget::enableAST() const
     return m_enableAST;
 }
 
-bool CodeInspectorTabWidget::enableIR() const
+bool CodeInspectorTabWidget::enableLLVMIR() const
 {
-    return m_enableIR;
+    return m_enableLLVMIR;
 }
 
 bool CodeInspectorTabWidget::enableLLVMMCA() const
@@ -455,9 +455,9 @@ void CodeInspectorTabWidget::setEnableAST(bool enabled)
         removePage(reinterpret_cast<QWidget **>(&m_ast));
 }
 
-void CodeInspectorTabWidget::setEnableIR(bool enabled)
+void CodeInspectorTabWidget::setEnableLLVMIR(bool enabled)
 {
-    m_enableIR = enabled;
+    m_enableLLVMIR = enabled;
     if (!enabled)
         removePage(reinterpret_cast<QWidget **>(&m_llvmIR));
 }

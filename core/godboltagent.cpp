@@ -9,9 +9,7 @@
 
 static const QString baseUrl = QLatin1String("https://ci.minidump.info");
 
-GodboltAgent::GodboltAgent(QNetworkAccessManager &nam, QObject *parent) : QObject(parent), m_nam(nam), m_backend(nullptr), m_compilerOptions(CO_NONE)
-{
-}
+GodboltAgent::GodboltAgent(QNetworkAccessManager &nam, QObject *parent) : QObject(parent), m_nam(nam) {}
 
 void GodboltAgent::initialize(BackendInterface *backend)
 {
@@ -138,6 +136,7 @@ void GodboltAgent::onCompileRequestFinished()
     m_asmContent.clear();
     m_asmItems.clear();
     m_llvmIRContent.clear();
+    m_llvmIRItems.clear();
     m_gccDumpAllPasses.clear();
     m_currentGCCDumpPassOutput.clear();
     m_selectedGCCDumpPass.clear();
@@ -294,7 +293,31 @@ void GodboltAgent::onCompileRequestFinished()
     QJsonValue hasIrOutputVal = docObj["hasIrOutput"];
     if (hasIrOutputVal.isBool() && hasIrOutputVal.toBool())
     {
-        emit hasLLVMIROutput();
+        QJsonValue irOutputVal = docObj["irOutput"];
+        if (irOutputVal.isArray())
+        {
+            QJsonArray irOutputArr = irOutputVal.toArray();
+            for (auto a : irOutputArr)
+            {
+                QJsonObject   o = a.toObject();
+                LLVMIRItemPtr ir(new LLVMIRItem);
+                ir->text = o["text"].toString();
+                if (o["scope"].isString())
+                    ir->scope = o["scope"].toString();
+                if (o["source"].isObject())
+                {
+                    auto so = o["source"].toObject();
+                    if (so["file"].isString())
+                        ir->sourceFile = so["file"].toString();
+                    if (so["line"].isDouble())
+                        ir->sourceLine = so["line"].toInt();
+                }
+                m_llvmIRItems.push_back(ir);
+                m_llvmIRContent.append(ir->text + "\n");
+            }
+            if (!m_llvmIRItems.empty())
+                emit hasLLVMIROutput();
+        }
     }
 
     QJsonValue gccDumpOutputVal = docObj["gccDumpOutput"];
@@ -331,7 +354,8 @@ void GodboltAgent::onCompileRequestFinished()
         {
             if (!t.isObject())
                 continue;
-            QString     toolStdout, toolStderr;
+            QString     toolStdout;
+            QString     toolStderr;
             QJsonObject toolObj   = t.toObject();
             QJsonValue  stderrVal = toolObj["stderr"];
             if (stderrVal.isArray())
@@ -389,167 +413,4 @@ void GodboltAgent::onCompileRequestFinished()
             }
         }
     }
-}
-
-const QString &GodboltAgent::getASTOutput() const
-{
-    return m_astOutput;
-}
-
-const QString &GodboltAgent::getPaholeStdout() const
-{
-    return m_paholeStdout;
-}
-
-const QString &GodboltAgent::getPaholeStderr() const
-{
-    return m_paholeStderr;
-}
-
-const QString &GodboltAgent::getLLVMMCAStdout() const
-{
-    return m_llvmMCAStdout;
-}
-
-const QString &GodboltAgent::getLLVMMCAStderr() const
-{
-    return m_llvmMCAStderr;
-}
-
-const QString &GodboltAgent::getClangTidyStdout() const
-{
-    return m_clangTidyStdout;
-}
-
-const QString &GodboltAgent::getClangTidyStderr() const
-{
-    return m_clangTidyStderr;
-}
-
-const QString &GodboltAgent::getSelectedGCCDumpPass() const
-{
-    return m_selectedGCCDumpPass;
-}
-
-const QString &GodboltAgent::getCurrentGCCDumpPassOutput() const
-{
-    return m_currentGCCDumpPassOutput;
-}
-
-const QStringList &GodboltAgent::getGccDumpAllPasses() const
-{
-    return m_gccDumpAllPasses;
-}
-
-const AsmItemList &GodboltAgent::getAsmItems() const
-{
-    return m_asmItems;
-}
-
-void GodboltAgent::setEnableLLVMMCA(bool enabled)
-{
-    if (enabled)
-        m_compilerOptions |= CO_LLVMMCA;
-    else
-        m_compilerOptions &= ~CO_LLVMMCA;
-}
-
-void GodboltAgent::setEnableAST(bool enabled)
-{
-    if (enabled)
-        m_compilerOptions |= CO_AST;
-    else
-        m_compilerOptions &= ~CO_AST;
-}
-
-void GodboltAgent::setEnableOptimization(bool enabled)
-{
-    if (enabled)
-        m_compilerOptions |= CO_OPTIMIZATION;
-    else
-        m_compilerOptions &= ~CO_OPTIMIZATION;
-}
-
-void GodboltAgent::setEnableGCCTreeRTL(bool enabled)
-{
-    if (enabled)
-        m_compilerOptions |= CO_GCCTREERTL;
-    else
-        m_compilerOptions &= ~CO_GCCTREERTL;
-}
-
-void GodboltAgent::setEnablePahole(bool enabled)
-{
-    if (enabled)
-        m_compilerOptions |= CO_PAHOLE;
-    else
-        m_compilerOptions &= ~CO_PAHOLE;
-}
-
-void GodboltAgent::setEnableClangTidy(bool enabled)
-{
-    if (enabled)
-        m_compilerOptions |= CO_CLANGTIDY;
-    else
-        m_compilerOptions &= ~CO_CLANGTIDY;
-}
-
-void GodboltAgent::setEnableLLVMIR(bool enabled)
-{
-    if (enabled)
-        m_compilerOptions |= CO_LLVMIR;
-    else
-        m_compilerOptions &= ~CO_LLVMIR;
-}
-
-void GodboltAgent::setGCCTreeRTLOptions(const QString &pass, bool gccTree, bool rtl)
-{
-    m_selectedGCCDumpPass = pass;
-    m_gccTreeEnabled      = gccTree;
-    m_rtlEnabled          = rtl;
-}
-
-void GodboltAgent::setLLVMMCAOptions(const QString &options)
-{
-    m_llvmMCAOptions = options;
-}
-
-void GodboltAgent::setPaholeOptions(const QString &options)
-{
-    m_paholeOptions = options;
-}
-
-void GodboltAgent::setClangTidyOptions(const QString &options)
-{
-    m_clangTidyOptions = options;
-}
-
-const QString &GodboltAgent::getAsmContent() const
-{
-    return m_asmContent;
-}
-
-const QString &GodboltAgent::getCompileStderr() const
-{
-    return m_compileStderr;
-}
-
-const QString &GodboltAgent::getCompileStdout() const
-{
-    return m_compileStdout;
-}
-
-const OptimizationItemList &GodboltAgent::getOptimizationItems() const
-{
-    return m_optimizationItems;
-}
-
-const QString &GodboltAgent::getLLVMIRContent() const
-{
-    return m_llvmIRContent;
-}
-
-const LLVMIRItemList &GodboltAgent::getLLVMIRItems() const
-{
-    return m_llvmIRItems;
 }

@@ -13,9 +13,9 @@ class ClangTidyOutput : public QWidget
     Q_OBJECT
   public:
     explicit ClangTidyOutput(QWidget *parent = nullptr);
-    void    initialize();
-    void    setContent(const QString &content);
-    QString getToolOptions();
+    void                  initialize();
+    void                  setContent(const QString &content);
+    [[nodiscard]] QString getToolOptions();
   signals:
     void optionsChanged(const QString &);
 

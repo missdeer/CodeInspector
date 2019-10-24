@@ -13,9 +13,9 @@ class X86To6502Output : public QWidget
     Q_OBJECT
   public:
     explicit X86To6502Output(QWidget *parent = nullptr);
-    void    initialize();
-    void    setContent(const QString &content);
-    QString getToolOptions();
+    void                  initialize();
+    void                  setContent(const QString &content);
+    [[nodiscard]] QString getToolOptions();
   signals:
     void optionsChanged(const QString &);
 

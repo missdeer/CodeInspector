@@ -18,19 +18,19 @@ class CodeInspectorApp
   public:
     explicit CodeInspectorApp(QObject *parent = nullptr);
 
-    QNetworkAccessManager &networkAccessManager();
+    [[nodiscard]] QNetworkAccessManager &networkAccessManager();
 
-    void            initialize();
-    LanguageList &  getLanguageList() override;
-    CompilerListPtr getCompilerList(const QString &languageName) override;
-    LibraryListPtr  getLibraryList(const QString &languageName) override;
-    CompilerPtr     getCompiler(const QString &language, const QString &compiler) override;
-    const QString & getExample(const QString &language) const override;
-    const QString & getDefaultCompilerName(const QString &languageName) override;
-    bool            canCompile(const QString &language, const QString &compiler) override;
-    const QString & getCompilerId(CompilerListPtr compilerList, const QString &name) override;
-    QStringList     getExampleList(const QString &languageName);
-    QString         getExampleContent(const QString &languageName, const QString &exampleName);
+    void                          initialize();
+    [[nodiscard]] LanguageList &  getLanguageList() override;
+    [[nodiscard]] CompilerListPtr getCompilerList(const QString &languageName) override;
+    [[nodiscard]] LibraryListPtr  getLibraryList(const QString &languageName) override;
+    [[nodiscard]] CompilerPtr     getCompiler(const QString &language, const QString &compiler) override;
+    [[nodiscard]] const QString & getExample(const QString &language) const override;
+    [[nodiscard]] const QString & getDefaultCompilerName(const QString &languageName) override;
+    [[nodiscard]] bool            canCompile(const QString &language, const QString &compiler) override;
+    [[nodiscard]] const QString & getCompilerId(CompilerListPtr compilerList, const QString &name) override;
+    [[nodiscard]] QStringList     getExampleList(const QString &languageName);
+    [[nodiscard]] QString         getExampleContent(const QString &languageName, const QString &exampleName);
   signals:
     void compilerListReady();
     void languageListReady();

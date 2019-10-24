@@ -41,7 +41,7 @@ class CodeInspectorTabWidget : public QTabWidget
     void              setX86To6502Content(const QString &content);
 
     void setEnableAST(bool enabled);
-    void setEnableIR(bool enabled);
+    void setEnableLLVMIR(bool enabled);
     void setEnableOptimization(bool enabled);
     void setEnableGCCTreeRTL(bool enabled);
     void setEnableLLVMMCA(bool enabled);
@@ -51,26 +51,26 @@ class CodeInspectorTabWidget : public QTabWidget
     void setEnableReadElf(bool enabled);
     void setEnableX86To6502(bool enabled);
 
-    bool enableAST() const;
-    bool enableIR() const;
-    bool enableOptimization() const;
-    bool enableGCCTreeRTL() const;
-    bool enableLLVMMCA() const;
-    bool enablePahole() const;
-    bool enableClangTidy() const;
-    bool enableClangQuery() const;
-    bool enableReadElf() const;
-    bool enableX86To6502() const;
+    [[nodiscard]] bool enableAST() const;
+    [[nodiscard]] bool enableLLVMIR() const;
+    [[nodiscard]] bool enableOptimization() const;
+    [[nodiscard]] bool enableGCCTreeRTL() const;
+    [[nodiscard]] bool enableLLVMMCA() const;
+    [[nodiscard]] bool enablePahole() const;
+    [[nodiscard]] bool enableClangTidy() const;
+    [[nodiscard]] bool enableClangQuery() const;
+    [[nodiscard]] bool enableReadElf() const;
+    [[nodiscard]] bool enableX86To6502() const;
 
-    QString getLLVMMCAOptions();
-    QString getPaholeOptions();
-    QString getClangTidyOptions();
-    QString getClangQueryOptions();
-    QString getReadElfOptions();
-    QString getX86To6502Options();
+    [[nodiscard]] QString getLLVMMCAOptions();
+    [[nodiscard]] QString getPaholeOptions();
+    [[nodiscard]] QString getClangTidyOptions();
+    [[nodiscard]] QString getClangQueryOptions();
+    [[nodiscard]] QString getReadElfOptions();
+    [[nodiscard]] QString getX86To6502Options();
   signals:
     void requestAST();
-    void requestIR();
+    void requestLLVMIR();
     void requestOptimization();
     void requestGCCTreeRTL();
     void requestLLVMMCA();
@@ -91,7 +91,7 @@ class CodeInspectorTabWidget : public QTabWidget
     void onCustomContextMenuRequested(const QPoint &pos);
     void onRefreshGCCDumpOutput();
     void onRequestAST();
-    void onRequestIR();
+    void onRequestLLVMIR();
     void onRequestOptimization();
     void onRequestGCCTreeRTL();
     void onRequestLLVMMCA();
@@ -116,7 +116,7 @@ class CodeInspectorTabWidget : public QTabWidget
     LLVMIRView *                   m_llvmIR {nullptr};
 
     bool m_enableAST {false};
-    bool m_enableIR {false};
+    bool m_enableLLVMIR {false};
     bool m_enableOptimization {false};
     bool m_enableGCCTreeRTL {false};
     bool m_enableLLVMMCA {true};

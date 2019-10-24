@@ -2,7 +2,7 @@
 
 #include "networkreplyhelper.h"
 
-NetworkReplyHelper::NetworkReplyHelper(QNetworkReply *reply, QObject *parent) : QObject(parent), m_reply(reply), m_timeoutTimer(nullptr)
+NetworkReplyHelper::NetworkReplyHelper(QNetworkReply *reply, QObject *parent) : QObject(parent), m_reply(reply)
 {
     if (m_reply)
     {

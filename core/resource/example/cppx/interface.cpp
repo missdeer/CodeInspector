@@ -50,7 +50,10 @@ $class interface {constexpr {compiler.require($interface.variables().empty(), "i
         class Circle : public Shape
         {
           public:
-            int  area() const override { return 1; }
+            int area() const override
+            {
+                return 1;
+            }
             void scale_by(double factor) override {}
         };
 

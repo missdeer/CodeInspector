@@ -9,7 +9,7 @@ struct LLVMIRItem
     QString text;
     QString scope;
     QString sourceFile;
-    QString sourceLine;
+    int     sourceLine {0};
 };
 
 using LLVMIRItemPtr  = QSharedPointer<LLVMIRItem>;

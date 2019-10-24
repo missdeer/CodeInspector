@@ -25,24 +25,24 @@ class Library : public QObject
   public:
     explicit Library(QObject *parent = nullptr);
 
-    const QString &getId() const;
-    void           setId(const QString &value);
+    [[nodiscard]] const QString &getId() const;
+    void                         setId(const QString &value);
 
-    const QString &getName() const;
-    void           setName(const QString &value);
+    [[nodiscard]] const QString &getName() const;
+    void                         setName(const QString &value);
 
-    const QString &getDescription() const;
-    void           setDescription(const QString &value);
+    [[nodiscard]] const QString &getDescription() const;
+    void                         setDescription(const QString &value);
 
-    const QString &getUrl() const;
-    void           setUrl(const QString &value);
+    [[nodiscard]] const QString &getUrl() const;
+    void                         setUrl(const QString &value);
 
 #if defined(Q_OS_IOS) || defined(Q_OS_ANDROID)
     QQmlListProperty<LibraryVersion> getQmlListPropertyVersions();
 #endif
-    const QList<LibraryVersionPtr> &getVersions();
-    void                            setVersions(const QList<LibraryVersionPtr> &value);
-    void                            appendVersion(LibraryVersionPtr ver);
+    [[nodiscard]] const QList<LibraryVersionPtr> &getVersions();
+    void                                          setVersions(const QList<LibraryVersionPtr> &value);
+    void                                          appendVersion(LibraryVersionPtr ver);
   signals:
     void idChanged();
     void nameChanged();

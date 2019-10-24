@@ -33,61 +33,169 @@ class GodboltAgent : public QObject
 
     void compile(const CompileInfo &ci);
 
-    void setEnableLLVMMCA(bool enabled);
+  public:
+    void setEnableLLVMMCA(bool enabled)
+    {
+        if (enabled)
+            m_compilerOptions |= CO_LLVMMCA;
+        else
+            m_compilerOptions &= ~CO_LLVMMCA;
+    }
 
-    void setEnableAST(bool enabled);
+    void setEnableAST(bool enabled)
+    {
+        if (enabled)
+            m_compilerOptions |= CO_AST;
+        else
+            m_compilerOptions &= ~CO_AST;
+    }
 
-    void setEnableOptimization(bool enabled);
+    void setEnableOptimization(bool enabled)
+    {
+        if (enabled)
+            m_compilerOptions |= CO_OPTIMIZATION;
+        else
+            m_compilerOptions &= ~CO_OPTIMIZATION;
+    }
 
-    void setEnableGCCTreeRTL(bool enabled);
+    void setEnableGCCTreeRTL(bool enabled)
+    {
+        if (enabled)
+            m_compilerOptions |= CO_GCCTREERTL;
+        else
+            m_compilerOptions &= ~CO_GCCTREERTL;
+    }
 
-    void setEnablePahole(bool enabled);
+    void setEnablePahole(bool enabled)
+    {
+        if (enabled)
+            m_compilerOptions |= CO_PAHOLE;
+        else
+            m_compilerOptions &= ~CO_PAHOLE;
+    }
 
-    void setEnableClangTidy(bool enabled);
+    void setEnableClangTidy(bool enabled)
+    {
+        if (enabled)
+            m_compilerOptions |= CO_CLANGTIDY;
+        else
+            m_compilerOptions &= ~CO_CLANGTIDY;
+    }
 
-    void setEnableLLVMIR(bool enabled);
+    void setEnableLLVMIR(bool enabled)
+    {
+        if (enabled)
+            m_compilerOptions |= CO_LLVMIR;
+        else
+            m_compilerOptions &= ~CO_LLVMIR;
+    }
 
-    void setGCCTreeRTLOptions(const QString &pass, bool gccTree, bool rtl);
+    void setGCCTreeRTLOptions(const QString &pass, bool gccTree, bool rtl)
+    {
+        m_selectedGCCDumpPass = pass;
+        m_gccTreeEnabled      = gccTree;
+        m_rtlEnabled          = rtl;
+    }
 
-    void setLLVMMCAOptions(const QString &options);
+    void setLLVMMCAOptions(const QString &options)
+    {
+        m_llvmMCAOptions = options;
+    }
 
-    void setPaholeOptions(const QString &options);
+    void setPaholeOptions(const QString &options)
+    {
+        m_paholeOptions = options;
+    }
 
-    void setClangTidyOptions(const QString &options);
+    void setClangTidyOptions(const QString &options)
+    {
+        m_clangTidyOptions = options;
+    }
 
-    const QString &getCompileStderr() const;
+    [[nodiscard]] const QString &getCompileStderr() const
+    {
+        return m_compileStderr;
+    }
 
-    const QString &getCompileStdout() const;
+    [[nodiscard]] const QString &getCompileStdout() const
+    {
+        return m_compileStdout;
+    }
 
-    const QString &getAsmContent() const;
+    [[nodiscard]] const QString &getAsmContent() const
+    {
+        return m_asmContent;
+    }
 
-    const AsmItemList &getAsmItems() const;
+    [[nodiscard]] const AsmItemList &getAsmItems() const
+    {
+        return m_asmItems;
+    }
 
-    const QStringList &getGccDumpAllPasses() const;
+    [[nodiscard]] const QStringList &getGccDumpAllPasses() const
+    {
+        return m_gccDumpAllPasses;
+    }
 
-    const QString &getCurrentGCCDumpPassOutput() const;
+    [[nodiscard]] const QString &getCurrentGCCDumpPassOutput() const
+    {
+        return m_currentGCCDumpPassOutput;
+    }
 
-    const QString &getSelectedGCCDumpPass() const;
+    [[nodiscard]] const QString &getSelectedGCCDumpPass() const
+    {
+        return m_selectedGCCDumpPass;
+    }
 
-    const QString &getClangTidyStderr() const;
+    [[nodiscard]] const QString &getClangTidyStderr() const
+    {
+        return m_clangTidyStderr;
+    }
 
-    const QString &getClangTidyStdout() const;
+    [[nodiscard]] const QString &getClangTidyStdout() const
+    {
+        return m_clangTidyStdout;
+    }
 
-    const QString &getLLVMMCAStderr() const;
+    [[nodiscard]] const QString &getLLVMMCAStderr() const
+    {
+        return m_llvmMCAStderr;
+    }
 
-    const QString &getLLVMMCAStdout() const;
+    [[nodiscard]] const QString &getLLVMMCAStdout() const
+    {
+        return m_llvmMCAStdout;
+    }
 
-    const QString &getPaholeStderr() const;
+    [[nodiscard]] const QString &getPaholeStderr() const
+    {
+        return m_paholeStderr;
+    }
 
-    const QString &getPaholeStdout() const;
+    [[nodiscard]] const QString &getPaholeStdout() const
+    {
+        return m_paholeStdout;
+    }
 
-    const QString &getASTOutput() const;
+    [[nodiscard]] const QString &getASTOutput() const
+    {
+        return m_astOutput;
+    }
 
-    const OptimizationItemList &getOptimizationItems() const;
+    [[nodiscard]] const OptimizationItemList &getOptimizationItems() const
+    {
+        return m_optimizationItems;
+    }
 
-    const QString &getLLVMIRContent() const;
+    [[nodiscard]] const QString &getLLVMIRContent() const
+    {
+        return m_llvmIRContent;
+    }
 
-    const LLVMIRItemList &getLLVMIRItems() const;
+    [[nodiscard]] const LLVMIRItemList &getLLVMIRItems() const
+    {
+        return m_llvmIRItems;
+    }
 
   signals:
 
@@ -124,7 +232,7 @@ class GodboltAgent : public QObject
         CO_LLVMIR       = 0x01 << 6,
     };
     QNetworkAccessManager &m_nam;
-    BackendInterface *     m_backend;
+    BackendInterface *     m_backend {nullptr};
     QString                m_compileStderr;
     QString                m_compileStdout;
     QString                m_clangTidyStderr;
