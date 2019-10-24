@@ -349,7 +349,7 @@ void CodeInspectorPane::onHasLLVMIROutput()
 {
     m_markerMap.clear();
 
-    auto llvmIRItems = m_backend->getLLVMIRItems();
+    const auto &llvmIRItems = m_backend->getLLVMIRItems();
     m_codeInspectorTabWidget->setLLVMIRItems(llvmIRItems, m_markerMap);
 }
 
