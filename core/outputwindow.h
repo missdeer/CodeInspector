@@ -7,16 +7,16 @@
 class OutputWindow : public ScintillaEdit
 {
     Q_OBJECT
-  public:
+public:
     explicit OutputWindow(QWidget *parent = 0);
     void initialize();
     void setContent(const QString &content);
     void setContent(const QByteArray &content);
 
-  protected:
+protected:
     virtual QVariant inputMethodQuery(Qt::InputMethodQuery) const;
 
-  private:
+private:
     ScintillaConfig m_sc;
 };
 

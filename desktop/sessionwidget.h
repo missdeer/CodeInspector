@@ -9,7 +9,7 @@ class CompilationTabWidget;
 class SessionWidget : public QWidget
 {
     Q_OBJECT
-  public:
+public:
     explicit SessionWidget(QWidget *parent = nullptr);
     void initialize();
 
@@ -18,11 +18,11 @@ class SessionWidget : public QWidget
     void save(const QString &fileName);
     bool isSaved();
     bool hasUnsavedModified();
-  signals:
+signals:
 
-  public slots:
+public slots:
 
-  private:
+private:
     CodeEditorPane *      m_codeEditorPane;
     CompilationTabWidget *m_compilationTabWidget;
 };

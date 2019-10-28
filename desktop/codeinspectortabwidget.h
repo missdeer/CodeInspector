@@ -1,12 +1,12 @@
 #ifndef CODEINSPECTORTABWIDGET_H
 #define CODEINSPECTORTABWIDGET_H
 
+#include <QTabWidget>
+
 #include "ScintillaEdit.h"
 #include "asmitem.hpp"
 #include "llvmiritem.hpp"
 #include "optimizationitem.hpp"
-
-#include <QTabWidget>
 
 class CodeInspector;
 class LLVMMachineCodeAnalyzerOutput;
@@ -23,7 +23,7 @@ class LLVMIRView;
 class CodeInspectorTabWidget : public QTabWidget
 {
     Q_OBJECT
-  public:
+public:
     explicit CodeInspectorTabWidget(QWidget *parent = nullptr);
 
     void setCodeInspectorAsmItems(const AsmItemList &items, bool binary, QMap<int, intptr_t> &markerMap);
@@ -70,7 +70,7 @@ class CodeInspectorTabWidget : public QTabWidget
     [[nodiscard]] QString getClangQueryOptions();
     [[nodiscard]] QString getReadElfOptions();
     [[nodiscard]] QString getX86To6502Options();
-  signals:
+signals:
     void requestAST();
     void requestLLVMIR();
     void requestOptimization();
@@ -89,7 +89,7 @@ class CodeInspectorTabWidget : public QTabWidget
     void refreshClangQuery(const QString &);
     void refreshReadElf(const QString &);
     void refreshX86To6502(const QString &);
-  private slots:
+private slots:
     void onCustomContextMenuRequested(const QPoint &pos);
     void onRefreshGCCDumpOutput();
     void onRequestAST();
@@ -103,7 +103,7 @@ class CodeInspectorTabWidget : public QTabWidget
     void onRequestReadElf();
     void onRequestX86To6502();
 
-  private:
+private:
     CodeInspector *m_codeInspector;
 
     ASTOutput *                    m_ast {nullptr};

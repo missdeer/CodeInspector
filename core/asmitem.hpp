@@ -1,9 +1,9 @@
 #ifndef ASMITEM_HPP
 #define ASMITEM_HPP
 
-#include "asmlink.hpp"
-
 #include <QVector>
+
+#include "asmlink.hpp"
 
 struct AsmItem
 {

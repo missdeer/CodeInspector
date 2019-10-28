@@ -7,7 +7,7 @@
 class CodeEditor : public ScintillaEdit
 {
     Q_OBJECT
-  public:
+public:
     explicit CodeEditor(QWidget *parent = nullptr);
     ~CodeEditor() override = default;
     void initialize();
@@ -16,14 +16,14 @@ class CodeEditor : public ScintillaEdit
     void setContent(const QByteArray &content);
     void clearContent();
     void setMarkerColor(const QMap<int, intptr_t> &markerColor);
-  signals:
+signals:
     void contentModified();
-  private slots:
+private slots:
     void linesAdded(int linesAdded);
     void marginClicked(int position, int modifiers, int margin);
     void modified(int type, int position, int length, int linesAdded, const QByteArray &text, int line, int foldNow, int foldPrev);
 
-  private:
+private:
     ScintillaConfig m_sc;
 };
 

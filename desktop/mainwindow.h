@@ -12,11 +12,11 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
-  public:
+public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-  private slots:
+private slots:
     void on_tabWidget_tabCloseRequested(int index);
 
     void on_actionExit_triggered();
@@ -33,7 +33,7 @@ class MainWindow : public QMainWindow
 
     void on_actionSaveAsSession_triggered();
 
-  private:
+private:
     Ui::MainWindow *ui;
     int             addSessionTab();
 };

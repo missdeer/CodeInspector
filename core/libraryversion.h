@@ -11,7 +11,7 @@ class LibraryVersion : public QObject
     Q_PROPERTY(QString version READ getVersion WRITE setVersion NOTIFY versionChanged)
     Q_PROPERTY(QStringList path READ getPath WRITE setPath NOTIFY pathChanged)
     Q_PROPERTY(bool selected READ getSelected WRITE setSelected NOTIFY selectedChanged)
-  public:
+public:
     explicit LibraryVersion(QObject *parent = nullptr);
 
     [[nodiscard]] const QString &getVersion() const;
@@ -24,13 +24,13 @@ class LibraryVersion : public QObject
     bool getSelected() const;
     void setSelected(bool value);
 
-  signals:
+signals:
     void versionChanged();
     void pathChanged();
     void selectedChanged();
-  public slots:
+public slots:
 
-  private:
+private:
     bool        selected;
     QString     version;
     QStringList path;

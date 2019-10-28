@@ -7,10 +7,10 @@
 class ComboBoxDelegate : public QItemDelegate
 {
     Q_OBJECT
-  public:
+public:
     explicit ComboBoxDelegate(QObject *parent = nullptr);
 
-  protected:
+protected:
     void  paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 };

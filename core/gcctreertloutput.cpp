@@ -1,11 +1,11 @@
 #include "stdafx.h"
 
+#include <QCheckBox>
+
 #include "gcctreertloutput.h"
 
 #include "ScintillaEdit.h"
 #include "scintillaconfig.h"
-
-#include <QCheckBox>
 
 GCCTreeRTLOutput::GCCTreeRTLOutput(QWidget *parent) : QWidget(parent)
 {

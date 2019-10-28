@@ -16,17 +16,17 @@ class OutputWindow;
 class CodeEditorPane : public QWidget
 {
     Q_OBJECT
-  public:
+public:
     explicit CodeEditorPane(QWidget *parent = nullptr);
     void                      initialize();
     [[nodiscard]] QString     currentLanguageName();
     [[nodiscard]] CodeEditor *codeEditor() const;
 
-  signals:
+signals:
     void currentLanguageChanged(QString);
-  public slots:
+public slots:
 
-  private slots:
+private slots:
     void updateLanguageList();
     void onCurrentLanguageChanged(const QString &text);
     void onShowExampleList();
@@ -34,7 +34,7 @@ class CodeEditorPane : public QWidget
     void onExampleTriggered();
     void onLibraryVersionTriggered();
 
-  private:
+private:
     CodeEditor * m_codeEditor;
     QComboBox *  m_languageList;
     QPushButton *m_btnLibraries;

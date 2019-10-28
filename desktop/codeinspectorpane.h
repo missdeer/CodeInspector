@@ -1,10 +1,10 @@
 #ifndef CODEINSPECTORPANE_H
 #define CODEINSPECTORPANE_H
 
+#include <QWidget>
+
 #include "compiler.hpp"
 #include "compilerinfo.hpp"
-
-#include <QWidget>
 
 QT_BEGIN_NAMESPACE
 class QPushButton;
@@ -22,17 +22,17 @@ class CodeEditor;
 class CodeInspectorPane : public QWidget
 {
     Q_OBJECT
-  public:
+public:
     explicit CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent = nullptr);
     void initialize();
     void setCompilerList(CompilerListPtr cl);
     void setCurrentLanguage(const QString &languageName);
-  signals:
+signals:
     void currentCompilerChanged(QString);
     void currentCompilerArgumentsChanged();
-  public slots:
+public slots:
 
-  private slots:
+private slots:
     void onNeedCompile();
     void onCompiled();
     void onHasGccDumpOutput();
@@ -63,7 +63,7 @@ class CodeInspectorPane : public QWidget
     void onRequestClangTidy();
     void onRefreshGCCDumpOutput(QString pass, bool gccTree, bool rtl);
 
-  private:
+private:
     CodeEditor *            m_codeEditor;
     QComboBox *             m_compilerList;
     QLineEdit *             m_compilerArguments;

@@ -8,7 +8,7 @@ class QDomElement;
 
 class ScintillaConfig
 {
-  public:
+public:
     explicit ScintillaConfig(ScintillaEdit *sci) : m_sci(sci) {}
     void initScintilla();
     void initEditorFolderStyle();
@@ -18,7 +18,7 @@ class ScintillaConfig
     void inttOuputWindowMargins();
     void initMarkers();
 
-  private:
+private:
     ScintillaEdit *m_sci;
     void           applyStyle(const QDomElement &styleElem);
 

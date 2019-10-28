@@ -1,9 +1,9 @@
 #ifndef LIBRARY_H
 #define LIBRARY_H
 
-#include "libraryversion.h"
-
 #include <QObject>
+
+#include "libraryversion.h"
 
 #if defined(Q_OS_IOS) || defined(Q_OS_ANDROID)
 #    include <QQmlListProperty>
@@ -22,7 +22,7 @@ class Library : public QObject
     Q_PROPERTY(QQmlListProperty<LibraryVersion> versions READ getQmlListPropertyVersions NOTIFY versionsChanged)
 #endif
 
-  public:
+public:
     explicit Library(QObject *parent = nullptr);
 
     [[nodiscard]] const QString &getId() const;
@@ -43,15 +43,15 @@ class Library : public QObject
     [[nodiscard]] const QList<LibraryVersionPtr> &getVersions();
     void                                          setVersions(const QList<LibraryVersionPtr> &value);
     void                                          appendVersion(LibraryVersionPtr ver);
-  signals:
+signals:
     void idChanged();
     void nameChanged();
     void descriptionChanged();
     void urlChanged();
     void versionsChanged();
-  public slots:
+public slots:
 
-  private:
+private:
     QString                  id;
     QString                  name;
     QString                  description;

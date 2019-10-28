@@ -7,7 +7,7 @@
 
 class BackendInterface
 {
-  public:
+public:
     virtual ~BackendInterface()                                                              = default;
     virtual LanguageList &  getLanguageList()                                                = 0;
     virtual CompilerListPtr getCompilerList(const QString &languageName)                     = 0;

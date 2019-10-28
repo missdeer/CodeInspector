@@ -1,13 +1,13 @@
 #ifndef CODEINSPECTORAPP_H
 #define CODEINSPECTORAPP_H
 
+#include <QNetworkAccessManager>
+#include <QObject>
+
 #include "backendinterface.hpp"
 #include "compiler.hpp"
 #include "godboltagent.h"
 #include "language.hpp"
-
-#include <QNetworkAccessManager>
-#include <QObject>
 
 class CodeInspectorApp
     : public QObject
@@ -15,7 +15,7 @@ class CodeInspectorApp
 {
     Q_OBJECT
     Q_DISABLE_COPY(CodeInspectorApp)
-  public:
+public:
     explicit CodeInspectorApp(QObject *parent = nullptr);
 
     [[nodiscard]] QNetworkAccessManager &networkAccessManager();
@@ -31,18 +31,18 @@ class CodeInspectorApp
     [[nodiscard]] const QString & getCompilerId(CompilerListPtr compilerList, const QString &name) override;
     [[nodiscard]] QStringList     getExampleList(const QString &languageName);
     [[nodiscard]] QString         getExampleContent(const QString &languageName, const QString &exampleName);
-  signals:
+signals:
     void compilerListReady();
     void languageListReady();
     void configurationReady();
 
-  public slots:
+public slots:
     void switchLanguage(const QString &name);
     void onCompilerListRequestFinished();
     void onLanguageListRequestFinished();
     void onConfigurationRequestFinished();
 
-  private:
+private:
     QNetworkAccessManager          m_nam;
     LanguageList                   m_languageList;
     QMap<QString, CompilerListPtr> m_compilerMap;     // language name - compiler list

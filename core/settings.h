@@ -5,7 +5,7 @@
 
 class Settings
 {
-  public:
+public:
     Settings()                 = default;
     Settings(const Settings &) = delete;
     void operator=(const Settings &) = delete;
@@ -65,7 +65,7 @@ class Settings
     [[nodiscard]] bool demangle() const;
     void               setDemangle(bool demangle);
 
-  private:
+private:
     bool m_rememberLastSession {true};
     bool m_binary {false};
     bool m_label {true};

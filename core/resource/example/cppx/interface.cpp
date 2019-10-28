@@ -49,7 +49,7 @@ $class interface {constexpr {compiler.require($interface.variables().empty(), "i
 
         class Circle : public Shape
         {
-          public:
+        public:
             int area() const override
             {
                 return 1;

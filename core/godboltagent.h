@@ -1,22 +1,22 @@
 #ifndef GODBOLTAGENT_H
 #define GODBOLTAGENT_H
 
+#include <QList>
+#include <QNetworkAccessManager>
+#include <QObject>
+
 #include "asmitem.hpp"
 #include "compilerinfo.hpp"
 #include "library.h"
 #include "llvmiritem.hpp"
 #include "optimizationitem.hpp"
 
-#include <QList>
-#include <QNetworkAccessManager>
-#include <QObject>
-
 class BackendInterface;
 
 class GodboltAgent : public QObject
 {
     Q_OBJECT
-  public:
+public:
     explicit GodboltAgent(QNetworkAccessManager &nam, QObject *parent = nullptr);
 
     GodboltAgent(const GodboltAgent &) = delete;
@@ -33,7 +33,7 @@ class GodboltAgent : public QObject
 
     void compile(const CompileInfo &ci);
 
-  public:
+public:
     void setEnableLLVMMCA(bool enabled)
     {
         if (enabled)
@@ -197,7 +197,7 @@ class GodboltAgent : public QObject
         return m_llvmIRItems;
     }
 
-  signals:
+signals:
 
     void compiled();
 
@@ -215,11 +215,11 @@ class GodboltAgent : public QObject
 
     void hasLLVMIROutput();
 
-  private slots:
+private slots:
 
     void onCompileRequestFinished();
 
-  private:
+private:
     enum CompilerOption
     {
         CO_NONE,

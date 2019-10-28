@@ -1,23 +1,23 @@
 #ifndef ASTOUTPUT_H
 #define ASTOUTPUT_H
 
+#include <QObject>
+
 #include "ScintillaEdit.h"
 #include "scintillaconfig.h"
-
-#include <QObject>
 
 class ASTOutput : public ScintillaEdit
 {
     Q_OBJECT
-  public:
+public:
     explicit ASTOutput(QWidget *parent = nullptr);
     void initialize();
     void setContent(const QString &content);
 
-  protected:
+protected:
     QVariant inputMethodQuery(Qt::InputMethodQuery) const override;
 
-  private:
+private:
     ScintillaConfig m_sc;
 };
 

@@ -1,7 +1,7 @@
 ---
 Language:        Cpp
 BasedOnStyle:  Microsoft
-AccessModifierOffset: -2
+AccessModifierOffset: -4
 AlignAfterOpenBracket: Align
 AlignConsecutiveAssignments: true
 AlignConsecutiveDeclarations: true
@@ -66,6 +66,8 @@ ForEachMacros:
 IncludeBlocks:   Regroup
 IncludeCategories: 
   - Regex:           'std(A|a)fx.h'
+    Priority:        -2
+  - Regex:           '^<Q.*'
     Priority:        -1
   - Regex:           '^"(llvm|llvm-c|clang|clang-c)/'
     Priority:        2

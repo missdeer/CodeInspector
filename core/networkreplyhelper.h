@@ -11,7 +11,7 @@ QT_END_NAMESPACE
 class NetworkReplyHelper : public QObject
 {
     Q_OBJECT
-  public:
+public:
     explicit NetworkReplyHelper(QNetworkReply *reply, QObject *parent = nullptr);
     NetworkReplyHelper(const NetworkReplyHelper &) = delete;
     void operator=(const NetworkReplyHelper &) = delete;
@@ -34,21 +34,21 @@ class NetworkReplyHelper : public QObject
     {
         return m_errMsg;
     }
-  signals:
+signals:
     void done();
     void cancel();
     void errorMessage(QNetworkReply::NetworkError, QString);
-  public slots:
+public slots:
     void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
     void error(QNetworkReply::NetworkError code);
     void finished();
     void sslErrors(const QList<QSslError> &errors);
     void uploadProgress(qint64 bytesSent, qint64 bytesTotal);
     void readyRead();
-  private slots:
+private slots:
     void timeout();
 
-  private:
+private:
     QNetworkReply *m_reply;
     QTimer *       m_timeoutTimer {nullptr};
     QVariant       m_data;

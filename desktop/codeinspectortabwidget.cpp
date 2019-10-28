@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+#include <QTabBar>
+
 #include "codeinspectortabwidget.h"
 
 #include "LLVMIRView.h"
@@ -13,8 +15,6 @@
 #include "paholeoutput.h"
 #include "readelfoutput.h"
 #include "x86to6502output.h"
-
-#include <QTabBar>
 
 CodeInspectorTabWidget::CodeInspectorTabWidget(QWidget *parent) : QTabWidget(parent), m_codeInspector(new CodeInspector(this))
 {

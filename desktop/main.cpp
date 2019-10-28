@@ -1,10 +1,10 @@
 #include "stdafx.h"
 
+#include <QSplashScreen>
+
 #include "codeinspectorapp.h"
 #include "mainwindow.h"
 #include "settings.h"
-
-#include <QSplashScreen>
 
 int main(int argc, char *argv[])
 {
