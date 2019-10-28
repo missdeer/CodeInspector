@@ -91,9 +91,9 @@ LibraryListPtr CodeInspectorApp::getLibraryList(const QString &languageName)
 {
     auto languageId = getLanguageId(languageName);
     auto it         = m_libs.find(languageId);
-    if (m_libs.end() == it)
-        return nullptr;
-    return it.value();
+    if (m_libs.end() != it)
+        return it.value();
+    return nullptr;
 }
 
 CompilerPtr CodeInspectorApp::getCompiler(const QString &language, const QString &compiler)

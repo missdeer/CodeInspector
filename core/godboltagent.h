@@ -220,16 +220,22 @@ private slots:
     void onCompileRequestFinished();
 
 private:
-    enum CompilerOption
-    {
+    enum CompilerOption {
         CO_NONE,
-        CO_AST          = 0x01,
-        CO_LLVMMCA      = 0x01 << 1,
-        CO_GCCTREERTL   = 0x01 << 2,
-        CO_OPTIMIZATION = 0x01 << 3,
-        CO_PAHOLE       = 0x01 << 4,
-        CO_CLANGTIDY    = 0x01 << 5,
-        CO_LLVMIR       = 0x01 << 6,
+        CO_OPTIMIZATION = 0x01,
+        CO_AST = 0x01 << 1,
+        CO_LLVMIR = 0x01 << 2,
+        CO_GCCTREERTL = 0x01 << 3,
+        // CO_GRAPH = 0x01 << 4,
+
+        CO_CLANGTIDY = 0x01 << 5,
+        CO_LLVMMCA = 0x01 << 6,
+        CO_PAHOLE = 0x01 << 7,
+        CO_CLANG_QUERY = 0x01 << 8,
+        CO_READELF = 0x01 << 9,
+        CO_X86TO6502 = 0x01 << 10,
+        CO_LDD = 0x01 << 11,
+        CO_INCLUDE_WHAT_YOU_USE = 0x01 << 12,
     };
     QNetworkAccessManager &m_nam;
     BackendInterface *     m_backend {nullptr};
