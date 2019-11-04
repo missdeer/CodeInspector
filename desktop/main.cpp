@@ -1,6 +1,8 @@
 #include "stdafx.h"
 
+#include <QMessageBox>
 #include <QSplashScreen>
+#include <QSslSocket>
 
 #include "codeinspectorapp.h"
 #include "mainwindow.h"
@@ -15,6 +17,14 @@ int main(int argc, char *argv[])
     QApplication::setApplicationVersion("1.0");
 
     QApplication a(argc, argv);
+
+    if (!QSslSocket::supportsSsl()) {
+        QMessageBox::critical(nullptr,
+                              QObject::tr("Critical error"),
+                              QObject::tr("SSL not supported, exit now."),
+                              QMessageBox::Ok);
+        return 1;
+    }
 
     QPixmap       pixmap(":/CodeInspector.png");
     QSplashScreen splash(pixmap);
