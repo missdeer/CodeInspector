@@ -7,6 +7,7 @@ INCLUDEPATH += $$PWD
 
 SOURCES += \
     $$PWD/clangqueryoutput.cpp \
+    $$PWD/includewhatyouuseoutput.cpp \
     $$PWD/lddoutput.cpp \
     $$PWD/readelfoutput.cpp \
     $$PWD/scintillaconfig.cpp \
@@ -30,6 +31,7 @@ SOURCES += \
 
 HEADERS += \
     $$PWD/clangqueryoutput.h \
+    $$PWD/includewhatyouuseoutput.h \
     $$PWD/lddoutput.h \
     $$PWD/readelfoutput.h \
     $$PWD/scintillaconfig.h \

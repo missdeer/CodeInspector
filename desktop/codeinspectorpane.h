@@ -45,6 +45,7 @@ private slots:
     void onHasLddOutput();
     void onHasX86To6502Output();
     void onHasReadElfOutput();
+    void onHasIncludeWhatYouUseOutput();
     void onDelayCompile();
     void onToggleOutput();
     void onActionBinaryTriggered();
@@ -64,6 +65,10 @@ private slots:
     void onRequestGCCTreeRTL();
     void onRequestPahole();
     void onRequestClangTidy();
+    void onRequestLdd();
+    void onRequestReadElf();
+    void onRequestX86To6502();
+    void onRequestIncludeWhatYouUse();
     void onRefreshGCCDumpOutput(QString pass, bool gccTree, bool rtl);
 
 private:

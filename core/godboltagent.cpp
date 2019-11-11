@@ -84,6 +84,13 @@ void GodboltAgent::compile(const CompileInfo &ci)
         toolObj.insert("args", m_x86To6502Options);
         toolsArray.append(QJsonValue::fromVariant(toolObj));
     }
+    if (m_compilerOptions & CO_INCLUDE_WHAT_YOU_USE)
+    {
+        QJsonObject toolObj;
+        toolObj.insert("id", "iwyu");
+        toolObj.insert("args", m_includeWhatYouUseOptions);
+        toolsArray.append(QJsonValue::fromVariant(toolObj));
+    }
 
     QJsonObject filtersObj;
     struct
@@ -160,6 +167,8 @@ void GodboltAgent::onCompileRequestFinished()
     m_x86To6502Stdout.clear();
     m_readElfStderr.clear();
     m_readElfStdout.clear();
+    m_includeWhatYouUseStderr.clear();
+    m_includeWhatYouUseStdout.clear();
     m_asmContent.clear();
     m_asmItems.clear();
     m_llvmIRContent.clear();
@@ -455,6 +464,12 @@ void GodboltAgent::onCompileRequestFinished()
                 m_readElfStderr = toolStderr;
                 m_readElfStdout = toolStdout;
                 emit hasReadElfOutput();
+            }
+            else if (id == "iwyu")
+            {
+                m_includeWhatYouUseStderr = toolStderr;
+                m_includeWhatYouUseStdout = toolStdout;
+                emit hasIncludeWhatYouUseOutput();
             }
         }
     }

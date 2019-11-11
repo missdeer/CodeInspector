@@ -10,6 +10,7 @@
 #include "clangtidyoutput.h"
 #include "codeinspector.h"
 #include "gcctreertloutput.h"
+#include "includewhatyouuseoutput.h"
 #include "lddoutput.h"
 #include "llvmmachinecodeanalyzeroutput.h"
 #include "optimizationoutput.h"
@@ -80,6 +81,8 @@ void CodeInspectorTabWidget::setLddContent(const QString &content)
     Q_ASSERT(m_ldd);
     m_ldd->setContent(content);
 }
+
+void CodeInspectorTabWidget::setIncludeWhatYouUseContent(const QString &content) {}
 
 void CodeInspectorTabWidget::setASTContent(const QString &content)
 {
@@ -315,6 +318,18 @@ void CodeInspectorTabWidget::onRequestLdd()
     emit requestLdd();
 }
 
+void CodeInspectorTabWidget::onRequestIncludeWhatYouUse()
+{
+    if (!m_includeWhatYouUse)
+    {
+        m_includeWhatYouUse = new IncludeWhatYouUseOutput(this);
+        m_includeWhatYouUse->initialize();
+        addTab(m_includeWhatYouUse, QIcon(":/resource/image/tab/include-what-you-use.png"), tr("Include What You Use"));
+        connect(m_includeWhatYouUse, &IncludeWhatYouUseOutput::optionsChanged, this, &CodeInspectorTabWidget::refreshIncludeWhatYouUse);
+    }
+    emit requestIncludeWhatYouUse();
+}
+
 void CodeInspectorTabWidget::removePage(QWidget **w)
 {
     if (*w)
@@ -355,6 +370,11 @@ bool CodeInspectorTabWidget::enableX86To6502() const
 bool CodeInspectorTabWidget::enableLdd() const
 {
     return m_enableLdd;
+}
+
+bool CodeInspectorTabWidget::enableIncludeWhatYouUse() const
+{
+    return m_enableIncludeWhatYouUse;
 }
 
 QString CodeInspectorTabWidget::getLLVMMCAOptions()
@@ -399,10 +419,17 @@ QString CodeInspectorTabWidget::getX86To6502Options()
     return "";
 }
 
-QString CodeInspectorTabWidget::getLddptions()
+QString CodeInspectorTabWidget::getLddOptions()
 {
     if (m_ldd)
         return m_ldd->getToolOptions();
+    return "";
+}
+
+QString CodeInspectorTabWidget::getIncludeWhatYouUseOptions()
+{
+    if (m_includeWhatYouUse)
+        return m_includeWhatYouUse->getToolOptions();
     return "";
 }
 
@@ -483,6 +510,13 @@ void CodeInspectorTabWidget::setEnableLdd(bool enabled)
     m_enableLdd = enabled;
     if (!enabled)
         removePage(reinterpret_cast<QWidget **>(&m_ldd));
+}
+
+void CodeInspectorTabWidget::setEnableIncludeWhatYouUse(bool enabled)
+{
+    m_enableIncludeWhatYouUse = enabled;
+    if (!enabled)
+        removePage(reinterpret_cast<QWidget **>(&m_includeWhatYouUse));
 }
 
 void CodeInspectorTabWidget::setEnableOptimization(bool enabled)

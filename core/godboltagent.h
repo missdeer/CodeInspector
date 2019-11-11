@@ -90,6 +90,38 @@ public:
             m_compilerOptions &= ~CO_LLVMIR;
     }
 
+    void setEnableLdd(bool enabled)
+    {
+        if (enabled)
+            m_compilerOptions |= CO_LDD;
+        else
+            m_compilerOptions &= ~CO_LDD;
+    }
+
+    void setEnableReadElf(bool enabled)
+    {
+        if (enabled)
+            m_compilerOptions |= CO_READELF;
+        else
+            m_compilerOptions &= ~CO_READELF;
+    }
+
+    void setEnabledX86To6502(bool enabled)
+    {
+        if (enabled)
+            m_compilerOptions |= CO_X86TO6502;
+        else
+            m_compilerOptions &= ~CO_X86TO6502;
+    }
+
+    void setEnabledIncludeWhatYouUse(bool enabled)
+    {
+        if (enabled)
+            m_compilerOptions |= CO_INCLUDE_WHAT_YOU_USE;
+        else
+            m_compilerOptions &= ~CO_INCLUDE_WHAT_YOU_USE;
+    }
+
     void setGCCTreeRTLOptions(const QString &pass, bool gccTree, bool rtl)
     {
         m_selectedGCCDumpPass = pass;
@@ -110,6 +142,26 @@ public:
     void setClangTidyOptions(const QString &options)
     {
         m_clangTidyOptions = options;
+    }
+
+    void setLddOptions(const QString &options)
+    {
+        m_lddOptions = options;
+    }
+
+    void setReadElfOptions(const QString &options)
+    {
+        m_readElfOptions = options;
+    }
+
+    void setX86To6502Options(const QString &options)
+    {
+        m_x86To6502Options = options;
+    }
+
+    void setIncludeWhatYouUseOptions(const QString &options)
+    {
+        m_includeWhatYouUseOptions = options;
     }
 
     [[nodiscard]] const QString &getCompileStderr() const
@@ -177,6 +229,46 @@ public:
         return m_paholeStdout;
     }
 
+    [[nodiscard]] const QString &getLddStderr() const
+    {
+        return m_lddStderr;
+    }
+
+    [[nodiscard]] const QString &getLddStdout() const
+    {
+        return m_lddStdout;
+    }
+
+    [[nodiscard]] const QString &getReadElfStderr() const
+    {
+        return m_readElfStderr;
+    }
+
+    [[nodiscard]] const QString &getReadElfStdout() const
+    {
+        return m_readElfStdout;
+    }
+
+    [[nodiscard]] const QString &getX86To6502Stderr() const
+    {
+        return m_x86To6502Stderr;
+    }
+
+    [[nodiscard]] const QString &getX86To6502Stdout() const
+    {
+        return m_x86To6502Stdout;
+    }
+
+    [[nodiscard]] const QString &getIncludeWhatYouUseStderr() const
+    {
+        return m_includeWhatYouUseStderr;
+    }
+
+    [[nodiscard]] const QString &getIncludeWhatYouUseStdout() const
+    {
+        return m_includeWhatYouUseStdout;
+    }
+
     [[nodiscard]] const QString &getASTOutput() const
     {
         return m_astOutput;
@@ -220,6 +312,8 @@ signals:
     void hasReadElfOutput();
 
     void hasX86To6502Output();
+
+    void hasIncludeWhatYouUseOutput();
 
 private slots:
 
@@ -266,6 +360,9 @@ private:
     QString                m_x86To6502Stderr;
     QString                m_x86To6502Stdout;
     QString                m_x86To6502Options;
+    QString                m_includeWhatYouUseStderr;
+    QString                m_includeWhatYouUseStdout;
+    QString                m_includeWhatYouUseOptions;
     QString                m_asmContent;
     AsmItemList            m_asmItems;
     QString                m_llvmIRContent;
