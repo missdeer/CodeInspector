@@ -10,6 +10,7 @@
 #include "clangtidyoutput.h"
 #include "codeinspector.h"
 #include "gcctreertloutput.h"
+#include "lddoutput.h"
 #include "llvmmachinecodeanalyzeroutput.h"
 #include "optimizationoutput.h"
 #include "paholeoutput.h"
@@ -72,6 +73,12 @@ void CodeInspectorTabWidget::setX86To6502Content(const QString &content)
 {
     Q_ASSERT(m_x86To6502);
     m_x86To6502->setContent(content);
+}
+
+void CodeInspectorTabWidget::setLddContent(const QString &content)
+{
+    Q_ASSERT(m_ldd);
+    m_ldd->setContent(content);
 }
 
 void CodeInspectorTabWidget::setASTContent(const QString &content)
@@ -296,6 +303,18 @@ void CodeInspectorTabWidget::onRequestX86To6502()
     emit requestX86To6502();
 }
 
+void CodeInspectorTabWidget::onRequestLdd()
+{
+    if (!m_ldd)
+    {
+        m_ldd = new LddOutput(this);
+        m_ldd->initialize();
+        addTab(m_ldd, QIcon(":/resource/image/tab/ldd.png"), tr("ldd"));
+        connect(m_ldd, &LddOutput::optionsChanged, this, &CodeInspectorTabWidget::refreshLdd);
+    }
+    emit requestLdd();
+}
+
 void CodeInspectorTabWidget::removePage(QWidget **w)
 {
     if (*w)
@@ -331,6 +350,11 @@ bool CodeInspectorTabWidget::enableReadElf() const
 bool CodeInspectorTabWidget::enableX86To6502() const
 {
     return m_enableX86To6502;
+}
+
+bool CodeInspectorTabWidget::enableLdd() const
+{
+    return m_enableLdd;
 }
 
 QString CodeInspectorTabWidget::getLLVMMCAOptions()
@@ -372,6 +396,13 @@ QString CodeInspectorTabWidget::getX86To6502Options()
 {
     if (m_x86To6502)
         return m_x86To6502->getToolOptions();
+    return "";
+}
+
+QString CodeInspectorTabWidget::getLddptions()
+{
+    if (m_ldd)
+        return m_ldd->getToolOptions();
     return "";
 }
 
@@ -445,6 +476,13 @@ void CodeInspectorTabWidget::setEnableX86To6502(bool enabled)
     m_enableX86To6502 = enabled;
     if (!enabled)
         removePage(reinterpret_cast<QWidget **>(&m_x86To6502));
+}
+
+void CodeInspectorTabWidget::setEnableLdd(bool enabled)
+{
+    m_enableLdd = enabled;
+    if (!enabled)
+        removePage(reinterpret_cast<QWidget **>(&m_ldd));
 }
 
 void CodeInspectorTabWidget::setEnableOptimization(bool enabled)

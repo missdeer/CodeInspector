@@ -63,6 +63,27 @@ void GodboltAgent::compile(const CompileInfo &ci)
         toolObj.insert("args", m_paholeOptions);
         toolsArray.append(QJsonValue::fromVariant(toolObj));
     }
+    if (m_compilerOptions & CO_READELF)
+    {
+        QJsonObject toolObj;
+        toolObj.insert("id", "readelf");
+        toolObj.insert("args", m_readElfOptions);
+        toolsArray.append(QJsonValue::fromVariant(toolObj));
+    }
+    if (m_compilerOptions & CO_LDD)
+    {
+        QJsonObject toolObj;
+        toolObj.insert("id", "ldd");
+        toolObj.insert("args", m_lddOptions);
+        toolsArray.append(QJsonValue::fromVariant(toolObj));
+    }
+    if (m_compilerOptions & CO_X86TO6502)
+    {
+        QJsonObject toolObj;
+        toolObj.insert("id", "x86to6502");
+        toolObj.insert("args", m_x86To6502Options);
+        toolsArray.append(QJsonValue::fromVariant(toolObj));
+    }
 
     QJsonObject filtersObj;
     struct
@@ -133,6 +154,12 @@ void GodboltAgent::onCompileRequestFinished()
     m_paholeStdout.clear();
     m_clangTidyStderr.clear();
     m_clangTidyStdout.clear();
+    m_lddStderr.clear();
+    m_lddStdout.clear();
+    m_x86To6502Stderr.clear();
+    m_x86To6502Stdout.clear();
+    m_readElfStderr.clear();
+    m_readElfStdout.clear();
     m_asmContent.clear();
     m_asmItems.clear();
     m_llvmIRContent.clear();
@@ -392,24 +419,42 @@ void GodboltAgent::onCompileRequestFinished()
                 }
             }
 
-            QString name = toolObj["name"].toString();
-            if (name == "clang-tidy")
+            QString id = toolObj["id"].toString();
+            if (id == "clang-tidy")
             {
                 m_clangTidyStderr = toolStderr;
                 m_clangTidyStdout = toolStdout;
                 emit hasClangTidyOutput();
             }
-            else if (name == "llvm-mca")
+            else if (id == "llvm-mca")
             {
                 m_llvmMCAStdout = toolStdout;
                 m_llvmMCAStderr = toolStderr;
                 emit hasLLVMMCAOutput();
             }
-            else if (name == "pahole")
+            else if (id == "pahole")
             {
                 m_paholeStderr = toolStderr;
                 m_paholeStdout = toolStdout;
                 emit hasPaholeOutput();
+            }
+            else if (id == "ldd")
+            {
+                m_lddStderr = toolStderr;
+                m_lddStdout = toolStdout;
+                emit hasLddOutput();
+            }
+            else if (id == "x86to6502")
+            {
+                m_x86To6502Stderr = toolStderr;
+                m_x86To6502Stdout = toolStdout;
+                emit hasX86To6502Output();
+            }
+            else if (id == "readelf")
+            {
+                m_readElfStderr = toolStderr;
+                m_readElfStdout = toolStdout;
+                emit hasReadElfOutput();
             }
         }
     }

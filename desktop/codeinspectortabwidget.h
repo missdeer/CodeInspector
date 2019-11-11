@@ -17,6 +17,7 @@ class PaholeOutput;
 class ClangTidyOutput;
 class ClangQueryOutput;
 class ReadElfOutput;
+class LddOutput;
 class X86To6502Output;
 class LLVMIRView;
 
@@ -41,6 +42,7 @@ public:
     void setClangQueryContent(const QString &content);
     void setReadElfContent(const QString &content);
     void setX86To6502Content(const QString &content);
+    void setLddContent(const QString &content);
 
     void setEnableAST(bool enabled);
     void setEnableLLVMIR(bool enabled);
@@ -52,6 +54,7 @@ public:
     void setEnableClangQuery(bool enabled);
     void setEnableReadElf(bool enabled);
     void setEnableX86To6502(bool enabled);
+    void setEnableLdd(bool enabled);
 
     [[nodiscard]] bool enableAST() const;
     [[nodiscard]] bool enableLLVMIR() const;
@@ -63,6 +66,7 @@ public:
     [[nodiscard]] bool enableClangQuery() const;
     [[nodiscard]] bool enableReadElf() const;
     [[nodiscard]] bool enableX86To6502() const;
+    [[nodiscard]] bool enableLdd() const;
 
     [[nodiscard]] QString getLLVMMCAOptions();
     [[nodiscard]] QString getPaholeOptions();
@@ -70,6 +74,7 @@ public:
     [[nodiscard]] QString getClangQueryOptions();
     [[nodiscard]] QString getReadElfOptions();
     [[nodiscard]] QString getX86To6502Options();
+    [[nodiscard]] QString getLddptions();
 signals:
     void requestAST();
     void requestLLVMIR();
@@ -81,6 +86,7 @@ signals:
     void requestClangQuery();
     void requestReadElf();
     void requestX86To6502();
+    void requestLdd();
 
     void refreshGCCDumpOutput(QString, bool, bool);
     void refreshLLVMMCAOptions(const QString &);
@@ -89,6 +95,7 @@ signals:
     void refreshClangQuery(const QString &);
     void refreshReadElf(const QString &);
     void refreshX86To6502(const QString &);
+    void refreshLdd(const QString &);
 private slots:
     void onCustomContextMenuRequested(const QPoint &pos);
     void onRefreshGCCDumpOutput();
@@ -102,6 +109,7 @@ private slots:
     void onRequestClangQuery();
     void onRequestReadElf();
     void onRequestX86To6502();
+    void onRequestLdd();
 
 private:
     CodeInspector *m_codeInspector;
@@ -116,6 +124,7 @@ private:
     ReadElfOutput *                m_readElf {nullptr};
     X86To6502Output *              m_x86To6502 {nullptr};
     LLVMIRView *                   m_llvmIR {nullptr};
+    LddOutput *                    m_ldd {nullptr};
 
     bool m_enableAST {false};
     bool m_enableLLVMIR {false};
@@ -127,6 +136,7 @@ private:
     bool m_enableClangQuery {false};
     bool m_enableReadElf {false};
     bool m_enableX86To6502 {false};
+    bool m_enableLdd {false};
     void removePage(QWidget **w);
 };
 

@@ -215,6 +215,12 @@ signals:
 
     void hasLLVMIROutput();
 
+    void hasLddOutput();
+
+    void hasReadElfOutput();
+
+    void hasX86To6502Output();
+
 private slots:
 
     void onCompileRequestFinished();
@@ -251,6 +257,15 @@ private:
     QString                m_paholeStderr;
     QString                m_paholeStdout;
     QString                m_paholeOptions;
+    QString                m_lddStderr;
+    QString                m_lddStdout;
+    QString                m_lddOptions;
+    QString                m_readElfStderr;
+    QString                m_readElfStdout;
+    QString                m_readElfOptions;
+    QString                m_x86To6502Stderr;
+    QString                m_x86To6502Stdout;
+    QString                m_x86To6502Options;
     QString                m_asmContent;
     AsmItemList            m_asmItems;
     QString                m_llvmIRContent;

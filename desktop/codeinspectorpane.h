@@ -42,6 +42,9 @@ private slots:
     void onHasClangTidyOutput();
     void onHasASTOutput();
     void onHasLLVMIROutput();
+    void onHasLddOutput();
+    void onHasX86To6502Output();
+    void onHasReadElfOutput();
     void onDelayCompile();
     void onToggleOutput();
     void onActionBinaryTriggered();

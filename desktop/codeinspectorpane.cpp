@@ -162,6 +162,9 @@ CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
     connect(m_backend, &GodboltAgent::hasClangTidyOutput, this, &CodeInspectorPane::onHasClangTidyOutput);
     connect(m_backend, &GodboltAgent::hasASTOutput, this, &CodeInspectorPane::onHasASTOutput);
     connect(m_backend, &GodboltAgent::hasLLVMIROutput, this, &CodeInspectorPane::onHasLLVMIROutput);
+    connect(m_backend, &GodboltAgent::hasLddOutput, this, &CodeInspectorPane::onHasLddOutput);
+    connect(m_backend, &GodboltAgent::hasX86To6502Output, this, &CodeInspectorPane::onHasX86To6502Output);
+    connect(m_backend, &GodboltAgent::hasReadElfOutput, this, &CodeInspectorPane::onHasReadElfOutput);
     connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::requestAST, this, &CodeInspectorPane::onRequestAST);
     connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::requestLLVMIR, this, &CodeInspectorPane::onRequestLLVMIR);
     connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::requestLLVMMCA, this, &CodeInspectorPane::onRequestLLVMMCA);
@@ -353,6 +356,12 @@ void CodeInspectorPane::onHasLLVMIROutput()
     const auto &llvmIRItems = m_backend->getLLVMIRItems();
     m_codeInspectorTabWidget->setLLVMIRItems(llvmIRItems, m_markerMap);
 }
+
+void CodeInspectorPane::onHasLddOutput() {}
+
+void CodeInspectorPane::onHasX86To6502Output() {}
+
+void CodeInspectorPane::onHasReadElfOutput() {}
 
 void CodeInspectorPane::onDelayCompile()
 {

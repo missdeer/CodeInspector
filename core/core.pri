@@ -1,11 +1,13 @@
 QT       += core gui widgets xml network 
 
 include($$PWD/../3rdparty/scintilla-latest.pri)
+include($$PWD/../3rdparty/kf5syntaxhighlighting-latest.pri)
 
 INCLUDEPATH += $$PWD
 
 SOURCES += \
     $$PWD/clangqueryoutput.cpp \
+    $$PWD/lddoutput.cpp \
     $$PWD/readelfoutput.cpp \
     $$PWD/scintillaconfig.cpp \
     $$PWD/scopedguard.cpp \
@@ -28,6 +30,7 @@ SOURCES += \
 
 HEADERS += \
     $$PWD/clangqueryoutput.h \
+    $$PWD/lddoutput.h \
     $$PWD/readelfoutput.h \
     $$PWD/scintillaconfig.h \
     $$PWD/scopedguard.h \
