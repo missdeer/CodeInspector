@@ -359,13 +359,25 @@ void CodeInspectorPane::onHasLLVMIROutput()
     m_codeInspectorTabWidget->setLLVMIRItems(llvmIRItems, m_markerMap);
 }
 
-void CodeInspectorPane::onHasLddOutput() {}
+void CodeInspectorPane::onHasLddOutput()
+{
+    m_codeInspectorTabWidget->setLddContent(m_backend->getLddStdout());
+}
 
-void CodeInspectorPane::onHasX86To6502Output() {}
+void CodeInspectorPane::onHasX86To6502Output()
+{
+    m_codeInspectorTabWidget->setX86To6502Content(m_backend->getX86To6502Stdout());
+}
 
-void CodeInspectorPane::onHasReadElfOutput() {}
+void CodeInspectorPane::onHasReadElfOutput()
+{
+    m_codeInspectorTabWidget->setReadElfContent(m_backend->getReadElfStdout());
+}
 
-void CodeInspectorPane::onHasIncludeWhatYouUseOutput() {}
+void CodeInspectorPane::onHasIncludeWhatYouUseOutput()
+{
+    m_codeInspectorTabWidget->setIncludeWhatYouUseContent(m_backend->getIncludeWhatYouUseStdout());
+}
 
 void CodeInspectorPane::onDelayCompile()
 {

@@ -82,7 +82,11 @@ void CodeInspectorTabWidget::setLddContent(const QString &content)
     m_ldd->setContent(content);
 }
 
-void CodeInspectorTabWidget::setIncludeWhatYouUseContent(const QString &content) {}
+void CodeInspectorTabWidget::setIncludeWhatYouUseContent(const QString &content)
+{
+    Q_ASSERT(m_includeWhatYouUse);
+    m_includeWhatYouUse->setContent(content);
+}
 
 void CodeInspectorTabWidget::setASTContent(const QString &content)
 {
@@ -174,6 +178,16 @@ void CodeInspectorTabWidget::onCustomContextMenuRequested(const QPoint &pos)
     pX86To6502Action->setEnabled(m_enableX86To6502);
     connect(pX86To6502Action, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestX86To6502);
     menu.addAction(pX86To6502Action);
+
+    QAction *pLddAction = new QAction(QIcon(":/resource/image/tab/ldd.png"), tr("ldd"), &menu);
+    pLddAction->setEnabled(m_enableLdd);
+    connect(pLddAction, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestLdd);
+    menu.addAction(pLddAction);
+
+    QAction *pIncludeWhatYouUseAction = new QAction(QIcon(":/resource/image/tab/include-what-you-use.png"), tr("Include What You Use"), &menu);
+    pIncludeWhatYouUseAction->setEnabled(m_enableIncludeWhatYouUse);
+    connect(pIncludeWhatYouUseAction, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestIncludeWhatYouUse);
+    menu.addAction(pIncludeWhatYouUseAction);
 
     QAction *pLLVMIRAction = new QAction(QIcon(":/resource/image/tab/llvm.png"), tr("LLVM IR"), &menu);
     pLLVMIRAction->setEnabled(m_enableLLVMIR);
