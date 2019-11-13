@@ -99,11 +99,11 @@ signals:
     void refreshLLVMMCAOptions(const QString &);
     void refreshPaholeOptions(const QString &);
     void refreshClangTidyOptions(const QString &);
-    void refreshClangQuery(const QString &);
-    void refreshReadElf(const QString &);
-    void refreshX86To6502(const QString &);
-    void refreshLdd(const QString &);
-    void refreshIncludeWhatYouUse(const QString &);
+    void refreshClangQueryOptions(const QString &);
+    void refreshReadElfOptions(const QString &);
+    void refreshX86To6502Options(const QString &);
+    void refreshLddOptions(const QString &);
+    void refreshIncludeWhatYouUseOptions(const QString &);
 private slots:
     void onCustomContextMenuRequested(const QPoint &pos);
     void onRefreshGCCDumpOutput();

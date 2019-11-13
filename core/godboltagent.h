@@ -82,6 +82,14 @@ public:
             m_compilerOptions &= ~CO_CLANGTIDY;
     }
 
+    void setEnableClangQuery(bool enabled)
+    {
+        if (enabled)
+            m_compilerOptions |= CO_CLANG_QUERY;
+        else
+            m_compilerOptions &= ~CO_CLANG_QUERY;
+    }
+
     void setEnableLLVMIR(bool enabled)
     {
         if (enabled)
@@ -142,6 +150,11 @@ public:
     void setClangTidyOptions(const QString &options)
     {
         m_clangTidyOptions = options;
+    }
+
+    void setClangQueryOptions(const QString &options)
+    {
+        m_clangQueryOptions = options;
     }
 
     void setLddOptions(const QString &options)
@@ -207,6 +220,16 @@ public:
     [[nodiscard]] const QString &getClangTidyStdout() const
     {
         return m_clangTidyStdout;
+    }
+
+    [[nodiscard]] const QString &getClangQueryStderr() const
+    {
+        return m_clangQueryStderr;
+    }
+
+    [[nodiscard]] const QString &getClangQueryStdout() const
+    {
+        return m_clangQueryStdout;
     }
 
     [[nodiscard]] const QString &getLLVMMCAStderr() const
@@ -345,6 +368,9 @@ private:
     QString                m_clangTidyStderr;
     QString                m_clangTidyStdout;
     QString                m_clangTidyOptions;
+    QString                m_clangQueryStderr;
+    QString                m_clangQueryStdout;
+    QString                m_clangQueryOptions;
     QString                m_llvmMCAStderr;
     QString                m_llvmMCAStdout;
     QString                m_llvmMCAOptions;

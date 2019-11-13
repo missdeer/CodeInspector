@@ -139,7 +139,7 @@ void GodboltAgent::compile(const CompileInfo &ci)
     QJsonDocument doc;
     doc.setObject(rootObj);
     QByteArray postBody = doc.toJson();
-#if !defined(QT_NO_DEBUG)
+#if defined(QT_NO_DEBUG)
     qDebug() << "post body: " << QString(postBody);
 #endif
     auto *reply       = m_nam.post(request, postBody);
@@ -201,7 +201,7 @@ void GodboltAgent::onCompileRequestFinished()
 #endif
         return;
     }
-#if !defined(QT_NO_DEBUG)
+#if defined(QT_NO_DEBUG)
     qDebug() << doc;
 #endif
     QJsonObject docObj = doc.object();

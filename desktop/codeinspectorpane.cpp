@@ -154,7 +154,9 @@ CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
     connect(m_compilerArguments, &QLineEdit::textChanged, this, &CodeInspectorPane::onCurrentCompilerArgumentsChanged);
     connect(m_timer, &QTimer::timeout, this, &CodeInspectorPane::onNeedCompile);
     connect(m_codeEditor, &CodeEditor::contentModified, this, &CodeInspectorPane::onDelayCompile);
+
     connect(m_backend, &GodboltAgent::compiled, this, &CodeInspectorPane::onCompiled);
+
     connect(m_backend, &GodboltAgent::hasGccDumpOutput, this, &CodeInspectorPane::onHasGccDumpOutput);
     connect(m_backend, &GodboltAgent::hasLLVMMCAOutput, this, &CodeInspectorPane::onHasLLVMMCAOutput);
     connect(m_backend, &GodboltAgent::hasOptimizationOutput, this, &CodeInspectorPane::onHasOptimizationOutput);
@@ -166,6 +168,7 @@ CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
     connect(m_backend, &GodboltAgent::hasX86To6502Output, this, &CodeInspectorPane::onHasX86To6502Output);
     connect(m_backend, &GodboltAgent::hasReadElfOutput, this, &CodeInspectorPane::onHasReadElfOutput);
     connect(m_backend, &GodboltAgent::hasIncludeWhatYouUseOutput, this, &CodeInspectorPane::onHasIncludeWhatYouUseOutput);
+
     connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::requestAST, this, &CodeInspectorPane::onRequestAST);
     connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::requestLLVMIR, this, &CodeInspectorPane::onRequestLLVMIR);
     connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::requestLLVMMCA, this, &CodeInspectorPane::onRequestLLVMMCA);
@@ -174,10 +177,19 @@ CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
     connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::requestClangTidy, this, &CodeInspectorPane::onRequestClangTidy);
     connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::requestPahole, this, &CodeInspectorPane::onRequestPahole);
     connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::requestLdd, this, &CodeInspectorPane::onRequestLdd);
+    connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::requestX86To6502, this, &CodeInspectorPane::onRequestX86To6502);
+    connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::requestIncludeWhatYouUse, this, &CodeInspectorPane::onRequestIncludeWhatYouUse);
+    connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::requestReadElf, this, &CodeInspectorPane::onRequestReadElf);
+
     connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::refreshGCCDumpOutput, this, &CodeInspectorPane::onRefreshGCCDumpOutput);
     connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::refreshPaholeOptions, this, &CodeInspectorPane::onRequestPahole);
     connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::refreshClangTidyOptions, this, &CodeInspectorPane::onRequestClangTidy);
+    connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::refreshClangQueryOptions, this, &CodeInspectorPane::onRequestClangQuery);
     connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::refreshLLVMMCAOptions, this, &CodeInspectorPane::onRequestLLVMMCA);
+    connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::refreshLddOptions, this, &CodeInspectorPane::onRequestLdd);
+    connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::refreshX86To6502Options, this, &CodeInspectorPane::onRequestX86To6502);
+    connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::refreshReadElfOptions, this, &CodeInspectorPane::onRequestReadElf);
+    connect(m_codeInspectorTabWidget, &CodeInspectorTabWidget::refreshIncludeWhatYouUseOptions, this, &CodeInspectorPane::onRequestIncludeWhatYouUse);
 }
 
 void CodeInspectorPane::initialize() {}
@@ -467,6 +479,7 @@ void CodeInspectorPane::onCurrentCompilerChanged(const QString &compilerName)
     m_btnIntel->setEnabled(compiler->supportsIntel);
     m_btnDemangle->setEnabled(compiler->supportsDemangle);
 
+    // options
     m_codeInspectorTabWidget->setEnableAST(compiler->supportsAstView);
     if (!m_codeInspectorTabWidget->enableAST())
         m_backend->setEnableAST(false);
@@ -474,11 +487,6 @@ void CodeInspectorPane::onCurrentCompilerChanged(const QString &compilerName)
     m_codeInspectorTabWidget->setEnableLLVMIR(compiler->supportsIrView);
     if (!m_codeInspectorTabWidget->enableLLVMIR())
         m_backend->setEnableLLVMIR(false);
-
-    m_codeInspectorTabWidget->setEnableLLVMMCA((!compiler->supportsBinary || !m_btnBinrary->isChecked()) &&
-                                               (cn.contains("clang", Qt::CaseInsensitive) || cn.contains("gcc", Qt::CaseInsensitive)));
-    if (!m_codeInspectorTabWidget->enableLLVMMCA())
-        m_backend->setEnableLLVMMCA(false);
 
     m_codeInspectorTabWidget->setEnableGCCTreeRTL(compiler->supportsGccDump);
     if (!m_codeInspectorTabWidget->enableGCCTreeRTL())
@@ -488,29 +496,30 @@ void CodeInspectorPane::onCurrentCompilerChanged(const QString &compilerName)
     if (!m_codeInspectorTabWidget->enableOptimization())
         m_backend->setEnableOptimization(false);
 
-    m_codeInspectorTabWidget->setEnableClangTidy(cn.contains("clang", Qt::CaseInsensitive) || cn.contains("gcc", Qt::CaseInsensitive));
-    if (!m_codeInspectorTabWidget->enableClangTidy())
-        m_backend->setEnableClangTidy(false);
+    // tools
+    m_codeInspectorTabWidget->setEnableLLVMMCA(true);
+    m_backend->setEnableLLVMMCA(true);
 
-    m_codeInspectorTabWidget->setEnablePahole(compiler->supportsBinary && m_btnBinrary->isChecked());
-    if (!m_codeInspectorTabWidget->enablePahole())
-        m_backend->setEnablePahole(false);
+    m_codeInspectorTabWidget->setEnableClangTidy(true);
+    m_backend->setEnableClangTidy(true);
 
-    m_codeInspectorTabWidget->setEnableLdd(compiler->supportsBinary && m_btnBinrary->isChecked());
-    if (!m_codeInspectorTabWidget->enableLdd())
-        m_backend->setEnableLdd(false);
+    m_codeInspectorTabWidget->setEnablePahole(true);
+    m_backend->setEnablePahole(true);
 
-    m_codeInspectorTabWidget->setEnableReadElf(compiler->supportsBinary && m_btnBinrary->isChecked());
-    if (!m_codeInspectorTabWidget->enableReadElf())
-        m_backend->setEnableReadElf(false);
+    m_codeInspectorTabWidget->setEnableLdd(true);
+    m_backend->setEnableLdd(true);
 
-    m_codeInspectorTabWidget->setEnableX86To6502(!m_btnBinrary->isChecked());
-    if (!m_codeInspectorTabWidget->enableX86To6502())
-        m_backend->setEnabledX86To6502(false);
+    m_codeInspectorTabWidget->setEnableReadElf(true);
+    m_backend->setEnableReadElf(true);
+
+    m_codeInspectorTabWidget->setEnableX86To6502(true);
+    m_backend->setEnabledX86To6502(true);
 
     m_codeInspectorTabWidget->setEnableIncludeWhatYouUse(true);
-    if (!m_codeInspectorTabWidget->enableIncludeWhatYouUse())
-        m_backend->setEnabledIncludeWhatYouUse(false);
+    m_backend->setEnabledIncludeWhatYouUse(true);
+
+    m_codeInspectorTabWidget->setEnableClangQuery(true);
+    m_backend->setEnableClangQuery(true);
 
     onDelayCompile();
     emit currentCompilerChanged(cn);
@@ -558,6 +567,13 @@ void CodeInspectorPane::onRequestClangTidy()
 {
     m_backend->setEnableClangTidy(true);
     m_backend->setClangTidyOptions(m_codeInspectorTabWidget->getClangTidyOptions());
+    onDelayCompile();
+}
+
+void CodeInspectorPane::onRequestClangQuery()
+{
+    m_backend->setEnableClangQuery(true);
+    m_backend->setClangQueryOptions(m_codeInspectorTabWidget->getClangQueryOptions());
     onDelayCompile();
 }
 

@@ -4,7 +4,6 @@
 
 #include "codeinspectortabwidget.h"
 
-#include "LLVMIRView.h"
 #include "astoutput.h"
 #include "clangqueryoutput.h"
 #include "clangtidyoutput.h"
@@ -12,6 +11,7 @@
 #include "gcctreertloutput.h"
 #include "includewhatyouuseoutput.h"
 #include "lddoutput.h"
+#include "llvmirview.h"
 #include "llvmmachinecodeanalyzeroutput.h"
 #include "optimizationoutput.h"
 #include "paholeoutput.h"
@@ -280,7 +280,7 @@ void CodeInspectorTabWidget::onRequestClangQuery()
         m_clangQuery = new ClangQueryOutput(this);
         m_clangQuery->initialize();
         addTab(m_clangQuery, QIcon(":/resource/image/tab/clangquery.png"), tr("ClangQuery"));
-        connect(m_clangQuery, &ClangQueryOutput::optionsChanged, this, &CodeInspectorTabWidget::refreshClangQuery);
+        connect(m_clangQuery, &ClangQueryOutput::optionsChanged, this, &CodeInspectorTabWidget::refreshClangQueryOptions);
     }
     emit requestClangQuery();
 }
@@ -303,7 +303,7 @@ void CodeInspectorTabWidget::onRequestReadElf()
         m_readElf = new ReadElfOutput(this);
         m_readElf->initialize();
         addTab(m_readElf, QIcon(":/resource/image/tab/readelf.png"), tr("ReadElf"));
-        connect(m_readElf, &ReadElfOutput::optionsChanged, this, &CodeInspectorTabWidget::refreshReadElf);
+        connect(m_readElf, &ReadElfOutput::optionsChanged, this, &CodeInspectorTabWidget::refreshReadElfOptions);
     }
     emit requestReadElf();
 }
@@ -315,7 +315,7 @@ void CodeInspectorTabWidget::onRequestX86To6502()
         m_x86To6502 = new X86To6502Output(this);
         m_x86To6502->initialize();
         addTab(m_x86To6502, QIcon(":/resource/image/tab/x86to6502.png"), tr("x86 To 6502"));
-        connect(m_x86To6502, &X86To6502Output::optionsChanged, this, &CodeInspectorTabWidget::refreshX86To6502);
+        connect(m_x86To6502, &X86To6502Output::optionsChanged, this, &CodeInspectorTabWidget::refreshX86To6502Options);
     }
     emit requestX86To6502();
 }
@@ -327,7 +327,7 @@ void CodeInspectorTabWidget::onRequestLdd()
         m_ldd = new LddOutput(this);
         m_ldd->initialize();
         addTab(m_ldd, QIcon(":/resource/image/tab/ldd.png"), tr("ldd"));
-        connect(m_ldd, &LddOutput::optionsChanged, this, &CodeInspectorTabWidget::refreshLdd);
+        connect(m_ldd, &LddOutput::optionsChanged, this, &CodeInspectorTabWidget::refreshLddOptions);
     }
     emit requestLdd();
 }
@@ -339,7 +339,7 @@ void CodeInspectorTabWidget::onRequestIncludeWhatYouUse()
         m_includeWhatYouUse = new IncludeWhatYouUseOutput(this);
         m_includeWhatYouUse->initialize();
         addTab(m_includeWhatYouUse, QIcon(":/resource/image/tab/include-what-you-use.png"), tr("Include What You Use"));
-        connect(m_includeWhatYouUse, &IncludeWhatYouUseOutput::optionsChanged, this, &CodeInspectorTabWidget::refreshIncludeWhatYouUse);
+        connect(m_includeWhatYouUse, &IncludeWhatYouUseOutput::optionsChanged, this, &CodeInspectorTabWidget::refreshIncludeWhatYouUseOptions);
     }
     emit requestIncludeWhatYouUse();
 }

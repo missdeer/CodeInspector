@@ -58,6 +58,7 @@ private slots:
     void onActionDemangleTriggered();
     void onCurrentCompilerArgumentsChanged();
     void onCurrentCompilerChanged(const QString &compilerName);
+
     void onRequestLLVMMCA();
     void onRequestAST();
     void onRequestLLVMIR();
@@ -65,6 +66,7 @@ private slots:
     void onRequestGCCTreeRTL();
     void onRequestPahole();
     void onRequestClangTidy();
+    void onRequestClangQuery();
     void onRequestLdd();
     void onRequestReadElf();
     void onRequestX86To6502();

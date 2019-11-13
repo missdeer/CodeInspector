@@ -27,7 +27,7 @@ SOURCES += \
     $$PWD/paholeoutput.cpp \
     $$PWD/clangtidyoutput.cpp \
     $$PWD/x86to6502output.cpp \
-    $$PWD/LLVMIRView.cpp
+    $$PWD/llvmirview.cpp
 
 HEADERS += \
     $$PWD/clangqueryoutput.h \
@@ -58,7 +58,7 @@ HEADERS += \
     $$PWD/paholeoutput.h \
     $$PWD/clangtidyoutput.h \
     $$PWD/x86to6502output.h \
-    $$PWD/LLVMIRView.h
+    $$PWD/llvmirview.h
 
 	
 RESOURCES += \

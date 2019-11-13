@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#include "LLVMIRView.h"
+#include "llvmirview.h"
 
 LLVMIRView::LLVMIRView(QWidget *parent) : ScintillaEdit(parent), m_sc(this) {}
 
