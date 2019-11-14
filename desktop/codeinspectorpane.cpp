@@ -498,28 +498,36 @@ void CodeInspectorPane::onCurrentCompilerChanged(const QString &compilerName)
 
     // tools
     m_codeInspectorTabWidget->setEnableLLVMMCA(true);
-    m_backend->setEnableLLVMMCA(true);
+    if (!m_codeInspectorTabWidget->enableLLVMMCA())
+        m_backend->setEnableLLVMMCA(false);
 
     m_codeInspectorTabWidget->setEnableClangTidy(true);
-    m_backend->setEnableClangTidy(true);
+    if (!m_codeInspectorTabWidget->enableClangTidy())
+        m_backend->setEnableClangTidy(false);
 
     m_codeInspectorTabWidget->setEnablePahole(true);
-    m_backend->setEnablePahole(true);
+    if (!m_codeInspectorTabWidget->enablePahole())
+        m_backend->setEnablePahole(false);
 
     m_codeInspectorTabWidget->setEnableLdd(true);
-    m_backend->setEnableLdd(true);
+    if (!m_codeInspectorTabWidget->enableLdd())
+        m_backend->setEnableLdd(false);
 
     m_codeInspectorTabWidget->setEnableReadElf(true);
-    m_backend->setEnableReadElf(true);
+    if (!m_codeInspectorTabWidget->enableReadElf())
+        m_backend->setEnableReadElf(false);
 
     m_codeInspectorTabWidget->setEnableX86To6502(true);
-    m_backend->setEnabledX86To6502(true);
+    if (!m_codeInspectorTabWidget->enableX86To6502())
+        m_backend->setEnabledX86To6502(false);
 
     m_codeInspectorTabWidget->setEnableIncludeWhatYouUse(true);
-    m_backend->setEnabledIncludeWhatYouUse(true);
+    if (!m_codeInspectorTabWidget->enableIncludeWhatYouUse())
+        m_backend->setEnabledIncludeWhatYouUse(false);
 
     m_codeInspectorTabWidget->setEnableClangQuery(true);
-    m_backend->setEnableClangQuery(true);
+    if (!m_codeInspectorTabWidget->enableClangQuery())
+        m_backend->setEnableClangQuery(false);
 
     onDelayCompile();
     emit currentCompilerChanged(cn);

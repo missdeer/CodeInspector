@@ -144,20 +144,36 @@ void CodeInspectorTabWidget::onCustomContextMenuRequested(const QPoint &pos)
     connect(pASTAction, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestAST);
     menu.addAction(pASTAction);
 
-    QAction *pGCCTreeRTLAction = new QAction(QIcon(":/resource/image/tab/gcc.png"), tr("GCC Tree/RTL"), &menu);
+    QAction *pLLVMIRAction = new QAction(QIcon(":/resource/image/tab/llvm.png"),
+                                         tr("LLVM IR"),
+                                         &menu);
+    pLLVMIRAction->setEnabled(m_enableLLVMIR);
+    connect(pLLVMIRAction, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestLLVMIR);
+    menu.addAction(pLLVMIRAction);
+
+    QAction *pGCCTreeRTLAction = new QAction(QIcon(":/resource/image/tab/gcc.png"),
+                                             tr("GCC Tree/RTL"),
+                                             &menu);
     pGCCTreeRTLAction->setEnabled(m_enableGCCTreeRTL);
-    connect(pGCCTreeRTLAction, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestGCCTreeRTL);
+    connect(pGCCTreeRTLAction,
+            &QAction::triggered,
+            this,
+            &CodeInspectorTabWidget::onRequestGCCTreeRTL);
     menu.addAction(pGCCTreeRTLAction);
 
-    QAction *pLLVMMCAAction = new QAction(QIcon(":/resource/image/tab/llvm.png"), tr("LLVM MCA"), &menu);
-    pLLVMMCAAction->setEnabled(m_enableLLVMMCA);
-    connect(pLLVMMCAAction, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestLLVMMCA);
-    menu.addAction(pLLVMMCAAction);
+    menu.addSeparator();
 
     QAction *pClangTidyAction = new QAction(QIcon(":/resource/image/tab/clangtidy.png"), tr("Clang Tidy"), &menu);
     pClangTidyAction->setEnabled(m_enableClangTidy);
     connect(pClangTidyAction, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestClangTidy);
     menu.addAction(pClangTidyAction);
+
+    QAction *pLLVMMCAAction = new QAction(QIcon(":/resource/image/tab/llvm.png"),
+                                          tr("LLVM MCA"),
+                                          &menu);
+    pLLVMMCAAction->setEnabled(m_enableLLVMMCA);
+    connect(pLLVMMCAAction, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestLLVMMCA);
+    menu.addAction(pLLVMMCAAction);
 
     QAction *pPaholeAction = new QAction(QIcon(":/resource/image/tab/pahole.png"), tr("Pahole"), &menu);
     pPaholeAction->setEnabled(m_enablePahole);
@@ -188,11 +204,6 @@ void CodeInspectorTabWidget::onCustomContextMenuRequested(const QPoint &pos)
     pIncludeWhatYouUseAction->setEnabled(m_enableIncludeWhatYouUse);
     connect(pIncludeWhatYouUseAction, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestIncludeWhatYouUse);
     menu.addAction(pIncludeWhatYouUseAction);
-
-    QAction *pLLVMIRAction = new QAction(QIcon(":/resource/image/tab/llvm.png"), tr("LLVM IR"), &menu);
-    pLLVMIRAction->setEnabled(m_enableLLVMIR);
-    connect(pLLVMIRAction, &QAction::triggered, this, &CodeInspectorTabWidget::onRequestLLVMIR);
-    menu.addAction(pLLVMIRAction);
 
     menu.exec(mapToGlobal(pos));
 }

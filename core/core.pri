@@ -1,7 +1,6 @@
 QT       += core gui widgets xml network 
 
 include($$PWD/../3rdparty/scintilla-latest.pri)
-include($$PWD/../3rdparty/kf5syntaxhighlighting-latest.pri)
 
 INCLUDEPATH += $$PWD
 
