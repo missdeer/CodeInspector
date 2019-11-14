@@ -9,11 +9,11 @@
 
 GCCTreeRTLOutput::GCCTreeRTLOutput(QWidget *parent) : QWidget(parent)
 {
-    QVBoxLayout *mainLayout = new QVBoxLayout();
+    auto *mainLayout = new QVBoxLayout();
     setLayout(mainLayout);
     mainLayout->setContentsMargins(0, 0, 0, 0);
 
-    QHBoxLayout *topLayout = new QHBoxLayout();
+    auto *topLayout = new QHBoxLayout();
     m_passes               = new QComboBox(this);
     topLayout->addWidget(m_passes);
     m_gccTree = new QCheckBox(tr("GCC Tree"), this);
