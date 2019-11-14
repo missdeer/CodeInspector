@@ -19,13 +19,18 @@
         <file>resource/image/zoom-in.png</file>
         <file>resource/image/zoom-original.png</file>
         <file>resource/image/zoom-out.png</file>
+        <file>resource/image/tab/clangquery.png</file>
+        <file>resource/image/tab/include-what-you-use.png</file>
+        <file>resource/image/tab/ldd.png</file>
+        <file>resource/image/tab/readelf.png</file>
+        <file>resource/image/tab/x86to6502.png</file>
         <file>resource/image/tab/analyzer.png</file>
         <file>resource/image/tab/ast.png</file>
+        <file>resource/image/tab/clangtidy.png</file>
         <file>resource/image/tab/gcc.png</file>
         <file>resource/image/tab/inspector.png</file>
         <file>resource/image/tab/llvm.png</file>
         <file>resource/image/tab/optimization.png</file>
-        <file>resource/image/tab/clangtidy.png</file>
         <file>resource/image/tab/pahole.png</file>
     </qresource>
 </RCC>
