@@ -1,4 +1,4 @@
 TEMPLATE = subdirs
 
 SUBDIRS = \
-    desktop 
+    desktop-qt 
