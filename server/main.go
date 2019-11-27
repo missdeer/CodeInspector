@@ -11,7 +11,6 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
-	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -24,10 +23,10 @@ var (
 
 func reverseProxyGet(c *gin.Context, cacheKey string, targetURL string, method string, body io.Reader) {
 	acceptHeader := c.GetHeader("Accept")
-	if strings.Contains(acceptHeader, "application/json") && cache.IsExist(cacheKey) {
+	if cache.IsExist(cacheKey) {
 		languages, err := redis.Bytes(cache.Get(cacheKey))
 		if err == nil {
-			c.Data(http.StatusOK, "application/json", languages)
+			c.Data(http.StatusOK, acceptHeader, languages)
 			return
 		}
 	}
@@ -52,18 +51,22 @@ func reverseProxyGet(c *gin.Context, cacheKey string, targetURL string, method s
 
 	contentType := resp.Header.Get("Content-Type")
 	content, err := ioutil.ReadAll(resp.Body)
-	if strings.Contains(contentType, "application/json") {
-		cache.PutWithTimeout(cacheKey, content, 7*24*time.Hour)
-	}
+	cache.PutWithTimeout(cacheKey, content, 7*24*time.Hour)
 	c.Data(http.StatusOK, contentType, content)
 }
 
 func handleGetLanguagesList(c *gin.Context) {
-	reverseProxyGet(c, "languagesList", "https://godbolt.org/api/languages", "GET", nil)
+	acceptHeader := c.GetHeader("Accept")
+	h2 := md5.New()
+	h2.Write([]byte(acceptHeader))
+	reverseProxyGet(c, fmt.Sprintf("languagesList:%x", h2.Sum(nil)), "https://godbolt.org/api/languages", "GET", nil)
 }
 
 func handleGetCompilersList(c *gin.Context) {
-	reverseProxyGet(c, "compilersList", "https://godbolt.org/api/compilers", "GET", nil)
+	acceptHeader := c.GetHeader("Accept")
+	h2 := md5.New()
+	h2.Write([]byte(acceptHeader))
+	reverseProxyGet(c, fmt.Sprintf("compilersList:%x", h2.Sum(nil)), "https://godbolt.org/api/compilers", "GET", nil)
 }
 
 func handleGetCompilersListEx(c *gin.Context) {
@@ -74,7 +77,10 @@ func handleGetCompilersListEx(c *gin.Context) {
 			"msg":    "id expected"})
 		return
 	}
-	reverseProxyGet(c, "compilersList:"+id, "https://godbolt.org/api/compilers/"+id, "GET", nil)
+	acceptHeader := c.GetHeader("Accept")
+	h2 := md5.New()
+	h2.Write([]byte(acceptHeader))
+	reverseProxyGet(c, fmt.Sprintf("compilersList:%s:%x", id, h2.Sum(nil)), "https://godbolt.org/api/compilers/"+id, "GET", nil)
 }
 
 func handleGetLibrariesList(c *gin.Context) {
@@ -85,7 +91,10 @@ func handleGetLibrariesList(c *gin.Context) {
 			"msg":    "id expected"})
 		return
 	}
-	reverseProxyGet(c, "librariesList:"+id, "https://godbolt.org/api/libraries/"+id, "GET", nil)
+	acceptHeader := c.GetHeader("Accept")
+	h2 := md5.New()
+	h2.Write([]byte(acceptHeader))
+	reverseProxyGet(c, fmt.Sprintf("librariesList:%s:%x", id, h2.Sum(nil)), "https://godbolt.org/api/libraries/"+id, "GET", nil)
 }
 
 func handleGetShortLinkInfo(c *gin.Context) {
@@ -96,7 +105,10 @@ func handleGetShortLinkInfo(c *gin.Context) {
 			"msg":    "id expected"})
 		return
 	}
-	reverseProxyGet(c, "shortlinkinfo:"+id, "https://godbolt.org/api/shortlinkinfo/"+id, "GET", nil)
+	acceptHeader := c.GetHeader("Accept")
+	h2 := md5.New()
+	h2.Write([]byte(acceptHeader))
+	reverseProxyGet(c, fmt.Sprintf("shortlinkinfo:%s:%x", id, h2.Sum(nil)), "https://godbolt.org/api/shortlinkinfo/"+id, "GET", nil)
 }
 
 func handleCompile(c *gin.Context) {
@@ -117,7 +129,10 @@ func handleCompile(c *gin.Context) {
 
 	h := md5.New()
 	h.Write(body)
-	cacheKey := fmt.Sprintf("compile:%s:%x", id, h.Sum(nil))
+	acceptHeader := c.GetHeader("Accept")
+	h2 := md5.New()
+	h2.Write([]byte(acceptHeader))
+	cacheKey := fmt.Sprintf("compile:%s:%x:%x", id, h.Sum(nil), h2.Sum(nil))
 
 	reverseProxyGet(c, cacheKey, fmt.Sprintf("https://godbolt.org/api/compiler/%s/compile", id), "POST", bytes.NewBuffer(body))
 }
@@ -155,6 +170,7 @@ func main() {
 	r.GET("/api/shortlinkinfo/:id", handleGetShortLinkInfo)
 	r.POST("/api/compiler/:id/compile", handleCompile)
 	r.StaticFile("/configurations", "./configurations.json")
+	r.StaticFile("/configurations.json", "./configurations.json")
 
 	log.Fatal(r.Run(bindAddr))
 }
