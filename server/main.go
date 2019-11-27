@@ -21,7 +21,7 @@ var (
 	cache *RedisCache
 )
 
-func reverseProxyGet(c *gin.Context, cacheKey string, targetURL string, method string, body io.Reader) {
+func handleReverseProxy(c *gin.Context, cacheKey string, targetURL string, method string, body io.Reader) {
 	acceptHeader := c.GetHeader("Accept")
 	if cache.IsExist(cacheKey) {
 		languages, err := redis.Bytes(cache.Get(cacheKey))
@@ -30,14 +30,18 @@ func reverseProxyGet(c *gin.Context, cacheKey string, targetURL string, method s
 			return
 		}
 	}
-
-	req, err := http.NewRequest(method, targetURL, body)
+	content, err := ioutil.ReadAll(body)
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println(method, targetURL, string(content))
+	req, err := http.NewRequest(method, targetURL, bytes.NewReader(content))
 	if err != nil {
 		c.Status(http.StatusServiceUnavailable)
 		return
 	}
 
-	req.Header.Set("Accept", acceptHeader)
+	req.Header = c.Request.Header
 
 	client := &http.Client{
 		Timeout: 300 * time.Second,
@@ -50,7 +54,7 @@ func reverseProxyGet(c *gin.Context, cacheKey string, targetURL string, method s
 	defer resp.Body.Close()
 
 	contentType := resp.Header.Get("Content-Type")
-	content, err := ioutil.ReadAll(resp.Body)
+	content, err = ioutil.ReadAll(resp.Body)
 	cache.PutWithTimeout(cacheKey, content, 7*24*time.Hour)
 	c.Data(http.StatusOK, contentType, content)
 }
@@ -59,14 +63,14 @@ func handleGetLanguagesList(c *gin.Context) {
 	acceptHeader := c.GetHeader("Accept")
 	h2 := md5.New()
 	h2.Write([]byte(acceptHeader))
-	reverseProxyGet(c, fmt.Sprintf("languagesList:%x", h2.Sum(nil)), "https://godbolt.org/api/languages", "GET", nil)
+	handleReverseProxy(c, fmt.Sprintf("languagesList:%x", h2.Sum(nil)), "https://godbolt.org/api/languages", "GET", nil)
 }
 
 func handleGetCompilersList(c *gin.Context) {
 	acceptHeader := c.GetHeader("Accept")
 	h2 := md5.New()
 	h2.Write([]byte(acceptHeader))
-	reverseProxyGet(c, fmt.Sprintf("compilersList:%x", h2.Sum(nil)), "https://godbolt.org/api/compilers", "GET", nil)
+	handleReverseProxy(c, fmt.Sprintf("compilersList:%x", h2.Sum(nil)), "https://godbolt.org/api/compilers", "GET", nil)
 }
 
 func handleGetCompilersListEx(c *gin.Context) {
@@ -80,7 +84,7 @@ func handleGetCompilersListEx(c *gin.Context) {
 	acceptHeader := c.GetHeader("Accept")
 	h2 := md5.New()
 	h2.Write([]byte(acceptHeader))
-	reverseProxyGet(c, fmt.Sprintf("compilersList:%s:%x", id, h2.Sum(nil)), "https://godbolt.org/api/compilers/"+id, "GET", nil)
+	handleReverseProxy(c, fmt.Sprintf("compilersList:%s:%x", id, h2.Sum(nil)), "https://godbolt.org/api/compilers/"+id, "GET", nil)
 }
 
 func handleGetLibrariesList(c *gin.Context) {
@@ -94,7 +98,7 @@ func handleGetLibrariesList(c *gin.Context) {
 	acceptHeader := c.GetHeader("Accept")
 	h2 := md5.New()
 	h2.Write([]byte(acceptHeader))
-	reverseProxyGet(c, fmt.Sprintf("librariesList:%s:%x", id, h2.Sum(nil)), "https://godbolt.org/api/libraries/"+id, "GET", nil)
+	handleReverseProxy(c, fmt.Sprintf("librariesList:%s:%x", id, h2.Sum(nil)), "https://godbolt.org/api/libraries/"+id, "GET", nil)
 }
 
 func handleGetShortLinkInfo(c *gin.Context) {
@@ -108,7 +112,7 @@ func handleGetShortLinkInfo(c *gin.Context) {
 	acceptHeader := c.GetHeader("Accept")
 	h2 := md5.New()
 	h2.Write([]byte(acceptHeader))
-	reverseProxyGet(c, fmt.Sprintf("shortlinkinfo:%s:%x", id, h2.Sum(nil)), "https://godbolt.org/api/shortlinkinfo/"+id, "GET", nil)
+	handleReverseProxy(c, fmt.Sprintf("shortlinkinfo:%s:%x", id, h2.Sum(nil)), "https://godbolt.org/api/shortlinkinfo/"+id, "GET", nil)
 }
 
 func handleCompile(c *gin.Context) {
@@ -126,7 +130,7 @@ func handleCompile(c *gin.Context) {
 			"msg":    err.Error()})
 		return
 	}
-
+	log.Println(string(body))
 	h := md5.New()
 	h.Write(body)
 	acceptHeader := c.GetHeader("Accept")
@@ -134,7 +138,7 @@ func handleCompile(c *gin.Context) {
 	h2.Write([]byte(acceptHeader))
 	cacheKey := fmt.Sprintf("compile:%s:%x:%x", id, h.Sum(nil), h2.Sum(nil))
 
-	reverseProxyGet(c, cacheKey, fmt.Sprintf("https://godbolt.org/api/compiler/%s/compile", id), "POST", bytes.NewBuffer(body))
+	handleReverseProxy(c, cacheKey, fmt.Sprintf("https://godbolt.org/api/compiler/%s/compile", id), "POST", bytes.NewBuffer(body))
 }
 
 func main() {
