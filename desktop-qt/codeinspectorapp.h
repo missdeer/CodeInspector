@@ -74,6 +74,6 @@ private:
     const QString &getLanguageName(const QString &id);
 };
 
-extern CodeInspectorApp *ciApp;
+inline CodeInspectorApp *ciApp = nullptr;
 
 #endif // CODEINSPECTORAPP_H

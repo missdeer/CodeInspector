@@ -65,6 +65,12 @@ public:
     [[nodiscard]] bool demangle() const;
     void               setDemangle(bool demangle);
 
+    [[nodiscard]] const QString &apiBaseURL() const;
+    void                         setApiBaseURL(const QString &apiBaseURL);
+
+    [[nodiscard]] bool sslRequired() const;
+    void               setSslRequired(bool sslRequired);
+
 private:
     bool m_rememberLastSession {true};
     bool m_binary {false};
@@ -75,6 +81,7 @@ private:
     bool m_trim {true};
     bool m_intel {true};
     bool m_demangle {true};
+    bool m_sslRequired {true};
     int  m_defaultLanguageIndex {0};
     int  m_autoRefreshInterval {750}; // millisecond
     int  m_editorZoomFactor {100};    // percent
@@ -83,8 +90,9 @@ private:
     QString m_codeEditorTheme;
     QString m_codeInspectorFontFamily;
     QString m_codeInspectorTheme;
+    QString m_apiBaseURL;
 };
 
-extern Settings *g_settings;
+inline Settings *g_settings = nullptr;
 
 #endif // SETTINGS_H

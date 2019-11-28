@@ -29,7 +29,7 @@ public:
 
     ~GodboltAgent() override = default;
 
-    void initialize(BackendInterface *backend);
+    void initialize(BackendInterface *backend, const QString &baseURL);
 
     void compile(const CompileInfo &ci);
 
@@ -363,6 +363,7 @@ private:
     };
     QNetworkAccessManager &m_nam;
     BackendInterface *     m_backend {nullptr};
+    QString                m_apiBaseURL;
     QString                m_compileStderr;
     QString                m_compileStdout;
     QString                m_clangTidyStderr;

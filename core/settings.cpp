@@ -2,8 +2,6 @@
 
 #include "settings.h"
 
-Settings *g_settings = nullptr;
-
 Settings::~Settings()
 {
     save();
@@ -33,6 +31,8 @@ void Settings::save()
     settings.setValue("trim", m_trim);
     settings.setValue("intel", m_intel);
     settings.setValue("demangle", m_demangle);
+    settings.setValue("apiBaseURL", m_apiBaseURL);
+    settings.setValue("sslRequired", m_sslRequired);
     settings.sync();
 }
 
@@ -59,6 +59,8 @@ void Settings::load()
     m_codeEditorTheme         = settings.value("codeEditorTheme", QVariant("Default")).toString();
     m_codeInspectorFontFamily = settings.value("codeInspectorFontFamily", QVariant("Source Code Pro")).toString();
     m_codeInspectorTheme      = settings.value("codeInspectorTheme", QVariant("Default")).toString();
+    m_apiBaseURL              = settings.value("apiBaseURL", "https://ci.minidump.info").toString();
+    m_sslRequired             = settings.value("sslRequired", true).toBool();
 }
 
 const QString &Settings::codeEditorFontFamily() const
@@ -219,4 +221,24 @@ bool Settings::demangle() const
 void Settings::setDemangle(bool demangle)
 {
     m_demangle = demangle;
+}
+
+const QString &Settings::apiBaseURL() const
+{
+    return m_apiBaseURL;
+}
+
+void Settings::setApiBaseURL(const QString &apiBaseURL)
+{
+    m_apiBaseURL = apiBaseURL;
+}
+
+bool Settings::sslRequired() const
+{
+    return m_sslRequired;
+}
+
+void Settings::setSslRequired(bool sslRequired)
+{
+    m_sslRequired = sslRequired;
 }

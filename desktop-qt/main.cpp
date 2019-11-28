@@ -18,18 +18,21 @@ int main(int argc, char *argv[])
 
     QApplication a(argc, argv);
 
-    if (!QSslSocket::supportsSsl()) {
-        QMessageBox::critical(nullptr,
-                              QObject::tr("Critical error"),
-                              QObject::tr("SSL not supported, exit now."),
-                              QMessageBox::Ok);
-        return 1;
-    }
-
     QPixmap       pixmap(":/CodeInspector.png");
     QSplashScreen splash(pixmap);
     splash.show();
     QApplication::processEvents();
+    Settings settings;
+    g_settings = &settings;
+
+    splash.showMessage(QObject::tr("Reading settings..."));
+    g_settings->initialize();
+
+    if (g_settings->sslRequired() && !QSslSocket::supportsSsl())
+    {
+        QMessageBox::critical(nullptr, QObject::tr("Critical error"), QObject::tr("SSL not supported, exit now."), QMessageBox::Ok);
+        return 1;
+    }
 
     splash.showMessage(QObject::tr("Creating application instance..."));
     CodeInspectorApp app;
@@ -37,12 +40,6 @@ int main(int argc, char *argv[])
 
     splash.showMessage(QObject::tr("Initializing application instance..."));
     ciApp->initialize();
-
-    Settings settings;
-    g_settings = &settings;
-
-    splash.showMessage(QObject::tr("Reading settings..."));
-    g_settings->initialize();
 
     splash.showMessage(QObject::tr("Creating main window..."));
     MainWindow w;

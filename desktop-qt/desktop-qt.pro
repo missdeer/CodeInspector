@@ -43,7 +43,7 @@ RESOURCES += \
     image.qrc
 
 win32-msvc* {
-    QMAKE_LFLAGS += "/LTCG"
+    #QMAKE_LFLAGS += "/LTCG"
     QMAKE_CXXFLAGS_RELEASE += /Zi
     QMAKE_LFLAGS_RELEASE += /DEBUG
 }

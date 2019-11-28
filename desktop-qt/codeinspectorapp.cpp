@@ -3,13 +3,11 @@
 #include "codeinspectorapp.h"
 
 #include "networkreplyhelper.h"
-
-CodeInspectorApp *   ciApp   = nullptr;
-static const QString baseUrl = QLatin1String("https://ci.minidump.info");
+#include "settings.h"
 
 CodeInspectorApp::CodeInspectorApp(QObject *parent) : QObject(parent), m_backend(new GodboltAgent(m_nam, this))
 {
-    m_backend->initialize(this);
+    m_backend->initialize(this, g_settings->apiBaseURL());
 }
 
 QNetworkAccessManager &CodeInspectorApp::networkAccessManager()
@@ -40,7 +38,7 @@ void CodeInspectorApp::requestLanguageList()
 #if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__;
 #endif
-    QString         requestUrl = baseUrl + "/api/languages";
+    QString         requestUrl = g_settings->apiBaseURL() + "/api/languages";
     QNetworkRequest request(requestUrl);
     request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
     request.setRawHeader("Accept", "application/json, text/javascript, */*; q=0.01");
@@ -109,7 +107,7 @@ void CodeInspectorApp::requestCompilerList(const QString &language)
 #if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__;
 #endif
-    QString         requestUrl = baseUrl + "/api/compilers/" + getLanguageId(language);
+    QString         requestUrl = g_settings->apiBaseURL() + "/api/compilers/" + getLanguageId(language);
     QNetworkRequest request(requestUrl);
     request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
     request.setRawHeader("Accept", "application/json, text/javascript, */*; q=0.01");
@@ -628,7 +626,7 @@ void CodeInspectorApp::requestConfigurations()
 #if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__;
 #endif
-    QNetworkRequest request(QUrl(baseUrl + "/configurations.json"));
+    QNetworkRequest request(QUrl(g_settings->apiBaseURL() + "/configurations"));
     request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
     request.setAttribute(QNetworkRequest::HTTP2AllowedAttribute, QVariant(true));
 

@@ -148,7 +148,7 @@ CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
     auto h = m_splitter->handle(1);
     h->setEnabled(false);
 
-    m_backend->initialize(ciApp);
+    m_backend->initialize(ciApp, g_settings->apiBaseURL());
     connect(m_btnToggleOutput, &QPushButton::clicked, this, &CodeInspectorPane::onToggleOutput);
     connect(m_compilerList, &QComboBox::currentTextChanged, this, &CodeInspectorPane::onCurrentCompilerChanged);
     connect(m_compilerArguments, &QLineEdit::textChanged, this, &CodeInspectorPane::onCurrentCompilerArgumentsChanged);
