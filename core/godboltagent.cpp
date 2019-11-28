@@ -7,13 +7,12 @@
 #include "networkreplyhelper.h"
 #include "scopedguard.h"
 
-static const QString baseUrl = QLatin1String("https://ci.minidump.info");
-
 GodboltAgent::GodboltAgent(QNetworkAccessManager &nam, QObject *parent) : QObject(parent), m_nam(nam) {}
 
-void GodboltAgent::initialize(BackendInterface *backend)
+void GodboltAgent::initialize(BackendInterface *backend, const QString &baseURL)
 {
     m_backend = backend;
+    m_apiBaseURL = baseURL;
 }
 
 void GodboltAgent::compile(const CompileInfo &ci)
@@ -125,7 +124,7 @@ void GodboltAgent::compile(const CompileInfo &ci)
     rootObj.insert("compiler", m_backend->getCompilerId(compilerList, ci.compiler));
     rootObj.insert("options", QJsonValue::fromVariant(optionsObj));
 
-    QString         requestUrl = baseUrl + "/api/compiler/" + m_backend->getCompilerId(compilerList, ci.compiler) + "/compile";
+    QString         requestUrl = m_apiBaseURL + "/api/compiler/" + m_backend->getCompilerId(compilerList, ci.compiler) + "/compile";
     QNetworkRequest request(requestUrl);
     request.setHeader(QNetworkRequest::UserAgentHeader,
                       "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) "
@@ -133,6 +132,7 @@ void GodboltAgent::compile(const CompileInfo &ci)
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     request.setRawHeader("Referer", "https://godbolt.org/");
     request.setRawHeader("Accept", "application/json, text/javascript, */*; q=0.01");
+    request.setRawHeader("Accept-Encoding", "plaintext");
     request.setRawHeader("X-Requested-With", "XMLHttpRequest");
     request.setAttribute(QNetworkRequest::HTTP2AllowedAttribute, QVariant(true));
 
@@ -150,7 +150,7 @@ void GodboltAgent::compile(const CompileInfo &ci)
 
 void GodboltAgent::onCompileRequestFinished()
 {
-#if !defined(QT_NO_DEBUG)
+#if defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__;
 #endif
     m_compileStderr.clear();
@@ -189,6 +189,7 @@ void GodboltAgent::onCompileRequestFinished()
     if (content.isEmpty())
     {
         m_compileStderr = reply->getErrorMessage();
+        qDebug() << "compiling error:" << m_compileStderr;
         return;
     }
 
@@ -196,7 +197,7 @@ void GodboltAgent::onCompileRequestFinished()
 
     if (!doc.isObject())
     {
-#if !defined(QT_NO_DEBUG)
+#if defined(QT_NO_DEBUG)
         qDebug() << "compilation result is expected to be an object:" << QString(content).left(256);
 #endif
         return;
