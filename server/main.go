@@ -11,6 +11,7 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -30,12 +31,8 @@ func handleReverseProxy(c *gin.Context, cacheKey string, targetURL string, metho
 			return
 		}
 	}
-	content, err := ioutil.ReadAll(body)
-	if err != nil {
-		log.Println(err)
-	}
-	log.Println(method, targetURL, string(content))
-	req, err := http.NewRequest(method, targetURL, bytes.NewReader(content))
+
+	req, err := http.NewRequest(method, targetURL, body)
 	if err != nil {
 		c.Status(http.StatusServiceUnavailable)
 		return
@@ -54,8 +51,11 @@ func handleReverseProxy(c *gin.Context, cacheKey string, targetURL string, metho
 	defer resp.Body.Close()
 
 	contentType := resp.Header.Get("Content-Type")
-	content, err = ioutil.ReadAll(resp.Body)
+	content, err := ioutil.ReadAll(resp.Body)
 	cache.PutWithTimeout(cacheKey, content, 7*24*time.Hour)
+	for k, v := range resp.Header {
+		c.Header(k, strings.Join(v, ";"))
+	}
 	c.Data(http.StatusOK, contentType, content)
 }
 
@@ -130,7 +130,7 @@ func handleCompile(c *gin.Context) {
 			"msg":    err.Error()})
 		return
 	}
-	log.Println(string(body))
+
 	h := md5.New()
 	h.Write(body)
 	acceptHeader := c.GetHeader("Accept")
@@ -138,7 +138,7 @@ func handleCompile(c *gin.Context) {
 	h2.Write([]byte(acceptHeader))
 	cacheKey := fmt.Sprintf("compile:%s:%x:%x", id, h.Sum(nil), h2.Sum(nil))
 
-	handleReverseProxy(c, cacheKey, fmt.Sprintf("https://godbolt.org/api/compiler/%s/compile", id), "POST", bytes.NewBuffer(body))
+	handleReverseProxy(c, cacheKey, fmt.Sprintf("https://godbolt.org/api/compiler/%s/compile", id), "POST", bytes.NewReader(body))
 }
 
 func main() {
