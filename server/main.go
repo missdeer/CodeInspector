@@ -2,6 +2,8 @@ package main
 
 import (
 	"bytes"
+	"compress/flate"
+	"compress/gzip"
 	"crypto/md5"
 	"flag"
 	"fmt"
@@ -11,7 +13,6 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
-	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -25,52 +26,75 @@ var (
 func handleReverseProxy(c *gin.Context, cacheKey string, targetURL string, method string, body io.Reader) {
 	acceptHeader := c.GetHeader("Accept")
 	if cache.IsExist(cacheKey) {
-		languages, err := redis.Bytes(cache.Get(cacheKey))
+		content, err := redis.Bytes(cache.Get(cacheKey))
 		if err == nil {
-			c.Data(http.StatusOK, acceptHeader, languages)
+			c.Data(http.StatusOK, acceptHeader, content)
 			return
 		}
 	}
 
 	req, err := http.NewRequest(method, targetURL, body)
 	if err != nil {
-		c.Status(http.StatusServiceUnavailable)
+		log.Println("error creating http request", targetURL)
+		c.Status(http.StatusInternalServerError)
 		return
 	}
 
 	req.Header = c.Request.Header
+	req.Header.Set("Accept-Encoding", "gzip,deflate")
 
 	client := &http.Client{
 		Timeout: 300 * time.Second,
 	}
 	resp, err := client.Do(req)
 	if err != nil || resp.StatusCode != http.StatusOK {
+		log.Println("error http requesting", targetURL)
 		c.Status(http.StatusServiceUnavailable)
 		return
 	}
 	defer resp.Body.Close()
 
-	contentType := resp.Header.Get("Content-Type")
-	content, err := ioutil.ReadAll(resp.Body)
-	cache.PutWithTimeout(cacheKey, content, 7*24*time.Hour)
-	for k, v := range resp.Header {
-		c.Header(k, strings.Join(v, ";"))
+	var reader io.ReadCloser
+	switch resp.Header.Get("Content-Encoding") {
+	case "gzip":
+		reader, err = gzip.NewReader(resp.Body)
+		defer reader.Close()
+	case "deflate":
+		content, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			log.Println("error reading deflate content", targetURL)
+			c.Status(http.StatusNoContent)
+			return
+		}
+		reader = flate.NewReader(bytes.NewReader(content[2:]))
+		defer reader.Close()
+	default:
+		reader = resp.Body
 	}
+
+	content, err := ioutil.ReadAll(reader)
+	if err != nil {
+		log.Println("error reading content", targetURL)
+		c.Status(http.StatusNoContent)
+		return
+	}
+	cache.PutWithTimeout(cacheKey, content, 7*24*time.Hour)
+	contentType := resp.Header.Get("Content-Type")
 	c.Data(http.StatusOK, contentType, content)
 }
 
 func handleGetLanguagesList(c *gin.Context) {
 	acceptHeader := c.GetHeader("Accept")
-	h2 := md5.New()
-	h2.Write([]byte(acceptHeader))
-	handleReverseProxy(c, fmt.Sprintf("languagesList:%x", h2.Sum(nil)), "https://godbolt.org/api/languages", "GET", nil)
+	h := md5.New()
+	h.Write([]byte(acceptHeader))
+	handleReverseProxy(c, fmt.Sprintf("languagesList:%x", h.Sum(nil)), "https://godbolt.org/api/languages", "GET", nil)
 }
 
 func handleGetCompilersList(c *gin.Context) {
 	acceptHeader := c.GetHeader("Accept")
-	h2 := md5.New()
-	h2.Write([]byte(acceptHeader))
-	handleReverseProxy(c, fmt.Sprintf("compilersList:%x", h2.Sum(nil)), "https://godbolt.org/api/compilers", "GET", nil)
+	h := md5.New()
+	h.Write([]byte(acceptHeader))
+	handleReverseProxy(c, fmt.Sprintf("compilersList:%x", h.Sum(nil)), "https://godbolt.org/api/compilers", "GET", nil)
 }
 
 func handleGetCompilersListEx(c *gin.Context) {
@@ -82,9 +106,9 @@ func handleGetCompilersListEx(c *gin.Context) {
 		return
 	}
 	acceptHeader := c.GetHeader("Accept")
-	h2 := md5.New()
-	h2.Write([]byte(acceptHeader))
-	handleReverseProxy(c, fmt.Sprintf("compilersList:%s:%x", id, h2.Sum(nil)), "https://godbolt.org/api/compilers/"+id, "GET", nil)
+	h := md5.New()
+	h.Write([]byte(acceptHeader))
+	handleReverseProxy(c, fmt.Sprintf("compilersList:%s:%x", id, h.Sum(nil)), "https://godbolt.org/api/compilers/"+id, "GET", nil)
 }
 
 func handleGetLibrariesList(c *gin.Context) {
@@ -96,9 +120,9 @@ func handleGetLibrariesList(c *gin.Context) {
 		return
 	}
 	acceptHeader := c.GetHeader("Accept")
-	h2 := md5.New()
-	h2.Write([]byte(acceptHeader))
-	handleReverseProxy(c, fmt.Sprintf("librariesList:%s:%x", id, h2.Sum(nil)), "https://godbolt.org/api/libraries/"+id, "GET", nil)
+	h := md5.New()
+	h.Write([]byte(acceptHeader))
+	handleReverseProxy(c, fmt.Sprintf("librariesList:%s:%x", id, h.Sum(nil)), "https://godbolt.org/api/libraries/"+id, "GET", nil)
 }
 
 func handleGetShortLinkInfo(c *gin.Context) {
@@ -110,9 +134,9 @@ func handleGetShortLinkInfo(c *gin.Context) {
 		return
 	}
 	acceptHeader := c.GetHeader("Accept")
-	h2 := md5.New()
-	h2.Write([]byte(acceptHeader))
-	handleReverseProxy(c, fmt.Sprintf("shortlinkinfo:%s:%x", id, h2.Sum(nil)), "https://godbolt.org/api/shortlinkinfo/"+id, "GET", nil)
+	h := md5.New()
+	h.Write([]byte(acceptHeader))
+	handleReverseProxy(c, fmt.Sprintf("shortlinkinfo:%s:%x", id, h.Sum(nil)), "https://godbolt.org/api/shortlinkinfo/"+id, "GET", nil)
 }
 
 func handleCompile(c *gin.Context) {
@@ -132,11 +156,10 @@ func handleCompile(c *gin.Context) {
 	}
 
 	h := md5.New()
-	h.Write(body)
 	acceptHeader := c.GetHeader("Accept")
-	h2 := md5.New()
-	h2.Write([]byte(acceptHeader))
-	cacheKey := fmt.Sprintf("compile:%s:%x:%x", id, h.Sum(nil), h2.Sum(nil))
+	h.Write([]byte(acceptHeader))
+	h.Write(body)
+	cacheKey := fmt.Sprintf("compile:%s:%x", id, h.Sum(nil))
 
 	handleReverseProxy(c, cacheKey, fmt.Sprintf("https://godbolt.org/api/compiler/%s/compile", id), "POST", bytes.NewReader(body))
 }
