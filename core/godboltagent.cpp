@@ -132,14 +132,14 @@ void GodboltAgent::compile(const CompileInfo &ci)
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     request.setRawHeader("Referer", "https://godbolt.org/");
     request.setRawHeader("Accept", "application/json, text/javascript, */*; q=0.01");
-    request.setRawHeader("Accept-Encoding", "plaintext");
+    request.setRawHeader("Accept-Encoding", "gzip, deflate");
     request.setRawHeader("X-Requested-With", "XMLHttpRequest");
     request.setAttribute(QNetworkRequest::HTTP2AllowedAttribute, QVariant(true));
 
     QJsonDocument doc;
     doc.setObject(rootObj);
     QByteArray postBody = doc.toJson();
-#if defined(QT_NO_DEBUG)
+#if !defined(QT_NO_DEBUG)
     qDebug() << "post body: " << QString(postBody);
 #endif
     auto *reply       = m_nam.post(request, postBody);
@@ -150,7 +150,7 @@ void GodboltAgent::compile(const CompileInfo &ci)
 
 void GodboltAgent::onCompileRequestFinished()
 {
-#if defined(QT_NO_DEBUG)
+#if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__;
 #endif
     m_compileStderr.clear();
@@ -197,12 +197,12 @@ void GodboltAgent::onCompileRequestFinished()
 
     if (!doc.isObject())
     {
-#if defined(QT_NO_DEBUG)
+#if !defined(QT_NO_DEBUG)
         qDebug() << "compilation result is expected to be an object:" << QString(content).left(256);
 #endif
         return;
     }
-#if defined(QT_NO_DEBUG)
+#if !defined(QT_NO_DEBUG)
     qDebug() << doc;
 #endif
     QJsonObject docObj = doc.object();

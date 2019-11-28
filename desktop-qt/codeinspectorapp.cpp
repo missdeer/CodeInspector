@@ -42,6 +42,7 @@ void CodeInspectorApp::requestLanguageList()
     QNetworkRequest request(requestUrl);
     request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
     request.setRawHeader("Accept", "application/json, text/javascript, */*; q=0.01");
+    request.setRawHeader("Accept-Encoding", "gzip, deflate");
     request.setAttribute(QNetworkRequest::HTTP2AllowedAttribute, QVariant(true));
 
     QNetworkReply *reply       = m_nam.get(request);
@@ -111,6 +112,7 @@ void CodeInspectorApp::requestCompilerList(const QString &language)
     QNetworkRequest request(requestUrl);
     request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
     request.setRawHeader("Accept", "application/json, text/javascript, */*; q=0.01");
+    request.setRawHeader("Accept-Encoding", "gzip, deflate");
     request.setAttribute(QNetworkRequest::HTTP2AllowedAttribute, QVariant(true));
 
     QNetworkReply *reply       = m_nam.get(request);
@@ -628,6 +630,8 @@ void CodeInspectorApp::requestConfigurations()
 #endif
     QNetworkRequest request(QUrl(g_settings->apiBaseURL() + "/configurations"));
     request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
+    request.setRawHeader("Accept", "application/json, text/javascript, */*; q=0.01");
+    request.setRawHeader("Accept-Encoding", "gzip, deflate");
     request.setAttribute(QNetworkRequest::HTTP2AllowedAttribute, QVariant(true));
 
     QNetworkReply *reply       = m_nam.get(request);

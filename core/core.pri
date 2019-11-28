@@ -2,6 +2,8 @@ QT       += core gui widgets xml network
 
 include($$PWD/../3rdparty/scintilla-latest.pri)
 
+QT_PRIVATE += zlib-private
+
 INCLUDEPATH += $$PWD
 
 SOURCES += \
