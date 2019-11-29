@@ -628,7 +628,7 @@ void CodeInspectorApp::requestConfigurations()
 #if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__;
 #endif
-    QNetworkRequest request(QUrl(g_settings->apiBaseURL() + "/configurations"));
+    QNetworkRequest request(QUrl(g_settings->apiBaseURL() + "/api/insepctor/configurations"));
     request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
     request.setRawHeader("Accept", "application/json, text/javascript, */*; q=0.01");
     request.setRawHeader("Accept-Encoding", "gzip, deflate");
