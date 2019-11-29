@@ -4,9 +4,7 @@ import (
 	"bytes"
 	"compress/flate"
 	"compress/gzip"
-	"crypto/md5"
 	"flag"
-	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
@@ -83,87 +81,6 @@ func handleReverseProxy(c *gin.Context, cacheKey string, targetURL string, metho
 	c.Data(http.StatusOK, contentType, content)
 }
 
-func handleGetLanguagesList(c *gin.Context) {
-	acceptHeader := c.GetHeader("Accept")
-	h := md5.New()
-	h.Write([]byte(acceptHeader))
-	handleReverseProxy(c, fmt.Sprintf("languagesList:%x", h.Sum(nil)), "https://godbolt.org/api/languages", "GET", nil)
-}
-
-func handleGetCompilersList(c *gin.Context) {
-	acceptHeader := c.GetHeader("Accept")
-	h := md5.New()
-	h.Write([]byte(acceptHeader))
-	handleReverseProxy(c, fmt.Sprintf("compilersList:%x", h.Sum(nil)), "https://godbolt.org/api/compilers", "GET", nil)
-}
-
-func handleGetCompilersListEx(c *gin.Context) {
-	id := c.Param("id")
-	if id == "" {
-		c.JSON(http.StatusOK, gin.H{
-			"result": "error",
-			"msg":    "id expected"})
-		return
-	}
-	acceptHeader := c.GetHeader("Accept")
-	h := md5.New()
-	h.Write([]byte(acceptHeader))
-	handleReverseProxy(c, fmt.Sprintf("compilersList:%s:%x", id, h.Sum(nil)), "https://godbolt.org/api/compilers/"+id, "GET", nil)
-}
-
-func handleGetLibrariesList(c *gin.Context) {
-	id := c.Param("id")
-	if id == "" {
-		c.JSON(http.StatusOK, gin.H{
-			"result": "error",
-			"msg":    "id expected"})
-		return
-	}
-	acceptHeader := c.GetHeader("Accept")
-	h := md5.New()
-	h.Write([]byte(acceptHeader))
-	handleReverseProxy(c, fmt.Sprintf("librariesList:%s:%x", id, h.Sum(nil)), "https://godbolt.org/api/libraries/"+id, "GET", nil)
-}
-
-func handleGetShortLinkInfo(c *gin.Context) {
-	id := c.Param("id")
-	if id == "" {
-		c.JSON(http.StatusOK, gin.H{
-			"result": "error",
-			"msg":    "id expected"})
-		return
-	}
-	acceptHeader := c.GetHeader("Accept")
-	h := md5.New()
-	h.Write([]byte(acceptHeader))
-	handleReverseProxy(c, fmt.Sprintf("shortlinkinfo:%s:%x", id, h.Sum(nil)), "https://godbolt.org/api/shortlinkinfo/"+id, "GET", nil)
-}
-
-func handleCompile(c *gin.Context) {
-	id := c.Param("id")
-	if id == "" {
-		c.JSON(http.StatusOK, gin.H{
-			"result": "error",
-			"msg":    "id expected"})
-		return
-	}
-	body, err := c.GetRawData()
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"result": "error",
-			"msg":    err.Error()})
-		return
-	}
-
-	h := md5.New()
-	acceptHeader := c.GetHeader("Accept")
-	h.Write([]byte(acceptHeader))
-	h.Write(body)
-	cacheKey := fmt.Sprintf("compile:%s:%x", id, h.Sum(nil))
-
-	handleReverseProxy(c, cacheKey, fmt.Sprintf("https://godbolt.org/api/compiler/%s/compile", id), "POST", bytes.NewReader(body))
-}
-
 func main() {
 	bindAddr := "127.0.0.1:8093"
 	redisServer := "127.0.0.1:6379"
@@ -187,17 +104,41 @@ func main() {
 
 	r := gin.Default()
 
-	r.GET("/", func(c *gin.Context) {
+	r.NoRoute(func(c *gin.Context) {
 		c.Redirect(http.StatusFound, "https://ci.minidump.info/dl/")
 	})
-	r.GET("/api/languages", handleGetLanguagesList)
-	r.GET("/api/compilers", handleGetCompilersList)
-	r.GET("/api/compilers/:id", handleGetCompilersListEx)
-	r.GET("/api/libraries/:id", handleGetLibrariesList)
-	r.GET("/api/shortlinkinfo/:id", handleGetShortLinkInfo)
-	r.POST("/api/compiler/:id/compile", handleCompile)
-	r.StaticFile("/configurations", "./configurations.json")
-	r.StaticFile("/configurations.json", "./configurations.json")
+
+	v1 := r.Group("/v1")
+	{
+		v1.GET("/api/insepctor/languages", handleGetInspectorLanguagesList)
+		v1.GET("/api/insepctor/compilers", handleGetInspectorCompilersList)
+		v1.GET("/api/insepctor/compilers/:id", handleGetInspectorCompilersListEx)
+		v1.GET("/api/insepctor/libraries/:id", handleGetInspectorLibrariesList)
+		v1.GET("/api/insepctor/shortlinkinfo/:id", handleGetInspectorShortLinkInfo)
+		v1.POST("/api/insepctor/compiler/:id/compile", handleInspectorCompile)
+		v1.GET("/api/insepctor/configurations", handleGetInspectorConfigurations)
+
+		v1.GET("/api/runner/compilers", handleGetRunnerCompilersList)
+		v1.POST("/api/runner/compile", handleRunnerCompile)
+		v1.POST("/api/runner/permlink", handleRunnerPermlink)
+		v1.GET("/api/runner/permlink/:link", handleGetRunnerPermlink)
+		v1.GET("/api/runner/template/:name", handleGetRunnerTemplate)
+	}
+
+	done := make(chan bool)
+
+	go func() {
+		dailyTicker := time.NewTicker(24 * time.Hour)
+		for {
+			select {
+			case <-done:
+				return
+			case <-dailyTicker.C:
+				updateCompilerExploreConfiguration()
+				updateWandboxCompilersList()
+			}
+		}
+	}()
 
 	log.Fatal(r.Run(bindAddr))
 }
