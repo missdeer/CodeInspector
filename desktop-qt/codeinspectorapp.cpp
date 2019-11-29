@@ -38,7 +38,7 @@ void CodeInspectorApp::requestLanguageList()
 #if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__;
 #endif
-    QString         requestUrl = g_settings->apiBaseURL() + "/api/languages";
+    QString         requestUrl = g_settings->apiBaseURL() + "/api/inspector/languages";
     QNetworkRequest request(requestUrl);
     request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
     request.setRawHeader("Accept", "application/json, text/javascript, */*; q=0.01");
@@ -108,7 +108,7 @@ void CodeInspectorApp::requestCompilerList(const QString &language)
 #if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__;
 #endif
-    QString         requestUrl = g_settings->apiBaseURL() + "/api/compilers/" + getLanguageId(language);
+    QString         requestUrl = g_settings->apiBaseURL() + "/api/compilers/inspector/" + getLanguageId(language);
     QNetworkRequest request(requestUrl);
     request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
     request.setRawHeader("Accept", "application/json, text/javascript, */*; q=0.01");

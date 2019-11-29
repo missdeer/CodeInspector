@@ -124,7 +124,7 @@ void GodboltAgent::compile(const CompileInfo &ci)
     rootObj.insert("compiler", m_backend->getCompilerId(compilerList, ci.compiler));
     rootObj.insert("options", QJsonValue::fromVariant(optionsObj));
 
-    QString         requestUrl = m_apiBaseURL + "/api/compiler/" + m_backend->getCompilerId(compilerList, ci.compiler) + "/compile";
+    QString         requestUrl = m_apiBaseURL + "/api/inspector/compiler/" + m_backend->getCompilerId(compilerList, ci.compiler) + "/compile";
     QNetworkRequest request(requestUrl);
     request.setHeader(QNetworkRequest::UserAgentHeader,
                       "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) "
