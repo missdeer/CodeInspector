@@ -110,13 +110,13 @@ func main() {
 
 	v1 := r.Group("/v1")
 	{
-		v1.GET("/api/insepctor/languages", handleGetInspectorLanguagesList)
-		v1.GET("/api/insepctor/compilers", handleGetInspectorCompilersList)
-		v1.GET("/api/insepctor/compilers/:id", handleGetInspectorCompilersListEx)
-		v1.GET("/api/insepctor/libraries/:id", handleGetInspectorLibrariesList)
-		v1.GET("/api/insepctor/shortlinkinfo/:id", handleGetInspectorShortLinkInfo)
-		v1.POST("/api/insepctor/compiler/:id/compile", handleInspectorCompile)
-		v1.GET("/api/insepctor/configurations", handleGetInspectorConfigurations)
+		v1.GET("/api/inspector/languages", handleGetInspectorLanguagesList)
+		v1.GET("/api/inspector/compilers", handleGetInspectorCompilersList)
+		v1.GET("/api/inspector/compilers/:id", handleGetInspectorCompilersListEx)
+		v1.GET("/api/inspector/libraries/:id", handleGetInspectorLibrariesList)
+		v1.GET("/api/inspector/shortlinkinfo/:id", handleGetInspectorShortLinkInfo)
+		v1.POST("/api/inspector/compiler/:id/compile", handleInspectorCompile)
+		v1.GET("/api/inspector/configurations", handleGetInspectorConfigurations)
 
 		v1.GET("/api/runner/compilers", handleGetRunnerCompilersList)
 		v1.POST("/api/runner/compile", handleRunnerCompile)
