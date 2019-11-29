@@ -11,6 +11,8 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -177,4 +179,45 @@ func handleGetInspectorConfigurations(c *gin.Context) {
 	}
 	content := updateCompilerExploreConfiguration()
 	c.Data(http.StatusOK, acceptHeader, content)
+}
+
+func handleGetInspectorSamples(c *gin.Context) {
+	language := c.Param("language")
+	if language == "" {
+		c.JSON(http.StatusOK, gin.H{
+			"result": "error",
+			"msg":    "language expected"})
+		return
+	}
+
+	res := samples.GetSamples(language)
+	c.JSON(http.StatusOK, gin.H{
+		"language": language,
+		"list":     res})
+}
+
+func handleGetInspectorSample(c *gin.Context) {
+	language := c.Param("language")
+	if language == "" {
+		c.JSON(http.StatusOK, gin.H{
+			"result": "error",
+			"msg":    "language expected"})
+		return
+	}
+	file := c.Param("file")
+	if file == "" {
+		c.JSON(http.StatusOK, gin.H{
+			"result": "error",
+			"msg":    "file expected"})
+		return
+	}
+
+	filePath := filepath.Join(sampleDir, language, file)
+	_, err := os.Stat(filePath)
+	if os.IsNotExist(err) {
+		c.AbortWithStatus(http.StatusNotFound)
+		return
+	}
+
+	c.File(filePath)
 }

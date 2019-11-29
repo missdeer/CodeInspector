@@ -11,6 +11,10 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"os/signal"
+	"path"
+	"path/filepath"
+	"syscall"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -18,7 +22,9 @@ import (
 )
 
 var (
-	cache *RedisCache
+	cache     *RedisCache
+	sampleDir = `samples`
+	samples   SampleList
 )
 
 func handleReverseProxy(c *gin.Context, cacheKey string, targetURL string, method string, body io.Reader) {
@@ -81,16 +87,44 @@ func handleReverseProxy(c *gin.Context, cacheKey string, targetURL string, metho
 	c.Data(http.StatusOK, contentType, content)
 }
 
+func scanSamples() {
+	langDirs, err := ioutil.ReadDir(sampleDir)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	samples.Clear()
+	for _, langDir := range langDirs {
+		if langDir.IsDir() && langDir.Name() != "." && langDir.Name() != ".." {
+			dir := path.Join(sampleDir, langDir.Name())
+			files, err := ioutil.ReadDir(dir)
+			if err != nil {
+				log.Println(err)
+				continue
+			}
+			for _, file := range files {
+				if !file.IsDir() {
+					samples.Append(filepath.Join(dir, file.Name()))
+				}
+			}
+		}
+	}
+	log.Println("found", samples.Count(), "sample files")
+}
+
 func main() {
 	bindAddr := "127.0.0.1:8093"
 	redisServer := "127.0.0.1:6379"
 	flag.StringVar(&bindAddr, "bindAddr", bindAddr, "set binding address")
 	flag.StringVar(&redisServer, "redis", redisServer, "set redis server address")
+	flag.StringVar(&sampleDir, "samples", sampleDir, "set samples directory")
 	flag.Parse()
 
 	envVal := map[string]*string{
-		"BIND_ADDR":  &bindAddr,
-		"REDIS_ADDR": &redisServer,
+		"BIND_ADDR":   &bindAddr,
+		"REDIS_ADDR":  &redisServer,
+		"SAMPLES_DIR": &sampleDir,
 	}
 
 	for env, variable := range envVal {
@@ -117,6 +151,8 @@ func main() {
 		v1.GET("/api/inspector/shortlinkinfo/:id", handleGetInspectorShortLinkInfo)
 		v1.POST("/api/inspector/compiler/:id/compile", handleInspectorCompile)
 		v1.GET("/api/inspector/configurations", handleGetInspectorConfigurations)
+		v1.GET("/api/inspector/samples/:language", handleGetInspectorSamples)
+		v1.GET("/api/inspector/sample/:language/:file", handleGetInspectorSample)
 
 		v1.GET("/api/runner/compilers", handleGetRunnerCompilersList)
 		v1.POST("/api/runner/compile", handleRunnerCompile)
@@ -125,14 +161,16 @@ func main() {
 		v1.GET("/api/runner/template/:name", handleGetRunnerTemplate)
 	}
 
-	done := make(chan bool)
+	scanSamples()
 
+	dailyTicker := time.NewTicker(24 * time.Hour)
+	sigHup := make(chan os.Signal, 1)
+	signal.Notify(sigHup, syscall.SIGHUP)
 	go func() {
-		dailyTicker := time.NewTicker(24 * time.Hour)
 		for {
 			select {
-			case <-done:
-				return
+			case <-sigHup:
+				scanSamples()
 			case <-dailyTicker.C:
 				updateCompilerExploreConfiguration()
 				updateWandboxCompilersList()
