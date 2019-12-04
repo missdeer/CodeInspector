@@ -38,15 +38,15 @@ void CodeInspectorApp::requestLanguageList()
 #if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__;
 #endif
-    QString         requestUrl = g_settings->apiBaseURL() + "/api/inspector/languages";
+    QString         requestUrl = g_settings->apiBaseURL() + "/api/languages";
     QNetworkRequest request(requestUrl);
     request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
     request.setRawHeader("Accept", "application/json, text/javascript, */*; q=0.01");
     request.setRawHeader("Accept-Encoding", "gzip, deflate");
     request.setAttribute(QNetworkRequest::HTTP2AllowedAttribute, QVariant(true));
 
-    QNetworkReply *reply       = m_nam.get(request);
-    auto *         replyHelper = new NetworkReplyHelper(reply);
+    auto *reply       = m_nam.get(request);
+    auto *replyHelper = new NetworkReplyHelper(reply);
     replyHelper->setTimeout(10000);
     connect(replyHelper, SIGNAL(done()), this, SLOT(onLanguageListRequestFinished()));
 }
@@ -108,15 +108,15 @@ void CodeInspectorApp::requestCompilerList(const QString &language)
 #if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__;
 #endif
-    QString         requestUrl = g_settings->apiBaseURL() + "/api/compilers/inspector/" + getLanguageId(language);
+    QString         requestUrl = g_settings->apiBaseURL() + "/api/inspectors/" + getLanguageId(language);
     QNetworkRequest request(requestUrl);
     request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
     request.setRawHeader("Accept", "application/json, text/javascript, */*; q=0.01");
     request.setRawHeader("Accept-Encoding", "gzip, deflate");
     request.setAttribute(QNetworkRequest::HTTP2AllowedAttribute, QVariant(true));
 
-    QNetworkReply *reply       = m_nam.get(request);
-    auto *         replyHelper = new NetworkReplyHelper(reply);
+    auto *reply       = m_nam.get(request);
+    auto *replyHelper = new NetworkReplyHelper(reply);
     replyHelper->setData(language);
     replyHelper->setTimeout(10000);
     connect(replyHelper, SIGNAL(done()), this, SLOT(onCompilerListRequestFinished()));
@@ -628,14 +628,14 @@ void CodeInspectorApp::requestConfigurations()
 #if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__;
 #endif
-    QNetworkRequest request(QUrl(g_settings->apiBaseURL() + "/api/insepctor/configurations"));
+    QNetworkRequest request(QUrl(g_settings->apiBaseURL() + "/api/configurations"));
     request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
     request.setRawHeader("Accept", "application/json, text/javascript, */*; q=0.01");
     request.setRawHeader("Accept-Encoding", "gzip, deflate");
     request.setAttribute(QNetworkRequest::HTTP2AllowedAttribute, QVariant(true));
 
-    QNetworkReply *reply       = m_nam.get(request);
-    auto *         replyHelper = new NetworkReplyHelper(reply);
+    auto *reply       = m_nam.get(request);
+    auto *replyHelper = new NetworkReplyHelper(reply);
     replyHelper->setTimeout(10000);
     connect(replyHelper, SIGNAL(done()), this, SLOT(onConfigurationRequestFinished()));
 }

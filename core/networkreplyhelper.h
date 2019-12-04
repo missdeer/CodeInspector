@@ -49,7 +49,7 @@ private slots:
     void timeout();
 
 private:
-    QNetworkReply *m_reply;
+    QNetworkReply *m_reply {nullptr};
     QTimer *       m_timeoutTimer {nullptr};
     QVariant       m_data;
     QByteArray     m_content;

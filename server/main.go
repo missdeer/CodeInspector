@@ -11,10 +11,8 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
-	"os/signal"
 	"path"
 	"path/filepath"
-	"syscall"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -144,33 +142,41 @@ func main() {
 
 	v1 := r.Group("/v1")
 	{
-		v1.GET("/api/inspector/languages", handleGetInspectorLanguagesList)
-		v1.GET("/api/inspector/compilers", handleGetInspectorCompilersList)
-		v1.GET("/api/inspector/compilers/:id", handleGetInspectorCompilersListEx)
-		v1.GET("/api/inspector/libraries/:id", handleGetInspectorLibrariesList)
-		v1.GET("/api/inspector/shortlinkinfo/:id", handleGetInspectorShortLinkInfo)
-		v1.POST("/api/inspector/compiler/:id/compile", handleInspectorCompile)
-		v1.GET("/api/inspector/configurations", handleGetInspectorConfigurations)
-		v1.GET("/api/inspector/samples/:language", handleGetInspectorSamples)
-		v1.GET("/api/inspector/sample/:language/:file", handleGetInspectorSample)
+		v1.GET("/api/languages", handleGetInspectorLanguagesList)
+		v1.GET("/api/inspectors", handleGetInspectorCompilersList)
+		v1.GET("/api/inspectors/:id", handleGetInspectorCompilersListEx)
+		v1.GET("/api/libraries/:id", handleGetInspectorLibrariesList)
+		v1.GET("/api/s/:id", handleGetInspectorShortLinkInfo)
+		v1.POST("/api/inspect/:id", handleInspectorCompile)
+		v1.GET("/api/configurations", handleGetInspectorConfigurations)
+		v1.GET("/api/samples/:language", handleGetInspectorSamples)
+		v1.GET("/api/sample/:language/:file", handleGetInspectorSample)
 
-		v1.GET("/api/runner/compilers", handleGetRunnerCompilersList)
-		v1.POST("/api/runner/compile", handleRunnerCompile)
-		v1.POST("/api/runner/permlink", handleRunnerPermlink)
-		v1.GET("/api/runner/permlink/:link", handleGetRunnerPermlink)
-		v1.GET("/api/runner/template/:name", handleGetRunnerTemplate)
+		v1.GET("/api/runners", handleGetRunnerCompilersList)
+		v1.POST("/api/run", handleRunnerCompile)
+		v1.POST("/api/permlink", handleRunnerPermlink)
+		v1.GET("/api/l/:link", handleGetRunnerPermlink)
+		v1.GET("/api/t/:name", handleGetRunnerTemplate)
 	}
 
 	scanSamples()
 
 	dailyTicker := time.NewTicker(24 * time.Hour)
 	sigHup := make(chan os.Signal, 1)
-	signal.Notify(sigHup, syscall.SIGHUP)
+	handleSigHup(sigHup)
+	sigUsr1 := make(chan os.Signal, 1)
+	handleSigUsr1(sigUsr1)
+	sigUsr2 := make(chan os.Signal, 1)
+	handleSigUsr2(sigUsr2)
 	go func() {
 		for {
 			select {
 			case <-sigHup:
 				scanSamples()
+			case <-sigUsr1:
+				updateCompilerExploreConfiguration()
+			case <-sigUsr2:
+				updateWandboxCompilersList()
 			case <-dailyTicker.C:
 				updateCompilerExploreConfiguration()
 				updateWandboxCompilersList()
