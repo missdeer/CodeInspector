@@ -7,6 +7,7 @@
 
 CodeInspectorApp::CodeInspectorApp(QObject *parent) : QObject(parent), m_backend(new GodboltAgent(m_nam, this))
 {
+    m_nam.connectToHostEncrypted("ci.minidump.info");
     m_backend->initialize(this, g_settings->apiBaseURL());
 }
 
