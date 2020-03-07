@@ -3,7 +3,11 @@
 	url = https://github.com/missdeer/Scintilla-iOS.git
 [submodule "3rdparty/scintilla"]
 	path = 3rdparty/scintilla
-	url = https://github.com/mirror/scintilla.git
+	url = https://github.com/amezin/scintilla.git
+	branch = upstream
 [submodule "3rdparty/KF5SyntaxHighlighting"]
 	path = 3rdparty/KF5SyntaxHighlighting
 	url = https://anongit.kde.org/syntax-highlighting.git
+[submodule "3rdparty/zlib"]
+	path = 3rdparty/zlib
+	url = https://github.com/madler/zlib.git

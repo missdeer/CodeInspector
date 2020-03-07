@@ -1,19 +1,9 @@
 QT       += core gui widgets xml network 
 
 include($$PWD/../3rdparty/scintilla-latest.pri)
+include($$PWD/../3rdparty/zlib.pri)
 
-
-win32: QT_PRIVATE += zlib-private
-unix: !macx: {
-    INCLUDEPATH += /usr/local/zlib/include
-    LIBS += -L/usr/local/zlib/lib -lz
-}
-macx: {
-    INCLUDEPATH += /usr/local/opt/zlib/include
-    LIBS += -L/usr/local/opt/zlib/lib -lz
-}
-
-INCLUDEPATH += $$PWD
+INCLUDEPATH += $$PWD 
 
 SOURCES += \
     $$PWD/clangqueryoutput.cpp \
