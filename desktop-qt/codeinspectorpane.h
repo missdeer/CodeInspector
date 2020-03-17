@@ -1,6 +1,7 @@
 #ifndef CODEINSPECTORPANE_H
 #define CODEINSPECTORPANE_H
 
+#include <QMap>
 #include <QWidget>
 
 #include "compiler.hpp"
