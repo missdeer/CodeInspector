@@ -8,8 +8,11 @@ lessThan(QT_MAJOR_VERSION, 5): error("Qt 5 is required")
 
 TARGET = CodeInspector
 TEMPLATE = app
-CONFIG += c++17 precompile_header
-PRECOMPILED_HEADER = stdafx.h
+CONFIG += c++17 
+! *-clang* {
+    CONFIG += precompile_header
+    PRECOMPILED_HEADER = stdafx.h
+}
 
 include($$PWD/../core/core.pri)
 
