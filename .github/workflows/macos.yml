@@ -15,13 +15,13 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest]
-        qt_ver: [5.14.0]
+        qt_ver: [5.14.2]
         qt_arch: [clang_64]
     env:
       targetName: CodeInspector
     steps:
       - name: Install Qt
-        uses: jurplel/install-qt-action@v2.0.0
+        uses: jurplel/install-qt-action@v2
         with:
           version: ${{ matrix.qt_ver }}
       

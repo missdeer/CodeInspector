@@ -20,7 +20,7 @@ jobs:
     strategy:
       # 矩阵配置
       matrix:
-        qt_ver: [5.14.0]
+        qt_ver: [5.14.2]
         qt_target: [desktop]
         # mingw用不了
         # qt_arch: [win64_msvc2017_64, win32_msvc2017, win32_mingw53,win32_mingw73]
@@ -38,7 +38,7 @@ jobs:
     # 步骤
     steps:
       - name: Install Qt
-        uses: jurplel/install-qt-action@v2.0.0
+        uses: jurplel/install-qt-action@v2
         with:
           # Version of Qt to install
           version: ${{ matrix.qt_ver }}
