@@ -27,6 +27,7 @@ jobs:
             mkspec: win32-g++
             qt_build: qt5
             qmake: qmake.exe
+            windeployqt: windeployqt.exe
           - qt_arch: mingw32_qt5-gcc
             mingw_arch: MINGW32
             mingw_prefix: mingw-w64-i686
@@ -34,6 +35,7 @@ jobs:
             mkspec: win32-g++
             qt_build: qt5
             qmake: qmake.exe
+            windeployqt: windeployqt.exe
           - qt_arch: mingw64_qt5-static-gcc
             mingw_arch: MINGW64 
             mingw_prefix: mingw-w64-x86_64
@@ -41,6 +43,7 @@ jobs:
             mkspec: win32-g++
             qt_build: qt5-static
             qmake: /mingw64/qt5-static/bin/qmake.exe
+            windeployqt: ls.exe
           - qt_arch: mingw32_qt5-static-gcc
             mingw_arch: MINGW32
             mingw_prefix: mingw-w64-i686
@@ -48,6 +51,7 @@ jobs:
             mkspec: win32-g++
             qt_build: qt5-static
             qmake: /mingw32/qt5-static/bin/qmake.exe
+            windeployqt: ls.exe
           - qt_arch: mingw64_qt5-clang
             mingw_arch: MINGW64 
             mingw_prefix: mingw-w64-x86_64
@@ -55,6 +59,7 @@ jobs:
             mkspec: win32-clang-g++
             qt_build: qt5
             qmake: qmake.exe
+            windeployqt: windeployqt.exe
           - qt_arch: mingw32_qt5-clang
             mingw_arch: MINGW32
             mingw_prefix: mingw-w64-i686
@@ -62,6 +67,7 @@ jobs:
             mkspec: win32-clang-g++
             qt_build: qt5
             qmake: qmake.exe
+            windeployqt: windeployqt.exe
     env:
       targetName: CodeInspector
       
@@ -110,11 +116,10 @@ jobs:
           Copy-Item build\desktop-qt\release\${env:targetName}'.exe' ${env:archiveName}\
           
       - name: deploy qt
-        if: ${{ matrix.qt_build }} == 'qt5'
         env:
           archiveName: ${{ env.targetName }}-${{ matrix.toolchains }}
         run: |
-          msys2do windeployqt.exe ${env:archiveName}/${env:targetName}'.exe'
+          msys2do ${{ matrix.windeployqt }} ${env:archiveName}/${env:targetName}'.exe'
 
       - name: upload artifact
         uses: actions/upload-artifact@v2
