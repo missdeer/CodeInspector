@@ -1,16 +1,12 @@
-name: Windows
+name: Windows-msvc
 on: 
-  # push代码时触发workflow
   push:
-    # 忽略README.md
     paths-ignore:
       - 'README.md'
       - 'LICENSE'
       - '.github/workflows/macos.yml'
       - '.github/workflows/win-mingw.yml'
-  # pull_request时触发workflow
   pull_request:
-    # 忽略README.md
     paths-ignore:
       - 'README.md'
       - 'LICENSE'
@@ -19,17 +15,12 @@ on:
 jobs:
   build:
     name: Build
-    # 运行平台， windows-latest目前是windows server 2019
     runs-on: windows-latest
     strategy:
-      # 矩阵配置
       matrix:
         qt_ver: [5.14.2]
         qt_target: [desktop]
-        # mingw用不了
-        # qt_arch: [win64_msvc2017_64, win32_msvc2017, win32_mingw53,win32_mingw73]
         qt_arch: [win64_msvc2017_64, win32_msvc2017]
-        # 额外设置msvc_arch
         include:
           - qt_arch: win64_msvc2017_64
             msvc_arch: x64
@@ -39,24 +30,20 @@ jobs:
             qt_arch_install: msvc2017
     env:
       targetName: CodeInspector
-    # 步骤
+      
     steps:
       - name: Install Qt
         uses: jurplel/install-qt-action@v2
         with:
-          # Version of Qt to install
           version: ${{ matrix.qt_ver }}
-          # Target platform for build
           target: ${{ matrix.qt_target }}
-          # Architecture for Windows/Android
           arch: ${{ matrix.qt_arch }}
-      # 拉取代码
+          
       - uses: actions/checkout@v2
         with:
           ref: ${{ github.head_ref }}
           submodules: true
           
-      # 编译msvc
       - name: build-msvc
         shell: cmd
         env:
@@ -71,7 +58,7 @@ jobs:
           qmake -r CONFIG+=release CONFIG+=qtquickcompiler ..\${{ env.targetName }}.pro
           nmake
           cd ..
-      # tag 打包
+          
       - name: package
         env:
           VCINSTALLDIR: 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC'
@@ -92,7 +79,6 @@ jobs:
           name: ${{ env.targetName }}-${{ matrix.qt_arch }}
           path: ${{ env.targetName }}-${{ matrix.qt_arch }}
           
-      # tag 查询github-Release
       - name: queryReleaseWin
         id: queryReleaseWin
         if: startsWith(github.event.ref, 'refs/tags/')
@@ -119,7 +105,7 @@ jobs:
             # 没查到，输出
             echo "::set-output name=needCreateRelease::true"  
           }
-      # tag 创建github-Release
+          
       - name: createReleaseWin
         id: createReleaseWin
         if: startsWith(github.event.ref, 'refs/tags/') && steps.queryReleaseWin.outputs.needCreateRelease == 'true'
@@ -132,9 +118,8 @@ jobs:
           body: ${{ github.event.head_commit.message }}
           draft: false
           prerelease: false
-      # 重定向upload_url到环境变量uploadUrl。
-      - name: getLatestTagRelease
-        # tag 上一步无论成功还是失败都执行
+          
+      - name: getLatestTagRelease      
         if: startsWith(github.event.ref, 'refs/tags/')
         shell: pwsh
         env:
@@ -155,7 +140,7 @@ jobs:
           Write-Host 'latestUpUrl:'$latestUpUrl
           echo "::set-env name=uploadUrl::$latestUpUrl"
           Write-Host 'env uploadUrl:'${env:uploadUrl}
-      # tag 上传Release
+          
       - name: uploadRelease
         id: uploadRelease
         if: startsWith(github.event.ref, 'refs/tags/')
