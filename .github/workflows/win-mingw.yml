@@ -18,28 +18,44 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        qt_arch: [mingw64_qt5-gcc, mingw32_qt5-gcc, mingw64_qt5-clang, mingw32_qt5-clang]
+        qt_arch: [mingw64_qt5-gcc, mingw32_qt5-gcc, mingw64_qt5-static-gcc, mingw32_qt5-static-gcc, mingw64_qt5-clang, mingw32_qt5-clang]
         include:
           - qt_arch: mingw64_qt5-gcc
             mingw_arch: MINGW64 
             mingw_prefix: mingw-w64-x86_64
             toolchains: gcc
             mkspec: win32-g++
+            qt_build: qt5
           - qt_arch: mingw32_qt5-gcc
             mingw_arch: MINGW32
             mingw_prefix: mingw-w64-i686
             toolchains: gcc
             mkspec: win32-g++
+            qt_build: qt5
+          - qt_arch: mingw64_qt5-static-gcc
+            mingw_arch: MINGW64 
+            mingw_prefix: mingw-w64-x86_64
+            toolchains: gcc
+            mkspec: win32-g++
+            qt_build: qt5-static
+          - qt_arch: mingw32_qt5-static-gcc
+            mingw_arch: MINGW32
+            mingw_prefix: mingw-w64-i686
+            toolchains: gcc
+            mkspec: win32-g++
+            qt_build: qt5-static
           - qt_arch: mingw64_qt5-clang
             mingw_arch: MINGW64 
             mingw_prefix: mingw-w64-x86_64
             toolchains: clang
             mkspec: win32-clang-g++
+            qt_build: qt5
           - qt_arch: mingw32_qt5-clang
             mingw_arch: MINGW32
             mingw_prefix: mingw-w64-i686
             toolchains: clang
             mkspec: win32-clang-g++
+            qt_build: qt5
     env:
       targetName: CodeInspector
       
@@ -49,7 +65,7 @@ jobs:
           update: true
           msystem: ${{ matrix.mingw_arch }}
           
-      - run: msys2do pacman --noconfirm -S ${{ matrix.mingw_prefix }}-${{ matrix.toolchains }} ${{ matrix.mingw_prefix }}-make ${{ matrix.mingw_prefix }}-qt5 
+      - run: msys2do pacman --noconfirm -S ${{ matrix.mingw_prefix }}-${{ matrix.toolchains }} ${{ matrix.mingw_prefix }}-make ${{ matrix.mingw_prefix }}-${{ matrix.qt_build }} 
                               
       - uses: actions/checkout@v2
         with:
@@ -90,4 +106,4 @@ jobs:
           archiveName: ${{ env.targetName }}-${{ matrix.toolchains }}
         with:
           path: ${{ env.archiveName }}
-          name: ${{ env.targetName }}-${{ matrix.mingw_prefix }}-${{ matrix.toolchains }}
+          name: ${{ env.targetName }}-${{ matrix.mingw_prefix }}-${{ matrix.toolchains }}-${{ matrix.qt_build }}
