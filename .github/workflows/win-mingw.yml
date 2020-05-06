@@ -40,14 +40,14 @@ jobs:
             toolchains: gcc
             mkspec: win32-g++
             qt_build: qt5-static
-            qmake: qt5-static/bin/qmake.exe
+            qmake: /mingw64/qt5-static/bin/qmake.exe
           - qt_arch: mingw32_qt5-static-gcc
             mingw_arch: MINGW32
             mingw_prefix: mingw-w64-i686
             toolchains: gcc
             mkspec: win32-g++
             qt_build: qt5-static
-            qmake: qt5-static/bin/qmake.exe
+            qmake: /mingw32/qt5-static/bin/qmake.exe
           - qt_arch: mingw64_qt5-clang
             mingw_arch: MINGW64 
             mingw_prefix: mingw-w64-x86_64
