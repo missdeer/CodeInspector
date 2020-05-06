@@ -6,12 +6,16 @@ on:
     paths-ignore:
       - 'README.md'
       - 'LICENSE'
+      - '.github/workflows/macos.yml'
+      - '.github/workflows/win-mingw.yml'
   # pull_request时触发workflow
   pull_request:
     # 忽略README.md
     paths-ignore:
       - 'README.md'
       - 'LICENSE'
+      - '.github/workflows/macos.yml'
+      - '.github/workflows/win-mingw.yml'
 jobs:
   build:
     name: Build
@@ -74,22 +78,16 @@ jobs:
           archiveName: ${{ env.targetName }}-${{ matrix.qt_arch }}
         shell: pwsh
         run: |
-          # 创建文件夹
           New-Item -ItemType Directory ${env:archiveName}
-          # 拷贝exe
-          Copy-Item build\Release\${env:targetName}'.exe' ${env:archiveName}\
-          # 拷贝依赖
+          Copy-Item build\desktop-qt\Release\${env:targetName}'.exe' ${env:archiveName}\
           windeployqt --qmldir . ${env:archiveName}\${env:targetName}'.exe'
-          # 打包zip
           Compress-Archive -Path ${env:archiveName} ${env:archiveName}'.zip'
-          # 记录环境变量packageName给后续step
           $name = ${env:archiveName}
           echo "::set-env name=packageName::$name"
-          # 打印环境变量packageName
           Write-Host 'packageName:'${env:packageName}
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v1.0.0
+        uses: actions/upload-artifact@v2
         with:
           name: ${{ env.targetName }}-${{ matrix.qt_arch }}
           path: ${{ env.targetName }}-${{ matrix.qt_arch }}
