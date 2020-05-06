@@ -101,13 +101,19 @@ jobs:
           msys2do mingw32-make.exe -j 4
           cd ..
 
-      - name: deploy
+      - name: extract executable
         env:
           archiveName: ${{ env.targetName }}-${{ matrix.toolchains }}
         shell: pwsh
         run: |
           New-Item -ItemType Directory ${env:archiveName}
           Copy-Item build\desktop-qt\release\${env:targetName}'.exe' ${env:archiveName}\
+          
+      - name: deploy qt
+        if: ${{ matrix.qt_build }} == 'qt5'
+        env:
+          archiveName: ${{ env.targetName }}-${{ matrix.toolchains }}
+        run: |
           msys2do windeployqt.exe ${env:archiveName}/${env:targetName}'.exe'
 
       - name: upload artifact
