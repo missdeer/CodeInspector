@@ -26,36 +26,42 @@ jobs:
             toolchains: gcc
             mkspec: win32-g++
             qt_build: qt5
+            qmake: qmake.exe
           - qt_arch: mingw32_qt5-gcc
             mingw_arch: MINGW32
             mingw_prefix: mingw-w64-i686
             toolchains: gcc
             mkspec: win32-g++
             qt_build: qt5
+            qmake: qmake.exe
           - qt_arch: mingw64_qt5-static-gcc
             mingw_arch: MINGW64 
             mingw_prefix: mingw-w64-x86_64
             toolchains: gcc
             mkspec: win32-g++
             qt_build: qt5-static
+            qmake: qt5-static/bin/qmake.exe
           - qt_arch: mingw32_qt5-static-gcc
             mingw_arch: MINGW32
             mingw_prefix: mingw-w64-i686
             toolchains: gcc
             mkspec: win32-g++
             qt_build: qt5-static
+            qmake: qt5-static/bin/qmake.exe
           - qt_arch: mingw64_qt5-clang
             mingw_arch: MINGW64 
             mingw_prefix: mingw-w64-x86_64
             toolchains: clang
             mkspec: win32-clang-g++
             qt_build: qt5
+            qmake: qmake.exe
           - qt_arch: mingw32_qt5-clang
             mingw_arch: MINGW32
             mingw_prefix: mingw-w64-i686
             toolchains: clang
             mkspec: win32-clang-g++
             qt_build: qt5
+            qmake: qmake.exe
     env:
       targetName: CodeInspector
       
@@ -64,24 +70,28 @@ jobs:
         with:
           update: true
           msystem: ${{ matrix.mingw_arch }}
-          
+
       - run: msys2do pacman --noconfirm -S ${{ matrix.mingw_prefix }}-${{ matrix.toolchains }} ${{ matrix.mingw_prefix }}-make ${{ matrix.mingw_prefix }}-${{ matrix.qt_build }} 
-                              
+
       - uses: actions/checkout@v2
         with:
+          ref: ${{ github.head_ref }}
           fetch-depth: 1
           submodules: true
-      
-      - run: mkdir build
-          
-      - name: qmake
+
+      - name: prepare Scintilla
         shell: cmd
         run: |
           cd 3rdparty\scintilla\qt\ScintillaEdit
           python WidgetGen.py
           cd ..\..\..\..
+
+      - name: qmake
+        shell: cmd
+        run: |
+          mkdir build
           cd build
-          msys2do qmake.exe -r -spec ${{ matrix.mkspec }} CONFIG+=release CONFIG+=qtquickcompiler ..
+          msys2do ${{ matrix.qmake }} -r -spec ${{ matrix.mkspec }} CONFIG+=release CONFIG+=qtquickcompiler ..
           cd ..
 
       - name: mingw32-make
@@ -90,7 +100,7 @@ jobs:
           cd build
           msys2do mingw32-make.exe -j 4
           cd ..
-                    
+
       - name: deploy
         env:
           archiveName: ${{ env.targetName }}-${{ matrix.toolchains }}
@@ -99,7 +109,7 @@ jobs:
           New-Item -ItemType Directory ${env:archiveName}
           Copy-Item build\desktop-qt\release\${env:targetName}'.exe' ${env:archiveName}\
           msys2do windeployqt.exe ${env:archiveName}/${env:targetName}'.exe'
-          
+
       - name: upload artifact
         uses: actions/upload-artifact@v2
         env:
