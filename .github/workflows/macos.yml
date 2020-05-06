@@ -44,13 +44,17 @@ jobs:
           qmake -r CONFIG+=release CONFIG+=qtquickcompiler ../${{ env.targetName }}.pro
           make -j 2
           cd ..
-      # tag 打包
+          
       - name: package
-        if: startsWith(github.event.ref, 'refs/tags/')
         run: |
-          # 拷贝依赖
-          macdeployqt "build/${targetName}.app" -qmldir=. -verbose=1 -dmg
-      # tag 查询github-Release
+          macdeployqt "build/desktop-qt/${targetName}.app" -qmldir=. -verbose=1 -dmg
+          
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ env.targetName }}-${{ matrix.qt_arch }}
+          path: build/desktop-qt/${{ env.targetName }}.dmg
+          
       - name: queryRelease
         id: queryReleaseMacos
         if: startsWith(github.event.ref, 'refs/tags/')
