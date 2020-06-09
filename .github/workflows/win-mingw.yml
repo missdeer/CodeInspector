@@ -120,11 +120,3 @@ jobs:
           archiveName: ${{ env.targetName }}-${{ matrix.toolchains }}
         run: |
           msys2do ${{ matrix.windeployqt }} ${env:archiveName}/${env:targetName}'.exe'
-
-      - name: upload artifact
-        uses: actions/upload-artifact@v2
-        env:
-          archiveName: ${{ env.targetName }}-${{ matrix.toolchains }}
-        with:
-          path: ${{ env.archiveName }}
-          name: ${{ env.targetName }}-${{ matrix.mingw_prefix }}-${{ matrix.toolchains }}-${{ matrix.qt_build }}
