@@ -73,12 +73,6 @@ jobs:
           $name = ${env:archiveName}
           echo "::set-env name=packageName::$name"
           Write-Host 'packageName:'${env:packageName}
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: ${{ env.targetName }}-${{ matrix.qt_arch }}
-          path: ${{ env.targetName }}-${{ matrix.qt_arch }}
           
       - name: queryReleaseWin
         id: queryReleaseWin
