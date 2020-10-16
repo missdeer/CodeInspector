@@ -23,7 +23,7 @@ add_compile_definitions(SCINTILLA_QT=1
         )
 
 include_directories(core
-        desktop
+        desktop-qt
         3rdparty/scintilla/qt/ScintillaEdit
         3rdparty/scintilla/qt/ScintillaEditBase
         3rdparty/scintilla/include
@@ -34,7 +34,7 @@ include_directories(core
 
 file(GLOB
         desktop_qrc
-        desktop/*.qrc
+        desktop-qt/*.qrc
         )
 file(GLOB
         core_qrc
@@ -48,7 +48,7 @@ qt5_add_resources(RESOURCES
 
 file(GLOB
         desktop_ui
-        desktop/*.ui
+        desktop-qt/*.ui
         )
 
 set(core_headers
@@ -68,18 +68,20 @@ set(core_headers
         core/paholeoutput.h
         core/readelfoutput.h
         core/x86to6502output.h
-        core/LLVMIRView.h
+        core/llvmirview.h
+        core/lddoutput.h 
+        core/includewhatyouuseoutput.h 
 )
 
 set(desktop_headers
-        desktop/codeeditorpane.h
-        desktop/codeinspectorapp.h
-        desktop/codeinspectorpane.h
-        desktop/codeinspectortabwidget.h
-        desktop/comboboxdelegate.h
-        desktop/compilationtabwidget.h
-        desktop/mainwindow.h
-        desktop/sessionwidget.h
+        desktop-qt/codeeditorpane.h
+        desktop-qt/codeinspectorapp.h
+        desktop-qt/codeinspectorpane.h
+        desktop-qt/codeinspectortabwidget.h
+        desktop-qt/comboboxdelegate.h
+        desktop-qt/compilationtabwidget.h
+        desktop-qt/mainwindow.h
+        desktop-qt/sessionwidget.h
         )
 
 file(GLOB
@@ -90,15 +92,15 @@ file(GLOB
         )
 
 set(SOURCES
-        desktop/main.cpp
-        desktop/mainwindow.cpp
-        desktop/comboboxdelegate.cpp
-        desktop/codeeditorpane.cpp
-        desktop/codeinspectortabwidget.cpp
-        desktop/codeinspectorpane.cpp
-        desktop/compilationtabwidget.cpp
-        desktop/sessionwidget.cpp
-        desktop/codeinspectorapp.cpp
+        desktop-qt/main.cpp
+        desktop-qt/mainwindow.cpp
+        desktop-qt/comboboxdelegate.cpp
+        desktop-qt/codeeditorpane.cpp
+        desktop-qt/codeinspectortabwidget.cpp
+        desktop-qt/codeinspectorpane.cpp
+        desktop-qt/compilationtabwidget.cpp
+        desktop-qt/sessionwidget.cpp
+        desktop-qt/codeinspectorapp.cpp
         core/clangqueryoutput.cpp
         core/readelfoutput.cpp
         core/scintillaconfig.cpp
@@ -118,7 +120,9 @@ set(SOURCES
         core/paholeoutput.cpp
         core/clangtidyoutput.cpp
         core/x86to6502output.cpp
-        core/LLVMIRView.cpp
+        core/llvmirview.cpp
+        core/lddoutput.cpp
+        core/includewhatyouuseoutput.cpp 
         3rdparty/scintilla/qt/ScintillaEdit/ScintillaEdit.cpp
         3rdparty/scintilla/qt/ScintillaEdit/ScintillaDocument.cpp
         3rdparty/scintilla/qt/ScintillaEditBase/PlatQt.cpp
@@ -141,8 +145,8 @@ qt5_wrap_cpp(SOURCES
 add_executable(CodeInspector 
 		WIN32
 		MACOSX_BUNDLE
-		desktop/CodeInspector.rc
-		desktop/CodeInspector.icns
+		desktop-qt/CodeInspector.rc
+		desktop-qt/CodeInspector.icns
 		${UIS}
 		${SOURCES}
 		${RESOURCES}
@@ -158,13 +162,14 @@ if (APPLE)
     set(MACOSX_BUNDLE_SHORT_VERSION_STRING "1.0")
     set(MACOSX_BUNDLE_BUNDLE_VERSION "1.0")
 
-    set_source_files_properties("${CMAKE_CURRENT_SOURCE_DIR}/desktop/CodeInspector.icns" PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+    set_source_files_properties("${CMAKE_CURRENT_SOURCE_DIR}/desktop-qt/CodeInspector.icns" PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
     set_target_properties(
             CodeInspector
             PROPERTIES
-            RESOURCE "desktop/CodeInspector.icns"
+            RESOURCE "desktop-qt/CodeInspector.icns"
     )
     set_target_properties(CodeInspector PROPERTIES BUNDLE TRUE)
+    target_link_libraries(CodeInspector z)
 endif()
 
 target_link_libraries(CodeInspector Qt5::Widgets Qt5::Gui Qt5::Core Qt5::Network Qt5::Xml)
