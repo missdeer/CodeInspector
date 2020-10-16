@@ -134,7 +134,7 @@ void GodboltAgent::compile(const CompileInfo &ci)
     request.setRawHeader("Accept", "application/json, text/javascript, */*; q=0.01");
     request.setRawHeader("Accept-Encoding", "gzip, deflate");
     request.setRawHeader("X-Requested-With", "XMLHttpRequest");
-    request.setAttribute(QNetworkRequest::HTTP2AllowedAttribute, QVariant(true));
+    request.setAttribute(QNetworkRequest::Http2AllowedAttribute, QVariant(true));
 
     QJsonDocument doc;
     doc.setObject(rootObj);
