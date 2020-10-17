@@ -84,6 +84,18 @@ set(desktop_headers
         desktop-qt/sessionwidget.h
         )
 
+if (WIN32)
+include_directories(
+        3rdparty/zlib
+        )
+file(GLOB
+        zlib_src
+        3rdparty/zlib/*.c
+        )
+else()
+file(GLOB zlib_src)
+endif()
+
 file(GLOB
         scintilla_src
         3rdparty/scintilla/src/*.cxx
@@ -129,6 +141,7 @@ set(SOURCES
         3rdparty/scintilla/qt/ScintillaEditBase/ScintillaQt.cpp
         3rdparty/scintilla/qt/ScintillaEditBase/ScintillaEditBase.cpp
         ${scintilla_src}
+        ${zlib_src}
         )
 
 qt5_wrap_ui (UIS  ${desktop_ui})
