@@ -8,7 +8,6 @@ on:
     paths-ignore:
       - 'README.md'
       - 'LICENSE'
-	  
 jobs:
   win32-msvc:
     runs-on: windows-latest
