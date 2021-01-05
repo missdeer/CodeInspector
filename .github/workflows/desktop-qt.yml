@@ -144,7 +144,7 @@ jobs:
           cd ..\..\..\..
           mkdir build
           cd build
-          qmake -r CONFIG+=release CONFIG+=qtquickcompiler ..\${{ env.targetName }}.pro
+          qmake -r -spec win32-clang-msvc CONFIG+=release CONFIG+=qtquickcompiler ..\${{ env.targetName }}.pro
           jom -j 8
           cd ..
           
