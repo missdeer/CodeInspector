@@ -42,6 +42,11 @@ jobs:
           update: true
           msystem: ${{ matrix.mingw_arch }}
           install: zip curl
+          
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+          submodules: true
       
       - name: Set up jom
         shell: cmd
@@ -52,18 +57,13 @@ jobs:
           7z.exe x jom.zip
           cd ..
           
-      - uses: actions/checkout@v2
-        with:
-          ref: ${{ github.head_ref }}
-          submodules: true
-          
       - name: build-msvc
         shell: cmd
         env:
           vc_arch: ${{ matrix.msvc_arch }}
         run: |
           call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" %vc_arch%
-          set PATH=%PATH%;%CD%\llvm\bin;%CD%\jom
+          set PATH=%PATH%;%CD%\jom
           cd 3rdparty\scintilla\qt\ScintillaEdit
           python WidgetGen.py
           cd ..\..\..\..
