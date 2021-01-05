@@ -1,7 +1,3 @@
-[submodule "3rdparty/scintilla-iOS"]
-	path = 3rdparty/scintilla-iOS
-	url = https://github.com/missdeer/Scintilla-iOS.git
-	branch = master
 [submodule "3rdparty/scintilla"]
 	path = 3rdparty/scintilla
 	url = https://github.com/amezin/scintilla.git
