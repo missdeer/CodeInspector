@@ -74,20 +74,6 @@ jobs:
           jom -j 8
           cd ..
           
-      - name: package
-        env:
-          VCINSTALLDIR: 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC'
-          archiveName: ${{ env.targetName }}-${{ matrix.qt_arch }}
-        shell: pwsh
-        run: |
-          New-Item -ItemType Directory ${env:archiveName}
-          Copy-Item build\desktop-qt\Release\${env:targetName}'.exe' ${env:archiveName}\
-          windeployqt --qmldir . ${env:archiveName}\${env:targetName}'.exe'
-          Compress-Archive -Path ${env:archiveName} ${env:archiveName}'.zip'
-          $name = ${env:archiveName}
-          echo "::set-env name=packageName::$name"
-          Write-Host 'packageName:'${env:packageName}
-          
   win32-clang-msvc:
     runs-on: windows-latest
     strategy:
@@ -162,20 +148,6 @@ jobs:
           qmake -r CONFIG+=release CONFIG+=qtquickcompiler ..\${{ env.targetName }}.pro
           jom -j 8
           cd ..
-          
-      - name: package
-        env:
-          VCINSTALLDIR: 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC'
-          archiveName: ${{ env.targetName }}-${{ matrix.qt_arch }}
-        shell: pwsh
-        run: |
-          New-Item -ItemType Directory ${env:archiveName}
-          Copy-Item build\desktop-qt\Release\${env:targetName}'.exe' ${env:archiveName}\
-          windeployqt --qmldir . ${env:archiveName}\${env:targetName}'.exe'
-          Compress-Archive -Path ${env:archiveName} ${env:archiveName}'.zip'
-          $name = ${env:archiveName}
-          echo "::set-env name=packageName::$name"
-          Write-Host 'packageName:'${env:packageName}
           
   win32-mingw:
     runs-on: windows-latest
