@@ -2,8 +2,6 @@ package main
 
 import (
 	"bytes"
-	"compress/flate"
-	"compress/gzip"
 	"crypto/md5"
 	"fmt"
 	"io"
@@ -11,6 +9,9 @@ import (
 	"log"
 	"net/http"
 	"time"
+
+	"github.com/klauspost/compress/flate"
+	"github.com/klauspost/compress/gzip"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gomodule/redigo/redis"
