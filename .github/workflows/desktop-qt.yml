@@ -70,7 +70,7 @@ jobs:
           mkdir build
           cd build
           qmake -r CONFIG+=release CONFIG+=qtquickcompiler ..\${{ env.targetName }}.pro
-          jom -j 8
+          jom -j %NUMBER_OF_PROCESSORS%
           cd ..
           
   win32-clang-msvc:
@@ -145,7 +145,7 @@ jobs:
           mkdir build
           cd build
           qmake -r -spec win32-clang-msvc CONFIG+=release CONFIG+=qtquickcompiler ..\${{ env.targetName }}.pro
-          jom -j 8
+          jom -j %NUMBER_OF_PROCESSORS%
           cd ..
           
   win32-mingw:
@@ -237,7 +237,7 @@ jobs:
         shell: msys2 {0}
         run: |
           cd build
-          mingw32-make.exe -j 4
+          mingw32-make.exe -j %NUMBER_OF_PROCESSORS%
           cd ..
 
       - name: extract executable
@@ -262,8 +262,6 @@ jobs:
         uses: jurplel/install-qt-action@v2
         with:
           version: ${{ matrix.qt_ver }}      
-          install-deps: 'true'
-          aqtversion: '>=0.9.0'
         
       - uses: actions/checkout@v2
         with:
@@ -278,7 +276,7 @@ jobs:
           mkdir build
           cd build
           qmake -r CONFIG+=release CONFIG+=qtquickcompiler ../${{ env.targetName }}.pro
-          make -j 2
+          make -j `sysctl -n hw.logicalcpu`
           cd ..
           
       - name: package
