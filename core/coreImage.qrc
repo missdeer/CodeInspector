@@ -354,5 +354,9 @@
         <file>resource/image/language/clean.png</file>
         <file>resource/image/library.png</file>
         <file>resource/image/loadexample.png</file>
+        <file>resource/image/language/cppx_blue.png</file>
+        <file>resource/image/language/cppx_gold.png</file>
+        <file>resource/image/language/nim.png</file>
+        <file>resource/image/language/python.png</file>
     </qresource>
 </RCC>
