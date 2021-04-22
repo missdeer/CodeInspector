@@ -59,7 +59,7 @@ void Settings::load()
     m_codeEditorTheme         = settings.value("codeEditorTheme", QVariant("Default")).toString();
     m_codeInspectorFontFamily = settings.value("codeInspectorFontFamily", QVariant("Source Code Pro")).toString();
     m_codeInspectorTheme      = settings.value("codeInspectorTheme", QVariant("Default")).toString();
-    m_apiBaseURL              = settings.value("apiBaseURL", "https://ci.minidump.info/v1").toString();
+    m_apiBaseURL              = settings.value("apiBaseURL", "https://godbolt.org").toString();
     m_sslRequired             = settings.value("sslRequired", true).toBool();
 }
 
