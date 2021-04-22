@@ -51,8 +51,8 @@ CodeEditorPane::CodeEditorPane(QWidget *parent) : QWidget(parent)
 void CodeEditorPane::updateLanguageList()
 {
     m_languageList->clear();
-    auto languages = ciApp->getLanguageList();
-    for (const auto language : languages)
+    const auto &languages = ciApp->getLanguageList();
+    for (const auto &language : languages)
     {
         m_languageList->addItem(QIcon(QString(":/resource/image/language/%1.png").arg(language->id)), language->name);
     }
@@ -65,8 +65,10 @@ void CodeEditorPane::onCurrentLanguageChanged(const QString &text)
     if (m_languageList->count() > 1)
         g_settings->setDefaultLanguageIndex(m_languageList->currentIndex());
     emit currentLanguageChanged(text);
-    makeLibariesMenu();
-    makeExamplesMenu();
+    bool show = makeLibariesMenu();
+    m_btnLibraries->setVisible(show);
+    show = makeExamplesMenu();
+    m_btnLoadExample->setVisible(show);
 
     // load an default example
     auto actions = m_menuExamples->actions();
@@ -80,7 +82,10 @@ void CodeEditorPane::onCurrentLanguageChanged(const QString &text)
 void CodeEditorPane::onShowExampleList()
 {
     if (!m_menuExamples)
-        makeExamplesMenu();
+    {
+        bool show = makeExamplesMenu();
+        m_btnLoadExample->setVisible(show);
+    }
     if (m_menuExamples)
     {
         QPoint pt = mapToGlobal(QPoint(m_btnLoadExample->x(), m_btnLoadExample->y() + m_btnLoadExample->height()));
@@ -91,7 +96,10 @@ void CodeEditorPane::onShowExampleList()
 void CodeEditorPane::onShowLibraryList()
 {
     if (!m_menuLibraries)
-        makeLibariesMenu();
+    {
+        bool show = makeLibariesMenu();
+        m_btnLibraries->setVisible(show);
+    }
     if (m_menuLibraries)
     {
         QPoint pt = mapToGlobal(QPoint(m_btnLibraries->x(), m_btnLibraries->y() + m_btnLibraries->height()));
@@ -127,7 +135,7 @@ void CodeEditorPane::onLibraryVersionTriggered()
     }
 }
 
-void CodeEditorPane::makeLibariesMenu()
+bool CodeEditorPane::makeLibariesMenu()
 {
     if (m_menuLibraries)
     {
@@ -136,7 +144,7 @@ void CodeEditorPane::makeLibariesMenu()
     }
     auto libraries = ciApp->getLibraryList(m_languageList->currentText());
     if (!libraries)
-        return;
+        return false;
     m_menuLibraries = new QMenu(this);
     for (const auto l : *libraries)
     {
@@ -161,9 +169,10 @@ void CodeEditorPane::makeLibariesMenu()
             connect(action, &QAction::triggered, this, &CodeEditorPane::onLibraryVersionTriggered);
         }
     }
+    return true;
 }
 
-void CodeEditorPane::makeExamplesMenu()
+bool CodeEditorPane::makeExamplesMenu()
 {
     if (m_menuExamples)
     {
@@ -172,13 +181,14 @@ void CodeEditorPane::makeExamplesMenu()
     }
     auto examples = ciApp->getExampleList(m_languageList->currentText());
     if (examples.isEmpty())
-        return;
+        return false;
     m_menuExamples = new QMenu(this);
     for (const auto &e : examples)
     {
         auto *action = m_menuExamples->addAction(e);
         connect(action, &QAction::triggered, this, &CodeEditorPane::onExampleTriggered);
     }
+    return true;
 }
 
 CodeEditor *CodeEditorPane::codeEditor() const

@@ -42,8 +42,8 @@ private:
     QMenu *      m_menuLibraries {nullptr};
     QMenu *      m_menuExamples {nullptr};
 
-    void makeLibariesMenu();
-    void makeExamplesMenu();
+    bool makeLibariesMenu();
+    bool makeExamplesMenu();
 };
 
 #endif // CODEEDITORPANE_H
