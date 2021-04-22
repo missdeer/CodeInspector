@@ -2,7 +2,6 @@
 #define STDAFX_H
 
 #if defined(__cplusplus)
-
 #    include <QAbstractTableModel>
 #    include <QApplication>
 #    include <QClipboard>
@@ -40,6 +39,7 @@
 #    include <QProcess>
 #    include <QProgressDialog>
 #    include <QPushButton>
+#    include <QRandomGenerator>
 #    include <QSettings>
 #    include <QSharedPointer>
 #    include <QShortcut>
