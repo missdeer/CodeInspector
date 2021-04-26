@@ -1,7 +1,8 @@
 #include "stdafx.h"
 
 #include "scintillaconfig.h"
-
+#include "ILexer.h"
+#include "Lexilla.h"
 #include "ScintillaEdit.h"
 #include "settings.h"
 
@@ -255,8 +256,9 @@ void ScintillaConfig::applyLanguageStyle(const QString &configPath, const QStrin
         keywordElem = keywordElem.nextSiblingElement("Keywords");
     }
 
-    auto l = lexer.toUtf8();
-    m_sci->setLexerLanguage(l.data());
+    auto  l       = lexer.toUtf8();
+    void *lexerId = CreateLexer(l.data());
+    m_sci->setILexer((sptr_t)(void *)lexerId);
 }
 
 void ScintillaConfig::applyThemeStyle(const QString &themePath, const QString &lang)

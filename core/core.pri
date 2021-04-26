@@ -1,6 +1,7 @@
 QT       += core gui widgets xml network 
 
 include($$PWD/../3rdparty/scintilla-latest.pri)
+include($$PWD/../3rdparty/lexilla-latest.pri)
 include($$PWD/../3rdparty/zlib.pri)
 
 INCLUDEPATH += $$PWD 

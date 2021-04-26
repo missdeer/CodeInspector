@@ -2,7 +2,6 @@ INCLUDEPATH += $$PWD/scintilla/qt/ScintillaEdit \
     $$PWD/scintilla/qt/ScintillaEditBase \
     $$PWD/scintilla/include \
     $$PWD/scintilla/src \
-    $$PWD/scintilla/lexlib \
     $$PWD/scintilla/include
 
 DEFINES += SCINTILLA_QT=1 SCI_LEXER=1 _CRT_SECURE_NO_DEPRECATE=1
@@ -24,7 +23,7 @@ macx {
 } else {
     INCLUDEPATH *= $$PWD/include
     win32: {
-        LIBS += -L$$OUT_FOLDER -l$${lib_name}4
+        LIBS += -L$$OUT_FOLDER -l$${lib_name}5
     } else: {
         LIBS += -L$$OUT_FOLDER -l$${lib_name}
     }
