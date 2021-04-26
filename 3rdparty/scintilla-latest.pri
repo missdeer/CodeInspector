@@ -31,8 +31,8 @@ SOURCES += \
     $$PWD/scintilla/src/DBCS.cxx \
     $$PWD/scintilla/src/ContractionState.cxx \
     $$PWD/scintilla/src/CharClassify.cxx \
-    $$PWD/scintilla/src/CharacterSet.cxx \
-    $$PWD/scintilla/src/CharacterCategory.cxx \
+    # $$PWD/scintilla/src/CharacterSet.cxx \
+    # $$PWD/scintilla/src/CharacterCategory.cxx \
     $$PWD/scintilla/src/CellBuffer.cxx \
     $$PWD/scintilla/src/CaseFolder.cxx \
     $$PWD/scintilla/src/CaseConvert.cxx \
