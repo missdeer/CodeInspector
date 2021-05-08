@@ -10,8 +10,10 @@
 
 int main(int argc, char *argv[])
 {
+#if QT_VERSION_MAJOR <= 5
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
     QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps, true);
+#endif
 
     QApplication::setApplicationName("CodeInspector");
     QApplication::setApplicationVersion("1.0");

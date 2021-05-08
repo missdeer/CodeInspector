@@ -12,7 +12,6 @@
 #    include <QDate>
 #    include <QDateTime>
 #    include <QDesktopServices>
-#    include <QDesktopWidget>
 #    include <QDialog>
 #    include <QDir>
 #    include <QDomDocument>

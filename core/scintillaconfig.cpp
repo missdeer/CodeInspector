@@ -329,9 +329,8 @@ void ScintillaConfig::applyStyle(const QDomElement &styleElem)
         return;
     }
 
-    QString       fontName = styleElem.attribute("fontName");
-    QFontDatabase database;
-    QStringList   families = database.families();
+    QString     fontName = styleElem.attribute("fontName");
+    QStringList families = QFontDatabase::families();
     if (!fontName.isEmpty() && families.contains(fontName))
         m_sci->styleSetFont(id, fontName.toStdString().c_str());
     else
