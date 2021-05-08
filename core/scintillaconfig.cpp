@@ -330,7 +330,7 @@ void ScintillaConfig::applyStyle(const QDomElement &styleElem)
     }
 
     QString fontName = styleElem.attribute("fontName");
-#if QT_VERSION_MAJOR >= 6
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     QStringList families = QFontDatabase::families();
 #else
     QFontDatabase db;
