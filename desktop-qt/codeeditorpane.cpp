@@ -70,12 +70,15 @@ void CodeEditorPane::onCurrentLanguageChanged(const QString &text)
     show = makeExamplesMenu();
     m_btnLoadExample->setVisible(show);
 
-    // load an default example
-    auto actions = m_menuExamples->actions();
-    if (!actions.isEmpty())
+    if (m_menuExamples)
     {
-        auto action = actions.at(0);
-        emit action->triggered();
+        // load an default example
+        auto actions = m_menuExamples->actions();
+        if (!actions.isEmpty())
+        {
+            auto action = actions.at(0);
+            emit action->triggered();
+        }
     }
 }
 
