@@ -199,7 +199,7 @@ void CodeInspectorPane::setCompilerList(CompilerListPtr cl)
     m_compilerList->clear();
     auto *      model = new QStandardItemModel;
     QStringList groupNames;
-    for (const auto c : *cl)
+    for (const auto &c : *cl)
     {
         auto gn = c->groupName.isEmpty() ? c->group.toUpper() : c->groupName.toUpper();
         if (!groupNames.contains(gn))
