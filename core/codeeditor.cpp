@@ -11,9 +11,9 @@ void CodeEditor::initialize()
     m_sc.initLexerStyle("cpp");
     m_sc.initEditorFolderStyle();
 
-    connect(this, &ScintillaEdit::linesAdded, this, &CodeEditor::linesAdded);
-    connect(this, &ScintillaEdit::marginClicked, this, &CodeEditor::marginClicked);
-    connect(this, &ScintillaEdit::modified, this, &CodeEditor::modified);
+    connect(this, &ScintillaEditBase::linesAdded, this, &CodeEditor::linesAdded);
+    connect(this, &ScintillaEditBase::marginClicked, this, &CodeEditor::marginClicked);
+    connect(this, &ScintillaEditBase::modified, this, &CodeEditor::modified);
 #if defined(Q_OS_ANDROID)
     connect(this, &ScintillaEdit::textAreaClicked, [=] {
         auto im = qApp->inputMethod();
