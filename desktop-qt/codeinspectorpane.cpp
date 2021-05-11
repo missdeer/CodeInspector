@@ -220,7 +220,7 @@ void CodeInspectorPane::setCompilerList(CompilerListPtr cl)
         item->setFont(font);
         model->appendRow(item);
 
-        for (const auto compiler : *cl)
+        for (const auto &compiler : *cl)
         {
             if (compiler->groupName.toUpper() == groupName || compiler->group.toUpper() == groupName)
             {
@@ -270,15 +270,15 @@ void CodeInspectorPane::onNeedCompile()
     auto libs = ciApp->getLibraryList(m_languageName);
     if (libs)
     {
-        for (auto lib : *libs)
+        for (const auto &lib : *libs)
         {
             auto versions = lib->getVersions();
-            for (auto ver : versions)
+            for (const auto &ver : versions)
             {
                 if (ver->getSelected())
                 {
                     auto paths = ver->getPath();
-                    for (auto &path : paths)
+                    for (const auto &path : paths)
                         userArguments.append(compiler->includeFlag + path);
                 }
             }

@@ -131,7 +131,7 @@ void CodeEditorPane::onLibraryVersionTriggered()
         const auto  l        = *it;
         const auto &versions = l->getVersions();
         QString     version  = action->text();
-        for (const auto v : versions)
+        for (const auto &v : versions)
         {
             v->setSelected(v->getVersion() == version);
         }
@@ -149,7 +149,7 @@ bool CodeEditorPane::makeLibariesMenu()
     if (!libraries)
         return false;
     m_menuLibraries = new QMenu(this);
-    for (const auto l : *libraries)
+    for (const auto &l : *libraries)
     {
         const auto &versions = l->getVersions();
         if (versions.isEmpty())
@@ -163,7 +163,7 @@ bool CodeEditorPane::makeLibariesMenu()
         action->setData(l->getName());
         action->setCheckable(true);
         action->setChecked(true);
-        for (const auto v : versions)
+        for (const auto &v : versions)
         {
             QAction *action = menu->addAction(v->getVersion());
             action->setData(l->getName());
