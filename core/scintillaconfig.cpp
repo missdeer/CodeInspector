@@ -132,11 +132,11 @@ void ScintillaConfig::initEditorFolderStyle()
 
 void ScintillaConfig::initLexerStyle(const QString &lang)
 {
-    QString lexer = "cpp";
+    QString lexer = lang.toLower();
     if (lang.toLower() == "assembly")
         lexer = "asm";
     else if (lang.toLower() != "c++")
-        lexer = lang.toLower();
+        lexer = "cpp";
 
     // apply language specified settings
     QString themePath = ":/resource/sci/themes/" % g_settings->codeEditorTheme() % ".xml";
