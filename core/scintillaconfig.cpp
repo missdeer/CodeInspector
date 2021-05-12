@@ -133,9 +133,9 @@ void ScintillaConfig::initEditorFolderStyle()
 void ScintillaConfig::initLexerStyle(const QString &lang)
 {
     QString lexer = lang.toLower();
-    if (lang.toLower() == "assembly")
+    if (lexer == "assembly" || lexer == "asm")
         lexer = "asm";
-    else if (lang.toLower() != "c++")
+    else if (lexer == "c++")
         lexer = "cpp";
 
     // apply language specified settings
@@ -194,8 +194,7 @@ void ScintillaConfig::inttOuputWindowMargins()
 
 void ScintillaConfig::initMarkers()
 {
-    const int lineBackgroundColorCount                       = 12;
-    sptr_t    lineBackgroundColors[lineBackgroundColorCount] = {
+    sptr_t lineBackgroundColors[] = {
         0xD3E4EF,
         0xFEE5C8,
         0xE8E7F1,
@@ -210,7 +209,7 @@ void ScintillaConfig::initMarkers()
         0xFED3CD,
     };
 
-    for (size_t i = 0; i < lineBackgroundColorCount; i++)
+    for (size_t i = 0; i < sizeof(lineBackgroundColors) / sizeof(lineBackgroundColors[0]); i++)
     {
         m_sci->markerDefine(static_cast<sptr_t>(i), SC_MARK_BACKGROUND);
         m_sci->markerSetBack(static_cast<sptr_t>(i), lineBackgroundColors[i]);
@@ -252,8 +251,10 @@ void ScintillaConfig::applyLanguageStyle(const QString &configPath, const QStrin
 
     QString lexersPath = QCoreApplication::applicationDirPath() + "/lexers";
     SetLibraryProperty("lpeg.home", QDir::toNativeSeparators(lexersPath).toStdString().c_str());
-    // SetLibraryProperty("lpeg.color.theme", "dark");
+    SetLibraryProperty("lpeg.color.theme", "light");
     void *lexerId = CreateLexer(lexer.toStdString().c_str());
+    if (!lexerId)
+        CreateLexer("cpp");
     m_sci->setILexer((sptr_t)lexerId);
 
     QDomElement keywordElem = langElem.firstChildElement("Keywords");

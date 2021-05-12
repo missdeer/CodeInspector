@@ -71,7 +71,6 @@ void CodeEditorPane::onCurrentLanguageChanged(const QString &text)
     m_btnLoadExample->setVisible(show);
 
     Q_ASSERT(m_codeEditor);
-    qDebug() << __FUNCTION__ << __LINE__ << text;
     m_codeEditor->setLanguage(text);
     if (m_menuExamples)
     {

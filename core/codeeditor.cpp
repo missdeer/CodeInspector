@@ -56,7 +56,6 @@ void CodeEditor::modified(
 
 void CodeEditor::setLanguage(const QString &lang)
 {
-    qDebug() << __FUNCTION__ << __LINE__ << lang;
     m_sc.initScintilla();
     m_sc.initEditorMargins();
     m_sc.initLexerStyle(lang);

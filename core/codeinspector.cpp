@@ -29,10 +29,11 @@ void CodeInspector::setContent(const QString &content, bool binary)
 
 void CodeInspector::setAsmItems(const AsmItemList &items, bool binary, QMap<int, intptr_t> &markerMap)
 {
-    const intptr_t marginStyleId = STYLE_LASTPREDEFINED + 1;
+    const intptr_t marginStyleId = STYLE_LINENUMBER;
     intptr_t       textLength    = 0;
     intptr_t       markerIndex   = 0;
     m_sc.initMarkers();
+    annotationSetVisible(ANNOTATION_HIDDEN);
 
     for (int i = 0; i < items.length(); i++)
     {
@@ -59,8 +60,8 @@ void CodeInspector::setAsmItems(const AsmItemList &items, bool binary, QMap<int,
 
         if (binary)
         {
-            QString     text;
-            QTextStream ts(&text);
+            QString     addressText;
+            QTextStream ts(&addressText);
             ts.setFieldWidth(2);
             ts.setIntegerBase(16);
             ts.setPadChar('0');
@@ -69,26 +70,27 @@ void CodeInspector::setAsmItems(const AsmItemList &items, bool binary, QMap<int,
                 ts << item->address;
             }
 
-            if (!text.isEmpty())
-                text.append(":");
-            else
-                text.append("00:");
-            if (!item->opcodes.isEmpty())
-            {
-                for (const auto &opcode : item->opcodes)
-                {
-                    ts << opcode;
-                }
-            }
-
-            // qDebug() << "binary: " << i << text;
-            if (text.length() > 3)
+            if (!addressText.isEmpty())
             {
                 marginSetStyle(i, marginStyleId);
-                auto t = text.toUtf8();
+                auto t = addressText.toUtf8();
                 marginSetText(i, t.data());
                 auto tl    = textWidth(marginStyleId, t.data());
                 textLength = std::max(tl, textLength);
+            }
+
+            if (!item->opcodes.isEmpty())
+            {
+                QString     opcodeText;
+                QTextStream ts(&opcodeText);
+                for (const auto &opcode : qAsConst(item->opcodes))
+                {
+                    ts << opcode;
+                }
+
+                annotationSetVisible(ANNOTATION_STANDARD);
+                annotationSetText(i, opcodeText.toUtf8().data());
+                annotationSetStyle(i, 3);
             }
         }
     }
