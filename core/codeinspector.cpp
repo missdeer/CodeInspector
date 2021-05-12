@@ -88,7 +88,6 @@ void CodeInspector::setAsmItems(const AsmItemList &items, bool binary, QMap<int,
                     ts << opcode;
                 }
 
-                annotationSetVisible(ANNOTATION_STANDARD);
                 annotationSetText(i, opcodeText.toUtf8().data());
                 annotationSetStyle(i, 3);
             }
@@ -106,6 +105,10 @@ void CodeInspector::setAsmItems(const AsmItemList &items, bool binary, QMap<int,
         sptr_t width = left + right + textWidth(STYLE_LINENUMBER, b.data());
         if (width > 32)
             setMarginWidthN(0, width);
+    }
+    else
+    {
+        annotationSetVisible(ANNOTATION_INDENTED);
     }
 
 #if !defined(QT_NO_DEBUG)
