@@ -48,6 +48,13 @@ jobs:
           ref: ${{ github.head_ref }}
           submodules: true
       
+      - name: patch scintillua
+        shell: cmd
+        run: |
+          cd 3rdparty\scintillua
+          git apply ..\scintillua.patch
+          cd ..
+      
       - name: Set up jom
         shell: cmd
         run: |
@@ -113,6 +120,13 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
           submodules: true
+      
+      - name: patch scintillua
+        shell: cmd
+        run: |
+          cd 3rdparty\scintillua
+          git apply ..\scintillua.patch
+          cd ..
           
       - name: Set up clang for Windows
         shell: cmd
@@ -217,6 +231,13 @@ jobs:
           ref: ${{ github.head_ref }}
           fetch-depth: 1
           submodules: true
+      
+      - name: patch scintillua
+        shell: cmd
+        run: |
+          cd 3rdparty\scintillua
+          git apply ..\scintillua.patch
+          cd ..
 
       - name: prepare Scintilla
         shell: cmd
@@ -267,7 +288,13 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
           submodules: true
-          
+      
+      - name: patch scintillua
+        run: |
+          cd 3rdparty/scintillua
+          git apply ../scintillua.patch
+          cd ..
+      
       - name: build macos
         run: |
           cd 3rdparty/scintilla/qt/ScintillaEdit
