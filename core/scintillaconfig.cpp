@@ -242,15 +242,16 @@ void ScintillaConfig::applyLanguageStyle(const QString &configPath, const QStrin
     while (!langElem.isNull() && langElem.attribute("name").toLower() != lang.toLower())
         langElem = langElem.nextSiblingElement("Language");
 
-    if (langElem.isNull())
-        return;
+    QString lexer("cpp");
+    if (!langElem.isNull())
+    {
+        QString lexer = langElem.attribute("lexer");
+        if (lexer.isEmpty())
+            lexer = lang;
+    }
 
-    QString lexer = langElem.attribute("lexer");
-    if (lexer.isEmpty())
-        lexer = lang;
-
-    QString lexersPath = QCoreApplication::applicationDirPath() + "/lexers";
-    SetLibraryProperty("lpeg.home", QDir::toNativeSeparators(lexersPath).toStdString().c_str());
+    QString lexersPath = QDir::toNativeSeparators(QCoreApplication::applicationDirPath() + "/lexers");
+    SetLibraryProperty("lpeg.home", lexersPath.toUtf8().data());
     SetLibraryProperty("lpeg.color.theme", "light");
     void *lexerId = CreateLexer(lexer.toStdString().c_str());
     if (!lexerId)
