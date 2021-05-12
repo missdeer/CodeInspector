@@ -1,0 +1,26 @@
+diff --git a/LexLPeg.cxx b/LexLPeg.cxx
+index c22a92b..1bb669a 100644
+--- a/LexLPeg.cxx
++++ b/LexLPeg.cxx
+@@ -39,6 +39,7 @@ LUALIB_API int luaopen_lpeg(lua_State *L);
+ }
+ 
+ using namespace Scintilla;
++using namespace Lexilla;
+ 
+ #ifndef NDEBUG
+ #define RECORD_STACK_TOP(l) int orig_stack_top = lua_gettop(l)
+@@ -924,8 +925,13 @@ LexerModule lmLPeg(SCLEX_LPEG, LexerLPeg::LexerFactoryLPeg, "lpeg");
+ #define EXPORT_FUNCTION __declspec(dllexport)
+ #define CALLING_CONVENTION __stdcall
+ #else
++#if (_MSC_VER)
++#define EXPORT_FUNCTION
++#define CALLING_CONVENTION
++#else
+ #define EXPORT_FUNCTION __attribute__((visibility("default")))
+ #define CALLING_CONVENTION
++#endif
+ #endif // _WIN32
+ 
+ extern "C" {

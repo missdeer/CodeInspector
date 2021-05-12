@@ -2,7 +2,7 @@
 
 #include "scintillaconfig.h"
 #include "ILexer.h"
-#include "Lexilla.h"
+#include "LexLPeg.h"
 #include "ScintillaEdit.h"
 #include "settings.h"
 
@@ -132,15 +132,21 @@ void ScintillaConfig::initEditorFolderStyle()
 
 void ScintillaConfig::initLexerStyle(const QString &lang)
 {
+    QString lexer = "cpp";
+    if (lang.toLower() == "assembly")
+        lexer = "asm";
+    else if (lang.toLower() != "c++")
+        lexer = lang.toLower();
+
     // apply language specified settings
     QString themePath = ":/resource/sci/themes/" % g_settings->codeEditorTheme() % ".xml";
     if (!QFile::exists(themePath))
         themePath = ":/resource/sci/stylers.model.xml";
-    applyThemeStyle(themePath, lang);
+    applyThemeStyle(themePath, lexer);
 
     // read configurations from langs.model.xml
     QString configPath = ":/resource/sci/langs.model.xml";
-    applyLanguageStyle(configPath, lang);
+    applyLanguageStyle(configPath, lexer);
 }
 
 void ScintillaConfig::initEditorMargins()
@@ -234,7 +240,7 @@ void ScintillaConfig::applyLanguageStyle(const QString &configPath, const QStrin
     QDomElement languagesElem = docElem.firstChildElement("Languages");
 
     QDomElement langElem = languagesElem.firstChildElement("Language");
-    while (!langElem.isNull() && langElem.attribute("name") != lang)
+    while (!langElem.isNull() && langElem.attribute("name").toLower() != lang.toLower())
         langElem = langElem.nextSiblingElement("Language");
 
     if (langElem.isNull())
@@ -244,8 +250,10 @@ void ScintillaConfig::applyLanguageStyle(const QString &configPath, const QStrin
     if (lexer.isEmpty())
         lexer = lang;
 
-    auto  l       = lexer.toUtf8();
-    void *lexerId = CreateLexer(l.data());
+    QString lexersPath = QCoreApplication::applicationDirPath() + "/lexers";
+    SetLibraryProperty("lpeg.home", QDir::toNativeSeparators(lexersPath).toStdString().c_str());
+    // SetLibraryProperty("lpeg.color.theme", "dark");
+    void *lexerId = CreateLexer(lexer.toStdString().c_str());
     m_sci->setILexer((sptr_t)lexerId);
 
     QDomElement keywordElem = langElem.firstChildElement("Keywords");

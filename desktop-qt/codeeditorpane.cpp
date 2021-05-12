@@ -71,19 +71,8 @@ void CodeEditorPane::onCurrentLanguageChanged(const QString &text)
     m_btnLoadExample->setVisible(show);
 
     Q_ASSERT(m_codeEditor);
-    QMap<QString, QString> langLexerMap = {
-        {"Ada", "ada"},
-        {"Assembly", "asm"},
-        {"C++", "cpp"},
-        {"D", "d"},
-        {"Fortran", "fortran"},
-        {"Haskell", "haskell"},
-        {"Nim", "nim"},
-        {"Pascal", "pascal"},
-        {"Python", "python"},
-        {"Rust", "rust"},
-    };
-    m_codeEditor->setLanguage(langLexerMap.value(text, "cpp"));
+    qDebug() << __FUNCTION__ << __LINE__ << text;
+    m_codeEditor->setLanguage(text);
     if (m_menuExamples)
     {
         // load an default example
