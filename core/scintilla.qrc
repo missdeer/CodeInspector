@@ -29,5 +29,6 @@
         <file>resource/sci/themes/NauticalButNice.xml</file>
         <file>resource/sci/themes/Neon.xml</file>
         <file>resource/sci/themes/VS2015-Dark.xml</file>
+        <file>resource/sci/themes/Default.xml</file>
     </qresource>
 </RCC>
