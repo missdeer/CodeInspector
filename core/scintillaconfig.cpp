@@ -240,12 +240,13 @@ void ScintillaConfig::applyLanguageStyle(const QString &configPath, const QStrin
     if (langElem.isNull())
         return;
 
-    QString commentLine  = langElem.attribute("commentLine");
-    QString commentStart = langElem.attribute("commentStart");
-    QString commentEnd   = langElem.attribute("commentEnd");
-    QString lexer        = langElem.attribute("lexer");
+    QString lexer = langElem.attribute("lexer");
     if (lexer.isEmpty())
         lexer = lang;
+
+    auto  l       = lexer.toUtf8();
+    void *lexerId = CreateLexer(l.data());
+    m_sci->setILexer((sptr_t)lexerId);
 
     QDomElement keywordElem = langElem.firstChildElement("Keywords");
     int         keywordSet  = 0;
@@ -255,10 +256,6 @@ void ScintillaConfig::applyLanguageStyle(const QString &configPath, const QStrin
         m_sci->setKeyWords(keywordSet++, keyword.toStdString().c_str());
         keywordElem = keywordElem.nextSiblingElement("Keywords");
     }
-
-    auto  l       = lexer.toUtf8();
-    void *lexerId = CreateLexer(l.data());
-    m_sci->setILexer((sptr_t)(void *)lexerId);
 }
 
 void ScintillaConfig::applyThemeStyle(const QString &themePath, const QString &lang)

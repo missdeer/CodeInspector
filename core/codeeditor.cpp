@@ -6,11 +6,6 @@ CodeEditor::CodeEditor(QWidget *parent) : ScintillaEdit(parent), m_sc(this) {}
 
 void CodeEditor::initialize()
 {
-    m_sc.initScintilla();
-    m_sc.initEditorMargins();
-    m_sc.initLexerStyle("cpp");
-    m_sc.initEditorFolderStyle();
-
     connect(this, &ScintillaEditBase::linesAdded, this, &CodeEditor::linesAdded);
     connect(this, &ScintillaEditBase::marginClicked, this, &CodeEditor::marginClicked);
     connect(this, &ScintillaEditBase::modified, this, &CodeEditor::modified);
