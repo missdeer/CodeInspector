@@ -71,5 +71,6 @@
         <file>resource/example/zig/default.zig</file>
         <file>resource/example/zig/Sum_over_array.zig</file>
         <file>resource/example/java/square.java</file>
+        <file>resource/example/python/pass.py</file>
     </qresource>
 </RCC>
