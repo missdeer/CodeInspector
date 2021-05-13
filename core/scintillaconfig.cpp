@@ -245,10 +245,10 @@ void ScintillaConfig::applyLanguageStyle(const QString &configPath, const QStrin
     QString lexer("cpp");
     if (!langElem.isNull())
     {
-        QString lexer = langElem.attribute("lexer");
-        if (lexer.isEmpty())
-            lexer = lang;
+        lexer = langElem.attribute("name");
     }
+    if (lexer.isEmpty())
+        lexer = lang.toLower();
 
 #if defined(Q_OS_MAC)
     QString lexersPath = QDir::toNativeSeparators(QCoreApplication::applicationDirPath() + "/../Resources/lexers");
