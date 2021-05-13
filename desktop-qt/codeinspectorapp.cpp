@@ -20,8 +20,8 @@ void CodeInspectorApp::initialize()
 {
     QByteArray content;
 
-    const QString defaultConfigurationPath = ":/resource/configurations";
-    QString       path                     = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/configurations";
+    const QString defaultConfigurationPath = ":/resource/configurations.json";
+    QString       path                     = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/configurations.json";
     bool          res                      = false;
     if (loadConfiguration(path, content))
         res = parseConfiguration(content);
@@ -630,7 +630,8 @@ void CodeInspectorApp::requestConfigurations()
     qDebug() << __FUNCTION__;
 #endif
     quint64         value = QRandomGenerator::global()->generate64();
-    QNetworkRequest request(QUrl(g_settings->apiBaseURL() + "/client-options.js?hash=" + QString::number(value)));
+    QNetworkRequest request(
+        QUrl("https://cdn.jsdelivr.net/gh/missdeer/codeinspector@master/core/resource/configurations.json?hash=" + QString::number(value)));
     request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
     request.setRawHeader("Accept", "application/json, text/javascript, */*; q=0.01");
     request.setRawHeader("Accept-Encoding", "gzip, deflate");
@@ -659,7 +660,7 @@ bool CodeInspectorApp::storeConfiguration(const QByteArray &content)
             return false;
         }
     }
-    QString path = d + "/configurations";
+    QString path = d + "/configurations.json";
     QFile   f(path);
     if (!f.open(QIODevice::WriteOnly))
     {

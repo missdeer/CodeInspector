@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>resource/configurations</file>
+        <file>resource/configurations.json</file>
         <file>CodeInspector.png</file>
     </qresource>
 </RCC>
