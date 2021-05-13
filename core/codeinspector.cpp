@@ -85,7 +85,8 @@ void CodeInspector::setAsmItems(const AsmItemList &items, bool binary, QMap<int,
                 QTextStream ts(&opcodeText);
                 for (const auto &opcode : qAsConst(item->opcodes))
                 {
-                    ts << opcode;
+                    QByteArray ba(1, opcode);
+                    ts << ba.toHex() + " ";
                 }
                 if (opcodeText.length() % 2)
                     opcodeText.insert(0, '0');

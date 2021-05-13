@@ -250,7 +250,11 @@ void ScintillaConfig::applyLanguageStyle(const QString &configPath, const QStrin
             lexer = lang;
     }
 
+#if defined(Q_OS_MAC)
+    QString lexersPath = QDir::toNativeSeparators(QCoreApplication::applicationDirPath() + "/../Resources/lexers");
+#else
     QString lexersPath = QDir::toNativeSeparators(QCoreApplication::applicationDirPath() + "/lexers");
+#endif
     SetLibraryProperty("lpeg.home", lexersPath.toUtf8().data());
     SetLibraryProperty("lpeg.color.theme", "light");
     void *lexerId = CreateLexer(lexer.toStdString().c_str());
