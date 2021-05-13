@@ -1,0 +1,37 @@
+name: Update Options
+
+on:
+  schedule:
+    - cron:  '5 4 * * *'
+  push:
+    branches:
+      - 'master'
+    paths:
+      - '.github/workflows/update-options.yml'
+
+jobs:
+  update-options:
+    runs-on: ubuntu-latest      
+    steps:    
+        - name: Check out code into the Go module directory
+          uses: actions/checkout@v2
+          
+        - name: Set up Git
+          env:
+            GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}        
+          run: |
+            git config user.name "auto-update-lists[bot]"
+            git config user.email "auto-update-lists[bot]@users.noreply.github.com"
+            git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
+    
+        - name: update
+          run: |
+            cd core/resource
+            curl -sSL -o configurations.json https://godbolt.org/client-options.js
+            j=`cat configurations.json`
+            findstr="="
+            rest=${j#*$findstr}
+            echo ${rest::-1} > configurations.json
+            git commit -m "auto update configurations at $(date)" configurations.json
+            git push -f origin master
+      
