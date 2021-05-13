@@ -73,9 +73,9 @@ void CodeInspector::setAsmItems(const AsmItemList &items, bool binary, QMap<int,
             if (!addressText.isEmpty())
             {
                 marginSetStyle(i, marginStyleId);
-                auto t = addressText.toUtf8();
+                auto t = " " + addressText.toUtf8();
                 marginSetText(i, t.data());
-                auto tl    = textWidth(marginStyleId, t.data());
+                auto tl    = textWidth(marginStyleId, (t + " ").data());
                 textLength = std::max(tl, textLength);
             }
 
@@ -88,8 +88,6 @@ void CodeInspector::setAsmItems(const AsmItemList &items, bool binary, QMap<int,
                     QByteArray ba(1, opcode);
                     ts << ba.toHex() + " ";
                 }
-                if (opcodeText.length() % 2)
-                    opcodeText.insert(0, '0');
                 annotationSetText(i, opcodeText.toUtf8().data());
                 annotationSetStyle(i, 3);
             }
@@ -110,7 +108,7 @@ void CodeInspector::setAsmItems(const AsmItemList &items, bool binary, QMap<int,
     }
     else
     {
-        annotationSetVisible(ANNOTATION_BOXED);
+        annotationSetVisible(ANNOTATION_STANDARD);
     }
 
 #if !defined(QT_NO_DEBUG)
