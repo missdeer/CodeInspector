@@ -20,9 +20,10 @@ public:
 
 private:
     ScintillaEdit *m_sci;
-    void           applyStyle(const QDomElement &styleElem);
 
-    void applyLanguageStyle(const QString &configPath, const QString &lang);
+    void applyStyle(const QDomElement &styleElem);
+    void applyLexillaLexer(const QString &configPath, const QString &lang);
+    void applyScintilluaLexer(const QString &lang);
     void applyThemeStyle(const QString &themePath, const QString &lang);
 };
 

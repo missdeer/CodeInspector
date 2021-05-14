@@ -84,6 +84,14 @@ void ScintillaConfig::initScintilla()
     m_sci->setSavePoint();
     m_sci->setFontQuality(SC_EFF_QUALITY_ANTIALIASED);
 
+#if defined(Q_OS_MAC)
+    QString lexersPath = QDir::toNativeSeparators(QCoreApplication::applicationDirPath() + "/../Resources/lexers");
+#else
+    QString lexersPath = QDir::toNativeSeparators(QCoreApplication::applicationDirPath() + "/lexers");
+#endif
+    SetLibraryProperty("lpeg.home", lexersPath.toUtf8().data());
+    SetLibraryProperty("lpeg.color.theme", "light");
+
     // apply global settings
     QString themePath = ":/resource/sci/themes/" % g_settings->codeEditorTheme() % ".xml";
     if (!QFile::exists(themePath))
@@ -133,10 +141,11 @@ void ScintillaConfig::initEditorFolderStyle()
 void ScintillaConfig::initLexerStyle(const QString &lang)
 {
     QString lexer = lang.toLower();
-    if (lexer == "assembly" || lexer == "asm")
-        lexer = "asm";
-    else if (lexer == "c++")
-        lexer = "cpp";
+    QMap<QString, QString> langMap = {{"assembly", "asm"}, {"asm", "asm"}, {"c++", "cpp"}, {"c", "ansi_c"}, {"d", "dmd"}};
+    if (langMap.contains(lexer))
+    {
+        lexer = langMap.value(lexer);
+    }
 
     // apply language specified settings
     QString themePath = ":/resource/sci/themes/" % g_settings->codeEditorTheme() % ".xml";
@@ -145,8 +154,9 @@ void ScintillaConfig::initLexerStyle(const QString &lang)
     applyThemeStyle(themePath, lexer);
 
     // read configurations from langs.model.xml
-    QString configPath = ":/resource/sci/langs.model.xml";
-    applyLanguageStyle(configPath, lexer);
+    // QString configPath = ":/resource/sci/langs.model.xml";
+    // applyLanguageStyle(configPath, lexer);
+    applyScintilluaLexer(lexer); // use scintillua
 }
 
 void ScintillaConfig::initEditorMargins()
@@ -217,7 +227,7 @@ void ScintillaConfig::initMarkers()
     }
 }
 
-void ScintillaConfig::applyLanguageStyle(const QString &configPath, const QString &lang)
+void ScintillaConfig::applyLexillaLexer(const QString &configPath, const QString &lang)
 {
     QDomDocument doc;
     QFile        file(configPath);
@@ -250,13 +260,9 @@ void ScintillaConfig::applyLanguageStyle(const QString &configPath, const QStrin
     if (lexer.isEmpty())
         lexer = lang.toLower();
 
-#if defined(Q_OS_MAC)
-    QString lexersPath = QDir::toNativeSeparators(QCoreApplication::applicationDirPath() + "/../Resources/lexers");
-#else
-    QString lexersPath = QDir::toNativeSeparators(QCoreApplication::applicationDirPath() + "/lexers");
-#endif
-    SetLibraryProperty("lpeg.home", lexersPath.toUtf8().data());
-    SetLibraryProperty("lpeg.color.theme", "light");
+    auto psci = m_sci->directPointer();
+    m_sci->privateLexerCall(SCI_SETDOCPOINTER, psci);
+
     void *lexerId = CreateLexer(lexer.toStdString().c_str());
     if (!lexerId)
         CreateLexer("cpp");
@@ -270,6 +276,21 @@ void ScintillaConfig::applyLanguageStyle(const QString &configPath, const QStrin
         m_sci->setKeyWords(keywordSet++, keyword.toStdString().c_str());
         keywordElem = keywordElem.nextSiblingElement("Keywords");
     }
+}
+
+void ScintillaConfig::applyScintilluaLexer(const QString &lang)
+{
+    m_sci->setILexer((sptr_t)CreateLexer(NULL));
+
+    auto psci = m_sci->directPointer();
+    m_sci->privateLexerCall(SCI_SETDOCPOINTER, psci);
+
+    QString lexer = lang.toLower();
+    lexer         = "lpeg_" + lexer;
+    void *lexerId = CreateLexer(lexer.toStdString().c_str());
+    if (!lexerId)
+        CreateLexer("lpeg_cpp");
+    m_sci->setILexer((sptr_t)lexerId);
 }
 
 void ScintillaConfig::applyThemeStyle(const QString &themePath, const QString &lang)
