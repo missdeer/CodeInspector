@@ -153,10 +153,14 @@ void ScintillaConfig::initLexerStyle(const QString &lang)
         themePath = ":/resource/sci/stylers.model.xml";
     applyThemeStyle(themePath, lexer);
 
+#if defined(Q_OS_IOS) || defined(Q_OS_ANDROID)
     // read configurations from langs.model.xml
-    // QString configPath = ":/resource/sci/langs.model.xml";
-    // applyLanguageStyle(configPath, lexer);
-    applyScintilluaLexer(lexer); // use scintillua
+    QString configPath = ":/resource/sci/langs.model.xml";
+    applyLexillaLexer(configPath, lexer);
+#else
+    // use scintillua
+    applyScintilluaLexer(lexer);
+#endif
 }
 
 void ScintillaConfig::initEditorMargins()
