@@ -19,7 +19,7 @@ public:
     void initMarkers();
 
 private:
-    ScintillaEdit *m_sci;
+    ScintillaEdit *m_sci {nullptr};
 
     void applyStyle(const QDomElement &styleElem);
     void applyLexillaLexer(const QString &configPath, const QString &lang);

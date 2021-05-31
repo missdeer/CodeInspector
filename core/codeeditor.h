@@ -19,9 +19,16 @@ public:
 signals:
     void contentModified();
 private slots:
-    void linesAdded(int linesAdded);
-    void marginClicked(int position, int modifiers, int margin);
-    void modified(int type, int position, int length, int linesAdded, const QByteArray &text, int line, int foldNow, int foldPrev);
+    void onLinesAdded(Scintilla::Position linesAdded);
+    void onMarginClicked(Scintilla::Position position, Scintilla::KeyMod modifiers, int margin);
+    void onModified(Scintilla::ModificationFlags type,
+                    Scintilla::Position          position,
+                    Scintilla::Position          length,
+                    Scintilla::Position          linesAdded,
+                    const QByteArray &           text,
+                    Scintilla::Position          line,
+                    Scintilla::FoldLevel         foldNow,
+                    Scintilla::FoldLevel         foldPrev);
 
 private:
     ScintillaConfig m_sc;

@@ -1,14 +1,15 @@
 #include "stdafx.h"
 
 #include "codeeditor.h"
+#include "ScintillaTypes.h"
 
 CodeEditor::CodeEditor(QWidget *parent) : ScintillaEdit(parent), m_sc(this) {}
 
 void CodeEditor::initialize()
 {
-    connect(this, &ScintillaEditBase::linesAdded, this, &CodeEditor::linesAdded);
-    connect(this, &ScintillaEditBase::marginClicked, this, &CodeEditor::marginClicked);
-    connect(this, &ScintillaEditBase::modified, this, &CodeEditor::modified);
+    connect(this, &ScintillaEditBase::linesAdded, this, &CodeEditor::onLinesAdded);
+    connect(this, &ScintillaEditBase::marginClicked, this, &CodeEditor::onMarginClicked);
+    connect(this, &ScintillaEditBase::modified, this, &CodeEditor::onModified);
 #if defined(Q_OS_ANDROID)
     connect(this, &ScintillaEdit::textAreaClicked, [=] {
         auto im = qApp->inputMethod();
@@ -18,7 +19,7 @@ void CodeEditor::initialize()
 #endif
 }
 
-void CodeEditor::linesAdded(int /*linesAdded*/)
+void CodeEditor::onLinesAdded(Scintilla::Position /*linesAdded*/)
 {
     ScintillaEdit *sci        = qobject_cast<ScintillaEdit *>(sender());
     sptr_t         line_count = sci->lineCount();
@@ -29,7 +30,7 @@ void CodeEditor::linesAdded(int /*linesAdded*/)
         sci->setMarginWidthN(0, width);
 }
 
-void CodeEditor::marginClicked(int position, int /*modifiers*/, int margin)
+void CodeEditor::onMarginClicked(Scintilla::Position position, Scintilla::KeyMod /*modifiers*/, int margin)
 {
     ScintillaEdit *sci = qobject_cast<ScintillaEdit *>(sender());
     if (sci->marginTypeN(margin) == SC_MARGIN_SYMBOL)
@@ -47,10 +48,17 @@ void CodeEditor::marginClicked(int position, int /*modifiers*/, int margin)
     }
 }
 
-void CodeEditor::modified(
-    int type, int /*position*/, int /*length*/, int /*linesAdded*/, const QByteArray & /*text*/, int /*line*/, int /*foldNow*/, int /*foldPrev*/)
+void CodeEditor::onModified(Scintilla::ModificationFlags type,
+                            Scintilla::Position /*position*/,
+                            Scintilla::Position /*length*/,
+                            Scintilla::Position /*linesAdded*/,
+                            const QByteArray & /*text*/,
+                            Scintilla::Position /*line*/,
+                            Scintilla::FoldLevel /*foldNow*/,
+                            Scintilla::FoldLevel /*foldPrev*/)
 {
-    if (type & (SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT))
+    if ((int)type & (int)(Scintilla::ModificationFlags::InsertText | Scintilla::ModificationFlags::DeleteText | Scintilla::ModificationFlags::Undo |
+                          Scintilla::ModificationFlags::Redo | Scintilla::ModificationFlags::MultilineUndoRedo))
         emit contentModified();
 }
 
