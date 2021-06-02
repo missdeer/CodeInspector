@@ -1,7 +1,6 @@
 #include "stdafx.h"
 
 #include "codeeditorpane.h"
-
 #include "codeeditor.h"
 #include "codeinspectorapp.h"
 #include "outputwindow.h"
@@ -18,11 +17,11 @@ CodeEditorPane::CodeEditorPane(QWidget *parent) : QWidget(parent)
     topBarLayout->setContentsMargins(0, 0, 0, 0);
     topBarLayout->setSpacing(1);
 
-    m_languageList = new QComboBox(this);
-    topBarLayout->addWidget(m_languageList);
-    m_languageList->clear();
+    m_cbLanguageList = new QComboBox(this);
+    topBarLayout->addWidget(m_cbLanguageList);
+    m_cbLanguageList->clear();
 #if defined(Q_OS_WIN)
-    m_languageList->setMaxVisibleItems(100);
+    m_cbLanguageList->setMaxVisibleItems(100);
 #endif
 
     m_btnLibraries = new QPushButton(QIcon(":/resource/image/library.png"), "", this);
@@ -44,26 +43,33 @@ CodeEditorPane::CodeEditorPane(QWidget *parent) : QWidget(parent)
 
     mainLayout->addWidget(m_codeEditor);
 
-    connect(m_languageList, &QComboBox::currentTextChanged, this, &CodeEditorPane::onCurrentLanguageChanged);
+    connect(m_cbLanguageList, &QComboBox::currentTextChanged, this, &CodeEditorPane::onCurrentLanguageChanged);
     connect(ciApp, &CodeInspectorApp::languageListReady, this, &CodeEditorPane::updateLanguageList);
 }
 
 void CodeEditorPane::updateLanguageList()
 {
-    m_languageList->clear();
+    disconnect(m_cbLanguageList, &QComboBox::currentTextChanged, this, &CodeEditorPane::onCurrentLanguageChanged);
     const auto &languages = ciApp->getLanguageList();
-    for (const auto &language : languages)
+    for (int i = 0; i < languages.length(); i++)
     {
-        m_languageList->addItem(QIcon(QString(":/resource/image/language/%1.png").arg(language->id)), language->name);
+        const auto &language = languages[i];
+        int         index    = m_cbLanguageList->findText(language->name);
+        if (index < 0)
+        {
+            m_cbLanguageList->insertItem(i, QIcon(QString(":/resource/image/language/%1.png").arg(language->id)), language->name);
+        }
     }
-    if (m_languageList->count())
-        m_languageList->setCurrentIndex(g_settings->defaultLanguageIndex());
+    connect(m_cbLanguageList, &QComboBox::currentTextChanged, this, &CodeEditorPane::onCurrentLanguageChanged);
+    Q_ASSERT(m_cbLanguageList->count() > 0);
+    m_cbLanguageList->setCurrentIndex(g_settings->defaultLanguageIndex());
 }
 
 void CodeEditorPane::onCurrentLanguageChanged(const QString &text)
 {
-    if (m_languageList->count() > 1)
-        g_settings->setDefaultLanguageIndex(m_languageList->currentIndex());
+    qDebug() << __FUNCTION__ << __LINE__ << text;
+    if (m_cbLanguageList->count() > 1)
+        g_settings->setDefaultLanguageIndex(m_cbLanguageList->currentIndex());
     emit currentLanguageChanged(text);
     bool show = makeLibariesMenu();
     m_btnLibraries->setVisible(show);
@@ -116,14 +122,14 @@ void CodeEditorPane::onExampleTriggered()
 {
     auto *action  = qobject_cast<QAction *>(sender());
     auto  name    = action->text();
-    auto  content = ciApp->getExampleContent(m_languageList->currentText(), name);
+    auto  content = ciApp->getExampleContent(m_cbLanguageList->currentText(), name);
     m_codeEditor->setContent(content);
 }
 
 void CodeEditorPane::onLibraryVersionTriggered()
 {
     auto *action    = qobject_cast<QAction *>(sender());
-    auto  libraries = ciApp->getLibraryList(m_languageList->currentText());
+    auto  libraries = ciApp->getLibraryList(m_cbLanguageList->currentText());
     if (!libraries)
         return;
     auto libraryName = action->data().toString();
@@ -147,11 +153,11 @@ bool CodeEditorPane::makeLibariesMenu()
         delete m_menuLibraries;
         m_menuLibraries = nullptr;
     }
-    auto libraries = ciApp->getLibraryList(m_languageList->currentText());
+    auto libraries = ciApp->getLibraryList(m_cbLanguageList->currentText());
     if (!libraries)
         return false;
     m_menuLibraries = new QMenu(this);
-    for (const auto &l : *libraries)
+    for (const auto &l : qAsConst(*libraries))
     {
         const auto &versions = l->getVersions();
         if (versions.isEmpty())
@@ -184,7 +190,7 @@ bool CodeEditorPane::makeExamplesMenu()
         delete m_menuExamples;
         m_menuExamples = nullptr;
     }
-    auto examples = ciApp->getExampleList(m_languageList->currentText());
+    auto examples = ciApp->getExampleList(m_cbLanguageList->currentText());
     if (examples.isEmpty())
         return false;
     m_menuExamples = new QMenu(this);
@@ -208,5 +214,5 @@ void CodeEditorPane::initialize()
 
 QString CodeEditorPane::currentLanguageName()
 {
-    return m_languageList->currentText();
+    return m_cbLanguageList->currentText();
 }

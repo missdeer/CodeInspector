@@ -233,6 +233,7 @@ void ScintillaConfig::initMarkers()
 
 void ScintillaConfig::applyLexillaLexer(const QString &configPath, const QString &lang)
 {
+    qDebug() << __FUNCTION__ << __LINE__ << configPath << lang;
     QDomDocument doc;
     QFile        file(configPath);
     if (!file.open(QIODevice::ReadOnly))
@@ -284,13 +285,15 @@ void ScintillaConfig::applyLexillaLexer(const QString &configPath, const QString
 
 void ScintillaConfig::applyScintilluaLexer(const QString &lang)
 {
+    qDebug() << __FUNCTION__ << __LINE__ << lang;
     m_sci->setILexer((sptr_t)CreateLexer(NULL));
 
     auto psci = m_sci->directPointer();
     m_sci->privateLexerCall(SCI_SETDOCPOINTER, psci);
 
     QString lexer = lang.toLower();
-    lexer         = "lpeg_" + lexer;
+    if (!lexer.startsWith("lpeg_", Qt::CaseInsensitive))
+        lexer = "lpeg_" + lexer;
     void *lexerId = CreateLexer(lexer.toStdString().c_str());
     if (!lexerId)
         CreateLexer("lpeg_cpp");

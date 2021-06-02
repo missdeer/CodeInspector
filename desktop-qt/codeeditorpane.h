@@ -36,7 +36,7 @@ private slots:
 
 private:
     CodeEditor * m_codeEditor;
-    QComboBox *  m_languageList;
+    QComboBox *  m_cbLanguageList;
     QPushButton *m_btnLibraries;
     QPushButton *m_btnLoadExample;
     QMenu *      m_menuLibraries {nullptr};

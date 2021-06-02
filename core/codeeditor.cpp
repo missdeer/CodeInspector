@@ -64,11 +64,15 @@ void CodeEditor::onModified(Scintilla::ModificationFlags type,
 
 void CodeEditor::setLanguage(const QString &lang)
 {
-    m_sc.initScintilla();
-    m_sc.initEditorMargins();
-    m_sc.initLexerStyle(lang);
-    m_sc.initEditorFolderStyle();
-    colourise(0, -1);
+    qDebug() << __FUNCTION__ << __LINE__ << lang;
+    if (!lang.isEmpty())
+    {
+        m_sc.initScintilla();
+        m_sc.initEditorMargins();
+        m_sc.initLexerStyle(lang);
+        m_sc.initEditorFolderStyle();
+        colourise(0, -1);
+    }
 }
 
 void CodeEditor::setContent(const QString &content)

@@ -16,13 +16,14 @@ void CodeInspector::initialize()
 
 void CodeInspector::setContent(const QString &content, bool binary)
 {
+    qDebug() << __FUNCTION__ << __LINE__;
     auto b = content.toUtf8();
     setReadOnly(false);
     setText(b.data());
     setReadOnly(true);
 
     emptyUndoBuffer();
-    m_sc.initLexerStyle("asm");
+    // m_sc.initLexerStyle("asm");
     m_sc.initInspectorMargins(binary);
     colourise(0, -1);
 }
