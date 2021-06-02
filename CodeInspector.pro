@@ -1,4 +1,6 @@
 TEMPLATE = subdirs
 
-SUBDIRS = \
-    desktop-qt 
+SUBDIRS =  \
+    desktop-qt
+
+CONFIG += ordered
