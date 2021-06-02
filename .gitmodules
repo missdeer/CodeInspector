@@ -11,3 +11,6 @@
 [submodule "3rdparty/scintillua"]
 	path = 3rdparty/scintillua
 	url = https://github.com/orbitalquark/scintillua.git
+[submodule "3rdparty/QuickScintilla"]
+	path = 3rdparty/QuickScintilla
+	url = https://github.com/mneuroth/QuickScintilla.git
