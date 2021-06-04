@@ -55,7 +55,7 @@ HEADERS += \
     $$files($$PWD/lua/*.h, false) \
     $$files($$PWD/lpeg/*.h, false)
 
-DEFINES += NO_DLL=1 SCI_LEXER=1
+DEFINES += NO_DLL=1 SCI_LEXER=1 USE_SCINTILLUA=1
 CONFIG(release, debug|release) {
     DEFINES += NDEBUG=1
 }
