@@ -41,14 +41,7 @@ SOURCES += \
     $$PWD/lua/loslib.c \
     $$PWD/lua/lstrlib.c \
     $$PWD/lua/ltablib.c \
-    $$PWD/lua/lutf8lib.c \
-    $$PWD/lexilla/lexlib/PropSetSimple.cxx \
-    $$PWD/lexilla/lexlib/WordList.cxx \
-    $$PWD/lexilla/lexlib/LexerModule.cxx \
-    $$PWD/lexilla/lexlib/LexerSimple.cxx \
-    $$PWD/lexilla/lexlib/LexerBase.cxx \
-    $$PWD/lexilla/lexlib/Accessor.cxx \
-    $$PWD/lexilla/lexlib/DefaultLexer.cxx
+    $$PWD/lua/lutf8lib.c
 
 HEADERS += \
     $$files($$PWD/scintillua/*.h, false) \
