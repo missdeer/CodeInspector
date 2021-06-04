@@ -23,8 +23,7 @@ private:
 
     void applyStyle(const QDomElement &styleElem);
     void applyGlobalStyle(const QDomElement &styleElem);
-    void applyLexillaLexer(const QString &configPath, const QString &lang);
-    void applyScintilluaLexer(const QString &configPath, const QString &lang);
+    void applyLexer(const QString &configPath, const QString &lang);
     void applyThemeStyle(const QString &themePath, const QString &lang);
 };
 

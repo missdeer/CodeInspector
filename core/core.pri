@@ -5,7 +5,7 @@ android|ios: {
 } else: {
     include($$PWD/../3rdparty/scintilla-latest.pri)
     include($$PWD/../3rdparty/lexilla-latest.pri)
-#    include($$PWD/../3rdparty/scintillua-latest.pri)
+    include($$PWD/../3rdparty/scintillua-latest.pri)
 }
 
 include($$PWD/../3rdparty/zlib.pri)

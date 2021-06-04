@@ -16,7 +16,6 @@ void CodeInspector::initialize()
 
 void CodeInspector::setContent(const QString &content, bool binary)
 {
-    qDebug() << __FUNCTION__ << __LINE__;
     auto b = content.toUtf8();
     setReadOnly(false);
     setText(b.data());

@@ -1,5 +1,5 @@
 diff --git a/LexLPeg.cxx b/LexLPeg.cxx
-index c22a92b..1bb669a 100644
+index fdf8370..c430402 100644
 --- a/LexLPeg.cxx
 +++ b/LexLPeg.cxx
 @@ -39,6 +39,7 @@ LUALIB_API int luaopen_lpeg(lua_State *L);
@@ -10,7 +10,7 @@ index c22a92b..1bb669a 100644
  
  #ifndef NDEBUG
  #define RECORD_STACK_TOP(l) int orig_stack_top = lua_gettop(l)
-@@ -924,8 +925,13 @@ LexerModule lmLPeg(SCLEX_LPEG, LexerLPeg::LexerFactoryLPeg, "lpeg");
+@@ -925,12 +926,16 @@ LexerModule lmLPeg(SCLEX_LPEG, LexerLPeg::LexerFactoryLPeg, "lpeg");
  #define EXPORT_FUNCTION __declspec(dllexport)
  #define CALLING_CONVENTION __stdcall
  #else
@@ -23,4 +23,35 @@ index c22a92b..1bb669a 100644
 +#endif
  #endif // _WIN32
  
- extern "C" {
+-extern "C" {
+-
++namespace Scintillua {
+ /** Returns 1, the number of lexers defined in this file. */
+ EXPORT_FUNCTION int CALLING_CONVENTION GetLexerCount() { return 1; }
+ 
+diff --git a/LexLPeg.h b/LexLPeg.h
+index 4aed0c9..c5e857d 100644
+--- a/LexLPeg.h
++++ b/LexLPeg.h
+@@ -10,18 +10,19 @@
+ #ifdef __cplusplus
+ #include "ILexer.h"
+ #define ILEXER5 Scintilla::ILexer5
+-extern "C" {
+ #else
+ #define ILEXER5 void
+ #endif
+ 
++namespace Scintillua {
+ const char *GetLibraryPropertyNames();
+ void SetLibraryProperty(const char *key, const char *value);
+ const char *GetNameSpace();
+ ILEXER5 *CreateLexer(const char *name);
++}
+ 
+ #ifdef __cplusplus
+-}
++
+ #endif
+ 
+ #endif
