@@ -226,6 +226,7 @@ void ScintillaConfig::applyLexer(const QString &configPath, const QString &lang)
     QMap<QString, QString> langMap = {
         {"c++", "cpp"},
         {"assembly", "asm"},
+        {"analysis", "asm"},
     };
     if (langMap.contains(lexer))
     {
@@ -244,7 +245,7 @@ void ScintillaConfig::applyLexer(const QString &configPath, const QString &lang)
         Scintillua::SetLibraryProperty("lpeg.home", lexersPath.toUtf8().data());
         Scintillua::SetLibraryProperty("lpeg.color.theme", "scite");
 
-        langMap.insert({{"c", "ansi_c"}, {"d", "dmd"}});
+        langMap.insert({{"c", "ansi_c"}, {"d", "dmd"}, {"ocaml", "caml"}});
         if (langMap.contains(lexer))
         {
             lexer = langMap.value(lexer);
