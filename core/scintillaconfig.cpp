@@ -217,28 +217,6 @@ void ScintillaConfig::initMarkers()
 void ScintillaConfig::applyLexer(const QString &configPath, const QString &lang)
 {
     qDebug() << __FUNCTION__ << __LINE__ << configPath << lang;
-    QDomDocument doc;
-    QFile        file(configPath);
-    if (!file.open(QIODevice::ReadOnly))
-        return;
-    QString errMsg;
-    int     errLine;
-    if (!doc.setContent(&file, &errMsg, &errLine))
-    {
-#if !defined(QT_NO_DEBUG)
-        qDebug() << "parsing xml document failed:" << configPath << errMsg << errLine;
-#endif
-        file.close();
-        return;
-    }
-    file.close();
-
-    QDomElement docElem       = doc.documentElement();
-    QDomElement languagesElem = docElem.firstChildElement("Languages");
-
-    QDomElement langElem = languagesElem.firstChildElement("Language");
-    while (!langElem.isNull() && langElem.attribute("name").toLower() != lang.toLower())
-        langElem = langElem.nextSiblingElement("Language");
 
     QString lexer = lang.toLower();
 
@@ -264,7 +242,7 @@ void ScintillaConfig::applyLexer(const QString &configPath, const QString &lang)
         QString lexersPath = QDir::toNativeSeparators(QCoreApplication::applicationDirPath() + "/lexers");
 #endif
         Scintillua::SetLibraryProperty("lpeg.home", lexersPath.toUtf8().data());
-        Scintillua::SetLibraryProperty("lpeg.color.theme", "light");
+        Scintillua::SetLibraryProperty("lpeg.color.theme", "scite");
 
         langMap.insert({{"c", "ansi_c"}, {"d", "dmd"}});
         if (langMap.contains(lexer))
@@ -277,16 +255,41 @@ void ScintillaConfig::applyLexer(const QString &configPath, const QString &lang)
     }
     if (!lexerId)
     {
+        lexer   = "cpp";
         lexerId = CreateLexer("cpp");
         qDebug() << __FUNCTION__ << __LINE__ << "fallback to lexilla cpp lexer";
     }
     m_sci->setILexer((sptr_t)lexerId);
 
+    QDomDocument doc;
+    QFile        file(configPath);
+    if (!file.open(QIODevice::ReadOnly))
+        return;
+    QString errMsg;
+    int     errLine;
+    if (!doc.setContent(&file, &errMsg, &errLine))
+    {
+#if !defined(QT_NO_DEBUG)
+        qDebug() << "parsing xml document failed:" << configPath << errMsg << errLine;
+#endif
+        file.close();
+        return;
+    }
+    file.close();
+    QDomElement docElem       = doc.documentElement();
+    QDomElement languagesElem = docElem.firstChildElement("Languages");
+
+    QDomElement langElem = languagesElem.firstChildElement("Language");
+    while (!langElem.isNull() && langElem.attribute("name") != lexer && langElem.attribute("name") != lang.toLower())
+        langElem = langElem.nextSiblingElement("Language");
     QDomElement keywordElem = langElem.firstChildElement("Keywords");
     int         keywordSet  = 0;
     while (!keywordElem.isNull())
     {
         QString keyword = keywordElem.text();
+#if !defined(QT_NO_DEBUG)
+        qDebug() << keywordSet << keywordElem.attribute("name") << keyword;
+#endif
         m_sci->setKeyWords(keywordSet++, keyword.toStdString().c_str());
         keywordElem = keywordElem.nextSiblingElement("Keywords");
     }
