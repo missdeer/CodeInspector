@@ -85,14 +85,6 @@ void ScintillaConfig::initScintilla()
     m_sci->setSavePoint();
     m_sci->setFontQuality(SC_EFF_QUALITY_ANTIALIASED);
 
-#if defined(Q_OS_MAC)
-    QString lexersPath = QDir::toNativeSeparators(QCoreApplication::applicationDirPath() + "/../Resources/lexers");
-#else
-    QString lexersPath = QDir::toNativeSeparators(QCoreApplication::applicationDirPath() + "/lexers");
-#endif
-    SetLibraryProperty("lpeg.home", lexersPath.toUtf8().data());
-    SetLibraryProperty("lpeg.color.theme", "light");
-
     // apply global settings
     QString themePath = ":/resource/sci/themes/" % g_settings->codeEditorTheme() % ".xml";
     if (!QFile::exists(themePath))
@@ -295,6 +287,13 @@ void ScintillaConfig::applyScintilluaLexer(const QString &configPath, const QStr
 {
     qDebug() << __FUNCTION__ << __LINE__ << lang;
 
+#if defined(Q_OS_MAC)
+    QString lexersPath = QDir::toNativeSeparators(QCoreApplication::applicationDirPath() + "/../Resources/lexers");
+#else
+    QString lexersPath = QDir::toNativeSeparators(QCoreApplication::applicationDirPath() + "/lexers");
+#endif
+    SetLibraryProperty("lpeg.home", lexersPath.toUtf8().data());
+    SetLibraryProperty("lpeg.color.theme", "light");
     QDomDocument doc;
     QFile        file(configPath);
     if (!file.open(QIODevice::ReadOnly))
