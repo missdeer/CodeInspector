@@ -73,5 +73,6 @@
         <file>resource/example/java/square.java</file>
         <file>resource/example/python/pass.py</file>
         <file>resource/example/nim/square.nim</file>
+        <file>resource/example/kotlin/square.kt</file>
     </qresource>
 </RCC>
