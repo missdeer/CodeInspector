@@ -325,7 +325,10 @@ void ScintillaConfig::applyThemeStyle(const QString &themePath, const QString &l
     for (QDomElement styleElem = globalStylesElem.firstChildElement("WidgetStyle"); !styleElem.isNull();
          styleElem             = styleElem.nextSiblingElement("WidgetStyle"))
     {
-        applyStyle(styleElem);
+        if (styleElem.attribute("styleID").toInt() == 0)
+            applyGlobalStyle(styleElem);
+        else
+            applyStyle(styleElem);
     }
 
     QDomElement lexerStylesElem = docElem.firstChildElement("LexerStyles");
@@ -377,19 +380,18 @@ void ScintillaConfig::applyStyle(const QDomElement &styleElem)
 #endif
     if (!fontName.isEmpty() && families.contains(fontName))
         m_sci->styleSetFont(id, fontName.toStdString().c_str());
+    else if (!g_settings->codeEditorFontFamily().isEmpty() && families.contains(g_settings->codeEditorFontFamily()))
+        m_sci->styleSetFont(id, g_settings->codeEditorFontFamily().toStdString().c_str());
     else
     {
-        if (families.contains(g_settings->codeEditorFontFamily()))
-            m_sci->styleSetFont(id, g_settings->codeEditorFontFamily().toStdString().c_str());
-        else
 #if defined(Q_OS_MAC) || defined(Q_OS_IOS)
-            m_sci->styleSetFont(id, "Menlo");
+        m_sci->styleSetFont(id, "Menlo");
 #elif defined(Q_OS_WIN)
-            m_sci->styleSetFont(id, "Consolas");
+        m_sci->styleSetFont(id, "Consolas");
 #elif defined(Q_OS_ANDROID)
-            m_sci->styleSetFont(id, "Droid Sans Mono");
+        m_sci->styleSetFont(id, "Droid Sans Mono");
 #else
-            m_sci->styleSetFont(id, "Monospace");
+        m_sci->styleSetFont(id, "Monospace");
 #endif
     }
 
@@ -415,4 +417,64 @@ void ScintillaConfig::applyStyle(const QDomElement &styleElem)
         m_sci->styleSetSize(id, std::max(12, fontSize.toInt()));
     else
         m_sci->styleSetSize(id, 12);
+}
+
+void ScintillaConfig::applyGlobalStyle(const QDomElement &styleElem)
+{
+    QString name = styleElem.attribute("name");
+    if (name == "Global override")
+    {
+        applyStyle(styleElem);
+    }
+    if (name == "Current line background colour")
+    {
+        QString backColor = styleElem.attribute("bgColor");
+        if (!backColor.isEmpty())
+        {
+            int color = backColor.toLong(nullptr, 16);
+            color     = ((color & 0xFF0000) >> 16) | (color & 0xFF00) | ((color & 0xFF) << 16);
+            m_sci->setCaretLineBack(color);
+        }
+    }
+    if (name == "Selected text colour")
+    {
+        int     color     = 0x808080;
+        QString backColor = styleElem.attribute("bgColor");
+        if (!backColor.isEmpty())
+        {
+            color = backColor.toLong(nullptr, 16);
+            color = ((color & 0xFF0000) >> 16) | (color & 0xFF00) | ((color & 0xFF) << 16);
+        }
+        m_sci->setSelBack(true, color);
+
+        color             = 0;
+        QString foreColor = styleElem.attribute("fgColor");
+        if (!foreColor.isEmpty())
+        {
+            color = foreColor.toLong(nullptr, 16);
+            color = ((color & 0xFF0000) >> 16) | (color & 0xFF00) | ((color & 0xFF) << 16);
+        }
+        m_sci->setSelFore(true, color);
+    }
+    if (name == "Edge colour")
+    {
+        int     color     = 0xc0c0c0;
+        QString foreColor = styleElem.attribute("fgColor");
+        if (!foreColor.isEmpty())
+        {
+            color = foreColor.toLong(nullptr, 16);
+            color = ((color & 0xFF0000) >> 16) | (color & 0xFF00) | ((color & 0xFF) << 16);
+        }
+        m_sci->setEdgeColour(color);
+    }
+    if (name == "White space symbol")
+    {
+        QString foreColor = styleElem.attribute("fgColor");
+        if (!foreColor.isEmpty())
+        {
+            int color = foreColor.toLong(nullptr, 16);
+            color     = ((color & 0xFF0000) >> 16) | (color & 0xFF00) | ((color & 0xFF) << 16);
+            m_sci->setWhitespaceFore(true, color);
+        }
+    }
 }
