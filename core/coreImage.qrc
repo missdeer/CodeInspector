@@ -359,5 +359,6 @@
         <file>resource/image/language/nim.png</file>
         <file>resource/image/language/python.png</file>
         <file>resource/image/language/java.png</file>
+        <file>resource/image/language/kotlin.png</file>
     </qresource>
 </RCC>
