@@ -8,6 +8,8 @@ QT_BEGIN_NAMESPACE
 class QTimer;
 QT_END_NAMESPACE
 
+inline const int networkRequestTimeout = 30000;
+
 class NetworkReplyHelper : public QObject
 {
     Q_OBJECT

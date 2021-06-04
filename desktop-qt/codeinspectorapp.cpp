@@ -48,7 +48,7 @@ void CodeInspectorApp::requestLanguageList()
 
     auto *reply       = m_nam.get(request);
     auto *replyHelper = new NetworkReplyHelper(reply);
-    replyHelper->setTimeout(10000);
+    replyHelper->setTimeout(networkRequestTimeout);
     connect(replyHelper, SIGNAL(done()), this, SLOT(onLanguageListRequestFinished()));
 }
 
@@ -119,7 +119,7 @@ void CodeInspectorApp::requestCompilerList(const QString &language)
     auto *reply       = m_nam.get(request);
     auto *replyHelper = new NetworkReplyHelper(reply);
     replyHelper->setData(language);
-    replyHelper->setTimeout(10000);
+    replyHelper->setTimeout(networkRequestTimeout);
     connect(replyHelper, SIGNAL(done()), this, SLOT(onCompilerListRequestFinished()));
 }
 
@@ -639,7 +639,7 @@ void CodeInspectorApp::requestConfigurations()
 
     auto *reply       = m_nam.get(request);
     auto *replyHelper = new NetworkReplyHelper(reply);
-    replyHelper->setTimeout(10000);
+    replyHelper->setTimeout(networkRequestTimeout);
     connect(replyHelper, SIGNAL(done()), this, SLOT(onConfigurationRequestFinished()));
 }
 

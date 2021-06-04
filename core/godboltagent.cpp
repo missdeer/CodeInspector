@@ -144,7 +144,7 @@ void GodboltAgent::compile(const CompileInfo &ci)
 #endif
     auto *reply       = m_nam.post(request, postBody);
     auto *replyHelper = new NetworkReplyHelper(reply);
-    replyHelper->setTimeout(10000);
+    replyHelper->setTimeout(networkRequestTimeout);
     connect(replyHelper, SIGNAL(done()), this, SLOT(onCompileRequestFinished()));
 }
 
