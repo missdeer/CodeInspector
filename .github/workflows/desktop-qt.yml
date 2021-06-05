@@ -53,7 +53,11 @@ jobs:
         run: |
           cd 3rdparty\scintillua
           git apply ..\scintillua.patch
-          cd ..
+          cd ..\lexilla
+          git apply ..\lexilla.patch
+          copy ..\lexilla-patch\Lex*.cxx lexers\
+          copy ..\lexilla-patch\*.h lexlib\
+          cd ..\..
       
       - name: Set up jom
         shell: cmd
@@ -126,7 +130,11 @@ jobs:
         run: |
           cd 3rdparty\scintillua
           git apply ..\scintillua.patch
-          cd ..
+          cd ..\lexilla
+          git apply ..\lexilla.patch
+          copy ..\lexilla-patch\Lex*.cxx lexers\
+          copy ..\lexilla-patch\*.h lexlib\
+          cd ..\..
           
       - name: Set up clang for Windows
         shell: cmd
@@ -237,7 +245,11 @@ jobs:
         run: |
           cd 3rdparty\scintillua
           git apply ..\scintillua.patch
-          cd ..
+          cd ..\lexilla
+          git apply ..\lexilla.patch
+          copy ..\lexilla-patch\Lex*.cxx lexers\
+          copy ..\lexilla-patch\*.h lexlib\
+          cd ..\..
 
       - name: prepare Scintilla
         shell: cmd
@@ -293,7 +305,11 @@ jobs:
         run: |
           cd 3rdparty/scintillua
           git apply ../scintillua.patch
-          cd ..
+          cd ../lexilla
+          git apply ../lexilla.patch
+          copy ../lexilla-patch/Lex*.cxx lexers/
+          copy ../lexilla-patch/*.h lexlib/
+          cd ../..
       
       - name: build macos
         run: |
