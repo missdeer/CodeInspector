@@ -502,7 +502,7 @@ index 50eedb7c..134e213a 100644
  // Simple case functions for ASCII supersets.
  
 diff --git a/lexlib/LexAccessor.h b/lexlib/LexAccessor.h
-index 331c501f..f83d9cc1 100644
+index 331c501f..28611f6f 100644
 --- a/lexlib/LexAccessor.h
 +++ b/lexlib/LexAccessor.h
 @@ -8,6 +8,12 @@
@@ -518,12 +518,11 @@ index 331c501f..f83d9cc1 100644
  namespace Lexilla {
  
  enum class EncodingType { eightBit, unicode, dbcs };
-@@ -181,6 +187,23 @@ public:
+@@ -181,6 +187,22 @@ public:
  	void ChangeLexerState(Sci_Position start, Sci_Position end) {
  		pAccess->ChangeLexerState(start, end);
  	}
 +
-+	
 +	void GetRange(Sci_PositionU startPos_, Sci_PositionU endPos_, char *s, Sci_PositionU len) noexcept {
 +		endPos_ = std::min(endPos_, startPos_ + len - 1);
 +		if (startPos_ >= static_cast<Sci_PositionU>(startPos) && endPos_ <= static_cast<Sci_PositionU>(endPos)) {
@@ -542,7 +541,7 @@ index 331c501f..f83d9cc1 100644
  };
  
  struct LexicalClass {
-@@ -190,6 +213,181 @@ struct LexicalClass {
+@@ -190,6 +212,181 @@ struct LexicalClass {
  	const char *description;
  };
  
