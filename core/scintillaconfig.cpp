@@ -367,31 +367,37 @@ void ScintillaConfig::applyStyle(const QDomElement &styleElem)
         }
     }
 
+    QString fontName = styleElem.attribute("fontName");
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    QStringList families = QFontDatabase::families();
+#else
+    QFontDatabase db;
+    QStringList   families = db.families();
+#endif
+
+    QStringList fonts = g_settings->codeEditorFontFamily().split(";");
+#if defined(Q_OS_MAC) || defined(Q_OS_IOS)
+    fonts.append("Menlo");
+#elif defined(Q_OS_WIN)
+    fonts.append("Consolas");
+#elif defined(Q_OS_ANDROID)
+    fonts.append("Droid Sans Mono");
+#else
+    fonts.append("Monospace");
+#endif
+    for (const auto &f : fonts)
+    {
+        if (families.contains(f))
+        {
+            m_sci->styleSetFont(id, f.toStdString().c_str());
+            break;
+        }
+    }
+
     if (styleElem.hasAttribute("fontName"))
     {
-        QString fontName = styleElem.attribute("fontName");
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-        QStringList families = QFontDatabase::families();
-#else
-        QFontDatabase db;
-        QStringList   families = db.families();
-#endif
         if (id != 0 && id != 32 && !fontName.isEmpty() && families.contains(fontName))
             m_sci->styleSetFont(id, fontName.toStdString().c_str());
-        else if (id != 0 && id != 32 && !g_settings->codeEditorFontFamily().isEmpty() && families.contains(g_settings->codeEditorFontFamily()))
-            m_sci->styleSetFont(id, g_settings->codeEditorFontFamily().toStdString().c_str());
-        else
-        {
-#if defined(Q_OS_MAC) || defined(Q_OS_IOS)
-            m_sci->styleSetFont(id, "Menlo");
-#elif defined(Q_OS_WIN)
-            m_sci->styleSetFont(id, "Consolas");
-#elif defined(Q_OS_ANDROID)
-            m_sci->styleSetFont(id, "Droid Sans Mono");
-#else
-            m_sci->styleSetFont(id, "Monospace");
-#endif
-        }
     }
 
     if (styleElem.hasAttribute("fontStyle"))
@@ -415,11 +421,12 @@ void ScintillaConfig::applyStyle(const QDomElement &styleElem)
             m_sci->styleSetChangeable(id, true);
     }
 
+    m_sci->styleSetSize(id, 14);
     if (styleElem.hasAttribute("fontSize"))
     {
         QString fontSize = styleElem.attribute("fontSize");
         if (!fontSize.isEmpty())
-            m_sci->styleSetSize(id, fontSize.toInt());
+            m_sci->styleSetSize(id, std::max(14, fontSize.toInt()));
     }
 }
 
