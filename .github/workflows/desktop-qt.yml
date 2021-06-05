@@ -307,8 +307,8 @@ jobs:
           git apply ../scintillua.patch
           cd ../lexilla
           git apply ../lexilla.patch
-          copy ../lexilla-patch/Lex*.cxx lexers/
-          copy ../lexilla-patch/*.h lexlib/
+          cp ../lexilla-patch/Lex*.cxx lexers/
+          cp ../lexilla-patch/*.h lexlib/
           cd ../..
       
       - name: build macos
