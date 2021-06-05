@@ -896,7 +896,7 @@ index a03c74cd..dbff8161 100644
  
  #endif
 diff --git a/lexlib/WordList.cxx b/lexlib/WordList.cxx
-index 4676717a..bcf799c6 100644
+index 4676717a..e548bead 100644
 --- a/lexlib/WordList.cxx
 +++ b/lexlib/WordList.cxx
 @@ -15,6 +15,7 @@
@@ -934,7 +934,7 @@ index 4676717a..bcf799c6 100644
  WordList::WordList(bool onlyLineEnds_) :
  	words(0), list(0), len(0), onlyLineEnds(onlyLineEnds_) {
  	// Prevent warnings by static analyzers about uninitialized starts.
-@@ -197,6 +218,78 @@ bool WordList::InList(const char *s) const noexcept {
+@@ -197,6 +218,81 @@ bool WordList::InList(const char *s) const noexcept {
  	return false;
  }
  
@@ -956,6 +956,9 @@ index 4676717a..bcf799c6 100644
 +	if (end) {
 +		Range range(end);
 +		range_t count = range.Length();
++		if (count <= 0) {
++			return false;
++		}
 +		if (count < WordListLinearSearchThreshold) {
 +			do {
 +				const char *a = words[range.start] + 1;
