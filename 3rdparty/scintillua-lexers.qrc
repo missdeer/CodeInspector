@@ -80,7 +80,6 @@
         <file>scintillua/lexers/lisp.lua</file>
         <file>scintillua/lexers/litcoffee.lua</file>
         <file>scintillua/lexers/logtalk.lua</file>
-        <file>scintillua/lexers/lpeg.properties</file>
         <file>scintillua/lexers/lua.lua</file>
         <file>scintillua/lexers/makefile.lua</file>
         <file>scintillua/lexers/man.lua</file>
@@ -132,7 +131,6 @@
         <file>scintillua/lexers/systemd.lua</file>
         <file>scintillua/lexers/taskpaper.lua</file>
         <file>scintillua/lexers/tcl.lua</file>
-        <file>scintillua/lexers/template.txt</file>
         <file>scintillua/lexers/tex.lua</file>
         <file>scintillua/lexers/texinfo.lua</file>
         <file>scintillua/lexers/text.lua</file>
