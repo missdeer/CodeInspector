@@ -382,6 +382,7 @@ void ScintillaConfig::extractScintilluaLexers(const QString &lexersPath)
 void ScintillaConfig::applyStyle(const QDomElement &styleElem)
 {
     int id = styleElem.attribute("styleID").toInt();
+    m_sci->styleSetFore(id, 0x0);
     if (styleElem.hasAttribute("fgColor"))
     {
         QString foreColor = styleElem.attribute("fgColor");
@@ -393,16 +394,17 @@ void ScintillaConfig::applyStyle(const QDomElement &styleElem)
         }
     }
 
-    if (styleElem.hasAttribute("bgColor"))
-    {
-        QString backColor = styleElem.attribute("bgColor");
-        if (!backColor.isEmpty())
-        {
-            int color = backColor.toLong(nullptr, 16);
-            color     = ((color & 0xFF0000) >> 16) | (color & 0xFF00) | ((color & 0xFF) << 16);
-            m_sci->styleSetBack(id, color);
-        }
-    }
+    m_sci->styleSetBack(id, 0xFFFFFF);
+    //    if (styleElem.hasAttribute("bgColor"))
+    //    {
+    //        QString backColor = styleElem.attribute("bgColor");
+    //        if (!backColor.isEmpty())
+    //        {
+    //            int color = backColor.toLong(nullptr, 16);
+    //            color     = ((color & 0xFF0000) >> 16) | (color & 0xFF00) | ((color & 0xFF) << 16);
+    //            m_sci->styleSetBack(id, color);
+    //        }
+    //    }
 
     QString fontName = styleElem.attribute("fontName");
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
@@ -414,9 +416,9 @@ void ScintillaConfig::applyStyle(const QDomElement &styleElem)
 
     QStringList fonts = g_settings->codeEditorFontFamily().split(";");
 #if defined(Q_OS_MAC) || defined(Q_OS_IOS)
-    fonts.append("Menlo");
+    fonts.append("Monaco");
 #elif defined(Q_OS_WIN)
-    fonts.append("Consolas");
+    fonts.append("Courier New");
 #elif defined(Q_OS_ANDROID)
     fonts.append("Droid Sans Mono");
 #else
@@ -474,16 +476,16 @@ void ScintillaConfig::applyGlobalStyle(const QDomElement &styleElem)
     {
         applyStyle(styleElem);
     }
-    if (name == "Current line background colour")
-    {
-        QString backColor = styleElem.attribute("bgColor");
-        if (!backColor.isEmpty())
-        {
-            int color = backColor.toLong(nullptr, 16);
-            color     = ((color & 0xFF0000) >> 16) | (color & 0xFF00) | ((color & 0xFF) << 16);
-            m_sci->setCaretLineBack(color);
-        }
-    }
+    //    if (name == "Current line background colour")
+    //    {
+    //        QString backColor = styleElem.attribute("bgColor");
+    //        if (!backColor.isEmpty())
+    //        {
+    //            int color = backColor.toLong(nullptr, 16);
+    //            color     = ((color & 0xFF0000) >> 16) | (color & 0xFF00) | ((color & 0xFF) << 16);
+    //            m_sci->setCaretLineBack(color);
+    //        }
+    //    }
     if (name == "Selected text colour")
     {
         int     color     = 0x808080;
