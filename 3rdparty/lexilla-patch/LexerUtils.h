@@ -2,6 +2,8 @@
 // See License.txt for details about distribution and modification.
 #pragma once
 
+#include <vector>
+
 namespace Lexilla {
 
 // TODO: change packed line state to NestedStateStack (convert lexer to class).
