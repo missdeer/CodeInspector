@@ -775,6 +775,96 @@
             <WordsStyle name="Selected Line" styleID="5" fgColor="000080" bgColor="FFFF4F" fontName="" fontStyle="0" fontSize="" />
             <WordsStyle name="Current line background colour" styleID="6" bgColor="E8E8FF" />
         </LexerType>
+        <LexerType name="llvm" desc="LLVM IR" ext="">
+            <WordsStyle name="WORD" styleID="20" fgColor="0000FF" />
+            <WordsStyle name="WORD2" styleID="21" fgColor="0000FF" />
+            <WordsStyle name="INTRINSIC" styleID="18" fgColor="A46000" fontStyle="1" />
+            <WordsStyle name="INSTRUCTION" styleID="17" fgColor="0080FF" />
+            <WordsStyle name="ATTRIBUTE" styleID="16" fgColor="FF8000" />
+            <WordsStyle name="ATTRIBUTE_GROUP" styleID="11" fgColor="FF8000" />
+            <WordsStyle name="METADATA" styleID="9" fgColor="FF8000" />
+            <WordsStyle name="META_STRING" styleID="10" fgColor="FF8000" />
+            <WordsStyle name="COMDAT" styleID="8" fgColor="BB60D5" />
+            <WordsStyle name="GLOBAL_VARIABLE" styleID="13" fgColor="7C5AF3" />
+            <WordsStyle name="QUOTED_GLOBAL_VARIABLE" styleID="15" fgColor="7C5AF3" />
+            <WordsStyle name="VARIABLE" styleID="12" fgColor="808000" />
+            <WordsStyle name="QUOTED_VARIABLE" styleID="14" fgColor="808000" />
+            <WordsStyle name="FUNCTION" styleID="19" fgColor="A46000" />
+            <WordsStyle name="TYPE" styleID="22" fgColor="007F7F" />
+            <WordsStyle name="COMMENTLINE" styleID="1" fgColor="608060" />
+            <WordsStyle name="STRING" styleID="6" fgColor="008000" />
+            <WordsStyle name="ESCAPECHAR" styleID="7" fgColor="0080C0" />
+            <WordsStyle name="LABEL" styleID="23" fgColor="FFC040" />
+            <WordsStyle name="NUMBER" styleID="3" fgColor="FF0000" />
+            <WordsStyle name="OPERATOR" styleID="5" fgColor="B000B0" />
+        </LexerType>
+        <LexerType name="kotlin" desc="Kotlin" ext="">
+            <WordsStyle name="WORD" styleID="21" fgColor="0000FF" />
+            <WordsStyle name="ANNOTATION" styleID="18" fgColor="FF8000" />
+            <WordsStyle name="CLASS" styleID="22" fgColor="0080FF" />
+            <WordsStyle name="INTERFACE" styleID="23" fgColor="1E90FF" fontStyle="1" />
+            <WordsStyle name="ENUM" styleID="24" fgColor="FF8000" />
+            <WordsStyle name="FUNCTION" styleID="25" fgColor="A46000" />
+            <WordsStyle name="COMMENTBLOCK" styleID="3" fgColor="608060" />
+            <WordsStyle name="COMMENTLINE" styleID="1" fgColor="608060" />
+            <WordsStyle name="COMMENTBLOCKDOC" styleID="4" fgColor="408040" />
+            <WordsStyle name="COMMENTLINEDOC" styleID="2" fgColor="408040" />
+            <WordsStyle name="COMMENTDOCWORD" styleID="5" fgColor="408080" />
+            <WordsStyle name="TASKMARKER" styleID="6" fgColor="408080" fontStyle="1" />
+            <WordsStyle name="CHARACTER" styleID="10" fgColor="008000" />
+            <WordsStyle name="STRING" styleID="11" fgColor="008000" />
+            <WordsStyle name="RAWSTRING" styleID="12" fgColor="F08000" />
+            <WordsStyle name="RAWSTRINGSTART" styleID="14" fgColor="F08000" />
+            <WordsStyle name="RAWSTRINGEND" styleID="15" fgColor="F08000" />
+            <WordsStyle name="ESCAPECHAR" styleID="13" fgColor="0080C0" />
+            <WordsStyle name="BACKTICKS" styleID="16" fgColor="9E4D2A" />
+            <WordsStyle name="LABEL" styleID="19" fgColor="7C5AF3" />
+            <WordsStyle name="NUMBER" styleID="7" fgColor="FF0000" />
+            <WordsStyle name="VARIABLE" styleID="17" fgColor="9E4D2A" />
+            <WordsStyle name="OPERATOR" styleID="8" fgColor="B000B0" />
+            <WordsStyle name="OPERATOR2" styleID="9" fgColor="B000B0" />
+        </LexerType>
+        <LexerType name="swift" desc="Swift" ext="">
+            <WordsStyle name="WORD" styleID="25" fgColor="0000FF" />
+            <WordsStyle name="DIRECTIVE" styleID="20" fgColor="FF8000" />
+            <WordsStyle name="ATTRIBUTE" styleID="23" fgColor="FF8000" />
+            <WordsStyle name="CLASS" styleID="26" fgColor="0080FF" />
+            <WordsStyle name="STRUCT" styleID="27" fgColor="0080FF" />
+            <WordsStyle name="PROTOCOL" styleID="28" fgColor="1E90FF" fontStyle="1" />
+            <WordsStyle name="ENUM" styleID="29" fgColor="FF8000" />
+            <WordsStyle name="FUNCTION_DEFINE" styleID="30" fgColor="A46000" fontStyle="1" />
+            <WordsStyle name="FUNCTION" styleID="9" fgColor="A46000" />
+            <WordsStyle name="COMMENTBLOCK" styleID="3" fgColor="608060" />
+            <WordsStyle name="COMMENTLINE" styleID="1" fgColor="608060" />
+            <WordsStyle name="COMMENTBLOCKDOC" styleID="4" fgColor="408040" />
+            <WordsStyle name="COMMENTLINEDOC" styleID="3" fgColor="408040" />
+            <WordsStyle name="TASKMARKER" styleID="5" fgColor="408080" fontStyle="1" />
+            <WordsStyle name="STRING" styleID="11" fgColor="008000" />
+            <WordsStyle name="TRIPLE_STRING" styleID="12" fgColor="F08000" />
+            <WordsStyle name="TRIPLE_STRINGSTART" styleID="16" fgColor="F08000" />
+            <WordsStyle name="TRIPLE_STRINGEND" styleID="18" fgColor="F08000" />
+            <WordsStyle name="STRING_ED" styleID="13" fgColor="F08000" />
+            <WordsStyle name="TRIPLE_STRING_ED" styleID="14" fgColor="F08000" />
+            <WordsStyle name="TRIPLE_STRING_EDSTART" styleID="17" fgColor="F08000" />
+            <WordsStyle name="TRIPLE_STRING_EDEND" styleID="19" fgColor="F08000" />
+            <WordsStyle name="ESCAPECHAR" styleID="15" fgColor="0080C0" />
+            <WordsStyle name="LABEL" styleID="10" fgColor="FFC040" />
+            <WordsStyle name="NUMBER" styleID="6" fgColor="FF0000" />
+            <WordsStyle name="VARIABLE" styleID="24" fgColor="9E4D2A" />
+            <WordsStyle name="OPERATOR" styleID="7" fgColor="B000B0" />
+            <WordsStyle name="OPERATOR2" styleID="8" fgColor="B000B0" />
+        </LexerType>
+        <LexerType name="wasm" desc="WebAssembly" ext="">
+            <WordsStyle name="COMMENTLINE" styleID="1" fgColor="608060" />
+            <WordsStyle name="COMMENTBLOCK" styleID="2" fgColor="608060" />
+            <WordsStyle name="NUMBER" styleID="4" fgColor="FF0000" />
+            <WordsStyle name="OPERATOR" styleID="5" fgColor="B000B0" />
+            <WordsStyle name="STRING" styleID="7" fgColor="008000" />
+            <WordsStyle name="ESCAPECHAR" styleID="8" fgColor="0080C0" />
+            <WordsStyle name="INSTRUCTION" styleID="9" fgColor="0080FF" />
+            <WordsStyle name="KEYWORD" styleID="11" fgColor="FF8000" />
+            <WordsStyle name="TYPE" styleID="12" fgColor="7C5AF3" />
+        </LexerType>
     </LexerStyles>
     <GlobalStyles>
         <!-- Attention : Don't modify the name of styleID="0" -->

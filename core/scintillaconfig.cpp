@@ -227,6 +227,7 @@ void ScintillaConfig::applyLexer(const QString &configPath, const QString &lang)
         {"c++", "cpp"},
         {"assembly", "asm"},
         {"analysis", "asm"},
+        {"llvm ir", "llvm"},
     };
     if (langMap.contains(lexer))
     {

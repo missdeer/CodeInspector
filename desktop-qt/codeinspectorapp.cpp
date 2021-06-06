@@ -31,7 +31,7 @@ void CodeInspectorApp::initialize()
         loadConfiguration(defaultConfigurationPath, content);
         parseConfiguration(content);
     }
-    // requestConfigurations();
+    requestConfigurations();
 }
 
 void CodeInspectorApp::requestLanguageList()
