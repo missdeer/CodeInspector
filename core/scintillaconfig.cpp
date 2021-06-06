@@ -238,12 +238,14 @@ void ScintillaConfig::applyLexer(const QString &configPath, const QString &lang)
     if (!lexerId)
     {
         m_sci->setILexer((sptr_t)Scintillua::CreateLexer(NULL));
-#if defined(Q_OS_MAC)
-        QString lexersPath = QDir::toNativeSeparators(QCoreApplication::applicationDirPath() + "/../Resources/lexers");
-#else
-        QString lexersPath = QDir::toNativeSeparators(QCoreApplication::applicationDirPath() + "/lexers");
-#endif
-        Scintillua::SetLibraryProperty("lpeg.home", lexersPath.toUtf8().data());
+
+        auto lexersPath = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/lexers";
+        QDir dir(lexersPath);
+        if (!dir.exists(lexersPath + "/themes"))
+            dir.mkpath(lexersPath + "/themes");
+        extractScintilluaLexers(lexersPath);
+
+        Scintillua::SetLibraryProperty("lpeg.home", QDir::toNativeSeparators(lexersPath).toUtf8().data());
         Scintillua::SetLibraryProperty("lpeg.color.theme", "scite");
 
         langMap.insert({{"c", "ansi_c"}, {"d", "dmd"}, {"ocaml", "caml"}});
@@ -340,6 +342,40 @@ void ScintillaConfig::applyThemeStyle(const QString &themePath, const QString &l
          styleElem             = styleElem.nextSiblingElement("WordsStyle"))
     {
         applyStyle(styleElem);
+    }
+}
+
+void ScintillaConfig::extractScintilluaLexers(const QString &lexersPath)
+{
+    QDir resDir(":/scintillua/lexers");
+    auto resEntryInfos = resDir.entryInfoList();
+    for (const auto &info : qAsConst(resEntryInfos))
+    {
+        QString localFileName = lexersPath + "/" + info.fileName();
+        if (!QFile::exists(localFileName) || QFileInfo(localFileName).lastModified() < info.lastModified())
+        {
+            QFile from(info.filePath());
+            QFile to(localFileName);
+            if (from.open(QIODevice::ReadOnly) && to.open(QIODevice::WriteOnly | QIODevice::Truncate))
+            {
+                to.write(from.readAll());
+            }
+        }
+    }
+    resDir.cd("themes");
+    resEntryInfos = resDir.entryInfoList();
+    for (const auto &info : qAsConst(resEntryInfos))
+    {
+        QString localFileName = lexersPath + "/themes/" + info.fileName();
+        if (!QFile::exists(localFileName) || QFileInfo(localFileName).lastModified() < info.lastModified())
+        {
+            QFile from(info.filePath());
+            QFile to(localFileName);
+            if (from.open(QIODevice::ReadOnly) && to.open(QIODevice::WriteOnly | QIODevice::Truncate))
+            {
+                to.write(from.readAll());
+            }
+        }
     }
 }
 

@@ -52,3 +52,6 @@ DEFINES += NO_DLL=1 SCI_LEXER=1
 CONFIG(release, debug|release) {
     DEFINES += NDEBUG=1
 }
+
+RESOURCES += \
+    $$PWD/scintillua-lexers.qrc

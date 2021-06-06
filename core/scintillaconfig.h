@@ -25,6 +25,7 @@ private:
     void applyGlobalStyle(const QDomElement &styleElem);
     void applyLexer(const QString &configPath, const QString &lang);
     void applyThemeStyle(const QString &themePath, const QString &lang);
+    void extractScintilluaLexers(const QString &lexersPath);
 };
 
 #endif // SCINTILLACONFIG_H
