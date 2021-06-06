@@ -896,21 +896,90 @@ index a03c74cd..dbff8161 100644
  
  #endif
 diff --git a/lexlib/WordList.cxx b/lexlib/WordList.cxx
-index 4676717a..e548bead 100644
+index 4676717a..9715420d 100644
 --- a/lexlib/WordList.cxx
 +++ b/lexlib/WordList.cxx
-@@ -15,6 +15,7 @@
+@@ -15,55 +15,83 @@
  #include "WordList.h"
  
  using namespace Lexilla;
 +using range_t = WordList::range_t;
++
++namespace {
  
  /**
   * Creates an array that points into each word in the string and puts \0 terminators
-@@ -60,6 +61,26 @@ static char **ArrayFromWordList(char *wordlist, size_t slen, int *len, bool only
+  * after each word.
+  */
+-static char **ArrayFromWordList(char *wordlist, size_t slen, int *len, bool onlyLineEnds = false) {
+-	int prev = '\n';
+-	int words = 0;
+-	// For rapid determination of whether a character is a separator, build
+-	// a look up table.
+-	bool wordSeparator[256] = {};	// Initialise all to false.
+-	wordSeparator[static_cast<unsigned int>('\r')] = true;
+-	wordSeparator[static_cast<unsigned int>('\n')] = true;
+-	if (!onlyLineEnds) {
+-		wordSeparator[static_cast<unsigned int>(' ')] = true;
+-		wordSeparator[static_cast<unsigned int>('\t')] = true;
+-	}
+-	for (int j = 0; wordlist[j]; j++) {
+-		const int curr = static_cast<unsigned char>(wordlist[j]);
+-		if (!wordSeparator[curr] && wordSeparator[prev])
++inline char **ArrayFromWordList(char *wordlist, size_t slen, range_t *len) {
++	unsigned char prev = 1;
++	range_t words = 0;
++	// treat space and C0 control characters as word separators.
++
++	char * const end = wordlist + slen;
++	char *s = wordlist;
++	while (s < end) {
++		const unsigned char ch = *s++;
++		const bool curr = ch <= ' ';
++		if (!curr && prev) {
+ 			words++;
++		}
+ 		prev = curr;
+ 	}
++
+ 	char **keywords = new char *[words + 1];
+-	int wordsStore = 0;
++	range_t wordsStore = 0;
+ 	if (words) {
+ 		prev = '\0';
+-		for (size_t k = 0; k < slen; k++) {
+-			if (!wordSeparator[static_cast<unsigned char>(wordlist[k])]) {
++		s = wordlist;
++		while (s < end) {
++			unsigned char ch = *s;
++			if (ch > ' ') {
+ 				if (!prev) {
+-					keywords[wordsStore] = &wordlist[k];
++					keywords[wordsStore] = s;
+ 					wordsStore++;
+ 				}
+ 			} else {
+-				wordlist[k] = '\0';
++				*s = '\0';
++				ch = '\0';
+ 			}
+-			prev = wordlist[k];
++			prev = ch;
++			++s;
+ 		}
+ 	}
++
+ 	assert(wordsStore < (words + 1));
+-	keywords[wordsStore] = &wordlist[slen];
++	keywords[wordsStore] = end;
+ 	*len = wordsStore;
  	return keywords;
  }
  
+-WordList::WordList(bool onlyLineEnds_) :
+-	words(0), list(0), len(0), onlyLineEnds(onlyLineEnds_) {
+-	// Prevent warnings by static analyzers about uninitialized starts.
+-	starts[0] = -1;
 +/** Threshold for linear search.
 + * Because of cache locality and other metrics, linear search is faster than binary search
 + * when word list contains few words.
@@ -931,13 +1000,221 @@ index 4676717a..e548bead 100644
 +	}
 +};
 +
- WordList::WordList(bool onlyLineEnds_) :
- 	words(0), list(0), len(0), onlyLineEnds(onlyLineEnds_) {
- 	// Prevent warnings by static analyzers about uninitialized starts.
-@@ -197,6 +218,81 @@ bool WordList::InList(const char *s) const noexcept {
++}
++
++WordList::WordList() noexcept :
++	words(nullptr), list(nullptr), len(0) {
++	// Prevent warnings by static analyzers about uninitialized ranges.
++	ranges[0] = {};
+ }
+ 
+ WordList::~WordList() {
+@@ -71,86 +99,67 @@ WordList::~WordList() {
+ }
+ 
+ WordList::operator bool() const noexcept {
+-	return len ? true : false;
++	return len != 0;
+ }
+ 
+ bool WordList::operator!=(const WordList &other) const noexcept {
+-	if (len != other.len)
++	if (len != other.len) {
+ 		return true;
+-	for (int i=0; i<len; i++) {
+-		if (strcmp(words[i], other.words[i]) != 0)
++	}
++	for (range_t i = 0; i < len; i++) {
++		if (strcmp(words[i], other.words[i]) != 0) {
+ 			return true;
++		}
+ 	}
  	return false;
  }
  
+-int WordList::Length() const noexcept {
++range_t WordList::Length() const noexcept {
+ 	return len;
+ }
+ 
+ void WordList::Clear() noexcept {
+ 	if (words) {
+-		delete []list;
+-		delete []words;
++		delete[]list;
++		delete[]words;
+ 	}
+ 	words = nullptr;
+ 	list = nullptr;
+ 	len = 0;
+ }
+ 
+-#ifdef _MSC_VER
+-
+-static bool cmpWords(const char *a, const char *b) {
+-	return strcmp(a, b) < 0;
+-}
+-
+-#else
++bool WordList::Set(const char *s, bool toLower) {
++	// omitted comparison for Notepad2, we don't care whether the list is same as before or not.
++	// 1. when we call SciCall_SetKeywords(), the document or styles already changed.
++	// 2. the comparison is expensive than rebuild the list, especially for a long list.
+ 
+-static int cmpWords(const void *a, const void *b) {
+-	return strcmp(*static_cast<const char * const *>(a), *static_cast<const char * const *>(b));
+-}
+-
+-static void SortWordList(char **words, unsigned int len) {
+-	qsort(words, len, sizeof(*words), cmpWords);
+-}
+-
+-#endif
+-
+-bool WordList::Set(const char *s) {
++	Clear();
+ 	const size_t lenS = strlen(s) + 1;
+-	char *listTemp = new char[lenS];
+-	memcpy(listTemp, s, lenS);
+-	int lenTemp = 0;
+-	char **wordsTemp = ArrayFromWordList(listTemp, lenS - 1, &lenTemp, onlyLineEnds);
+-#ifdef _MSC_VER
+-	std::sort(wordsTemp, wordsTemp + lenTemp, cmpWords);
+-#else
+-	SortWordList(wordsTemp, lenTemp);
+-#endif
+-
+-	if (lenTemp == len) {
+-		bool changed = false;
+-		for (int i = 0; i < lenTemp; i++) {
+-			if (strcmp(words[i], wordsTemp[i]) != 0) {
+-				changed = true;
+-				break;
++	list = new char[lenS];
++	memcpy(list, s, lenS);
++	if (toLower) {
++		char *p = list;
++		while (*p) {
++			if (*p >= 'A' && *p <= 'Z') {
++				*p += 'a' - 'A';
+ 			}
+-		}
+-		if (!changed) {
+-			delete []listTemp;
+-			delete []wordsTemp;
+-			return false;
++			++p;
+ 		}
+ 	}
+ 
+-	Clear();
+-	words = wordsTemp;
+-	list = listTemp;
+-	len = lenTemp;
+-	std::fill(starts, std::end(starts), -1);
+-	for (int l = len - 1; l >= 0; l--) {
+-		unsigned char indexChar = words[l][0];
+-		starts[indexChar] = l;
++	words = ArrayFromWordList(list, lenS - 1, &len);
++	std::sort(words, words + len, [](const char *a, const char *b) noexcept {
++		return strcmp(a, b) < 0;
++	});
++
++	memset(ranges, 0, sizeof(ranges));
++	for (range_t i = 0; i < len;) {
++		const unsigned char indexChar = *words[i];
++		const range_t start = i++;
++		while (static_cast<unsigned char>(*words[i]) == indexChar) {
++			++i;
++		}
++		ranges[indexChar] = start | (i << 16);
+ 	}
+ 	return true;
+ }
+@@ -161,39 +170,140 @@ bool WordList::Set(const char *s) {
+  * so '^GTK_' matches 'GTK_X', 'GTK_MAJOR_VERSION', and 'GTK_'.
+  */
+ bool WordList::InList(const char *s) const noexcept {
+-	if (0 == words)
++	if (nullptr == words) {
+ 		return false;
++	}
+ 	const unsigned char firstChar = s[0];
+-	int j = starts[firstChar];
+-	if (j >= 0) {
+-		while (words[j][0] == firstChar) {
+-			if (s[1] == words[j][1]) {
+-				const char *a = words[j] + 1;
++	if (firstChar & 0x80) {
++		return false;
++	}
++	range_t end = ranges[firstChar];
++	if (end) {
++		Range range(end);
++		range_t count = range.Length();
++		if (count < WordListLinearSearchThreshold) {
++			do {
++				const char *a = words[range.start] + 1;
+ 				const char *b = s + 1;
+ 				while (*a && *a == *b) {
+ 					a++;
+ 					b++;
+ 				}
+-				if (!*a && !*b)
++				if (!*a && !*b) {
+ 					return true;
+-			}
+-			j++;
++				}
++			} while (range.Next());
++		} else {
++			do {
++				const range_t step = count >> 1;
++				const range_t mid = range.start + step;
++				const char *a = words[mid] + 1;
++				const char *b = s + 1;
++				while (*a && *a == *b) {
++					a++;
++					b++;
++				}
++				const int diff = static_cast<unsigned char>(*a) - static_cast<unsigned char>(*b);
++				if (diff == 0) {
++					return true;
++				}
++				if (diff < 0) {
++					range.start = mid + 1;
++					count -= step + 1;
++				} else {
++					count = step;
++				}
++			} while (count != 0);
+ 		}
+ 	}
+-	j = starts[static_cast<unsigned int>('^')];
+-	if (j >= 0) {
+-		while (words[j][0] == '^') {
+-			const char *a = words[j] + 1;
++
++	end = ranges[static_cast<unsigned char>('^')];
++	if (end) {
++		Range range(end);
++		do {
++			const char *a = words[range.start] + 1;
+ 			const char *b = s;
+ 			while (*a && *a == *b) {
+ 				a++;
+ 				b++;
+ 			}
+-			if (!*a)
++			if (!*a) {
+ 				return true;
+-			j++;
++			}
++		} while (range.Next());
++	}
++	return false;
++}
++
 +/**
 + * similar to InList, but word s can be a prefix of keyword.
 + * mainly used to test whether a function is built-in or not.
@@ -956,9 +1233,6 @@ index 4676717a..e548bead 100644
 +	if (end) {
 +		Range range(end);
 +		range_t count = range.Length();
-+		if (count <= 0) {
-+			return false;
-+		}
 +		if (count < WordListLinearSearchThreshold) {
 +			do {
 +				const char *a = words[range.start] + 1;
@@ -992,8 +1266,8 @@ index 4676717a..e548bead 100644
 +					count = step;
 +				}
 +			} while (count != 0);
-+		}
-+	}
+ 		}
+ 	}
 +
 +	end = ranges[static_cast<unsigned char>('^')];
 +	if (end) {
@@ -1010,17 +1284,187 @@ index 4676717a..e548bead 100644
 +			}
 +		} while (range.Next());
 +	}
-+	return false;
-+}
+ 	return false;
+ }
+ 
+@@ -203,48 +313,52 @@ bool WordList::InList(const char *s) const noexcept {
+  * The marker is ~ in this case.
+  */
+ bool WordList::InListAbbreviated(const char *s, const char marker) const noexcept {
+-	if (0 == words)
++	if (nullptr == words) {
+ 		return false;
++	}
+ 	const unsigned char firstChar = s[0];
+-	int j = starts[firstChar];
+-	if (j >= 0) {
+-		while (words[j][0] == firstChar) {
++	if (firstChar & 0x80) {
++		return false;
++	}
++	range_t end = ranges[firstChar];
++	if (end) {
++		Range range(end);
++		do {
+ 			bool isSubword = false;
+-			int start = 1;
+-			if (words[j][1] == marker) {
++			const char *a = words[range.start] + 1;
++			const char *b = s + 1;
++			if (*a == marker) {
+ 				isSubword = true;
+-				start++;
++				a++;
+ 			}
+-			if (s[1] == words[j][start]) {
+-				const char *a = words[j] + start;
+-				const char *b = s + 1;
+-				while (*a && *a == *b) {
++			while (*a && *a == *b) {
++				a++;
++				if (*a == marker) {
++					isSubword = true;
+ 					a++;
+-					if (*a == marker) {
+-						isSubword = true;
+-						a++;
+-					}
+-					b++;
+ 				}
+-				if ((!*a || isSubword) && !*b)
+-					return true;
++				b++;
+ 			}
+-			j++;
+-		}
++			if ((!*a || isSubword) && !*b) {
++				return true;
++			}
++		} while (range.Next());
+ 	}
+-	j = starts[static_cast<unsigned int>('^')];
+-	if (j >= 0) {
+-		while (words[j][0] == '^') {
+-			const char *a = words[j] + 1;
 +
- /** similar to InList, but word s can be a substring of keyword.
-  * eg. the keyword define is defined as def~ine. This means the word must start
-  * with def to be a keyword, but also defi, defin and define are valid.
++	end = ranges[static_cast<unsigned char>('^')];
++	if (end) {
++		Range range(end);
++		do {
++			const char *a = words[range.start] + 1;
+ 			const char *b = s;
+ 			while (*a && *a == *b) {
+ 				a++;
+ 				b++;
+ 			}
+-			if (!*a)
++			if (!*a) {
+ 				return true;
+-			j++;
+-		}
++			}
++		} while (range.Next());
+ 	}
+ 	return false;
+ }
+@@ -257,13 +371,18 @@ bool WordList::InListAbbreviated(const char *s, const char marker) const noexcep
+ * No multiple markers check is done and wont work.
+ */
+ bool WordList::InListAbridged(const char *s, const char marker) const noexcept {
+-	if (0 == words)
++	if (nullptr == words) {
+ 		return false;
++	}
+ 	const unsigned char firstChar = s[0];
+-	int j = starts[firstChar];
+-	if (j >= 0) {
+-		while (words[j][0] == firstChar) {
+-			const char *a = words[j];
++	if (firstChar & 0x80) {
++		return false;
++	}
++	range_t end = ranges[firstChar];
++	if (end) {
++		Range range(end);
++		do {
++			const char *a = words[range.start];
+ 			const char *b = s;
+ 			while (*a && *a == *b) {
+ 				a++;
+@@ -271,27 +390,28 @@ bool WordList::InListAbridged(const char *s, const char marker) const noexcept {
+ 					a++;
+ 					const size_t suffixLengthA = strlen(a);
+ 					const size_t suffixLengthB = strlen(b);
+-					if (suffixLengthA >= suffixLengthB)
++					if (suffixLengthA >= suffixLengthB) {
+ 						break;
++					}
+ 					b = b + suffixLengthB - suffixLengthA - 1;
+ 				}
+ 				b++;
+ 			}
+-			if (!*a  && !*b)
++			if (!*a && !*b) {
+ 				return true;
+-			j++;
+-		}
++			}
++		} while (range.Next());
+ 	}
+ 
+-	j = starts[static_cast<unsigned int>(marker)];
+-	if (j >= 0) {
+-		while (words[j][0] == marker) {
+-			const char *a = words[j] + 1;
++	end = ranges[static_cast<unsigned char>(marker)];
++	if (end) {
++		Range range(end);
++		do {
++			const char *a = words[range.start] + 1;
+ 			const char *b = s;
+ 			const size_t suffixLengthA = strlen(a);
+ 			const size_t suffixLengthB = strlen(b);
+ 			if (suffixLengthA > suffixLengthB) {
+-				j++;
+ 				continue;
+ 			}
+ 			b = b + suffixLengthB - suffixLengthA;
+@@ -300,16 +420,15 @@ bool WordList::InListAbridged(const char *s, const char marker) const noexcept {
+ 				a++;
+ 				b++;
+ 			}
+-			if (!*a && !*b)
++			if (!*a && !*b) {
+ 				return true;
+-			j++;
+-		}
++			}
++		} while (range.Next());
+ 	}
+ 
+ 	return false;
+ }
+ 
+-const char *WordList::WordAt(int n) const noexcept {
++const char *WordList::WordAt(range_t n) const noexcept {
+ 	return words[n];
+ }
+-
 diff --git a/lexlib/WordList.h b/lexlib/WordList.h
-index 07ae573b..3ea71fa2 100644
+index 07ae573b..edd27e90 100644
 --- a/lexlib/WordList.h
 +++ b/lexlib/WordList.h
-@@ -13,10 +13,14 @@ namespace Lexilla {
+@@ -4,35 +4,37 @@
+  **/
+ // Copyright 1998-2010 by Neil Hodgson <neilh@scintilla.org>
+ // The License.txt file describes the conditions under which this software may be distributed.
+-
+-#ifndef WORDLIST_H
+-#define WORDLIST_H
++#pragma once
+ 
+ namespace Lexilla {
+ 
  /**
   */
  class WordList {
@@ -1030,19 +1474,38 @@ index 07ae573b..3ea71fa2 100644
  	// Each word contains at least one character - a empty word acts as sentinel at the end.
  	char **words;
  	char *list;
- 	int len;
+-	int len;
+-	bool onlyLineEnds;	///< Delimited by any white space or only line ends
+-	int starts[256];
++	range_t len;
 +	range_t ranges[128];	// only ASCII, most word starts with character in '_a-zA-Z'
- 	bool onlyLineEnds;	///< Delimited by any white space or only line ends
- 	int starts[256];
  public:
-@@ -28,6 +32,7 @@ public:
+-	explicit WordList(bool onlyLineEnds_ = false);
++	explicit WordList() noexcept;
+ 	~WordList();
+ 	operator bool() const noexcept;
+ 	bool operator!=(const WordList &other) const noexcept;
+-	int Length() const noexcept;
++	bool operator==(const WordList &other) const noexcept {
++		return !(*this != other);
++	}
++	range_t Length() const noexcept;
  	void Clear() noexcept;
- 	bool Set(const char *s);
+-	bool Set(const char *s);
++	bool Set(const char *s, bool toLower = false);
  	bool InList(const char *s) const noexcept;
+-	bool InListAbbreviated(const char *s, const char marker) const noexcept;
+-	bool InListAbridged(const char *s, const char marker) const noexcept;
+-	const char *WordAt(int n) const noexcept;
 +	bool InListPrefixed(const char *s, char marker) const noexcept;
- 	bool InListAbbreviated(const char *s, const char marker) const noexcept;
- 	bool InListAbridged(const char *s, const char marker) const noexcept;
- 	const char *WordAt(int n) const noexcept;
++	bool InListAbbreviated(const char *s, char marker) const noexcept;
++	bool InListAbridged(const char *s, char marker) const noexcept;
++	const char *WordAt(range_t n) const noexcept;
+ };
+ 
+ }
+-
+-#endif
 diff --git a/src/Lexilla.cxx b/src/Lexilla.cxx
 index cd4b2361..9bea5b6b 100644
 --- a/src/Lexilla.cxx
