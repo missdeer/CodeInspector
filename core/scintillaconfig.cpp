@@ -395,16 +395,16 @@ void ScintillaConfig::applyStyle(const QDomElement &styleElem)
     }
 
     m_sci->styleSetBack(id, 0xFFFFFF);
-    //    if (styleElem.hasAttribute("bgColor"))
-    //    {
-    //        QString backColor = styleElem.attribute("bgColor");
-    //        if (!backColor.isEmpty())
-    //        {
-    //            int color = backColor.toLong(nullptr, 16);
-    //            color     = ((color & 0xFF0000) >> 16) | (color & 0xFF00) | ((color & 0xFF) << 16);
-    //            m_sci->styleSetBack(id, color);
-    //        }
-    //    }
+    if (id == 33 && styleElem.hasAttribute("bgColor")) // line number margin
+    {
+        QString backColor = styleElem.attribute("bgColor");
+        if (!backColor.isEmpty())
+        {
+            int color = backColor.toLong(nullptr, 16);
+            color     = ((color & 0xFF0000) >> 16) | (color & 0xFF00) | ((color & 0xFF) << 16);
+            m_sci->styleSetBack(id, color);
+        }
+    }
 
     QString fontName = styleElem.attribute("fontName");
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
