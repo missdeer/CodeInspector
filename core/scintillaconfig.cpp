@@ -233,7 +233,9 @@ void ScintillaConfig::applyLexer(const QString &configPath, const QString &lang)
     {
         lexer = langMap.value(lexer);
     }
+#if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__ << __LINE__ << lexer;
+#endif
     void *lexerId = CreateLexer(lexer.toStdString().c_str());
     if (!lexerId)
     {
@@ -255,13 +257,17 @@ void ScintillaConfig::applyLexer(const QString &configPath, const QString &lang)
         }
 
         lexerId = Scintillua::CreateLexer(lexer.toStdString().c_str());
+#if !defined(QT_NO_DEBUG)
         qDebug() << __FUNCTION__ << __LINE__ << "scintillua lexer:" << lexer << lexerId;
+#endif
     }
     if (!lexerId)
     {
         lexer   = "cpp";
         lexerId = CreateLexer("cpp");
+#if !defined(QT_NO_DEBUG)
         qDebug() << __FUNCTION__ << __LINE__ << "fallback to lexilla cpp lexer";
+#endif
     }
     m_sci->setILexer((sptr_t)lexerId);
 
