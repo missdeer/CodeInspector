@@ -4,6 +4,7 @@
 #if defined(__cplusplus)
 #    include <QAbstractTableModel>
 #    include <QApplication>
+#    include <QCheckBox>
 #    include <QClipboard>
 #    include <QComboBox>
 #    include <QCommandLineOption>
@@ -42,10 +43,13 @@
 #    include <QSettings>
 #    include <QSharedPointer>
 #    include <QShortcut>
+#    include <QSplashScreen>
 #    include <QSplitter>
 #    include <QSslError>
+#    include <QSslSocket>
 #    include <QStandardPaths>
 #    include <QStringBuilder>
+#    include <QTabBar>
 #    include <QTabWidget>
 #    include <QTableView>
 #    include <QTemporaryFile>
@@ -55,7 +59,6 @@
 #    include <QUrl>
 #    include <QtCore>
 #    include <QtGui>
-
 #endif
 
 #endif // STDAFX_H

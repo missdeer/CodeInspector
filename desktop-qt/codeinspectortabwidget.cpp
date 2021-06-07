@@ -1,9 +1,6 @@
 #include "stdafx.h"
 
-#include <QTabBar>
-
 #include "codeinspectortabwidget.h"
-
 #include "astoutput.h"
 #include "clangqueryoutput.h"
 #include "clangtidyoutput.h"

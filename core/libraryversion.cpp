@@ -1,3 +1,5 @@
+#include "stdafx.h"
+
 #include "libraryversion.h"
 
 LibraryVersion::LibraryVersion(QObject *parent) : QObject(parent), selected(false) {}

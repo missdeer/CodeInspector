@@ -1,9 +1,5 @@
 #include "stdafx.h"
 
-#include <QMessageBox>
-#include <QSplashScreen>
-#include <QSslSocket>
-
 #include "codeinspectorapp.h"
 #include "mainwindow.h"
 #include "settings.h"
