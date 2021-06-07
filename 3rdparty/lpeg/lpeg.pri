@@ -1,12 +1,11 @@
 INCLUDEPATH += \
-    $$PWD/lpeg \
-    $$PWD/lua
+    $$PWD
 
 SOURCES += \
-    $$files($$PWD/lpeg/*.c, false) 
+    $$files($$PWD/*.c, false)
 
 HEADERS += \
-    $$files($$PWD/lpeg/*.h, false)
+    $$files($$PWD/*.h, false)
 
 DEFINES += NO_DLL=1 
 CONFIG(release, debug|release) {
