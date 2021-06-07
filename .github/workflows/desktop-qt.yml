@@ -48,7 +48,7 @@ jobs:
           ref: ${{ github.head_ref }}
           submodules: true
       
-      - name: patch scintillua
+      - name: patch
         shell: cmd
         run: |
           cd 3rdparty\scintillua
@@ -57,6 +57,8 @@ jobs:
           git apply ..\lexilla.patch
           copy ..\lexilla-patch\Lex*.cxx lexers\
           copy ..\lexilla-patch\*.h lexlib\
+          cd ..\zlib
+          git apply ..\zlib.patch
           cd ..\..
       
       - name: Set up jom
@@ -125,7 +127,7 @@ jobs:
           ref: ${{ github.head_ref }}
           submodules: true
       
-      - name: patch scintillua
+      - name: patch 
         shell: cmd
         run: |
           cd 3rdparty\scintillua
@@ -134,6 +136,8 @@ jobs:
           git apply ..\lexilla.patch
           copy ..\lexilla-patch\Lex*.cxx lexers\
           copy ..\lexilla-patch\*.h lexlib\
+          cd ..\zlib
+          git apply ..\zlib.patch
           cd ..\..
           
       - name: Set up clang for Windows
@@ -240,7 +244,7 @@ jobs:
           fetch-depth: 1
           submodules: true
       
-      - name: patch scintillua
+      - name: patch 
         shell: cmd
         run: |
           cd 3rdparty\scintillua
@@ -249,6 +253,8 @@ jobs:
           git apply ..\lexilla.patch
           copy ..\lexilla-patch\Lex*.cxx lexers\
           copy ..\lexilla-patch\*.h lexlib\
+          cd ..\zlib
+          git apply ..\zlib.patch
           cd ..\..
 
       - name: prepare Scintilla
@@ -309,6 +315,8 @@ jobs:
           git apply ../lexilla.patch
           cp ../lexilla-patch/Lex*.cxx lexers/
           cp ../lexilla-patch/*.h lexlib/
+          cd ../zlib
+          git apply ../zlib.patch
           cd ../..
       
       - name: build macos

@@ -1,14 +1,17 @@
 QT       += core gui widgets xml network 
 
+include($$PWD/../3rdparty/lua.pri)
+include($$PWD/../3rdparty/zlib.pri)
+include($$PWD/../3rdparty/lpeg.pri)
+include($$PWD/../3rdparty/scintillua-latest.pri)
+
 android|ios: {
     include($$PWD/../3rdparty/quickscintilla.pri)
 } else: {
     include($$PWD/../3rdparty/scintilla-latest.pri)
     include($$PWD/../3rdparty/lexilla-latest.pri)
-    include($$PWD/../3rdparty/scintillua-latest.pri)
 }
 
-include($$PWD/../3rdparty/zlib.pri)
 
 INCLUDEPATH += $$PWD 
 
