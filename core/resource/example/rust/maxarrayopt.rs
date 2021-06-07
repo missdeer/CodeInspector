@@ -1,4 +1,5 @@
 #![feature(core_intrinsics)]
+// Type your code here, or load an example.
 // Requires the use of the nightly rust
 // Compile with -O
 pub fn max_array(x: &mut[f64; 65536], y: &[f64; 65536]) {

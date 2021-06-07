@@ -1,3 +1,4 @@
+// Type your code here, or load an example.
 // Compile with -O3 -march=native to see autovectorization
 // assumes input is aligned on 64-byte boundary and that
 // length is a multiple of 64.

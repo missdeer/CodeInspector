@@ -1,3 +1,4 @@
+! Type your code here, or load an example.
 ! Compute the dot product of two vectors w/ 4 entries with explicit loops.
 !   Try changing the target architecture to AVX (-mavx)
 !   and enabling optimisation (-O3) and compare the results.

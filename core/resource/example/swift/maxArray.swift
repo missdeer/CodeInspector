@@ -1,3 +1,4 @@
+// Type your code here, or load an example.
 // Imperative style array of maximum values per index
 func imperativeMaxArray(x: [Int], y: [Int]) -> [Int] {
     var maxima: [Int] = []

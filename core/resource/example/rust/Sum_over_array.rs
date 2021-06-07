@@ -1,3 +1,4 @@
+// Type your code here, or load an example.
 pub fn sum_array_loop(input: &[i32]) -> i32 {
   let mut sum: i32 = 0;
 

@@ -1,4 +1,5 @@
 #![feature(core_intrinsics)]
+// Type your code here, or load an example.
 // Requires the use of the nightly rust
 // Compile with -O
 pub fn sum_array(x: &[i32]) -> i32 {

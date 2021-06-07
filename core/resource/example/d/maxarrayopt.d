@@ -1,3 +1,4 @@
+// Type your code here, or load an example.
 // Compile with -O3 -march=native to see autovectorization
 typedef double *__attribute__((aligned(64))) aligned_double;
 

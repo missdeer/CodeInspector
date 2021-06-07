@@ -1,3 +1,4 @@
+// Type your code here, or load an example.
 //====================================================================
 // Library code: implementing the metaclass (once)
 

@@ -1,3 +1,4 @@
+// Type your code here, or load an example.
 // Imperative style sum over an array of integers
 func imperativeSum(input: [Int]) -> Int {
     var sum = 0

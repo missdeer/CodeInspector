@@ -1,3 +1,4 @@
+// Type your code here, or load an example.
 int testFunction(int *input, int length)
 {
     int sum = 0;
