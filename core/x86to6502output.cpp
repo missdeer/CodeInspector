@@ -20,6 +20,11 @@ X86To6502Output::X86To6502Output(QWidget *parent) : QWidget(parent)
     connect(m_toolOptions, &QLineEdit::textChanged, this, &X86To6502Output::optionsChanged);
 }
 
+X86To6502Output::~X86To6502Output()
+{
+    delete m_sc;
+}
+
 void X86To6502Output::initialize()
 {
     m_sc->initScintilla();
@@ -36,7 +41,6 @@ void X86To6502Output::setContent(const QString &content)
     m_scintillaEdit->setReadOnly(true);
 
     m_scintillaEdit->emptyUndoBuffer();
-    m_sc->initLexerStyle("asm");
     m_scintillaEdit->colourise(0, -1);
 }
 

@@ -13,6 +13,7 @@ class IncludeWhatYouUseOutput : public QWidget
     Q_OBJECT
 public:
     explicit IncludeWhatYouUseOutput(QWidget *parent = nullptr);
+    ~IncludeWhatYouUseOutput();
     void                  initialize();
     void                  setContent(const QString &content);
     [[nodiscard]] QString getToolOptions();

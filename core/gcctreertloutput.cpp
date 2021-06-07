@@ -35,6 +35,11 @@ GCCTreeRTLOutput::GCCTreeRTLOutput(QWidget *parent) : QWidget(parent)
     connect(m_rtl, &QCheckBox::stateChanged, this, &GCCTreeRTLOutput::onStateChanged);
 }
 
+GCCTreeRTLOutput::~GCCTreeRTLOutput()
+{
+    delete m_sc;
+}
+
 void GCCTreeRTLOutput::initialize()
 {
     m_sc->initScintilla();
@@ -51,7 +56,6 @@ void GCCTreeRTLOutput::setContent(const QString &content)
     m_scintillaEdit->setReadOnly(true);
 
     m_scintillaEdit->emptyUndoBuffer();
-    m_sc->initLexerStyle("asm");
     m_scintillaEdit->colourise(0, -1);
 }
 

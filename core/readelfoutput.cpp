@@ -20,6 +20,11 @@ ReadElfOutput::ReadElfOutput(QWidget *parent) : QWidget(parent)
     connect(m_toolOptions, &QLineEdit::textChanged, this, &ReadElfOutput::optionsChanged);
 }
 
+ReadElfOutput::~ReadElfOutput()
+{
+    delete m_sc;
+}
+
 void ReadElfOutput::initialize()
 {
     m_sc->initScintilla();
@@ -36,7 +41,6 @@ void ReadElfOutput::setContent(const QString &content)
     m_scintillaEdit->setReadOnly(true);
 
     m_scintillaEdit->emptyUndoBuffer();
-    m_sc->initLexerStyle("asm");
     m_scintillaEdit->colourise(0, -1);
 }
 

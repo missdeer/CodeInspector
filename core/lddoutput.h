@@ -13,6 +13,7 @@ class LddOutput : public QWidget
     Q_OBJECT
 public:
     explicit LddOutput(QWidget *parent = nullptr);
+    ~LddOutput();
     void                  initialize();
     void                  setContent(const QString &content);
     [[nodiscard]] QString getToolOptions();

@@ -13,6 +13,7 @@ class ClangQueryOutput : public QWidget
     Q_OBJECT
 public:
     explicit ClangQueryOutput(QWidget *parent = nullptr);
+    ~ClangQueryOutput();
     void                  initialize();
     void                  setContent(const QString &content);
     [[nodiscard]] QString getToolOptions();

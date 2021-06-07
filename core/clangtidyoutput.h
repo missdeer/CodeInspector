@@ -13,6 +13,7 @@ class ClangTidyOutput : public QWidget
     Q_OBJECT
 public:
     explicit ClangTidyOutput(QWidget *parent = nullptr);
+    ~ClangTidyOutput();
     void                  initialize();
     void                  setContent(const QString &content);
     [[nodiscard]] QString getToolOptions();

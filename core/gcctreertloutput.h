@@ -14,6 +14,7 @@ class GCCTreeRTLOutput : public QWidget
     Q_OBJECT
 public:
     explicit GCCTreeRTLOutput(QWidget *parent = nullptr);
+    ~GCCTreeRTLOutput();
     void                  initialize();
     void                  setContent(const QString &content);
     void                  setPasses(const QStringList &passes);

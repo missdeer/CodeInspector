@@ -13,6 +13,7 @@ class ReadElfOutput : public QWidget
     Q_OBJECT
 public:
     explicit ReadElfOutput(QWidget *parent = nullptr);
+    ~ReadElfOutput();
     void                  initialize();
     void                  setContent(const QString &content);
     [[nodiscard]] QString getToolOptions();

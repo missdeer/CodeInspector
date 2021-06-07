@@ -20,6 +20,11 @@ PaholeOutput::PaholeOutput(QWidget *parent) : QWidget(parent)
     connect(m_toolOptions, &QLineEdit::textChanged, this, &PaholeOutput::optionsChanged);
 }
 
+PaholeOutput::~PaholeOutput()
+{
+    delete m_sc;
+}
+
 void PaholeOutput::initialize()
 {
     m_sc->initScintilla();
@@ -36,7 +41,6 @@ void PaholeOutput::setContent(const QString &content)
     m_scintillaEdit->setReadOnly(true);
 
     m_scintillaEdit->emptyUndoBuffer();
-    m_sc->initLexerStyle("asm");
     m_scintillaEdit->colourise(0, -1);
 }
 

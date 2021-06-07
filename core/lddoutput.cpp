@@ -20,6 +20,11 @@ LddOutput::LddOutput(QWidget *parent) : QWidget(parent)
     connect(m_toolOptions, &QLineEdit::textChanged, this, &LddOutput::optionsChanged);
 }
 
+LddOutput::~LddOutput()
+{
+    delete m_sc;
+}
+
 void LddOutput::initialize()
 {
     m_sc->initScintilla();
@@ -36,7 +41,6 @@ void LddOutput::setContent(const QString &content)
     m_scintillaEdit->setReadOnly(true);
 
     m_scintillaEdit->emptyUndoBuffer();
-    m_sc->initLexerStyle("asm");
     m_scintillaEdit->colourise(0, -1);
 }
 

@@ -13,6 +13,7 @@ class X86To6502Output : public QWidget
     Q_OBJECT
 public:
     explicit X86To6502Output(QWidget *parent = nullptr);
+    ~X86To6502Output();
     void                  initialize();
     void                  setContent(const QString &content);
     [[nodiscard]] QString getToolOptions();

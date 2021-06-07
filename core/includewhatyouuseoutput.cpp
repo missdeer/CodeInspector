@@ -20,6 +20,11 @@ IncludeWhatYouUseOutput::IncludeWhatYouUseOutput(QWidget *parent) : QWidget(pare
     connect(m_toolOptions, &QLineEdit::textChanged, this, &IncludeWhatYouUseOutput::optionsChanged);
 }
 
+IncludeWhatYouUseOutput::~IncludeWhatYouUseOutput()
+{
+    delete m_sc;
+}
+
 void IncludeWhatYouUseOutput::initialize()
 {
     m_sc->initScintilla();
@@ -36,7 +41,6 @@ void IncludeWhatYouUseOutput::setContent(const QString &content)
     m_scintillaEdit->setReadOnly(true);
 
     m_scintillaEdit->emptyUndoBuffer();
-    m_sc->initLexerStyle("asm");
     m_scintillaEdit->colourise(0, -1);
 }
 

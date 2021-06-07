@@ -13,6 +13,7 @@ class PaholeOutput : public QWidget
     Q_OBJECT
 public:
     explicit PaholeOutput(QWidget *parent = nullptr);
+    ~PaholeOutput();
     void                  initialize();
     void                  setContent(const QString &content);
     [[nodiscard]] QString getToolOptions();

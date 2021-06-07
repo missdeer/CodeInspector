@@ -13,6 +13,7 @@ class LLVMMachineCodeAnalyzerOutput : public QWidget
     Q_OBJECT
 public:
     explicit LLVMMachineCodeAnalyzerOutput(QWidget *parent = nullptr);
+    ~LLVMMachineCodeAnalyzerOutput();
     void                  initialize();
     void                  setContent(const QString &content);
     [[nodiscard]] QString getToolOptions();

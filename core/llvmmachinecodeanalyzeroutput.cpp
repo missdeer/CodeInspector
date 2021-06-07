@@ -20,6 +20,11 @@ LLVMMachineCodeAnalyzerOutput::LLVMMachineCodeAnalyzerOutput(QWidget *parent) : 
     connect(m_toolOptions, &QLineEdit::textChanged, this, &LLVMMachineCodeAnalyzerOutput::optionsChanged);
 }
 
+LLVMMachineCodeAnalyzerOutput::~LLVMMachineCodeAnalyzerOutput()
+{
+    delete m_sc;
+}
+
 void LLVMMachineCodeAnalyzerOutput::initialize()
 {
     m_sc->initScintilla();
@@ -36,7 +41,6 @@ void LLVMMachineCodeAnalyzerOutput::setContent(const QString &content)
     m_scintillaEdit->setReadOnly(true);
 
     m_scintillaEdit->emptyUndoBuffer();
-    m_sc->initLexerStyle("asm");
     m_scintillaEdit->colourise(0, -1);
 }
 

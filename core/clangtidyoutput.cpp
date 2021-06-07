@@ -20,6 +20,11 @@ ClangTidyOutput::ClangTidyOutput(QWidget *parent) : QWidget(parent)
     connect(m_toolOptions, &QLineEdit::textChanged, this, &ClangTidyOutput::optionsChanged);
 }
 
+ClangTidyOutput::~ClangTidyOutput()
+{
+    delete m_sc;
+}
+
 void ClangTidyOutput::initialize()
 {
     m_sc->initScintilla();

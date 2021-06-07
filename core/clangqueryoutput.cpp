@@ -20,6 +20,11 @@ ClangQueryOutput::ClangQueryOutput(QWidget *parent) : QWidget(parent)
     connect(m_toolOptions, &QLineEdit::textChanged, this, &ClangQueryOutput::optionsChanged);
 }
 
+ClangQueryOutput::~ClangQueryOutput()
+{
+    delete m_sc;
+}
+
 void ClangQueryOutput::initialize()
 {
     m_sc->initScintilla();

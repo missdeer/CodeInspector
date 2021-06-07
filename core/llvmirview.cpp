@@ -8,7 +8,7 @@ void LLVMIRView::initialize()
 {
     m_sc.initScintilla();
     m_sc.initInspectorMargins(false);
-    m_sc.initLexerStyle("asm");
+    m_sc.initLexerStyle("llvm");
 
     setReadOnly(true);
 }
@@ -21,7 +21,6 @@ void LLVMIRView::setContent(const QString &content)
     setReadOnly(true);
 
     emptyUndoBuffer();
-    m_sc.initLexerStyle("asm");
     colourise(0, -1);
 }
 
