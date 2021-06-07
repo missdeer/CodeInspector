@@ -460,12 +460,17 @@ void ScintillaConfig::applyStyle(const QDomElement &styleElem)
             m_sci->styleSetChangeable(id, true);
     }
 
-    m_sci->styleSetSize(id, 14);
+#if defined(Q_OS_WIN)
+    const int defaultFontSize = 12;
+#else
+    const int defaultFontSize = 14;
+#endif
+    m_sci->styleSetSize(id, defaultFontSize);
     if (styleElem.hasAttribute("fontSize"))
     {
         QString fontSize = styleElem.attribute("fontSize");
         if (!fontSize.isEmpty())
-            m_sci->styleSetSize(id, std::max(14, fontSize.toInt()));
+            m_sci->styleSetSize(id, std::max(defaultFontSize, fontSize.toInt()));
     }
 }
 
