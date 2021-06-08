@@ -23,12 +23,6 @@ public:
     [[nodiscard]] const QString &codeEditorTheme() const;
     void                         setCodeEditorTheme(const QString &codeEditorTheme);
 
-    [[nodiscard]] const QString &codeInspectorFontFamily() const;
-    void                         setCodeInspectorFontFamily(const QString &codeInspectorFontFamily);
-
-    [[nodiscard]] const QString &codeInspectorTheme() const;
-    void                         setCodeInspectorTheme(const QString &codeInspectorTheme);
-
     [[nodiscard]] bool rememberLastSession() const;
     void               setRememberLastSession(bool rememberLastSession);
 

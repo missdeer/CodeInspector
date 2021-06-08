@@ -83,26 +83,6 @@ void Settings::setCodeEditorTheme(const QString &codeEditorTheme)
     m_codeEditorTheme = codeEditorTheme;
 }
 
-const QString &Settings::codeInspectorFontFamily() const
-{
-    return m_codeInspectorFontFamily;
-}
-
-void Settings::setCodeInspectorFontFamily(const QString &codeInspectorFontFamily)
-{
-    m_codeInspectorFontFamily = codeInspectorFontFamily;
-}
-
-const QString &Settings::codeInspectorTheme() const
-{
-    return m_codeInspectorTheme;
-}
-
-void Settings::setCodeInspectorTheme(const QString &codeInspectorTheme)
-{
-    m_codeInspectorTheme = codeInspectorTheme;
-}
-
 bool Settings::rememberLastSession() const
 {
     return m_rememberLastSession;
