@@ -61,9 +61,8 @@ void MainWindow::on_actionAbout_triggered()
                        tr("CodeInspector"),
                        tr("Let you know how machine understands and runs your code.<br>"
                           "Special thanks to<br>"
-                          "<strong>Compiler Explorer</strong>: <a "
-                          "href=\"https://github.com/mattgodbolt/compiler-explorer\">https://github.com/mattgodbolt/compiler-explorer</a><br>"
-                          "<strong>Wandbox</strong>: <a href=\"https://github.com/melpon/wandbox\">https://github.com/melpon/wandbox</a><br>"
+                          "<strong>Compiler Explorer</strong>: <a href=\"https://godbolt.org/\">https://godbolt.org/</a><br>"
+                          "<strong>Wandbox</strong>: <a href=\"https://wandbox.org/\">https://wandbox.org/</a><br>"
                           "<strong>Rextester</strong>: <a href=\"https://rextester.com/\">https://rextester.com/</a>"));
 }
 
