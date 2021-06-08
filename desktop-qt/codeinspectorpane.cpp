@@ -199,7 +199,7 @@ void CodeInspectorPane::setCompilerList(CompilerListPtr cl)
     m_compilerList->clear();
     auto *      model = new QStandardItemModel;
     QStringList groupNames;
-    for (const auto &c : *cl)
+    for (const auto &c : qAsConst(*cl))
     {
         auto gn = c->groupName.isEmpty() ? c->group.toUpper() : c->groupName.toUpper();
         if (!groupNames.contains(gn))
@@ -220,7 +220,7 @@ void CodeInspectorPane::setCompilerList(CompilerListPtr cl)
         item->setFont(font);
         model->appendRow(item);
 
-        for (const auto &compiler : *cl)
+        for (const auto &compiler : qAsConst(*cl))
         {
             if (compiler->groupName.toUpper() == groupName || compiler->group.toUpper() == groupName)
             {
@@ -270,7 +270,7 @@ void CodeInspectorPane::onNeedCompile()
     auto libs = ciApp->getLibraryList(m_languageName);
     if (libs)
     {
-        for (const auto &lib : *libs)
+        for (const auto &lib : qAsConst(*libs))
         {
             auto versions = lib->getVersions();
             for (const auto &ver : versions)
