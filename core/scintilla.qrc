@@ -1,8 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>resource/sci/functionList.xml</file>
         <file>resource/sci/langs.model.xml</file>
-        <file>resource/sci/stylers.model.xml</file>
         <file>resource/sci/themes/Bespin.xml</file>
         <file>resource/sci/themes/Black board.xml</file>
         <file>resource/sci/themes/Choco.xml</file>
