@@ -88,7 +88,7 @@ void ScintillaConfig::initScintilla()
     // apply global settings
     QString themePath = ":/resource/sci/themes/" % g_settings->codeEditorTheme() % ".xml";
     if (!QFile::exists(themePath))
-        themePath = ":/resource/sci/stylers.model.xml";
+        themePath = ":/resource/sci/themes/Default.xml";
     applyThemeStyle(themePath, "cpp");
 }
 
@@ -137,7 +137,7 @@ void ScintillaConfig::initLexerStyle(const QString &lang)
     // apply language specified settings
     QString themePath = ":/resource/sci/themes/" % g_settings->codeEditorTheme() % ".xml";
     if (!QFile::exists(themePath))
-        themePath = ":/resource/sci/stylers.model.xml";
+        themePath = ":/resource/sci/themes/Default.xml";
     applyThemeStyle(themePath, lexer);
 
     // read configurations from langs.model.xml
@@ -264,7 +264,7 @@ void ScintillaConfig::applyLexer(const QString &configPath, const QString &lang)
     if (!lexerId)
     {
         lexer   = "cpp";
-        lexerId = CreateLexer("cpp");
+        lexerId = CreateLexer(lexer.toStdString().c_str());
 #if !defined(QT_NO_DEBUG)
         qDebug() << __FUNCTION__ << __LINE__ << "fallback to lexilla cpp lexer";
 #endif
