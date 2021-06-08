@@ -1,8 +1,8 @@
 QT       += core gui widgets xml network 
 
-include($$PWD/../3rdparty/lua.pri)
+include($$PWD/../3rdparty/lua/lua.pri)
 include($$PWD/../3rdparty/zlib.pri)
-include($$PWD/../3rdparty/lpeg.pri)
+include($$PWD/../3rdparty/lpeg/lpeg.pri)
 include($$PWD/../3rdparty/scintillua-latest.pri)
 
 android|ios: {
