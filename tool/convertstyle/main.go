@@ -60,7 +60,25 @@ type StyleDefinition struct {
 	GlobalStyles GlobalStyles `xml:"GlobalStyles"`
 }
 
+type KeywordDefinition struct {
+	XMLName   xml.Name `xml:"NotepadPlus"`
+	Languages struct {
+		XMLName   xml.Name `xml:"Languages"`
+		Languages []struct {
+			XMLName  xml.Name `xml:"Language"`
+			Name     string   `xml:"name,attr"`
+			Keywords []struct {
+				XMLName  xml.Name `xml:"Keywords"`
+				Name     string   `xml:"name,attr"`
+				Keywords string   `xml:",innerxml"`
+			} `xml:"Keywords"`
+		} `xml:"Language"`
+	} `xml:"Languages"`
+}
+
 func main() {
+	var keyword string
+	flag.StringVar(&keyword, "keyword", "", "set keyword file")
 	flag.Parse()
 	args := flag.Args()
 	for _, arg := range args {
@@ -95,10 +113,10 @@ func main() {
 			continue
 		}
 		defer fdTheme.Close()
-		fdTheme.WriteString("styles = {}\n")
+		fdTheme.WriteString("styles = {\n")
 		for _, style := range sd.GlobalStyles.WidgetStyles {
-			fdTheme.WriteString(fmt.Sprintf(`styles.%s = { id=%d, name="%s"`,
-				strings.ToLower(strings.Replace(style.Name, " ", "_", -1)), style.StyleID, style.Name))
+			fdTheme.WriteString(fmt.Sprintf(`  %s = { id=%d, name="%s"`,
+				strings.ToUpper(strings.Replace(strings.Replace(style.Name, " ", "_", -1), "&", "", -1)), style.StyleID, style.Name))
 			if style.KeywordClass != "" {
 				fdTheme.WriteString(fmt.Sprintf(`, keywordClass="%s"`, style.KeywordClass))
 			}
@@ -115,9 +133,11 @@ func main() {
 				fdTheme.WriteString(fmt.Sprintf(`, fontSize=%d`, style.FontSize))
 
 			}
-			fdTheme.WriteString(fmt.Sprintf(", fontStyle=%d}\n", style.FontStyle))
+			fdTheme.WriteString(fmt.Sprintf(", fontStyle=%d },\n", style.FontStyle))
 		}
-		fdTheme.WriteString("\ntheme = {}\n")
+		fdTheme.WriteString("}\n")
+
+		fdTheme.WriteString("\ntheme = {\n")
 
 		langDirName := path.Join(filepath.Dir(arg), "lang")
 		os.MkdirAll(langDirName, 0755)
@@ -126,12 +146,12 @@ func main() {
 		for _, ls := range sd.LexerStyles.LexerTypes {
 			count += len(ls.WordsStyles)
 			for _, style := range ls.WordsStyles {
-				name := strings.ToLower(strings.Replace(style.Name, " ", "_", -1))
+				name := strings.ToUpper(strings.Replace(strings.Replace(style.Name, " ", "_", -1), "&", "", -1))
 				val, ok := styleExist[name]
 				fmt.Println(name, val, ok, len(styleExist))
 				if !ok {
 					styleExist[name] = struct{}{}
-					fdTheme.WriteString(fmt.Sprintf(`theme.%s = {  name="%s"`, name, style.Name))
+					fdTheme.WriteString(fmt.Sprintf(`  %s = { name="%s"`, name, style.Name))
 					if style.KeywordClass != "" {
 						fdTheme.WriteString(fmt.Sprintf(`, keywordClass="%s"`, style.KeywordClass))
 					}
@@ -148,10 +168,12 @@ func main() {
 						fdTheme.WriteString(fmt.Sprintf(`, fontSize=%d`, style.FontSize))
 
 					}
-					fdTheme.WriteString(fmt.Sprintf(", fontStyle=%d}\n", style.FontStyle))
+					fdTheme.WriteString(fmt.Sprintf(", fontStyle=%d },\n", style.FontStyle))
 				}
 			}
 		}
+		fdTheme.WriteString("}\n")
+
 		fmt.Println("totally styles count:", count)
 		for _, ls := range sd.LexerStyles.LexerTypes {
 			fn := filepath.Join(langDirName, ls.Name+".lua")
@@ -163,7 +185,7 @@ func main() {
 				}
 				defer fdLang.Close()
 				for _, style := range ls.WordsStyles {
-					name := strings.ToLower(strings.Replace(style.Name, " ", "_", -1))
+					name := strings.ToUpper(strings.Replace(strings.Replace(style.Name, " ", "_", -1), "&", "", -1))
 
 					fdLang.WriteString(fmt.Sprintf(`styles.%s = { id=%d, name="%s"`,
 						name, style.StyleID, style.Name))
@@ -183,8 +205,46 @@ func main() {
 						fdLang.WriteString(fmt.Sprintf(`, fontSize=theme.%s.fontSize`, name))
 
 					}
-					fdLang.WriteString(fmt.Sprintf(", fontStyle=theme.%s.fontStyle}\n", name))
+					fdLang.WriteString(fmt.Sprintf(", fontStyle=theme.%s.fontStyle }\n", name))
 				}
+			}
+		}
+	}
+
+	if _, err := os.Stat(keyword); !os.IsNotExist(err) {
+		fd, err := os.OpenFile(keyword, os.O_RDONLY, 0644)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		defer fd.Close()
+
+		var kd KeywordDefinition
+
+		decoder := xml.NewDecoder(fd)
+		decoder.CharsetReader = charset.NewReaderLabel
+		err = decoder.Decode(&kd)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+
+		langDirName := path.Join(filepath.Dir(keyword), "themes", "lang")
+		for _, lang := range kd.Languages.Languages {
+			fn := filepath.Join(langDirName, lang.Name+".lua")
+			fdLang, err := os.OpenFile(fn, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
+			if err != nil {
+				fmt.Println(err)
+				continue
+			}
+			defer fdLang.Close()
+
+			if len(lang.Keywords) > 0 {
+				fdLang.WriteString("\nkeywords = {\n")
+				for _, kw := range lang.Keywords {
+					fdLang.WriteString(fmt.Sprintf("  %s = [[%s]],\n", strings.ToLower(kw.Name), kw.Keywords))
+				}
+				fdLang.WriteString("}\n")
 			}
 		}
 	}
