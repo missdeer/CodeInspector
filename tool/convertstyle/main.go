@@ -76,6 +76,10 @@ type KeywordDefinition struct {
 	} `xml:"Languages"`
 }
 
+func colorConvert(color string) string {
+	return fmt.Sprintf("0x%s%s%s", color[4:6], color[2:4], color[0:2])
+}
+
 func main() {
 	var keyword string
 	flag.StringVar(&keyword, "keyword", "", "set keyword file")
@@ -121,10 +125,10 @@ func main() {
 				fdTheme.WriteString(fmt.Sprintf(`, keywordClass="%s"`, style.KeywordClass))
 			}
 			if style.BackgroundColor != "" {
-				fdTheme.WriteString(fmt.Sprintf(`, bgColor="%s"`, style.BackgroundColor))
+				fdTheme.WriteString(fmt.Sprintf(`, bgColor=%s`, colorConvert(style.BackgroundColor)))
 			}
 			if style.ForegroundColor != "" {
-				fdTheme.WriteString(fmt.Sprintf(`, fgColor="%s"`, style.ForegroundColor))
+				fdTheme.WriteString(fmt.Sprintf(`, fgColor=%s`, colorConvert(style.ForegroundColor)))
 			}
 			if style.FontName != "" {
 				fdTheme.WriteString(fmt.Sprintf(`, fontName="%s"`, style.FontName))
@@ -133,7 +137,11 @@ func main() {
 				fdTheme.WriteString(fmt.Sprintf(`, fontSize=%d`, style.FontSize))
 
 			}
-			fdTheme.WriteString(fmt.Sprintf(", fontStyle=%d },\n", style.FontStyle))
+			if style.FontStyle != 0 {
+				fdTheme.WriteString(fmt.Sprintf(", fontStyle=%d },\n", style.FontStyle))
+			} else {
+				fdTheme.WriteString(" },\n")
+			}
 		}
 		fdTheme.WriteString("}\n")
 
@@ -156,10 +164,10 @@ func main() {
 						fdTheme.WriteString(fmt.Sprintf(`, keywordClass="%s"`, style.KeywordClass))
 					}
 					if style.BackgroundColor != "" {
-						fdTheme.WriteString(fmt.Sprintf(`, bgColor="%s"`, style.BackgroundColor))
+						fdTheme.WriteString(fmt.Sprintf(`, bgColor=%s`, colorConvert(style.BackgroundColor)))
 					}
 					if style.ForegroundColor != "" {
-						fdTheme.WriteString(fmt.Sprintf(`, fgColor="%s"`, style.ForegroundColor))
+						fdTheme.WriteString(fmt.Sprintf(`, fgColor=%s`, colorConvert(style.ForegroundColor)))
 					}
 					if style.FontName != "" {
 						fdTheme.WriteString(fmt.Sprintf(`, fontName="%s"`, style.FontName))
@@ -168,7 +176,11 @@ func main() {
 						fdTheme.WriteString(fmt.Sprintf(`, fontSize=%d`, style.FontSize))
 
 					}
-					fdTheme.WriteString(fmt.Sprintf(", fontStyle=%d },\n", style.FontStyle))
+					if style.FontStyle != 0 {
+						fdTheme.WriteString(fmt.Sprintf(", fontStyle=%d },\n", style.FontStyle))
+					} else {
+						fdTheme.WriteString(" },\n")
+					}
 				}
 			}
 		}
