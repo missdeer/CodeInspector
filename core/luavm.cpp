@@ -359,6 +359,20 @@ bool LuaVM::set(const QString &name, double value)
         return false;
     }
     lua_getglobal(m_L, sections[0].toStdString().c_str());
+
+    if (sections.length() == 1)
+    {
+        if (!lua_isnumber(m_L, -1))
+        {
+            qDebug() << name << " is expected to be a number";
+            return false;
+        }
+
+        lua_pushnumber(m_L, value);
+        lua_setglobal(m_L, sections[0].toStdString().c_str());
+        return true;
+    }
+
     for (int i = 0; i < sections.length() - 2; i++)
     {
         if (!lua_istable(m_L, -1))
@@ -401,6 +415,19 @@ bool LuaVM::set(const QString &name, long long value)
         return false;
     }
     lua_getglobal(m_L, sections[0].toStdString().c_str());
+
+    if (sections.length() == 1)
+    {
+        if (!lua_isnumber(m_L, -1))
+        {
+            qDebug() << name << " is expected to be a number";
+            return false;
+        }
+
+        lua_pushinteger(m_L, value);
+        lua_setglobal(m_L, sections[0].toStdString().c_str());
+        return true;
+    }
     for (int i = 0; i < sections.length() - 2; i++)
     {
         if (!lua_istable(m_L, -1))
@@ -440,6 +467,19 @@ bool LuaVM::set(const QString &name, bool value)
         return false;
     }
     lua_getglobal(m_L, sections[0].toStdString().c_str());
+
+    if (sections.length() == 1)
+    {
+        if (!lua_isnumber(m_L, -1))
+        {
+            qDebug() << name << " is expected to be a number";
+            return false;
+        }
+
+        lua_pushboolean(m_L, value);
+        lua_setglobal(m_L, sections[0].toStdString().c_str());
+        return true;
+    }
     for (int i = 0; i < sections.length() - 2; i++)
     {
         if (!lua_istable(m_L, -1))
@@ -474,6 +514,20 @@ bool LuaVM::set(const QString &name, const char *value)
         return false;
     }
     lua_getglobal(m_L, sections[0].toStdString().c_str());
+
+    if (sections.length() == 1)
+    {
+        if (!lua_isnumber(m_L, -1))
+        {
+            qDebug() << name << " is expected to be a number";
+            return false;
+        }
+
+        lua_pushstring(m_L, value);
+        lua_setglobal(m_L, sections[0].toStdString().c_str());
+        return true;
+    }
+
     for (int i = 0; i < sections.length() - 2; i++)
     {
         if (!lua_istable(m_L, -1))
