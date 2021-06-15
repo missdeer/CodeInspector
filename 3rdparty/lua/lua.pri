@@ -37,7 +37,8 @@ SOURCES += \
     $$PWD/lutf8lib.c
 
 HEADERS += \
-    $$files($$PWD/*.h, false)
+    $$files($$PWD/*.h, false) \
+    $$files($$PWD/*.hpp, false)
 
 DEFINES += NO_DLL=1 SCI_LEXER=1
 CONFIG(release, debug|release) {

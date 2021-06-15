@@ -19,6 +19,7 @@ SOURCES += \
     $$PWD/clangqueryoutput.cpp \
     $$PWD/includewhatyouuseoutput.cpp \
     $$PWD/lddoutput.cpp \
+    $$PWD/luavm.cpp \
     $$PWD/readelfoutput.cpp \
     $$PWD/scintillaconfig.cpp \
     $$PWD/scopedguard.cpp \
@@ -43,6 +44,7 @@ HEADERS += \
     $$PWD/clangqueryoutput.h \
     $$PWD/includewhatyouuseoutput.h \
     $$PWD/lddoutput.h \
+    $$PWD/luavm.h \
     $$PWD/readelfoutput.h \
     $$PWD/scintillaconfig.h \
     $$PWD/scopedguard.h \
