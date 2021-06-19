@@ -308,10 +308,10 @@ index 8f2849a1..b1f75be2 100644
  
  LexerModule lmR(SCLEX_R, ColouriseRDoc, "r", FoldRDoc, RWordLists);
 diff --git a/lexers/LexRust.cxx b/lexers/LexRust.cxx
-index 5b359556..87935fc2 100644
+index 402a4730..20e5c838 100644
 --- a/lexers/LexRust.cxx
 +++ b/lexers/LexRust.cxx
-@@ -183,11 +183,6 @@ static bool IsWhitespace(int c) {
+@@ -184,11 +184,6 @@ static bool IsWhitespace(int c) {
      return c == ' ' || c == '\t' || c == '\r' || c == '\n';
  }
  
@@ -724,7 +724,7 @@ index 331c501f..35d4cab6 100644
  
  #endif
 diff --git a/lexlib/LexerModule.h b/lexlib/LexerModule.h
-index 6b548481..17fd8a39 100644
+index d6ab78fc..f4ef28c1 100644
 --- a/lexlib/LexerModule.h
 +++ b/lexlib/LexerModule.h
 @@ -14,6 +14,8 @@ class Accessor;
@@ -736,7 +736,7 @@ index 6b548481..17fd8a39 100644
  typedef void (*LexerFunction)(Sci_PositionU startPos, Sci_Position lengthDoc, int initStyle,
                    WordList *keywordlists[], Accessor &styler);
  typedef Scintilla::ILexer5 *(*LexerFactoryFunction)();
-@@ -71,6 +73,12 @@ inline int Maximum(int a, int b) noexcept {
+@@ -71,6 +73,12 @@ constexpr int Maximum(int a, int b) noexcept {
  	return (a > b) ? a : b;
  }
  
@@ -749,8 +749,171 @@ index 6b548481..17fd8a39 100644
  // Shut up annoying Visual C++ warnings:
  #ifdef _MSC_VER
  #pragma warning(disable: 4244 4456 4457)
+diff --git a/lexlib/PropSetSimple.cxx b/lexlib/PropSetSimple.cxx
+index 09e36bc6..102f56a5 100644
+--- a/lexlib/PropSetSimple.cxx
++++ b/lexlib/PropSetSimple.cxx
+@@ -26,6 +26,10 @@ mapss *PropsFromPointer(void *impl) noexcept {
+ 	return static_cast<mapss *>(impl);
+ }
+ 
++constexpr bool IsASpaceCharacter(int ch) noexcept {
++	return (ch == ' ') || ((ch >= 0x09) && (ch <= 0x0d));
++}
++
+ }
+ 
+ PropSetSimple::PropSetSimple() {
+@@ -39,26 +43,114 @@ PropSetSimple::~PropSetSimple() {
+ 	impl = nullptr;
+ }
+ 
+-void PropSetSimple::Set(std::string_view key, std::string_view val) {
++void PropSetSimple::Set(const char *key, const char *val, size_t lenKey, size_t lenVal) {
+ 	mapss *props = PropsFromPointer(impl);
+-	if (!props)
++	if (!*key)	// Empty keys are not supported
+ 		return;
+-	(*props)[std::string(key)] = std::string(val);
++	(*props)[std::string(key, lenKey)] = std::string(val, lenVal);
++}
++
++void PropSetSimple::Set(const char *keyVal) {
++	while (IsASpaceCharacter(*keyVal))
++		keyVal++;
++	const char *endVal = keyVal;
++	while (*endVal && (*endVal != '\n'))
++		endVal++;
++	const char *eqAt = strchr(keyVal, '=');
++	if (eqAt) {
++		Set(keyVal, eqAt + 1, eqAt-keyVal,
++			endVal - eqAt - 1);
++	} else if (*keyVal) {	// No '=' so assume '=1'
++		Set(keyVal, "1", endVal-keyVal, 1);
++	}
++}
++
++void PropSetSimple::SetMultiple(const char *s) {
++	const char *eol = strchr(s, '\n');
++	while (eol) {
++		Set(s);
++		s = eol + 1;
++		eol = strchr(s, '\n');
++	}
++	Set(s);
+ }
+ 
+ const char *PropSetSimple::Get(const char *key) const {
+ 	mapss *props = PropsFromPointer(impl);
+-	if (props) {
+-		mapss::const_iterator keyPos = props->find(std::string(key));
+-		if (keyPos != props->end()) {
+-			return keyPos->second.c_str();
++	mapss::const_iterator keyPos = props->find(std::string(key));
++	if (keyPos != props->end()) {
++		return keyPos->second.c_str();
++	} else {
++		return "";
++	}
++}
++
++// There is some inconsistency between GetExpanded("foo") and Expand("$(foo)").
++// A solution is to keep a stack of variables that have been expanded, so that
++// recursive expansions can be skipped.  For now I'll just use the C++ stack
++// for that, through a recursive function and a simple chain of pointers.
++
++struct VarChain {
++	VarChain(const char *var_=nullptr, const VarChain *link_= nullptr) noexcept : var(var_), link(link_) {}
++
++	bool contains(const char *testVar) const {
++		return (var && (0 == strcmp(var, testVar)))
++			|| (link && link->contains(testVar));
++	}
++
++	const char *var;
++	const VarChain *link;
++};
++
++static int ExpandAllInPlace(const PropSetSimple &props, std::string &withVars, int maxExpands, const VarChain &blankVars) {
++	size_t varStart = withVars.find("$(");
++	while ((varStart != std::string::npos) && (maxExpands > 0)) {
++		const size_t varEnd = withVars.find(')', varStart+2);
++		if (varEnd == std::string::npos) {
++			break;
++		}
++
++		// For consistency, when we see '$(ab$(cde))', expand the inner variable first,
++		// regardless whether there is actually a degenerate variable named 'ab$(cde'.
++		size_t innerVarStart = withVars.find("$(", varStart+2);
++		while ((innerVarStart != std::string::npos) && (innerVarStart > varStart) && (innerVarStart < varEnd)) {
++			varStart = innerVarStart;
++			innerVarStart = withVars.find("$(", varStart+2);
++		}
++
++		std::string var(withVars, varStart + 2, varEnd - varStart - 2);
++		std::string val = props.Get(var.c_str());
++
++		if (blankVars.contains(var.c_str())) {
++			val = ""; // treat blankVar as an empty string (e.g. to block self-reference)
++		}
++
++		if (--maxExpands >= 0) {
++			maxExpands = ExpandAllInPlace(props, val, maxExpands, VarChain(var.c_str(), &blankVars));
+ 		}
++
++		withVars.erase(varStart, varEnd-varStart+1);
++		withVars.insert(varStart, val.c_str(), val.length());
++
++		varStart = withVars.find("$(");
++	}
++
++	return maxExpands;
++}
++
++size_t PropSetSimple::GetExpanded(const char *key, char *result) const {
++	std::string val = Get(key);
++	ExpandAllInPlace(*this, val, 100, VarChain(key));
++	const size_t n = val.size();
++	if (result) {
++		memcpy(result, val.c_str(), n+1);
+ 	}
+-	return "";
++	return n;	// Not including NUL
+ }
+ 
+ int PropSetSimple::GetInt(const char *key, int defaultValue) const {
+ 	std::string val = Get(key);
++	ExpandAllInPlace(*this, val, 100, VarChain(key));
+ 	if (!val.empty()) {
+ 		return atoi(val.c_str());
+ 	}
+diff --git a/lexlib/PropSetSimple.h b/lexlib/PropSetSimple.h
+index 0cc610e6..110411c4 100644
+--- a/lexlib/PropSetSimple.h
++++ b/lexlib/PropSetSimple.h
+@@ -12,16 +12,14 @@ namespace Lexilla {
+ 
+ class PropSetSimple {
+ 	void *impl;
++	void Set(const char *keyVal);
+ public:
+ 	PropSetSimple();
+-	// Deleted so PropSetSimple objects can not be copied.
+-	PropSetSimple(const PropSetSimple&) = delete;
+-	PropSetSimple(PropSetSimple&&) = delete;
+-	PropSetSimple &operator=(const PropSetSimple&) = delete;
+-	PropSetSimple &operator=(PropSetSimple&&) = delete;
+ 	virtual ~PropSetSimple();
+-	void Set(std::string_view key, std::string_view val);
++	void Set(const char *key, const char *val, size_t lenKey, size_t lenVal);
++	void SetMultiple(const char *);
+ 	const char *Get(const char *key) const;
++	size_t GetExpanded(const char *key, char *result) const;
+ 	int GetInt(const char *key, int defaultValue=0) const;
+ };
+ 
 diff --git a/lexlib/StyleContext.cxx b/lexlib/StyleContext.cxx
-index ca564ec4..1897d4d2 100644
+index ca564ec4..bcad18ca 100644
 --- a/lexlib/StyleContext.cxx
 +++ b/lexlib/StyleContext.cxx
 @@ -7,6 +7,8 @@
@@ -827,7 +990,7 @@ index ca564ec4..1897d4d2 100644
 +}
 \ No newline at end of file
 diff --git a/lexlib/StyleContext.h b/lexlib/StyleContext.h
-index a03c74cd..dbff8161 100644
+index a6c6f9f4..0e0ba0a9 100644
 --- a/lexlib/StyleContext.h
 +++ b/lexlib/StyleContext.h
 @@ -15,7 +15,9 @@ namespace Lexilla {
@@ -840,7 +1003,7 @@ index a03c74cd..dbff8161 100644
  	Scintilla::IDocument *multiByteAccess;
  	Sci_PositionU endPos;
  	Sci_PositionU lengthDocument;
-@@ -185,6 +187,18 @@ public:
+@@ -192,6 +194,18 @@ public:
  	bool Match(char ch0, char ch1) const {
  		return (ch == static_cast<unsigned char>(ch0)) && (chNext == static_cast<unsigned char>(ch1));
  	}
@@ -859,7 +1022,7 @@ index a03c74cd..dbff8161 100644
  	bool Match(const char *s) {
  		if (ch != static_cast<unsigned char>(*s))
  			return false;
-@@ -201,12 +215,35 @@ public:
+@@ -208,12 +222,35 @@ public:
  		}
  		return true;
  	}
