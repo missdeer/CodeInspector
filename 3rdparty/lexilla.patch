@@ -723,6 +723,19 @@ index 331c501f..35d4cab6 100644
  }
  
  #endif
+diff --git a/lexlib/LexerBase.cxx b/lexlib/LexerBase.cxx
+index eb4466fe..15a5e8c4 100644
+--- a/lexlib/LexerBase.cxx
++++ b/lexlib/LexerBase.cxx
+@@ -64,7 +64,7 @@ const char * SCI_METHOD LexerBase::DescribeProperty(const char *) {
+ Sci_Position SCI_METHOD LexerBase::PropertySet(const char *key, const char *val) {
+ 	const char *valOld = props.Get(key);
+ 	if (strcmp(val, valOld) != 0) {
+-		props.Set(key, val);
++		props.Set(key, val, strlen(key), strlen(val));
+ 		return 0;
+ 	} else {
+ 		return -1;
 diff --git a/lexlib/LexerModule.h b/lexlib/LexerModule.h
 index d6ab78fc..f4ef28c1 100644
 --- a/lexlib/LexerModule.h
