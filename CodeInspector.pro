@@ -1,6 +1,7 @@
 TEMPLATE = subdirs
 
 SUBDIRS =  \
+    plugins \
     desktop-qt
 
-CONFIG += ordered
+desktop-qt.depends = plugins
