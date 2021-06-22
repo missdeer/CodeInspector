@@ -111,7 +111,7 @@ void CodeInspector::setAsmItems(const AsmItemList &items, bool binary, QMap<int,
         annotationSetVisible(ANNOTATION_STANDARD);
     }
 
-#if !defined(QT_NO_DEBUG)
+#if defined(LOGS_ENABLED)
     for (auto it = markerMap.begin(); it != markerMap.end(); ++it)
     {
         qDebug() << "source:" << it.key() << ", marker:" << it.value();

@@ -64,7 +64,9 @@ void CodeEditor::onModified(Scintilla::ModificationFlags type,
 
 void CodeEditor::setLanguage(const QString &lang)
 {
+#if defined(LOGS_ENABLED)
     qDebug() << __FUNCTION__ << __LINE__ << lang;
+#endif
     if (!lang.isEmpty())
     {
         m_sc.initScintilla();

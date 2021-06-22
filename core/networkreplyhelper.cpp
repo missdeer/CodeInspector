@@ -102,7 +102,7 @@ void NetworkReplyHelper::onErrorOccurred(QNetworkReply::NetworkError code)
     if (m_reply)
     {
         m_errMsg.append(m_reply->errorString() + "\n");
-#if !defined(QT_NO_DEBUG)
+#if defined(LOGS_ENABLED)
         qDebug() << __FUNCTION__ << m_errMsg;
 #endif
         emit errorMessage(code, m_errMsg);
@@ -120,7 +120,7 @@ void NetworkReplyHelper::onFinished()
         m_content = gUncompress(m_content);
     }
 
-#if !defined(QT_NO_DEBUG)
+#if defined(LOGS_ENABLED)
     qDebug() << this << " finished: " << QString(m_content).left(256) << "\n";
 #endif
     emit done();
@@ -130,7 +130,7 @@ void NetworkReplyHelper::onSslErrors(const QList<QSslError> &errors)
 {
     Q_FOREACH (const QSslError &e, errors)
     {
-#if !defined(QT_NO_DEBUG)
+#if defined(LOGS_ENABLED)
         qDebug() << "ssl error:" << e.errorString();
 #endif
         m_errMsg.append(e.errorString() + "\n");
@@ -157,7 +157,7 @@ void NetworkReplyHelper::onReadyRead()
 
 void NetworkReplyHelper::onTimeout()
 {
-#if !defined(QT_NO_DEBUG)
+#if defined(LOGS_ENABLED)
     qDebug() << "network request timeout";
 #endif
     if (m_reply && m_reply->isRunning())

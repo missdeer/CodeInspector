@@ -67,7 +67,9 @@ void CodeEditorPane::updateLanguageList()
 
 void CodeEditorPane::onCurrentLanguageChanged(const QString &text)
 {
+#if defined(LOGS_ENABLED)
     qDebug() << __FUNCTION__ << __LINE__ << text;
+#endif
     if (m_cbLanguageList->count() > 1)
         g_settings->setDefaultLanguageIndex(m_cbLanguageList->currentIndex());
     emit currentLanguageChanged(text);

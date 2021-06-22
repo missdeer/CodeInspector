@@ -17,7 +17,7 @@ void GodboltAgent::initialize(BackendInterface *backend, const QString &baseURL)
 
 void GodboltAgent::compile(const CompileInfo &ci)
 {
-#if !defined(QT_NO_DEBUG)
+#if defined(LOGS_ENABLED)
     qDebug() << __FUNCTION__;
 #endif
     auto compilerList = m_backend->getCompilerList(ci.language);
@@ -133,7 +133,7 @@ void GodboltAgent::compile(const CompileInfo &ci)
     QJsonDocument doc;
     doc.setObject(rootObj);
     QByteArray postBody = doc.toJson();
-#if !defined(QT_NO_DEBUG)
+#if defined(LOGS_ENABLED)
     qDebug() << "post body: " << QString(postBody);
 #endif
     auto *reply       = m_nam.post(request, postBody);
@@ -144,7 +144,7 @@ void GodboltAgent::compile(const CompileInfo &ci)
 
 void GodboltAgent::onCompileRequestFinished()
 {
-#if !defined(QT_NO_DEBUG)
+#if defined(LOGS_ENABLED)
     qDebug() << __FUNCTION__;
 #endif
     m_compileStderr.clear();
@@ -183,7 +183,9 @@ void GodboltAgent::onCompileRequestFinished()
     if (content.isEmpty())
     {
         m_compileStderr = reply->getErrorMessage();
+#if defined(LOGS_ENABLED)
         qDebug() << "compiling error:" << m_compileStderr;
+#endif
         return;
     }
 
@@ -191,12 +193,12 @@ void GodboltAgent::onCompileRequestFinished()
 
     if (!doc.isObject())
     {
-#if !defined(QT_NO_DEBUG)
+#if defined(LOGS_ENABLED)
         qDebug() << "compilation result is expected to be an object:" << QString(content).left(256);
 #endif
         return;
     }
-#if !defined(QT_NO_DEBUG)
+#if defined(LOGS_ENABLED)
     qDebug() << doc;
 #endif
     QJsonObject docObj = doc.object();
@@ -204,7 +206,7 @@ void GodboltAgent::onCompileRequestFinished()
     QJsonValue codeVal = docObj["code"];
     if (!codeVal.isDouble())
     {
-#if !defined(QT_NO_DEBUG)
+#if defined(LOGS_ENABLED)
         qDebug() << "compilation result code is expected to be an integer:" << QString(content).left(256);
 #endif
         return;
@@ -213,7 +215,7 @@ void GodboltAgent::onCompileRequestFinished()
     QJsonValue stdoutVal = docObj["stdout"];
     if (!stdoutVal.isArray())
     {
-#if !defined(QT_NO_DEBUG)
+#if defined(LOGS_ENABLED)
         qDebug() << "compilation result stdout is expected to be an integer:" << QString(content).left(256);
 #endif
         return;
@@ -229,7 +231,7 @@ void GodboltAgent::onCompileRequestFinished()
     QJsonValue stderrVal = docObj["stderr"];
     if (!stderrVal.isArray())
     {
-#if !defined(QT_NO_DEBUG)
+#if defined(LOGS_ENABLED)
         qDebug() << "compilation result stderr is expected to be an integer:" << QString(content).left(256);
 #endif
         return;
@@ -245,7 +247,7 @@ void GodboltAgent::onCompileRequestFinished()
     QJsonValue asmVal = docObj["asm"];
     if (!asmVal.isArray())
     {
-#if !defined(QT_NO_DEBUG)
+#if defined(LOGS_ENABLED)
         qDebug() << "compilation result asm is expected to be an integer:" << QString(content).left(256);
 #endif
         return;

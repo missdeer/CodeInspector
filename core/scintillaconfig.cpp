@@ -216,8 +216,9 @@ void ScintillaConfig::initMarkers()
 
 void ScintillaConfig::applyLexer(const QString &configPath, const QString &lang)
 {
+#if defined(LOGS_ENABLED)
     qDebug() << __FUNCTION__ << __LINE__ << configPath << lang;
-
+#endif
     QString lexer = lang.toLower();
 
     auto psci = m_sci->directPointer();
@@ -233,7 +234,7 @@ void ScintillaConfig::applyLexer(const QString &configPath, const QString &lang)
     {
         lexer = langMap.value(lexer);
     }
-#if !defined(QT_NO_DEBUG)
+#if defined(LOGS_ENABLED)
     qDebug() << __FUNCTION__ << __LINE__ << lexer;
 #endif
     void *lexerId = CreateLexer(lexer.toStdString().c_str());
@@ -257,7 +258,7 @@ void ScintillaConfig::applyLexer(const QString &configPath, const QString &lang)
         }
 
         lexerId = Scintillua::CreateLexer(lexer.toStdString().c_str());
-#if !defined(QT_NO_DEBUG)
+#if defined(LOGS_ENABLED)
         qDebug() << __FUNCTION__ << __LINE__ << "scintillua lexer:" << lexer << lexerId;
 #endif
     }
@@ -265,7 +266,7 @@ void ScintillaConfig::applyLexer(const QString &configPath, const QString &lang)
     {
         lexer   = "cpp";
         lexerId = CreateLexer(lexer.toStdString().c_str());
-#if !defined(QT_NO_DEBUG)
+#if defined(LOGS_ENABLED)
         qDebug() << __FUNCTION__ << __LINE__ << "fallback to lexilla cpp lexer";
 #endif
     }
@@ -279,7 +280,7 @@ void ScintillaConfig::applyLexer(const QString &configPath, const QString &lang)
     int     errLine;
     if (!doc.setContent(&file, &errMsg, &errLine))
     {
-#if !defined(QT_NO_DEBUG)
+#if defined(LOGS_ENABLED)
         qDebug() << "parsing xml document failed:" << configPath << errMsg << errLine;
 #endif
         file.close();
@@ -297,7 +298,7 @@ void ScintillaConfig::applyLexer(const QString &configPath, const QString &lang)
     while (!keywordElem.isNull())
     {
         QString keyword = keywordElem.text();
-#if !defined(QT_NO_DEBUG)
+#if defined(LOGS_ENABLED)
         qDebug() << keywordSet << keywordElem.attribute("name") << keyword;
 #endif
         m_sci->setKeyWords(keywordSet++, keyword.toStdString().c_str());
@@ -315,7 +316,7 @@ void ScintillaConfig::applyThemeStyle(const QString &themePath, const QString &l
     int     errLine;
     if (!doc.setContent(&file, &errMsg, &errLine))
     {
-#if !defined(QT_NO_DEBUG)
+#if defined(LOGS_ENABLED)
         qDebug() << "parsing xml document failed:" << themePath << errMsg << errLine;
 #endif
         file.close();
