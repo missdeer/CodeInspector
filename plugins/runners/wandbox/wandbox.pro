@@ -1,9 +1,10 @@
 TEMPLATE      = lib
 CONFIG       += plugin
 QT           += widgets
-INCLUDEPATH  += $$PWD/../include
 TARGET        = $$qtLibraryTarget(runner_wandbox)
-DESTDIR       = $$PWD/../../plugins
+DESTDIR       = $$PWD/../../../plugins
+
+include($$PWD/../../plugins.pri)
 
 macx: {
     CONFIG+=static

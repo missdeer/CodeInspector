@@ -1,9 +1,10 @@
 TEMPLATE      = lib
 CONFIG       += plugin
 QT           += widgets
-INCLUDEPATH  += $$PWD/../include
 TARGET        = $$qtLibraryTarget(tool_x86to6502)
-DESTDIR       = $$PWD/../../plugins
+DESTDIR       = $$PWD/../../../plugins
+
+include($$PWD/../../plugins.pri)
 
 macx: {
     CONFIG+=static
