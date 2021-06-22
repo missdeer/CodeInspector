@@ -5,6 +5,7 @@
 
 class RunnerInterface
 {
+public:
     virtual ~RunnerInterface()       = default;
     virtual bool isSupported() const = 0;
 };

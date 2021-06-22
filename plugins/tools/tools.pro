@@ -4,7 +4,7 @@ SUBDIRS =  \
     clang_format \
     clang_query \
     clangtidy \
-    include_waht_you_use \
+    include_what_you_use \
     ldd \
     llvmmca \
     osaca \

@@ -12,3 +12,9 @@ macx: {
 
 CONFIG += install_ok  # Do not cargo-cult this!
 uikit: CONFIG += debug_and_release
+
+HEADERS += \
+    x86to6502plugin.h
+
+SOURCES += \
+    x86to6502plugin.cpp

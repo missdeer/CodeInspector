@@ -7,6 +7,7 @@ QT_FORWARD_DECLARE_CLASS(QWidget);
 
 class ToolInterface
 {
+public:
     virtual ~ToolInterface()                       = default;
     virtual bool     isSupported() const           = 0;
     virtual QWidget *outputWidget(QWidget *parent) = 0;

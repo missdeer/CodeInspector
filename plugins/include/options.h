@@ -7,9 +7,10 @@ QT_FORWARD_DECLARE_CLASS(QWidget);
 
 class OptionInterface
 {
+public:
     virtual ~OptionInterface()                     = default;
     virtual bool     isSupported() const           = 0;
-    virtual QWidget *outputWidget(QWidget *parent) = 0;
+    virtual QWidget *outputWidget(QWidget *parent = nullptr) = 0;
 };
 
 QT_BEGIN_NAMESPACE

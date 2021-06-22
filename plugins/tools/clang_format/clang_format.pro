@@ -12,3 +12,9 @@ macx: {
 
 CONFIG += install_ok  # Do not cargo-cult this!
 uikit: CONFIG += debug_and_release
+
+HEADERS += \
+    clangformatplugin.h
+
+SOURCES += \
+    clangformatplugin.cpp
