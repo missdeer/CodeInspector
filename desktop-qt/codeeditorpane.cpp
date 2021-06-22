@@ -80,6 +80,12 @@ void CodeEditorPane::onCurrentLanguageChanged(const QString &text)
 
     Q_ASSERT(m_codeEditor);
     m_codeEditor->setLanguage(text);
+    if (!show)
+    {
+        auto content = ciApp->getExample(text);
+        m_codeEditor->setContent(content);
+        return;
+    }
     if (m_menuExamples)
     {
         // load an default example
