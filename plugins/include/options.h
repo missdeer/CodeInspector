@@ -3,10 +3,13 @@
 
 #include <QtPlugin>
 
+QT_FORWARD_DECLARE_CLASS(QWidget);
+
 class OptionInterface
 {
-    virtual ~OptionInterface() = default;
-    virtual bool isSupported() const = 0;
+    virtual ~OptionInterface()                     = default;
+    virtual bool     isSupported() const           = 0;
+    virtual QWidget *outputWidget(QWidget *parent) = 0;
 };
 
 QT_BEGIN_NAMESPACE
