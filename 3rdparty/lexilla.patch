@@ -165,6 +165,169 @@ index 7839271a..2995651a 100644
  static bool IsBinDigit(int c) {
  	return c < 128 && (character_classification[c] & 32);
  }
+diff --git a/lexers/LexFSharp.cxx b/lexers/LexFSharp.cxx
+index 38806d65..a79bbccd 100644
+--- a/lexers/LexFSharp.cxx
++++ b/lexers/LexFSharp.cxx
+@@ -425,7 +425,9 @@ void SCI_METHOD LexerFSharp::Lex(Sci_PositionU start, Sci_Position length, int i
+ 			case SCE_FSHARP_LINENUM:
+ 			case SCE_FSHARP_PREPROCESSOR:
+ 			case SCE_FSHARP_COMMENTLINE:
+-				if (sc.MatchLineEnd()) {
++				// TestLexers.cxx will warn about splitting styles across CRLF line endings
++				// without the second condition
++				if (sc.atLineEnd || sc.ch == '\r') {
+ 					state = SCE_FSHARP_DEFAULT;
+ 					advance = false;
+ 				}
+@@ -559,9 +561,7 @@ void SCI_METHOD LexerFSharp::Lex(Sci_PositionU start, Sci_Position length, int i
+ 
+ bool LineContains(LexAccessor &styler, const char *word, const Sci_Position start, const Sci_Position end = 1,
+ 		  const int chAttr = SCE_FSHARP_DEFAULT);
+-
+-void FoldLexicalGroup(LexAccessor &styler, int &levelNext, const Sci_Position lineCurrent, const char *word,
+-		      const int chAttr);
++bool MatchPPDirectiveBranch(LexAccessor &styler, const Sci_Position line);
+ 
+ void SCI_METHOD LexerFSharp::Fold(Sci_PositionU start, Sci_Position length, int initStyle, IDocument *pAccess) {
+ 	if (!options.fold) {
+@@ -574,6 +574,8 @@ void SCI_METHOD LexerFSharp::Fold(Sci_PositionU start, Sci_Position length, int
+ 	Sci_Position lineCurrent = styler.GetLine(startPos);
+ 	Sci_Position lineNext = lineCurrent + 1;
+ 	Sci_Position lineStartNext = styler.LineStart(lineNext);
++	Sci_Position commentLinesInFold = ZERO_LENGTH;
++	Sci_Position importsInFold = ZERO_LENGTH;
+ 	int style = initStyle;
+ 	int styleNext = styler.StyleAt(startPos);
+ 	char chNext = styler[startPos];
+@@ -590,19 +592,40 @@ void SCI_METHOD LexerFSharp::Fold(Sci_PositionU start, Sci_Position length, int
+ 	for (Sci_PositionU i = start; i < endPos; i++) {
+ 		const Sci_Position currentPos = static_cast<Sci_Position>(i);
+ 		const bool atEOL = currentPos == (lineStartNext - 1);
+-		const bool atLineOrDocEnd = (atEOL || (i == (endPos - 1)));
+-		const bool atDosOrMacEOL = (atEOL || styler.SafeGetCharAt(currentPos) == '\r');
+ 		const int stylePrev = style;
+ 		const char ch = chNext;
+-		const bool inLineComment = (stylePrev == SCE_FSHARP_COMMENTLINE);
++		const bool inLineComment = (style == SCE_FSHARP_COMMENTLINE);
+ 		style = styleNext;
+ 		styleNext = styler.StyleAt(currentPos + 1);
+ 		chNext = styler.SafeGetCharAt(currentPos + 1);
+ 
+ 		if (options.foldComment) {
+-			if (options.foldCommentMultiLine && inLineComment && atDosOrMacEOL &&
++			if (options.foldCommentMultiLine && inLineComment &&
+ 			    (lineCurrent > 0 || styler.StyleAt(lineStartNext) == SCE_FSHARP_COMMENTLINE)) {
+-				FoldLexicalGroup(styler, levelNext, lineCurrent, "//", SCE_FSHARP_COMMENTLINE);
++				const bool haveCommentList =
++				    LineContains(styler, "//", lineStartNext, lineNext, SCE_FSHARP_COMMENTLINE);
++				if (haveCommentList) {
++					// begin fold region
++					if (commentLinesInFold == ZERO_LENGTH) {
++						levelNext++;
++					}
++					// start line count at 0
++					commentLinesInFold++;
++				} else {
++					Sci_Position lineFold = lineCurrent;
++					while (lineFold > 0) {
++						commentLinesInFold--;
++						lineFold--;
++						if (!LineContains(styler, "//", lineFold, 1, SCE_FSHARP_COMMENTLINE)) {
++							break;
++						}
++					}
++					// line count should be reduced to 0, and no less
++					if (commentLinesInFold > ZERO_LENGTH) {
++						levelNext--;
++					}
++					commentLinesInFold = ZERO_LENGTH;
++				}
+ 			}
+ 
+ 			if (options.foldCommentStream && style == SCE_FSHARP_COMMENT && !inLineComment) {
+@@ -619,19 +642,47 @@ void SCI_METHOD LexerFSharp::Fold(Sci_PositionU start, Sci_Position length, int
+ 				levelNext++;
+ 			} else if (styler.Match(currentPos, "#endif")) {
+ 				levelNext--;
++				// compensate for #else branches
++				Sci_Position lineFold = lineCurrent;
++				while (lineFold > 0) {
++					lineFold--;
++					if (MatchPPDirectiveBranch(styler, lineFold)) {
++						levelNext--;
++						break;
++					}
++				}
+ 			}
+ 		}
+ 
+-		if (options.foldImports && atLineOrDocEnd &&
+-		    LineContains(styler, "open ", lineCurrent, 1, SCE_FSHARP_KEYWORD)) {
+-			FoldLexicalGroup(styler, levelNext, lineCurrent, "open ", SCE_FSHARP_KEYWORD);
++		if (options.foldImports && style == SCE_FSHARP_KEYWORD && LineContains(styler, "open", lineCurrent)) {
++			const bool haveImportList =
++			    LineContains(styler, "open", lineStartNext, lineNext, SCE_FSHARP_KEYWORD);
++			if (haveImportList) {
++				if (importsInFold == ZERO_LENGTH) {
++					levelNext++;
++				}
++				importsInFold++;
++			} else {
++				Sci_Position lineFold = lineCurrent;
++				while (lineFold > 0) {
++					importsInFold--;
++					lineFold--;
++					if (!LineContains(styler, "open", lineFold, 1, SCE_FSHARP_KEYWORD)) {
++						break;
++					}
++				}
++				if (importsInFold > ZERO_LENGTH) {
++					levelNext--;
++				}
++				importsInFold = ZERO_LENGTH;
++			}
+ 		}
+ 
+ 		if (!IsASpace(ch)) {
+ 			visibleChars++;
+ 		}
+ 
+-		if (atLineOrDocEnd) {
++		if (atEOL || (i == (endPos - 1))) {
+ 			int levelUse = levelCurrent;
+ 			int lev = levelUse | levelNext << 16;
+ 
+@@ -672,25 +723,10 @@ bool LineContains(LexAccessor &styler, const char *word, const Sci_Position star
+ 	return found;
+ }
+ 
+-void FoldLexicalGroup(LexAccessor &styler, int &levelNext, const Sci_Position lineCurrent, const char *word,
+-		      const int chAttr) {
+-	const Sci_Position linePrev = lineCurrent - 1;
+-	const Sci_Position lineNext = lineCurrent + 1;
+-	const Sci_Position lineStartPrev = styler.LineStart(linePrev);
+-	const Sci_Position lineStartNext = styler.LineStart(lineNext);
+-	const bool atFoldGroupStart =
+-	    (lineCurrent == 0 || !LineContains(styler, word, lineStartPrev, linePrev, chAttr)) &&
+-	    LineContains(styler, word, lineStartNext, lineNext, chAttr);
+-	const bool atFoldGroupEnd =
+-		LineContains(styler, word, lineStartPrev, linePrev, chAttr) &&
+-		!LineContains(styler, word, lineStartNext, lineNext, chAttr);
+-
+-	if (atFoldGroupStart) {
+-		levelNext++;
+-	} else if (atFoldGroupEnd && levelNext > SC_FOLDLEVELBASE) {
+-		levelNext--;
+-	}
++bool MatchPPDirectiveBranch(LexAccessor &styler, const Sci_Position line) {
++	const Sci_Position lineStart = styler.LineStart(line);
++	return (styler.StyleAt(lineStart) == SCE_FSHARP_PREPROCESSOR && !styler.Match(lineStart, "#if"));
+ }
+ } // namespace
+ 
+-LexerModule lmFSharp(SCLEX_FSHARP, LexerFSharp::LexerFactoryFSharp, "fsharp", fsharpWordLists);
++LexerModule lmFSharp(SCLEX_FSHARP, LexerFSharp::LexerFactoryFSharp, lexerName, fsharpWordLists);
 diff --git a/lexers/LexHollywood.cxx b/lexers/LexHollywood.cxx
 index 2cf22d6d..e6760df9 100644
 --- a/lexers/LexHollywood.cxx
@@ -763,7 +926,7 @@ index d6ab78fc..f4ef28c1 100644
  #ifdef _MSC_VER
  #pragma warning(disable: 4244 4456 4457)
 diff --git a/lexlib/PropSetSimple.cxx b/lexlib/PropSetSimple.cxx
-index 09e36bc6..102f56a5 100644
+index ac61b0e0..102f56a5 100644
 --- a/lexlib/PropSetSimple.cxx
 +++ b/lexlib/PropSetSimple.cxx
 @@ -26,6 +26,10 @@ mapss *PropsFromPointer(void *impl) noexcept {
@@ -777,7 +940,7 @@ index 09e36bc6..102f56a5 100644
  }
  
  PropSetSimple::PropSetSimple() {
-@@ -39,26 +43,114 @@ PropSetSimple::~PropSetSimple() {
+@@ -39,28 +43,116 @@ PropSetSimple::~PropSetSimple() {
  	impl = nullptr;
  }
  
@@ -816,7 +979,8 @@ index 09e36bc6..102f56a5 100644
 +	Set(s);
  }
  
- const char *PropSetSimple::Get(const char *key) const {
+-const char *PropSetSimple::Get(std::string_view key) const {
++const char *PropSetSimple::Get(const char *key) const {
  	mapss *props = PropsFromPointer(impl);
 -	if (props) {
 -		mapss::const_iterator keyPos = props->find(std::string(key));
@@ -894,17 +1058,23 @@ index 09e36bc6..102f56a5 100644
 +	return n;	// Not including NUL
  }
  
- int PropSetSimple::GetInt(const char *key, int defaultValue) const {
- 	std::string val = Get(key);
+-int PropSetSimple::GetInt(std::string_view key, int defaultValue) const {
+-	const char *val = Get(key);
+-	if (*val) {
+-		return atoi(val);
++int PropSetSimple::GetInt(const char *key, int defaultValue) const {
++	std::string val = Get(key);
 +	ExpandAllInPlace(*this, val, 100, VarChain(key));
- 	if (!val.empty()) {
- 		return atoi(val.c_str());
++	if (!val.empty()) {
++		return atoi(val.c_str());
  	}
+ 	return defaultValue;
+ }
 diff --git a/lexlib/PropSetSimple.h b/lexlib/PropSetSimple.h
-index 0cc610e6..110411c4 100644
+index 029d0b0b..110411c4 100644
 --- a/lexlib/PropSetSimple.h
 +++ b/lexlib/PropSetSimple.h
-@@ -12,16 +12,14 @@ namespace Lexilla {
+@@ -12,18 +12,15 @@ namespace Lexilla {
  
  class PropSetSimple {
  	void *impl;
@@ -917,14 +1087,18 @@ index 0cc610e6..110411c4 100644
 -	PropSetSimple &operator=(const PropSetSimple&) = delete;
 -	PropSetSimple &operator=(PropSetSimple&&) = delete;
  	virtual ~PropSetSimple();
+-
 -	void Set(std::string_view key, std::string_view val);
+-	const char *Get(std::string_view key) const;
+-	int GetInt(std::string_view key, int defaultValue=0) const;
 +	void Set(const char *key, const char *val, size_t lenKey, size_t lenVal);
 +	void SetMultiple(const char *);
- 	const char *Get(const char *key) const;
++	const char *Get(const char *key) const;
 +	size_t GetExpanded(const char *key, char *result) const;
- 	int GetInt(const char *key, int defaultValue=0) const;
++	int GetInt(const char *key, int defaultValue=0) const;
  };
  
+ }
 diff --git a/lexlib/StyleContext.cxx b/lexlib/StyleContext.cxx
 index ca564ec4..bcad18ca 100644
 --- a/lexlib/StyleContext.cxx
