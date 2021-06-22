@@ -1,10 +1,10 @@
 #include "stdafx.h"
 
 #include "godboltagent.h"
-
 #include "backendinterface.hpp"
 #include "compiler.hpp"
 #include "networkreplyhelper.h"
+#include "networkrequesthelper.h"
 #include "scopedguard.h"
 
 GodboltAgent::GodboltAgent(QNetworkAccessManager &nam, QObject *parent) : QObject(parent), m_nam(nam) {}
@@ -125,16 +125,10 @@ void GodboltAgent::compile(const CompileInfo &ci)
     rootObj.insert("options", QJsonValue::fromVariant(optionsObj));
 
     QString         requestUrl = m_apiBaseURL + "/api/compiler/" + m_backend->getCompilerId(compilerList, ci.compiler) + "/compile";
-    QNetworkRequest request(requestUrl);
-    request.setHeader(QNetworkRequest::UserAgentHeader,
-                      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) "
-                      "Gecko/20100101 Firefox/55.0");
+    QNetworkRequest request    = NetworkRequestHelper::NewRequest(requestUrl);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     request.setRawHeader("Referer", "https://godbolt.org/");
-    request.setRawHeader("Accept", "application/json, text/javascript, */*; q=0.01");
-    request.setRawHeader("Accept-Encoding", "gzip, deflate");
     request.setRawHeader("X-Requested-With", "XMLHttpRequest");
-    request.setAttribute(QNetworkRequest::Http2AllowedAttribute, QVariant(true));
 
     QJsonDocument doc;
     doc.setObject(rootObj);

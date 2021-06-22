@@ -20,6 +20,7 @@ SOURCES += \
     $$PWD/includewhatyouuseoutput.cpp \
     $$PWD/lddoutput.cpp \
     $$PWD/luavm.cpp \
+    $$PWD/networkrequesthelper.cpp \
     $$PWD/readelfoutput.cpp \
     $$PWD/scintillaconfig.cpp \
     $$PWD/scopedguard.cpp \
@@ -45,6 +46,7 @@ HEADERS += \
     $$PWD/includewhatyouuseoutput.h \
     $$PWD/lddoutput.h \
     $$PWD/luavm.h \
+    $$PWD/networkrequesthelper.h \
     $$PWD/readelfoutput.h \
     $$PWD/scintillaconfig.h \
     $$PWD/scopedguard.h \

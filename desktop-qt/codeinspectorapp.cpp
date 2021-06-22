@@ -1,8 +1,8 @@
 #include "stdafx.h"
 
 #include "codeinspectorapp.h"
-
 #include "networkreplyhelper.h"
+#include "networkrequesthelper.h"
 #include "settings.h"
 
 CodeInspectorApp::CodeInspectorApp(QObject *parent) : QObject(parent), m_backend(new GodboltAgent(m_nam, this))
@@ -40,11 +40,7 @@ void CodeInspectorApp::requestLanguageList()
     qDebug() << __FUNCTION__;
 #endif
     QString         requestUrl = g_settings->apiBaseURL() + "/api/languages";
-    QNetworkRequest request(requestUrl);
-    request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
-    request.setRawHeader("Accept", "application/json, text/javascript, */*; q=0.01");
-    request.setRawHeader("Accept-Encoding", "gzip, deflate");
-    request.setAttribute(QNetworkRequest::Http2AllowedAttribute, QVariant(true));
+    QNetworkRequest request    = NetworkRequestHelper::NewRequest(requestUrl);
 
     auto *reply       = m_nam.get(request);
     auto *replyHelper = new NetworkReplyHelper(reply);
@@ -110,11 +106,7 @@ void CodeInspectorApp::requestCompilerList(const QString &language)
     qDebug() << __FUNCTION__;
 #endif
     QString         requestUrl = g_settings->apiBaseURL() + "/api/inspectors/" + getLanguageId(language);
-    QNetworkRequest request(requestUrl);
-    request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
-    request.setRawHeader("Accept", "application/json, text/javascript, */*; q=0.01");
-    request.setRawHeader("Accept-Encoding", "gzip, deflate");
-    request.setAttribute(QNetworkRequest::Http2AllowedAttribute, QVariant(true));
+    QNetworkRequest request    = NetworkRequestHelper::NewRequest(requestUrl);
 
     auto *reply       = m_nam.get(request);
     auto *replyHelper = new NetworkReplyHelper(reply);
@@ -629,13 +621,9 @@ void CodeInspectorApp::requestConfigurations()
 #if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__;
 #endif
-    quint64         value = QRandomGenerator::global()->generate64();
-    QNetworkRequest request(
-        QUrl("https://cdn.jsdelivr.net/gh/missdeer/codeinspector@master/core/resource/configurations.json?hash=" + QString::number(value)));
-    request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0");
-    request.setRawHeader("Accept", "application/json, text/javascript, */*; q=0.01");
-    request.setRawHeader("Accept-Encoding", "gzip, deflate");
-    request.setAttribute(QNetworkRequest::Http2AllowedAttribute, QVariant(true));
+    quint64 value = QRandomGenerator::global()->generate64();
+    QUrl    requestUrl("https://cdn.jsdelivr.net/gh/missdeer/codeinspector@master/core/resource/configurations.json?hash=" + QString::number(value));
+    QNetworkRequest request = NetworkRequestHelper::NewRequest(requestUrl);
 
     auto *reply       = m_nam.get(request);
     auto *replyHelper = new NetworkReplyHelper(reply);
