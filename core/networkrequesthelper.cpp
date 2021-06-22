@@ -8,12 +8,7 @@ namespace NetworkRequestHelper
 
     QNetworkRequest NewRequest(const QString &url)
     {
-        QNetworkRequest request(url);
-        request.setHeader(QNetworkRequest::UserAgentHeader, QVariant(userAgent));
-        request.setRawHeader("Accept", "application/json, text/javascript, */*; q=0.01");
-        request.setRawHeader("Accept-Encoding", "gzip, deflate");
-        request.setAttribute(QNetworkRequest::Http2AllowedAttribute, QVariant(true));
-        return request;
+        return NewRequest(QUrl(url));
     }
 
     QNetworkRequest NewRequest(const QUrl &url)
