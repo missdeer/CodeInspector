@@ -41,14 +41,14 @@ signals:
     void cancel();
     void errorMessage(QNetworkReply::NetworkError, QString);
 public slots:
-    void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
-    void error(QNetworkReply::NetworkError code);
-    void finished();
-    void sslErrors(const QList<QSslError> &errors);
-    void uploadProgress(qint64 bytesSent, qint64 bytesTotal);
-    void readyRead();
+    void onDownloadProgress(qint64 bytesReceived, qint64 bytesTotal);
+    void onErrorOccurred(QNetworkReply::NetworkError code);
+    void onFinished();
+    void onSslErrors(const QList<QSslError> &errors);
+    void onUploadProgress(qint64 bytesSent, qint64 bytesTotal);
+    void onReadyRead();
 private slots:
-    void timeout();
+    void onTimeout();
 
 private:
     QNetworkReply *m_reply {nullptr};

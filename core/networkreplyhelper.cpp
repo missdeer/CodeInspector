@@ -61,12 +61,12 @@ NetworkReplyHelper::NetworkReplyHelper(QNetworkReply *reply, QObject *parent) : 
 {
     if (m_reply)
     {
-        connect(m_reply, &QNetworkReply::downloadProgress, this, &NetworkReplyHelper::downloadProgress);
-        connect(m_reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(error(QNetworkReply::NetworkError)));
-        connect(m_reply, &QNetworkReply::finished, this, &NetworkReplyHelper::finished);
-        connect(m_reply, &QNetworkReply::sslErrors, this, &NetworkReplyHelper::sslErrors);
-        connect(m_reply, &QNetworkReply::uploadProgress, this, &NetworkReplyHelper::uploadProgress);
-        connect(m_reply, &QNetworkReply::readyRead, this, &NetworkReplyHelper::readyRead);
+        connect(m_reply, &QNetworkReply::downloadProgress, this, &NetworkReplyHelper::onDownloadProgress);
+        connect(m_reply, &QNetworkReply::errorOccurred, this, &NetworkReplyHelper::onErrorOccurred);
+        connect(m_reply, &QNetworkReply::finished, this, &NetworkReplyHelper::onFinished);
+        connect(m_reply, &QNetworkReply::sslErrors, this, &NetworkReplyHelper::onSslErrors);
+        connect(m_reply, &QNetworkReply::uploadProgress, this, &NetworkReplyHelper::onUploadProgress);
+        connect(m_reply, &QNetworkReply::readyRead, this, &NetworkReplyHelper::onReadyRead);
     }
 }
 
@@ -88,7 +88,7 @@ NetworkReplyHelper::~NetworkReplyHelper()
     }
 }
 
-void NetworkReplyHelper::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
+void NetworkReplyHelper::onDownloadProgress(qint64 bytesReceived, qint64 bytesTotal)
 {
     Q_UNUSED(bytesReceived);
     Q_UNUSED(bytesTotal);
@@ -96,7 +96,7 @@ void NetworkReplyHelper::downloadProgress(qint64 bytesReceived, qint64 bytesTota
         m_timeoutTimer->start();
 }
 
-void NetworkReplyHelper::error(QNetworkReply::NetworkError code)
+void NetworkReplyHelper::onErrorOccurred(QNetworkReply::NetworkError code)
 {
     Q_UNUSED(code);
     if (m_reply)
@@ -109,7 +109,7 @@ void NetworkReplyHelper::error(QNetworkReply::NetworkError code)
     }
 }
 
-void NetworkReplyHelper::finished()
+void NetworkReplyHelper::onFinished()
 {
     if (m_timeoutTimer)
         m_timeoutTimer->stop();
@@ -126,7 +126,7 @@ void NetworkReplyHelper::finished()
     emit done();
 }
 
-void NetworkReplyHelper::sslErrors(const QList<QSslError> &errors)
+void NetworkReplyHelper::onSslErrors(const QList<QSslError> &errors)
 {
     Q_FOREACH (const QSslError &e, errors)
     {
@@ -137,7 +137,7 @@ void NetworkReplyHelper::sslErrors(const QList<QSslError> &errors)
     }
 }
 
-void NetworkReplyHelper::uploadProgress(qint64 bytesSent, qint64 bytesTotal)
+void NetworkReplyHelper::onUploadProgress(qint64 bytesSent, qint64 bytesTotal)
 {
     Q_UNUSED(bytesSent);
     Q_UNUSED(bytesTotal);
@@ -145,7 +145,7 @@ void NetworkReplyHelper::uploadProgress(qint64 bytesSent, qint64 bytesTotal)
         m_timeoutTimer->start();
 }
 
-void NetworkReplyHelper::readyRead()
+void NetworkReplyHelper::onReadyRead()
 {
     auto *reply      = qobject_cast<QNetworkReply *>(sender());
     int   statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
@@ -155,7 +155,7 @@ void NetworkReplyHelper::readyRead()
     }
 }
 
-void NetworkReplyHelper::timeout()
+void NetworkReplyHelper::onTimeout()
 {
 #if !defined(QT_NO_DEBUG)
     qDebug() << "network request timeout";
@@ -182,7 +182,7 @@ void NetworkReplyHelper::setTimeout(int milliseconds)
     {
         m_timeoutTimer = new QTimer;
         m_timeoutTimer->setSingleShot(true);
-        connect(m_timeoutTimer, &QTimer::timeout, this, &NetworkReplyHelper::timeout);
+        connect(m_timeoutTimer, &QTimer::timeout, this, &NetworkReplyHelper::onTimeout);
     }
     m_timeoutTimer->start(milliseconds);
 }

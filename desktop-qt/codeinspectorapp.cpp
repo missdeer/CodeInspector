@@ -19,16 +19,16 @@ QNetworkAccessManager &CodeInspectorApp::networkAccessManager()
 void CodeInspectorApp::initialize()
 {
     QByteArray content;
+    auto       path = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/configurations.json";
+    bool       res  = false;
 
-    const QString defaultConfigurationPath = ":/resource/configurations.json";
-    QString       path                     = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/configurations.json";
-    bool          res                      = false;
-    if (loadConfiguration(path, content))
+    if (loadConfigurationRawContent(path, content))
         res = parseConfiguration(content);
     if (!res)
     {
         content.clear();
-        loadConfiguration(defaultConfigurationPath, content);
+        const QString defaultConfigurationPath = ":/resource/configurations.json";
+        loadConfigurationRawContent(defaultConfigurationPath, content);
         parseConfiguration(content);
     }
     requestConfigurations();
@@ -45,7 +45,7 @@ void CodeInspectorApp::requestLanguageList()
     auto *reply       = m_nam.get(request);
     auto *replyHelper = new NetworkReplyHelper(reply);
     replyHelper->setTimeout(networkRequestTimeout);
-    connect(replyHelper, SIGNAL(done()), this, SLOT(onLanguageListRequestFinished()));
+    connect(replyHelper, &NetworkReplyHelper::done, this, &CodeInspectorApp::onLanguageListRequestFinished);
 }
 
 LanguageList &CodeInspectorApp::getLanguageList()
@@ -112,7 +112,7 @@ void CodeInspectorApp::requestCompilerList(const QString &language)
     auto *replyHelper = new NetworkReplyHelper(reply);
     replyHelper->setData(language);
     replyHelper->setTimeout(networkRequestTimeout);
-    connect(replyHelper, SIGNAL(done()), this, SLOT(onCompilerListRequestFinished()));
+    connect(replyHelper, &NetworkReplyHelper::done, this, &CodeInspectorApp::onCompilerListRequestFinished);
 }
 
 bool CodeInspectorApp::storeCompilerList(const QString &name, const QByteArray &content)
@@ -628,7 +628,7 @@ void CodeInspectorApp::requestConfigurations()
     auto *reply       = m_nam.get(request);
     auto *replyHelper = new NetworkReplyHelper(reply);
     replyHelper->setTimeout(networkRequestTimeout);
-    connect(replyHelper, SIGNAL(done()), this, SLOT(onConfigurationRequestFinished()));
+    connect(replyHelper, &NetworkReplyHelper::done, this, &CodeInspectorApp::onConfigurationRequestFinished);
 }
 
 bool CodeInspectorApp::storeConfiguration(const QByteArray &content)
@@ -662,7 +662,7 @@ bool CodeInspectorApp::storeConfiguration(const QByteArray &content)
     return true;
 }
 
-bool CodeInspectorApp::loadConfiguration(const QString &path, QByteArray &content)
+bool CodeInspectorApp::loadConfigurationRawContent(const QString &path, QByteArray &content)
 {
 #if !defined(QT_NO_DEBUG)
     qDebug() << __FUNCTION__;
