@@ -1,4 +1,10 @@
-#include "stdafx.h"
+#include <QAction>
+#include <QComboBox>
+#include <QHBoxLayout>
+#include <QIcon>
+#include <QMenu>
+#include <QPushButton>
+#include <QVBoxLayout>
 
 #include "codeeditorpane.h"
 #include "codeeditor.h"

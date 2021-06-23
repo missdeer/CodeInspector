@@ -1,4 +1,4 @@
-#include "stdafx.h"
+
 
 #include "codeeditor.h"
 #include "ScintillaTypes.h"

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+
 
 #include "libraryversion.h"
 

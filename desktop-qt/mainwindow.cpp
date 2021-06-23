@@ -1,7 +1,9 @@
-#include "stdafx.h"
+#include <QDesktopServices>
+#include <QFile>
+#include <QFileDialog>
+#include <QMessageBox>
 
 #include "mainwindow.h"
-
 #include "sessionwidget.h"
 #include "ui_mainwindow.h"
 

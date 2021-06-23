@@ -1,4 +1,5 @@
-#include "stdafx.h"
+#include <QFile>
+
 #include "luavm.h"
 
 LuaVM::LuaVM()

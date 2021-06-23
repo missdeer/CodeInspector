@@ -1,4 +1,7 @@
-#include "stdafx.h"
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QNetworkRequest>
 
 #include "godboltagent.h"
 #include "backendinterface.hpp"

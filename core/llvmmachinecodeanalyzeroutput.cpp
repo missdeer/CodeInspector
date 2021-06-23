@@ -1,7 +1,7 @@
-#include "stdafx.h"
+#include <QLineEdit>
+#include <QVBoxLayout>
 
 #include "llvmmachinecodeanalyzeroutput.h"
-
 #include "ScintillaEdit.h"
 #include "scintillaconfig.h"
 

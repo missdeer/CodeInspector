@@ -10,44 +10,39 @@ win32-msvc: {
 TARGET = CodeInspector
 TEMPLATE = app
 CONFIG += c++17 
-! *-clang* {
-    CONFIG += precompile_header
-    PRECOMPILED_HEADER = stdafx.h
-}
 
 include($$PWD/../core/core.pri)
 
-RC_FILE = CodeInspector.rc
+RC_FILE = $$PWD/CodeInspector.rc
 
-SOURCES += main.cpp \
-    comboboxdelegate.cpp \
-    mainwindow.cpp \
-    codeeditorpane.cpp \
-    codeinspectortabwidget.cpp \
-    codeinspectorpane.cpp \
-    compilationtabwidget.cpp \
-    sessionwidget.cpp \
-    codeinspectorapp.cpp
+SOURCES += $$PWD/main.cpp \
+    $$PWD/comboboxdelegate.cpp \
+    $$PWD/mainwindow.cpp \
+    $$PWD/codeeditorpane.cpp \
+    $$PWD/codeinspectortabwidget.cpp \
+    $$PWD/codeinspectorpane.cpp \
+    $$PWD/compilationtabwidget.cpp \
+    $$PWD/sessionwidget.cpp \
+    $$PWD/codeinspectorapp.cpp
 
-HEADERS += stdafx.h \
-    comboboxdelegate.h \
-    mainwindow.h \
-    codeeditorpane.h \
-    codeinspectortabwidget.h \
-    codeinspectorpane.h \
-    compilationtabwidget.h \
-    sessionwidget.h \
-    codeinspectorapp.h
+HEADERS += \
+    $$PWD/comboboxdelegate.h \
+    $$PWD/mainwindow.h \
+    $$PWD/codeeditorpane.h \
+    $$PWD/codeinspectortabwidget.h \
+    $$PWD/codeinspectorpane.h \
+    $$PWD/compilationtabwidget.h \
+    $$PWD/sessionwidget.h \
+    $$PWD/codeinspectorapp.h
 
 FORMS += \ 
-    mainwindow.ui
+    $$PWD/mainwindow.ui
 
 
 RESOURCES += \ 
-    image.qrc
+    $$PWD/image.qrc
 
 win32-msvc* {
-    #QMAKE_LFLAGS += "/LTCG"
     QMAKE_CXXFLAGS_RELEASE += /Zi
     QMAKE_LFLAGS_RELEASE += /DEBUG
 }
@@ -61,7 +56,9 @@ macx: {
 LIBS = -L$$OUT_PWD/../plugins -L$$OUT_PWD/../libs
 
 macx-xcode {
-    LIBS += -loption_ast$($${QMAKE_XCODE_LIBRARY_SUFFIX_SETTING}) \
+    LIBS +=  \
+        -lcore$($${QMAKE_XCODE_LIBRARY_SUFFIX_SETTING}) \
+        -loption_ast$($${QMAKE_XCODE_LIBRARY_SUFFIX_SETTING}) \
         -loption_cfg$($${QMAKE_XCODE_LIBRARY_SUFFIX_SETTING}) \
         -loption_gcctreertl$($${QMAKE_XCODE_LIBRARY_SUFFIX_SETTING}) \
         -loption_ir$($${QMAKE_XCODE_LIBRARY_SUFFIX_SETTING}) \
@@ -79,10 +76,11 @@ macx-xcode {
         -ltool_psvstudio$($${QMAKE_XCODE_LIBRARY_SUFFIX_SETTING}) \
         -ltool_readelf$($${QMAKE_XCODE_LIBRARY_SUFFIX_SETTING}) \
         -ltool_strings$($${QMAKE_XCODE_LIBRARY_SUFFIX_SETTING}) \
-        -ltool_x86to6502$($${QMAKE_XCODE_LIBRARY_SUFFIX_SETTING}) \
-        -lcore$($${QMAKE_XCODE_LIBRARY_SUFFIX_SETTING})
+        -ltool_x86to6502$($${QMAKE_XCODE_LIBRARY_SUFFIX_SETTING})
 } else {
-    LIBS += -loption_ast \
+    LIBS += \
+        -lcore \
+        -loption_ast \
         -loption_cfg \
         -loption_gcctreertl \
         -loption_ir \
@@ -100,8 +98,7 @@ macx-xcode {
         -ltool_psvstudio \
         -ltool_readelf \
         -ltool_strings \
-        -ltool_x86to6502 \
-        -lcore
+        -ltool_x86to6502
     if(!debug_and_release|build_pass):CONFIG(debug, debug|release) {
         mac:LIBS = $$member(LIBS, 0) $$member(LIBS, 1)_debug
         win32:LIBS = $$member(LIBS, 0) $$member(LIBS, 1)d

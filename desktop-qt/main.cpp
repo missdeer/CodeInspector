@@ -1,4 +1,7 @@
-#include "stdafx.h"
+#include <QApplication>
+#include <QMessageBox>
+#include <QPixmap>
+#include <QSplashScreen>
 
 #include "codeinspectorapp.h"
 #include "mainwindow.h"

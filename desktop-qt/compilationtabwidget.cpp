@@ -1,7 +1,8 @@
-#include "stdafx.h"
+#include <QAction>
+#include <QMenu>
+#include <QTabBar>
 
 #include "compilationtabwidget.h"
-
 #include "codeinspectorapp.h"
 #include "codeinspectorpane.h"
 

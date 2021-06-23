@@ -1,4 +1,10 @@
-#include "stdafx.h"
+#include <QDateTime>
+#include <QDir>
+#include <QDomDocument>
+#include <QFile>
+#include <QFontDatabase>
+#include <QStandardPaths>
+#include <QStringBuilder>
 
 #include "scintillaconfig.h"
 #include "ILexer.h"

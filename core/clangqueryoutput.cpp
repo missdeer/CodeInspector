@@ -1,7 +1,7 @@
-#include "stdafx.h"
+#include <QLineEdit>
+#include <QVBoxLayout>
 
 #include "clangqueryoutput.h"
-
 #include "ScintillaEdit.h"
 #include "scintillaconfig.h"
 

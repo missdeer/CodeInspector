@@ -1,4 +1,10 @@
-#include "stdafx.h"
+#include <QDir>
+#include <QFile>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QRandomGenerator>
+#include <QStandardPaths>
 
 #include "codeinspectorapp.h"
 #include "networkreplyhelper.h"

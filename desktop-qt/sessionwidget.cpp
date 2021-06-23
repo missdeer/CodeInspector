@@ -1,7 +1,7 @@
-#include "stdafx.h"
+#include <QHBoxLayout>
+#include <QSplitter>
 
 #include "sessionwidget.h"
-
 #include "codeeditor.h"
 #include "codeeditorpane.h"
 #include "codeinspectorapp.h"

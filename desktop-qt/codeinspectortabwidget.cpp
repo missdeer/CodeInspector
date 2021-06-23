@@ -1,4 +1,5 @@
-#include "stdafx.h"
+#include <QAction>
+#include <QMenu>
 
 #include "codeinspectortabwidget.h"
 #include "astoutput.h"

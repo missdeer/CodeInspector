@@ -1,7 +1,15 @@
-#include "stdafx.h"
+#include <QComboBox>
+#include <QDir>
+#include <QFile>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QSplitter>
+#include <QStandardItemModel>
+#include <QStandardPaths>
+#include <QTimer>
+#include <QVBoxLayout>
 
 #include "codeinspectorpane.h"
-
 #include "codeeditor.h"
 #include "codeinspectorapp.h"
 #include "codeinspectortabwidget.h"

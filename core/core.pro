@@ -11,11 +11,6 @@ win32-msvc: {
     lessThan(MSVC_VER, 14.1): error("Compiler supports C++17 is required")
 }
 
-! *-clang* {
-    CONFIG += precompile_header
-    PRECOMPILED_HEADER = stdafx.h
-}
-
 include($$PWD/../3rdparty/lua/lua.pri)
 include($$PWD/../3rdparty/zlib.pri)
 include($$PWD/../3rdparty/lpeg/lpeg.pri)

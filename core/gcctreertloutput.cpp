@@ -1,4 +1,6 @@
-#include "stdafx.h"
+#include <QCheckBox>
+#include <QComboBox>
+#include <QVBoxLayout>
 
 #include "gcctreertloutput.h"
 #include "ScintillaEdit.h"

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include <QSettings>
 
 #include "settings.h"
 
