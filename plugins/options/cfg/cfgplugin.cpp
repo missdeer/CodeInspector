@@ -5,7 +5,7 @@ CfgPlugin::CfgPlugin(QObject *parent) : QObject(parent)
     
 }
 
-bool CfgPlugin::isCompilerSupported() const
+bool CfgPlugin::isCompilerSupported(int compilerId) const
 {
     return false;
 }

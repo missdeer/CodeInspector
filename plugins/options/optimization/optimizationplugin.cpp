@@ -5,7 +5,7 @@ OptimizationPlugin::OptimizationPlugin(QObject *parent) : QObject(parent)
     
 }
 
-bool OptimizationPlugin::isCompilerSupported() const
+bool OptimizationPlugin::isCompilerSupported(int compilerId) const
 {
     return false;
 }

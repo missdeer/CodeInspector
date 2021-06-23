@@ -17,7 +17,7 @@ public:
     explicit RextesterPlugin(QObject *parent = nullptr);
     ~RextesterPlugin() override {}
 
-    [[nodiscard]] bool isCompilerSupported() const override
+    [[nodiscard]] bool isCompilerSupported(int compilerId) const override
     {
         return false;
     }

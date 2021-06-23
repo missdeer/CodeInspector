@@ -5,7 +5,7 @@ StringsPlugin::StringsPlugin(QObject *parent) : QObject(parent)
     
 }
 
-bool StringsPlugin::isCompilerSupported() const
+bool StringsPlugin::isCompilerSupported(int compilerId) const
 {
     return false;
 }

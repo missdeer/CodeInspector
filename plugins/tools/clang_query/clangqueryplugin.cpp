@@ -5,7 +5,7 @@ ClangQueryPlugin::ClangQueryPlugin(QObject *parent) : QObject(parent)
     
 }
 
-bool ClangQueryPlugin::isCompilerSupported() const
+bool ClangQueryPlugin::isCompilerSupported(int compilerId) const
 {
     return false;
 }

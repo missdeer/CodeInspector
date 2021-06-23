@@ -17,7 +17,7 @@ public:
     explicit LLVMIRPlugin(QObject *parent = nullptr);
     ~LLVMIRPlugin() override {}
 
-    [[nodiscard]] bool     isCompilerSupported() const override;
+    [[nodiscard]] bool     isCompilerSupported(int compilerId) const override;
     [[nodiscard]] bool     isSessionEnabled() const override;
     [[nodiscard]] bool     hasResult() const override;
     [[nodiscard]] QWidget *createOutputWidget(QWidget *parent = nullptr) override;

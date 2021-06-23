@@ -5,7 +5,7 @@ ReadELFPlugin::ReadELFPlugin(QObject *parent) : QObject(parent)
     
 }
 
-bool ReadELFPlugin::isCompilerSupported() const
+bool ReadELFPlugin::isCompilerSupported(int compilerId) const
 {
     return false;
 }

@@ -5,7 +5,7 @@ ClangTidyPlugin::ClangTidyPlugin(QObject *parent) : QObject(parent)
     
 }
 
-bool ClangTidyPlugin::isCompilerSupported() const
+bool ClangTidyPlugin::isCompilerSupported(int compilerId) const
 {
     return false;
 }

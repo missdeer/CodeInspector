@@ -5,7 +5,7 @@ LLVMMCAPlugin::LLVMMCAPlugin(QObject *parent) : QObject(parent)
     
 }
 
-bool LLVMMCAPlugin::isCompilerSupported() const
+bool LLVMMCAPlugin::isCompilerSupported(int compilerId) const
 {
     return false;
 }

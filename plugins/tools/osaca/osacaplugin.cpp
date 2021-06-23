@@ -5,7 +5,7 @@ OSACAPlugin::OSACAPlugin(QObject *parent) : QObject(parent)
     
 }
 
-bool OSACAPlugin::isCompilerSupported() const
+bool OSACAPlugin::isCompilerSupported(int compilerId) const
 {
     return false;
 }

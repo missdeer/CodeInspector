@@ -5,7 +5,7 @@ LDDPlugin::LDDPlugin(QObject *parent) : QObject(parent)
     
 }
 
-bool LDDPlugin::isCompilerSupported() const
+bool LDDPlugin::isCompilerSupported(int compilerId) const
 {
     return false;
 }

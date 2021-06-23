@@ -5,7 +5,7 @@ IncludeWhatYouUsePlugin::IncludeWhatYouUsePlugin(QObject *parent) : QObject(pare
     
 }
 
-bool IncludeWhatYouUsePlugin::isCompilerSupported() const
+bool IncludeWhatYouUsePlugin::isCompilerSupported(int compilerId) const
 {
     return false;
 }

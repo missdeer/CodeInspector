@@ -17,7 +17,7 @@ public:
     explicit X86To6502Plugin(QObject *parent = nullptr);
     ~X86To6502Plugin() override {}
 
-    [[nodiscard]] bool     isCompilerSupported() const override;
+    [[nodiscard]] bool     isCompilerSupported(int compilerId) const override;
     [[nodiscard]] bool     isSessionEnabled() const override;
     [[nodiscard]] bool     hasResult() const override;
     [[nodiscard]] QWidget *createOutputWidget(QWidget *parent = nullptr) override;

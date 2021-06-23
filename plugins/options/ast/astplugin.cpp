@@ -5,7 +5,7 @@ AstPlugin::AstPlugin(QObject *parent) : QObject(parent)
     
 }
 
-bool AstPlugin::isCompilerSupported() const
+bool AstPlugin::isCompilerSupported(int compilerId) const
 {
     return false;
 }

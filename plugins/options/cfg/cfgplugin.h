@@ -17,13 +17,12 @@ public:
     explicit CfgPlugin(QObject *parent = nullptr);
     ~CfgPlugin() override {}
 
-    [[nodiscard]] bool     isCompilerSupported() const override;
+    [[nodiscard]] bool     isCompilerSupported(int compilerId) const override;
     [[nodiscard]] bool     isSessionEnabled() const override;
     [[nodiscard]] bool     hasResult() const override;
     [[nodiscard]] QWidget *createOutputWidget(QWidget *parent = nullptr) override;
 
 signals:
-
 };
 
 #endif // CFGPLUGIN_H

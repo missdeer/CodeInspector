@@ -5,7 +5,7 @@ PaholePlugin::PaholePlugin(QObject *parent) : QObject(parent)
     
 }
 
-bool PaholePlugin::isCompilerSupported() const
+bool PaholePlugin::isCompilerSupported(int compilerId) const
 {
     return false;
 }

@@ -5,7 +5,7 @@ PSVStudioPlugin::PSVStudioPlugin(QObject *parent) : QObject(parent)
     
 }
 
-bool PSVStudioPlugin::isCompilerSupported() const
+bool PSVStudioPlugin::isCompilerSupported(int compilerId) const
 {
     return false;
 }
