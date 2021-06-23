@@ -58,3 +58,50 @@ macx: {
     INSTALLS += icon
 }
 
+LIBS           = -L$$PWD/../plugins
+
+macx-xcode {
+    LIBS += -loption_ast$($${QMAKE_XCODE_LIBRARY_SUFFIX_SETTING}) \
+        -loption_cfg$($${QMAKE_XCODE_LIBRARY_SUFFIX_SETTING}) \
+        -loption_gcctreertl$($${QMAKE_XCODE_LIBRARY_SUFFIX_SETTING}) \
+        -loption_ir$($${QMAKE_XCODE_LIBRARY_SUFFIX_SETTING}) \
+        -loption_optimization$($${QMAKE_XCODE_LIBRARY_SUFFIX_SETTING}) \
+        -lrunner_rextester$($${QMAKE_XCODE_LIBRARY_SUFFIX_SETTING}) \
+        -lrunner_wandbox$($${QMAKE_XCODE_LIBRARY_SUFFIX_SETTING}) \
+        -ltool_clangformat$($${QMAKE_XCODE_LIBRARY_SUFFIX_SETTING}) \
+        -ltool_clangquery$($${QMAKE_XCODE_LIBRARY_SUFFIX_SETTING}) \
+        -ltool_clangtidy$($${QMAKE_XCODE_LIBRARY_SUFFIX_SETTING}) \
+        -ltool_iwyu$($${QMAKE_XCODE_LIBRARY_SUFFIX_SETTING}) \
+        -ltool_ldd$($${QMAKE_XCODE_LIBRARY_SUFFIX_SETTING}) \
+        -ltool_llvmmca$($${QMAKE_XCODE_LIBRARY_SUFFIX_SETTING}) \
+        -ltool_osaca$($${QMAKE_XCODE_LIBRARY_SUFFIX_SETTING}) \
+        -ltool_pahole$($${QMAKE_XCODE_LIBRARY_SUFFIX_SETTING}) \
+        -ltool_psvstudio$($${QMAKE_XCODE_LIBRARY_SUFFIX_SETTING}) \
+        -ltool_readelf$($${QMAKE_XCODE_LIBRARY_SUFFIX_SETTING}) \
+        -ltool_strings$($${QMAKE_XCODE_LIBRARY_SUFFIX_SETTING}) \
+        -ltool_x86to6502$($${QMAKE_XCODE_LIBRARY_SUFFIX_SETTING})
+} else {
+    LIBS += -loption_ast \
+        -loption_cfg \
+        -loption_gcctreertl \
+        -loption_ir \
+        -loption_optimization \
+        -lrunner_rextester \
+        -lrunner_wandbox \
+        -ltool_clangformat \
+        -ltool_clangquery \
+        -ltool_clangtidy \
+        -ltool_iwyu \
+        -ltool_ldd \
+        -ltool_llvmmca \
+        -ltool_osaca \
+        -ltool_pahole \
+        -ltool_psvstudio \
+        -ltool_readelf \
+        -ltool_strings \
+        -ltool_x86to6502
+    if(!debug_and_release|build_pass):CONFIG(debug, debug|release) {
+        mac:LIBS = $$member(LIBS, 0) $$member(LIBS, 1)_debug
+        win32:LIBS = $$member(LIBS, 0) $$member(LIBS, 1)d
+    }
+}
