@@ -15,7 +15,7 @@ bool OptimizationPlugin::isSessionEnabled() const
     return false;
 }
 
-bool OptimizationPlugin::hasResult(const QJsonObject& jsonObj) const
+bool OptimizationPlugin::hasResult(const QJsonObject &docObj) const
 {
     return false;
 }

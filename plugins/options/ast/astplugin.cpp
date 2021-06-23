@@ -15,7 +15,7 @@ bool AstPlugin::isSessionEnabled() const
     return false;
 }
 
-bool AstPlugin::hasResult(const QJsonObject& jsonObj) const
+bool AstPlugin::hasResult(const QJsonObject &docObj) const
 {
     return false;
 }

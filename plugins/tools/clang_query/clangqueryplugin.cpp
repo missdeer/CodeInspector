@@ -15,7 +15,7 @@ bool ClangQueryPlugin::isSessionEnabled() const
     return false;
 }
 
-bool ClangQueryPlugin::hasResult(const QJsonObject& jsonObj) const
+bool ClangQueryPlugin::hasResult(const QJsonObject &docObj) const
 {
     return false;
 }

@@ -15,7 +15,7 @@ bool StringsPlugin::isSessionEnabled() const
     return false;
 }
 
-bool StringsPlugin::hasResult(const QJsonObject& jsonObj) const
+bool StringsPlugin::hasResult(const QJsonObject &docObj) const
 {
     return false;
 }

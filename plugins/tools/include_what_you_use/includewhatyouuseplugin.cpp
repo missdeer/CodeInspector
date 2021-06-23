@@ -15,7 +15,7 @@ bool IncludeWhatYouUsePlugin::isSessionEnabled() const
     return false;
 }
 
-bool IncludeWhatYouUsePlugin::hasResult(const QJsonObject& jsonObj) const
+bool IncludeWhatYouUsePlugin::hasResult(const QJsonObject &docObj) const
 {
     return false;
 }

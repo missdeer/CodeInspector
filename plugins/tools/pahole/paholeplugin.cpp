@@ -15,7 +15,7 @@ bool PaholePlugin::isSessionEnabled() const
     return false;
 }
 
-bool PaholePlugin::hasResult(const QJsonObject& jsonObj) const
+bool PaholePlugin::hasResult(const QJsonObject &docObj) const
 {
     return false;
 }
