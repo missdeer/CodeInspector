@@ -2,6 +2,19 @@ TEMPLATE      = lib
 CONFIG       += c++17 static
 TARGET        = $$qtLibraryTarget(core)
 DESTDIR       = $$OUT_PWD/../libs
+QT           += core gui widgets xml network
+
+lessThan(QT_MAJOR_VERSION, 5): error("Qt 5 or higher is required")
+greaterThan(QT_MAJOR_VERSION, 5): QT += core5compat
+win32-msvc: {
+    MSVC_VER = $$(VisualStudioVersion)
+    lessThan(MSVC_VER, 14.1): error("Compiler supports C++17 is required")
+}
+
+! *-clang* {
+    CONFIG += precompile_header
+    PRECOMPILED_HEADER = stdafx.h
+}
 
 include($$PWD/../3rdparty/lua/lua.pri)
 include($$PWD/../3rdparty/zlib.pri)
@@ -17,20 +30,6 @@ android|ios: {
 
 CONFIG += install_ok  # Do not cargo-cult this!
 uikit: CONFIG += debug_and_release
-
-
-lessThan(QT_MAJOR_VERSION, 5): error("Qt 5 or higher is required")
-greaterThan(QT_MAJOR_VERSION, 5): QT += core5compat
-win32-msvc: {
-    MSVC_VER = $$(VisualStudioVersion)
-    lessThan(MSVC_VER, 14.1): error("Compiler supports C++17 is required")
-}
-
-! *-clang* {
-    CONFIG += precompile_header
-    PRECOMPILED_HEADER = stdafx.h
-}
-
 
 SOURCES += \
     $$PWD/clangqueryoutput.cpp \
