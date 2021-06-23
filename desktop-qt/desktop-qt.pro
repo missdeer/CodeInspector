@@ -1,4 +1,4 @@
-QT       += core gui widgets 
+QT       += core gui widgets xml network
 
 lessThan(QT_MAJOR_VERSION, 5): error("Qt 5 or higher is required")
 greaterThan(QT_MAJOR_VERSION, 5): QT += core5compat
@@ -58,7 +58,7 @@ macx: {
     INSTALLS += icon
 }
 
-LIBS           = -L$$PWD/../plugins
+LIBS           = -L$$PWD/../plugins -L$$OUT_PWD/../libs -lcore
 
 macx-xcode {
     LIBS += -loption_ast$($${QMAKE_XCODE_LIBRARY_SUFFIX_SETTING}) \

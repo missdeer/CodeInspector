@@ -6,6 +6,11 @@
 
 int main(int argc, char *argv[])
 {
+    Q_INIT_RESOURCE(CodeInspector);
+    Q_INIT_RESOURCE(coreImage);
+    Q_INIT_RESOURCE(example);
+    Q_INIT_RESOURCE(scintilla);
+    Q_INIT_RESOURCE(image);
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
     QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps, true);
