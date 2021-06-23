@@ -20,7 +20,7 @@ public:
     [[nodiscard]] bool     isCurrentCompilerSupported() const override;
     [[nodiscard]] bool     isCurrentSessionEnabled() const override;
     [[nodiscard]] bool     hasResult() const override;
-    [[nodiscard]] QWidget *outputWidget(QWidget *parent = nullptr) override;
+    [[nodiscard]] QWidget *createOutputWidget(QWidget *parent = nullptr) override;
 
 signals:
 };

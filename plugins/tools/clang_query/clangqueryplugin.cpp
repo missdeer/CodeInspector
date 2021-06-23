@@ -20,7 +20,7 @@ bool ClangQueryPlugin::hasResult() const
     return false;
 }
 
-QWidget *ClangQueryPlugin::outputWidget(QWidget *parent)
+QWidget *ClangQueryPlugin::createOutputWidget(QWidget *parent)
 {
     Q_UNUSED(parent);
     return nullptr;

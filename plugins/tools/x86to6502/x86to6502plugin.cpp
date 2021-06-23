@@ -20,7 +20,7 @@ bool X86To6502Plugin::hasResult() const
     return false;
 }
 
-QWidget *X86To6502Plugin::outputWidget(QWidget *parent)
+QWidget *X86To6502Plugin::createOutputWidget(QWidget *parent)
 {
     Q_UNUSED(parent);
     return nullptr;

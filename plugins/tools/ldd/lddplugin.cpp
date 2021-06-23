@@ -20,7 +20,7 @@ bool LDDPlugin::hasResult() const
     return false;
 }
 
-QWidget *LDDPlugin::outputWidget(QWidget *parent)
+QWidget *LDDPlugin::createOutputWidget(QWidget *parent)
 {
     Q_UNUSED(parent);
     return nullptr;

@@ -20,7 +20,7 @@ bool StringsPlugin::hasResult() const
     return false;
 }
 
-QWidget *StringsPlugin::outputWidget(QWidget *parent)
+QWidget *StringsPlugin::createOutputWidget(QWidget *parent)
 {
     Q_UNUSED(parent);
     return nullptr;

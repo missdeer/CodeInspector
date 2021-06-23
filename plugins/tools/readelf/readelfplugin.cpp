@@ -20,7 +20,7 @@ bool ReadELFPlugin::hasResult() const
     return false;
 }
 
-QWidget *ReadELFPlugin::outputWidget(QWidget *parent)
+QWidget *ReadELFPlugin::createOutputWidget(QWidget *parent)
 {
     Q_UNUSED(parent);
     return nullptr;

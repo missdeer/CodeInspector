@@ -20,7 +20,7 @@ bool IncludeWhatYouUsePlugin::hasResult() const
     return false;
 }
 
-QWidget *IncludeWhatYouUsePlugin::outputWidget(QWidget *parent)
+QWidget *IncludeWhatYouUsePlugin::createOutputWidget(QWidget *parent)
 {
     Q_UNUSED(parent);
     return nullptr;

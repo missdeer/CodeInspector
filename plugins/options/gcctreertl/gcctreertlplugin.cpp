@@ -20,7 +20,7 @@ bool GCCTreeRTLPlugin::hasResult() const
     return false;
 }
 
-QWidget *GCCTreeRTLPlugin::outputWidget(QWidget *parent)
+QWidget *GCCTreeRTLPlugin::createOutputWidget(QWidget *parent)
 {
     Q_UNUSED(parent);
     return nullptr;

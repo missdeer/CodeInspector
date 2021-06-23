@@ -20,7 +20,7 @@ bool AstPlugin::hasResult() const
     return false;
 }
 
-QWidget *AstPlugin::outputWidget(QWidget *parent)
+QWidget *AstPlugin::createOutputWidget(QWidget *parent)
 {
     Q_UNUSED(parent);
     return nullptr;

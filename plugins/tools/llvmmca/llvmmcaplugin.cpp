@@ -20,7 +20,7 @@ bool LLVMMCAPlugin::hasResult() const
     return false;
 }
 
-QWidget *LLVMMCAPlugin::outputWidget(QWidget *parent)
+QWidget *LLVMMCAPlugin::createOutputWidget(QWidget *parent)
 {
     Q_UNUSED(parent);
     return nullptr;

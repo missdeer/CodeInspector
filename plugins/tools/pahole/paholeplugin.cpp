@@ -20,7 +20,7 @@ bool PaholePlugin::hasResult() const
     return false;
 }
 
-QWidget *PaholePlugin::outputWidget(QWidget *parent)
+QWidget *PaholePlugin::createOutputWidget(QWidget *parent)
 {
     Q_UNUSED(parent);
     return nullptr;

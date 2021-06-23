@@ -20,7 +20,7 @@ bool CfgPlugin::hasResult() const
     return false;
 }
 
-QWidget *CfgPlugin::outputWidget(QWidget *parent)
+QWidget *CfgPlugin::createOutputWidget(QWidget *parent)
 {
     Q_UNUSED(parent);
     return nullptr;

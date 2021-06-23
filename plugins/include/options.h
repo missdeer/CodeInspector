@@ -12,7 +12,7 @@ public:
     virtual bool     isCurrentCompilerSupported() const                     = 0;
     virtual bool     isCurrentSessionEnabled() const                       = 0;
     virtual bool     hasResult() const                       = 0;
-    virtual QWidget *outputWidget(QWidget *parent = nullptr) = 0;
+    virtual QWidget *createOutputWidget(QWidget *parent = nullptr) = 0;
 };
 
 QT_BEGIN_NAMESPACE

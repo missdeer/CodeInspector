@@ -20,7 +20,7 @@ bool ClangFormatPlugin::hasResult() const
     return false;
 }
 
-QWidget *ClangFormatPlugin::outputWidget(QWidget *parent)
+QWidget *ClangFormatPlugin::createOutputWidget(QWidget *parent)
 {
     Q_UNUSED(parent);
     return nullptr;

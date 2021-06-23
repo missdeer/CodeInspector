@@ -20,7 +20,7 @@ bool PSVStudioPlugin::hasResult() const
     return false;
 }
 
-QWidget *PSVStudioPlugin::outputWidget(QWidget *parent)
+QWidget *PSVStudioPlugin::createOutputWidget(QWidget *parent)
 {
     Q_UNUSED(parent);
     return nullptr;

@@ -20,7 +20,7 @@ bool OSACAPlugin::hasResult() const
     return false;
 }
 
-QWidget *OSACAPlugin::outputWidget(QWidget *parent)
+QWidget *OSACAPlugin::createOutputWidget(QWidget *parent)
 {
     Q_UNUSED(parent);
     return nullptr;

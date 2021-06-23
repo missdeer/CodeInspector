@@ -20,7 +20,7 @@ bool OptimizationPlugin::hasResult() const
     return false;
 }
 
-QWidget *OptimizationPlugin::outputWidget(QWidget *parent)
+QWidget *OptimizationPlugin::createOutputWidget(QWidget *parent)
 {
     Q_UNUSED(parent);
     return nullptr;
