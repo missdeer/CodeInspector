@@ -5,12 +5,12 @@ IncludeWhatYouUsePlugin::IncludeWhatYouUsePlugin(QObject *parent) : QObject(pare
     
 }
 
-bool IncludeWhatYouUsePlugin::isCurrentCompilerSupported() const
+bool IncludeWhatYouUsePlugin::isCompilerSupported() const
 {
     return false;
 }
 
-bool IncludeWhatYouUsePlugin::isCurrentSessionEnabled() const
+bool IncludeWhatYouUsePlugin::isSessionEnabled() const
 {
     return false;
 }

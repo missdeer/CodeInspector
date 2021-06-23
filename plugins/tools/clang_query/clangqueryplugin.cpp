@@ -5,12 +5,12 @@ ClangQueryPlugin::ClangQueryPlugin(QObject *parent) : QObject(parent)
     
 }
 
-bool ClangQueryPlugin::isCurrentCompilerSupported() const
+bool ClangQueryPlugin::isCompilerSupported() const
 {
     return false;
 }
 
-bool ClangQueryPlugin::isCurrentSessionEnabled() const
+bool ClangQueryPlugin::isSessionEnabled() const
 {
     return false;
 }

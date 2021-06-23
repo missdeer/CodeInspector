@@ -5,12 +5,12 @@ CfgPlugin::CfgPlugin(QObject *parent) : QObject(parent)
     
 }
 
-bool CfgPlugin::isCurrentCompilerSupported() const
+bool CfgPlugin::isCompilerSupported() const
 {
     return false;
 }
 
-bool CfgPlugin::isCurrentSessionEnabled() const
+bool CfgPlugin::isSessionEnabled() const
 {
     return false;
 }

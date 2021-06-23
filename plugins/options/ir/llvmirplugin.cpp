@@ -5,12 +5,12 @@ LLVMIRPlugin::LLVMIRPlugin(QObject *parent) : QObject(parent)
     
 }
 
-bool LLVMIRPlugin::isCurrentCompilerSupported() const
+bool LLVMIRPlugin::isCompilerSupported() const
 {
     return false;
 }
 
-bool LLVMIRPlugin::isCurrentSessionEnabled() const
+bool LLVMIRPlugin::isSessionEnabled() const
 {
     return false;
 }

@@ -5,12 +5,12 @@ AstPlugin::AstPlugin(QObject *parent) : QObject(parent)
     
 }
 
-bool AstPlugin::isCurrentCompilerSupported() const
+bool AstPlugin::isCompilerSupported() const
 {
     return false;
 }
 
-bool AstPlugin::isCurrentSessionEnabled() const
+bool AstPlugin::isSessionEnabled() const
 {
     return false;
 }

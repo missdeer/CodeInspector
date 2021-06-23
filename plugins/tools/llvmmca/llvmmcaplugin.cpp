@@ -5,12 +5,12 @@ LLVMMCAPlugin::LLVMMCAPlugin(QObject *parent) : QObject(parent)
     
 }
 
-bool LLVMMCAPlugin::isCurrentCompilerSupported() const
+bool LLVMMCAPlugin::isCompilerSupported() const
 {
     return false;
 }
 
-bool LLVMMCAPlugin::isCurrentSessionEnabled() const
+bool LLVMMCAPlugin::isSessionEnabled() const
 {
     return false;
 }

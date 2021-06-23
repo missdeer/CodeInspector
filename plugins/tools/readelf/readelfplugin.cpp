@@ -5,12 +5,12 @@ ReadELFPlugin::ReadELFPlugin(QObject *parent) : QObject(parent)
     
 }
 
-bool ReadELFPlugin::isCurrentCompilerSupported() const
+bool ReadELFPlugin::isCompilerSupported() const
 {
     return false;
 }
 
-bool ReadELFPlugin::isCurrentSessionEnabled() const
+bool ReadELFPlugin::isSessionEnabled() const
 {
     return false;
 }

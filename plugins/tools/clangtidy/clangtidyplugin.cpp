@@ -5,12 +5,12 @@ ClangTidyPlugin::ClangTidyPlugin(QObject *parent) : QObject(parent)
     
 }
 
-bool ClangTidyPlugin::isCurrentCompilerSupported() const
+bool ClangTidyPlugin::isCompilerSupported() const
 {
     return false;
 }
 
-bool ClangTidyPlugin::isCurrentSessionEnabled() const
+bool ClangTidyPlugin::isSessionEnabled() const
 {
     return false;
 }

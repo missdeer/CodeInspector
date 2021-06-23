@@ -5,12 +5,12 @@ StringsPlugin::StringsPlugin(QObject *parent) : QObject(parent)
     
 }
 
-bool StringsPlugin::isCurrentCompilerSupported() const
+bool StringsPlugin::isCompilerSupported() const
 {
     return false;
 }
 
-bool StringsPlugin::isCurrentSessionEnabled() const
+bool StringsPlugin::isSessionEnabled() const
 {
     return false;
 }

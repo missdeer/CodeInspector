@@ -5,12 +5,12 @@ OptimizationPlugin::OptimizationPlugin(QObject *parent) : QObject(parent)
     
 }
 
-bool OptimizationPlugin::isCurrentCompilerSupported() const
+bool OptimizationPlugin::isCompilerSupported() const
 {
     return false;
 }
 
-bool OptimizationPlugin::isCurrentSessionEnabled() const
+bool OptimizationPlugin::isSessionEnabled() const
 {
     return false;
 }

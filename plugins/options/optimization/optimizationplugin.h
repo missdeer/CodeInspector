@@ -17,8 +17,8 @@ public:
     explicit OptimizationPlugin(QObject *parent = nullptr);
     ~OptimizationPlugin() override {}
 
-    [[nodiscard]] bool     isCurrentCompilerSupported() const override;
-    [[nodiscard]] bool     isCurrentSessionEnabled() const override;
+    [[nodiscard]] bool     isCompilerSupported() const override;
+    [[nodiscard]] bool     isSessionEnabled() const override;
     [[nodiscard]] bool     hasResult() const override;
     [[nodiscard]] QWidget *createOutputWidget(QWidget *parent = nullptr) override;
 

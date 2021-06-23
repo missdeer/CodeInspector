@@ -5,12 +5,12 @@ ClangFormatPlugin::ClangFormatPlugin(QObject *parent) : QObject(parent)
     
 }
 
-bool ClangFormatPlugin::isCurrentCompilerSupported() const
+bool ClangFormatPlugin::isCompilerSupported() const
 {
     return false;
 }
 
-bool ClangFormatPlugin::isCurrentSessionEnabled() const
+bool ClangFormatPlugin::isSessionEnabled() const
 {
     return false;
 }

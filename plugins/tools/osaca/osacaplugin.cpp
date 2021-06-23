@@ -5,12 +5,12 @@ OSACAPlugin::OSACAPlugin(QObject *parent) : QObject(parent)
     
 }
 
-bool OSACAPlugin::isCurrentCompilerSupported() const
+bool OSACAPlugin::isCompilerSupported() const
 {
     return false;
 }
 
-bool OSACAPlugin::isCurrentSessionEnabled() const
+bool OSACAPlugin::isSessionEnabled() const
 {
     return false;
 }

@@ -5,12 +5,12 @@ X86To6502Plugin::X86To6502Plugin(QObject *parent) : QObject(parent)
     
 }
 
-bool X86To6502Plugin::isCurrentCompilerSupported() const
+bool X86To6502Plugin::isCompilerSupported() const
 {
     return false;
 }
 
-bool X86To6502Plugin::isCurrentSessionEnabled() const
+bool X86To6502Plugin::isSessionEnabled() const
 {
     return false;
 }

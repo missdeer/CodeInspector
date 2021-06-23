@@ -5,12 +5,12 @@ LDDPlugin::LDDPlugin(QObject *parent) : QObject(parent)
     
 }
 
-bool LDDPlugin::isCurrentCompilerSupported() const
+bool LDDPlugin::isCompilerSupported() const
 {
     return false;
 }
 
-bool LDDPlugin::isCurrentSessionEnabled() const
+bool LDDPlugin::isSessionEnabled() const
 {
     return false;
 }

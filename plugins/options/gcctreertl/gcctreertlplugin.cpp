@@ -5,12 +5,12 @@ GCCTreeRTLPlugin::GCCTreeRTLPlugin(QObject *parent) : QObject(parent)
     
 }
 
-bool GCCTreeRTLPlugin::isCurrentCompilerSupported() const
+bool GCCTreeRTLPlugin::isCompilerSupported() const
 {
     return false;
 }
 
-bool GCCTreeRTLPlugin::isCurrentSessionEnabled() const
+bool GCCTreeRTLPlugin::isSessionEnabled() const
 {
     return false;
 }

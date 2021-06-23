@@ -5,12 +5,12 @@ PaholePlugin::PaholePlugin(QObject *parent) : QObject(parent)
     
 }
 
-bool PaholePlugin::isCurrentCompilerSupported() const
+bool PaholePlugin::isCompilerSupported() const
 {
     return false;
 }
 
-bool PaholePlugin::isCurrentSessionEnabled() const
+bool PaholePlugin::isSessionEnabled() const
 {
     return false;
 }

@@ -5,12 +5,12 @@ PSVStudioPlugin::PSVStudioPlugin(QObject *parent) : QObject(parent)
     
 }
 
-bool PSVStudioPlugin::isCurrentCompilerSupported() const
+bool PSVStudioPlugin::isCompilerSupported() const
 {
     return false;
 }
 
-bool PSVStudioPlugin::isCurrentSessionEnabled() const
+bool PSVStudioPlugin::isSessionEnabled() const
 {
     return false;
 }
