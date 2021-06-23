@@ -5,9 +5,9 @@ GCCTreeRTLPlugin::GCCTreeRTLPlugin(QObject *parent) : QObject(parent)
     
 }
 
-bool GCCTreeRTLPlugin::isCompilerSupported(int compilerId) const
+bool GCCTreeRTLPlugin::isCompilerSupported(const QString &compilerId) const
 {
-    return false;
+    return m_supportedCompilers.contains(compilerId);
 }
 
 bool GCCTreeRTLPlugin::isSessionEnabled() const

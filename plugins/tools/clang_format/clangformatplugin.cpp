@@ -5,9 +5,9 @@ ClangFormatPlugin::ClangFormatPlugin(QObject *parent) : QObject(parent)
     
 }
 
-bool ClangFormatPlugin::isCompilerSupported(int compilerId) const
+bool ClangFormatPlugin::isCompilerSupported(const QString &compilerId) const
 {
-    return false;
+    return m_supportedCompilers.contains(compilerId);
 }
 
 bool ClangFormatPlugin::isSessionEnabled() const

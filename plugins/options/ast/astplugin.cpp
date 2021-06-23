@@ -5,9 +5,9 @@ AstPlugin::AstPlugin(QObject *parent) : QObject(parent)
     
 }
 
-bool AstPlugin::isCompilerSupported(int compilerId) const
+bool AstPlugin::isCompilerSupported(const QString &compilerId) const
 {
-    return false;
+    return m_supportedCompilers.contains(compilerId);
 }
 
 bool AstPlugin::isSessionEnabled() const

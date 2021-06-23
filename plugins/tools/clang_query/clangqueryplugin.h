@@ -17,13 +17,15 @@ public:
     explicit ClangQueryPlugin(QObject *parent = nullptr);
     ~ClangQueryPlugin() override = default;
 
-    [[nodiscard]] bool     isCompilerSupported(int compilerId) const override;
+    [[nodiscard]] bool     isCompilerSupported(const QString &compilerId) const override;
     [[nodiscard]] bool     isSessionEnabled() const override;
     [[nodiscard]] bool     hasResult(const QJsonObject& jsonObj) const override;
     [[nodiscard]] QWidget *createOutputWidget(QWidget *parent = nullptr) override;
 
 signals:
 
+private:
+    QStringList m_supportedCompilers;
 };
 
 #endif // CLANGQUERYPLUGIN_H

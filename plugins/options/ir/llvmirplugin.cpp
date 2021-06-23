@@ -5,9 +5,9 @@ LLVMIRPlugin::LLVMIRPlugin(QObject *parent) : QObject(parent)
     
 }
 
-bool LLVMIRPlugin::isCompilerSupported(int compilerId) const
+bool LLVMIRPlugin::isCompilerSupported(const QString &compilerId) const
 {
-    return false;
+    return m_supportedCompilers.contains(compilerId);
 }
 
 bool LLVMIRPlugin::isSessionEnabled() const

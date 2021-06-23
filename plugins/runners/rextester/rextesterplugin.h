@@ -17,13 +17,12 @@ public:
     explicit RextesterPlugin(QObject *parent = nullptr);
     ~RextesterPlugin() override = default;
 
-    [[nodiscard]] bool isCompilerSupported(int compilerId) const override
-    {
-        return false;
-    }
+    [[nodiscard]] bool isCompilerSupported(const QString &compilerId) const override;
 
 signals:
 
+private:
+    QStringList m_supportedCompilers;
 };
 
 #endif // REXTESTERPLUGIN_H

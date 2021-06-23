@@ -5,9 +5,9 @@ OptimizationPlugin::OptimizationPlugin(QObject *parent) : QObject(parent)
     
 }
 
-bool OptimizationPlugin::isCompilerSupported(int compilerId) const
+bool OptimizationPlugin::isCompilerSupported(const QString &compilerId) const
 {
-    return false;
+    return m_supportedCompilers.contains(compilerId);
 }
 
 bool OptimizationPlugin::isSessionEnabled() const

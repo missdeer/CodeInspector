@@ -5,9 +5,9 @@ X86To6502Plugin::X86To6502Plugin(QObject *parent) : QObject(parent)
     
 }
 
-bool X86To6502Plugin::isCompilerSupported(int compilerId) const
+bool X86To6502Plugin::isCompilerSupported(const QString &compilerId) const
 {
-    return false;
+    return m_supportedCompilers.contains(compilerId);
 }
 
 bool X86To6502Plugin::isSessionEnabled() const

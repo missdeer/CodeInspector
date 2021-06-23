@@ -5,9 +5,9 @@ LDDPlugin::LDDPlugin(QObject *parent) : QObject(parent)
     
 }
 
-bool LDDPlugin::isCompilerSupported(int compilerId) const
+bool LDDPlugin::isCompilerSupported(const QString &compilerId) const
 {
-    return false;
+    return m_supportedCompilers.contains(compilerId);
 }
 
 bool LDDPlugin::isSessionEnabled() const

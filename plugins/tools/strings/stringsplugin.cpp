@@ -5,9 +5,9 @@ StringsPlugin::StringsPlugin(QObject *parent) : QObject(parent)
     
 }
 
-bool StringsPlugin::isCompilerSupported(int compilerId) const
+bool StringsPlugin::isCompilerSupported(const QString &compilerId) const
 {
-    return false;
+    return m_supportedCompilers.contains(compilerId);
 }
 
 bool StringsPlugin::isSessionEnabled() const

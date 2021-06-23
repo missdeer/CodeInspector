@@ -5,9 +5,9 @@ CfgPlugin::CfgPlugin(QObject *parent) : QObject(parent)
     
 }
 
-bool CfgPlugin::isCompilerSupported(int compilerId) const
+bool CfgPlugin::isCompilerSupported(const QString &compilerId) const
 {
-    return false;
+    return m_supportedCompilers.contains(compilerId);
 }
 
 bool CfgPlugin::isSessionEnabled() const

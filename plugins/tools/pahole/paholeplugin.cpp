@@ -5,9 +5,9 @@ PaholePlugin::PaholePlugin(QObject *parent) : QObject(parent)
     
 }
 
-bool PaholePlugin::isCompilerSupported(int compilerId) const
+bool PaholePlugin::isCompilerSupported(const QString &compilerId) const
 {
-    return false;
+    return m_supportedCompilers.contains(compilerId);
 }
 
 bool PaholePlugin::isSessionEnabled() const

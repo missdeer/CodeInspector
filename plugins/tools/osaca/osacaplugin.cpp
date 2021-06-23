@@ -5,9 +5,9 @@ OSACAPlugin::OSACAPlugin(QObject *parent) : QObject(parent)
     
 }
 
-bool OSACAPlugin::isCompilerSupported(int compilerId) const
+bool OSACAPlugin::isCompilerSupported(const QString &compilerId) const
 {
-    return false;
+    return m_supportedCompilers.contains(compilerId);
 }
 
 bool OSACAPlugin::isSessionEnabled() const

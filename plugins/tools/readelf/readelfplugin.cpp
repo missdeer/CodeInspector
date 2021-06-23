@@ -5,9 +5,9 @@ ReadELFPlugin::ReadELFPlugin(QObject *parent) : QObject(parent)
     
 }
 
-bool ReadELFPlugin::isCompilerSupported(int compilerId) const
+bool ReadELFPlugin::isCompilerSupported(const QString &compilerId) const
 {
-    return false;
+    return m_supportedCompilers.contains(compilerId);
 }
 
 bool ReadELFPlugin::isSessionEnabled() const

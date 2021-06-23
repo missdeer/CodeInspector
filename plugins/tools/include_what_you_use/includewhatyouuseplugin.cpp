@@ -5,9 +5,9 @@ IncludeWhatYouUsePlugin::IncludeWhatYouUsePlugin(QObject *parent) : QObject(pare
     
 }
 
-bool IncludeWhatYouUsePlugin::isCompilerSupported(int compilerId) const
+bool IncludeWhatYouUsePlugin::isCompilerSupported(const QString &compilerId) const
 {
-    return false;
+    return m_supportedCompilers.contains(compilerId);
 }
 
 bool IncludeWhatYouUsePlugin::isSessionEnabled() const

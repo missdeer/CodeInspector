@@ -5,9 +5,9 @@ ClangTidyPlugin::ClangTidyPlugin(QObject *parent) : QObject(parent)
     
 }
 
-bool ClangTidyPlugin::isCompilerSupported(int compilerId) const
+bool ClangTidyPlugin::isCompilerSupported(const QString &compilerId) const
 {
-    return false;
+    return m_supportedCompilers.contains(compilerId);
 }
 
 bool ClangTidyPlugin::isSessionEnabled() const
