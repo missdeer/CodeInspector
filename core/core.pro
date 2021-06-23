@@ -3,7 +3,6 @@ CONFIG       += c++17 static
 TARGET        = $$qtLibraryTarget(core)
 DESTDIR       = $$OUT_PWD/../libs
 
-include($$PWD/core.pri)
 include($$PWD/../3rdparty/lua/lua.pri)
 include($$PWD/../3rdparty/zlib.pri)
 include($$PWD/../3rdparty/lpeg/lpeg.pri)

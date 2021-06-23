@@ -58,7 +58,7 @@ macx: {
     INSTALLS += icon
 }
 
-LIBS           = -L$$PWD/../plugins -L$$OUT_PWD/../libs -lcore
+LIBS = -L$$PWD/../plugins -L$$OUT_PWD/../libs
 
 macx-xcode {
     LIBS += -loption_ast$($${QMAKE_XCODE_LIBRARY_SUFFIX_SETTING}) \
@@ -79,7 +79,8 @@ macx-xcode {
         -ltool_psvstudio$($${QMAKE_XCODE_LIBRARY_SUFFIX_SETTING}) \
         -ltool_readelf$($${QMAKE_XCODE_LIBRARY_SUFFIX_SETTING}) \
         -ltool_strings$($${QMAKE_XCODE_LIBRARY_SUFFIX_SETTING}) \
-        -ltool_x86to6502$($${QMAKE_XCODE_LIBRARY_SUFFIX_SETTING})
+        -ltool_x86to6502$($${QMAKE_XCODE_LIBRARY_SUFFIX_SETTING}) \
+        -lcore$($${QMAKE_XCODE_LIBRARY_SUFFIX_SETTING})
 } else {
     LIBS += -loption_ast \
         -loption_cfg \
@@ -99,7 +100,8 @@ macx-xcode {
         -ltool_psvstudio \
         -ltool_readelf \
         -ltool_strings \
-        -ltool_x86to6502
+        -ltool_x86to6502 \
+        -lcore
     if(!debug_and_release|build_pass):CONFIG(debug, debug|release) {
         mac:LIBS = $$member(LIBS, 0) $$member(LIBS, 1)_debug
         win32:LIBS = $$member(LIBS, 0) $$member(LIBS, 1)d
