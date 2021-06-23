@@ -58,7 +58,7 @@ macx: {
     INSTALLS += icon
 }
 
-LIBS = -L$$PWD/../plugins -L$$OUT_PWD/../libs
+LIBS = -L$$OUT_PWD/../plugins -L$$OUT_PWD/../libs
 
 macx-xcode {
     LIBS += -loption_ast$($${QMAKE_XCODE_LIBRARY_SUFFIX_SETTING}) \
