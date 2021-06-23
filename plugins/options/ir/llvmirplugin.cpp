@@ -15,7 +15,7 @@ bool LLVMIRPlugin::isSessionEnabled() const
     return false;
 }
 
-bool LLVMIRPlugin::hasResult() const
+bool LLVMIRPlugin::hasResult(const QJsonObject& jsonObj) const
 {
     return false;
 }

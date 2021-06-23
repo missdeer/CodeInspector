@@ -15,7 +15,7 @@ bool LDDPlugin::isSessionEnabled() const
     return false;
 }
 
-bool LDDPlugin::hasResult() const
+bool LDDPlugin::hasResult(const QJsonObject& jsonObj) const
 {
     return false;
 }

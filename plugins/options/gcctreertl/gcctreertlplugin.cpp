@@ -15,7 +15,7 @@ bool GCCTreeRTLPlugin::isSessionEnabled() const
     return false;
 }
 
-bool GCCTreeRTLPlugin::hasResult() const
+bool GCCTreeRTLPlugin::hasResult(const QJsonObject& jsonObj) const
 {
     return false;
 }

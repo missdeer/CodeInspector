@@ -15,7 +15,7 @@ class WandboxPlugin
     Q_INTERFACES(RunnerInterface)
 public:
     explicit WandboxPlugin(QObject *parent = nullptr);
-    ~WandboxPlugin() override {}
+    ~WandboxPlugin() override = default;
 
     [[nodiscard]] bool isCompilerSupported(int compilerId) const override
     {

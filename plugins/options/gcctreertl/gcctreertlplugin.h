@@ -15,11 +15,11 @@ class GCCTreeRTLPlugin
     Q_INTERFACES(OptionInterface)
 public:
     explicit GCCTreeRTLPlugin(QObject *parent = nullptr);
-    ~GCCTreeRTLPlugin() override {}
+    ~GCCTreeRTLPlugin() override = default;
 
     [[nodiscard]] bool     isCompilerSupported(int compilerId) const override;
     [[nodiscard]] bool     isSessionEnabled() const override;
-    [[nodiscard]] bool     hasResult() const override;
+    [[nodiscard]] bool     hasResult(const QJsonObject& jsonObj) const override;
     [[nodiscard]] QWidget *createOutputWidget(QWidget *parent = nullptr) override;
 
 signals:

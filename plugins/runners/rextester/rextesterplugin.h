@@ -15,7 +15,7 @@ class RextesterPlugin
     Q_INTERFACES(RunnerInterface)
 public:
     explicit RextesterPlugin(QObject *parent = nullptr);
-    ~RextesterPlugin() override {}
+    ~RextesterPlugin() override = default;
 
     [[nodiscard]] bool isCompilerSupported(int compilerId) const override
     {

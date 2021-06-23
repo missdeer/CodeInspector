@@ -15,7 +15,7 @@ bool CfgPlugin::isSessionEnabled() const
     return false;
 }
 
-bool CfgPlugin::hasResult() const
+bool CfgPlugin::hasResult(const QJsonObject& jsonObj) const
 {
     return false;
 }

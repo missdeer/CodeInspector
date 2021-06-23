@@ -15,7 +15,7 @@ bool ClangTidyPlugin::isSessionEnabled() const
     return false;
 }
 
-bool ClangTidyPlugin::hasResult() const
+bool ClangTidyPlugin::hasResult(const QJsonObject& jsonObj) const
 {
     return false;
 }

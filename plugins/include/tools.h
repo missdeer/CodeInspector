@@ -8,11 +8,11 @@ QT_FORWARD_DECLARE_CLASS(QWidget);
 class ToolInterface
 {
 public:
-    virtual ~ToolInterface()                                   = default;
-    virtual bool     isCompilerSupported(int compilerId) const = 0;
-    virtual bool     isSessionEnabled() const                  = 0;
-    virtual bool     hasResult() const                         = 0;
-    virtual QWidget *createOutputWidget(QWidget *parent)       = 0;
+    virtual ~ToolInterface()                                     = default;
+    virtual bool     isCompilerSupported(int compilerId) const   = 0;
+    virtual bool     isSessionEnabled() const                    = 0;
+    virtual bool     hasResult(const QJsonObject &jsonObj) const = 0;
+    virtual QWidget *createOutputWidget(QWidget *parent)         = 0;
 };
 
 QT_BEGIN_NAMESPACE

@@ -15,11 +15,11 @@ class LLVMMCAPlugin
     Q_INTERFACES(ToolInterface)
 public:
     explicit LLVMMCAPlugin(QObject *parent = nullptr);
-    ~LLVMMCAPlugin() override {}
+    ~LLVMMCAPlugin() override = default;
 
     [[nodiscard]] bool     isCompilerSupported(int compilerId) const override;
     [[nodiscard]] bool     isSessionEnabled() const override;
-    [[nodiscard]] bool     hasResult() const override;
+    [[nodiscard]] bool     hasResult(const QJsonObject& jsonObj) const override;
     [[nodiscard]] QWidget *createOutputWidget(QWidget *parent = nullptr) override;
 
 signals:

@@ -15,11 +15,11 @@ class OSACAPlugin
     Q_INTERFACES(ToolInterface)
 public:
     explicit OSACAPlugin(QObject *parent = nullptr);
-    ~OSACAPlugin() override {}
+    ~OSACAPlugin() override = default;
 
     [[nodiscard]] bool     isCompilerSupported(int compilerId) const override;
     [[nodiscard]] bool     isSessionEnabled() const override;
-    [[nodiscard]] bool     hasResult() const override;
+    [[nodiscard]] bool     hasResult(const QJsonObject& jsonObj) const override;
     [[nodiscard]] QWidget *createOutputWidget(QWidget *parent = nullptr) override;
 
 signals:

@@ -15,7 +15,7 @@ bool X86To6502Plugin::isSessionEnabled() const
     return false;
 }
 
-bool X86To6502Plugin::hasResult() const
+bool X86To6502Plugin::hasResult(const QJsonObject& jsonObj) const
 {
     return false;
 }

@@ -15,7 +15,7 @@ bool ReadELFPlugin::isSessionEnabled() const
     return false;
 }
 
-bool ReadELFPlugin::hasResult() const
+bool ReadELFPlugin::hasResult(const QJsonObject& jsonObj) const
 {
     return false;
 }

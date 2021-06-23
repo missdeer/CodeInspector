@@ -15,7 +15,7 @@ bool PSVStudioPlugin::isSessionEnabled() const
     return false;
 }
 
-bool PSVStudioPlugin::hasResult() const
+bool PSVStudioPlugin::hasResult(const QJsonObject& jsonObj) const
 {
     return false;
 }

@@ -15,11 +15,11 @@ class ClangFormatPlugin
     Q_INTERFACES(ToolInterface)
 public:
     explicit ClangFormatPlugin(QObject *parent = nullptr);
-    ~ClangFormatPlugin() override {}
+    ~ClangFormatPlugin() override = default;
 
     [[nodiscard]] bool     isCompilerSupported(int compilerId) const override;
     [[nodiscard]] bool     isSessionEnabled() const override;
-    [[nodiscard]] bool     hasResult() const override;
+    [[nodiscard]] bool     hasResult(const QJsonObject& jsonObj) const override;
     [[nodiscard]] QWidget *createOutputWidget(QWidget *parent = nullptr) override;
 
 signals:

@@ -15,11 +15,11 @@ class StringsPlugin
     Q_INTERFACES(ToolInterface)
 public:
     explicit StringsPlugin(QObject *parent = nullptr);
-    ~StringsPlugin() override {}
+    ~StringsPlugin() override = default;
 
     [[nodiscard]] bool     isCompilerSupported(int compilerId) const override;
     [[nodiscard]] bool     isSessionEnabled() const override;
-    [[nodiscard]] bool     hasResult() const override;
+    [[nodiscard]] bool     hasResult(const QJsonObject& jsonObj) const override;
     [[nodiscard]] QWidget *createOutputWidget(QWidget *parent = nullptr) override;
 
 signals:

@@ -11,7 +11,7 @@ public:
     virtual ~OptionInterface()                                     = default;
     virtual bool     isCompilerSupported(int compilerId) const     = 0;
     virtual bool     isSessionEnabled() const                      = 0;
-    virtual bool     hasResult() const                             = 0;
+    virtual bool     hasResult(const QJsonObject &jsonObj) const   = 0;
     virtual QWidget *createOutputWidget(QWidget *parent = nullptr) = 0;
 };
 
