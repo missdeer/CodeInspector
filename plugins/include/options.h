@@ -8,8 +8,10 @@ QT_FORWARD_DECLARE_CLASS(QWidget);
 class OptionInterface
 {
 public:
-    virtual ~OptionInterface()                     = default;
-    virtual bool     isSupported() const           = 0;
+    virtual ~OptionInterface()                               = default;
+    virtual bool     isCurrentCompilerSupported() const                     = 0;
+    virtual bool     isCurrentSessionEnabled() const                       = 0;
+    virtual bool     hasResult() const                       = 0;
     virtual QWidget *outputWidget(QWidget *parent = nullptr) = 0;
 };
 

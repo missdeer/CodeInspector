@@ -17,7 +17,7 @@ public:
     explicit WandboxPlugin(QObject *parent = nullptr);
     ~WandboxPlugin() override {}
 
-    [[nodiscard]] bool isSupported() const override
+    [[nodiscard]] bool isCurrentCompilerSupported() const override
     {
         return false;
     }

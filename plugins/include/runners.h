@@ -7,7 +7,7 @@ class RunnerInterface
 {
 public:
     virtual ~RunnerInterface()       = default;
-    virtual bool isSupported() const = 0;
+    virtual bool isCurrentCompilerSupported() const = 0;
 };
 
 QT_BEGIN_NAMESPACE

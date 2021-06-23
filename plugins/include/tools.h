@@ -9,7 +9,9 @@ class ToolInterface
 {
 public:
     virtual ~ToolInterface()                       = default;
-    virtual bool     isSupported() const           = 0;
+    virtual bool     isCurrentCompilerSupported() const           = 0;
+    virtual bool     isCurrentSessionEnabled() const             = 0;
+    virtual bool     hasResult() const             = 0;
     virtual QWidget *outputWidget(QWidget *parent) = 0;
 };
 

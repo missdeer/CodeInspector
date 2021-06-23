@@ -17,15 +17,10 @@ public:
     explicit GCCTreeRTLPlugin(QObject *parent = nullptr);
     ~GCCTreeRTLPlugin() override {}
 
-    [[nodiscard]] bool isSupported() const override
-    {
-        return false;
-    }
-    [[nodiscard]] QWidget *outputWidget(QWidget *parent = nullptr) override
-    {
-        Q_UNUSED(parent);
-        return nullptr;
-    }
+    [[nodiscard]] bool     isCurrentCompilerSupported() const override;
+    [[nodiscard]] bool     isCurrentSessionEnabled() const override;
+    [[nodiscard]] bool     hasResult() const override;
+    [[nodiscard]] QWidget *outputWidget(QWidget *parent = nullptr) override;
 
 signals:
 

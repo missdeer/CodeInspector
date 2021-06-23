@@ -2,5 +2,26 @@
 
 LLVMMCAPlugin::LLVMMCAPlugin(QObject *parent) : QObject(parent)
 {
+    
+}
 
+bool LLVMMCAPlugin::isCurrentCompilerSupported() const
+{
+    return false;
+}
+
+bool LLVMMCAPlugin::isCurrentSessionEnabled() const
+{
+    return false;
+}
+
+bool LLVMMCAPlugin::hasResult() const
+{
+    return false;
+}
+
+QWidget *LLVMMCAPlugin::outputWidget(QWidget *parent)
+{
+    Q_UNUSED(parent);
+    return nullptr;
 }

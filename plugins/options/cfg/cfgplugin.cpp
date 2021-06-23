@@ -2,5 +2,26 @@
 
 CfgPlugin::CfgPlugin(QObject *parent) : QObject(parent)
 {
+    
+}
 
+bool CfgPlugin::isCurrentCompilerSupported() const
+{
+    return false;
+}
+
+bool CfgPlugin::isCurrentSessionEnabled() const
+{
+    return false;
+}
+
+bool CfgPlugin::hasResult() const
+{
+    return false;
+}
+
+QWidget *CfgPlugin::outputWidget(QWidget *parent)
+{
+    Q_UNUSED(parent);
+    return nullptr;
 }
