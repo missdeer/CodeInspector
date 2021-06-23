@@ -2,7 +2,7 @@ TEMPLATE      = lib
 CONFIG       += plugin static
 QT           += widgets
 TARGET        = $$qtLibraryTarget(tool_clangtidy)
-DESTDIR       = $$PWD/../../../plugins
+DESTDIR       = $$OUT_PWD/../../../plugins
 
 include($$PWD/../../plugins.pri)
 

@@ -2,7 +2,7 @@ TEMPLATE      = lib
 CONFIG       += plugin static
 QT           += widgets
 TARGET        = $$qtLibraryTarget(option_gcctreertl)
-DESTDIR       = $$PWD/../../../plugins
+DESTDIR       = $$OUT_PWD/../../../plugins
 
 include($$PWD/../../plugins.pri)
 
