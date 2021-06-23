@@ -1857,9 +1857,18 @@ index 07ae573b..edd27e90 100644
 -
 -#endif
 diff --git a/src/Lexilla.cxx b/src/Lexilla.cxx
-index cd4b2361..9bea5b6b 100644
+index cd4b2361..821e0016 100644
 --- a/src/Lexilla.cxx
 +++ b/src/Lexilla.cxx
+@@ -12,7 +12,7 @@
+ #include <initializer_list>
+ 
+ #if _WIN32
+-#define EXPORT_FUNCTION __declspec(dllexport)
++#define EXPORT_FUNCTION 
+ #define CALLING_CONVENTION __stdcall
+ #else
+ #define EXPORT_FUNCTION __attribute__((visibility("default")))
 @@ -158,7 +158,10 @@ extern LexerModule lmVisualProlog;
  extern LexerModule lmX12;
  extern LexerModule lmXML;
