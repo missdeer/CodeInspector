@@ -11,10 +11,9 @@
 #include "networkrequesthelper.h"
 #include "settings.h"
 
-CodeInspectorApp::CodeInspectorApp(QObject *parent) : QObject(parent), m_backend(new GodboltAgent(m_nam, this))
+CodeInspectorApp::CodeInspectorApp(QObject *parent) : QObject(parent)
 {
     m_nam.connectToHostEncrypted("godbolt.org");
-    m_backend->initialize(this, g_settings->apiBaseURL());
 }
 
 QNetworkAccessManager &CodeInspectorApp::networkAccessManager()

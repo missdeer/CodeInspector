@@ -48,7 +48,6 @@ private:
     QMap<QString, CompilerListPtr> m_compilerMap;     // language name - compiler list
     QMap<QString, QString>         m_defaultCompiler; // language id - compiler id
     QMap<QString, LibraryListPtr>  m_libs;            // language id - library list
-    GodboltAgent *                 m_backend;
 
     void requestCompilerList(const QString &language);
     bool storeCompilerList(const QString &name, const QByteArray &content);
