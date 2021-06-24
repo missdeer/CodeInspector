@@ -27,12 +27,8 @@ CONFIG += install_ok  # Do not cargo-cult this!
 uikit: CONFIG += debug_and_release
 
 SOURCES += \
-    $$PWD/clangqueryoutput.cpp \
-    $$PWD/includewhatyouuseoutput.cpp \
-    $$PWD/lddoutput.cpp \
     $$PWD/luavm.cpp \
     $$PWD/networkrequesthelper.cpp \
-    $$PWD/readelfoutput.cpp \
     $$PWD/scintillaconfig.cpp \
     $$PWD/scopedguard.cpp \
     $$PWD/settings.cpp \
@@ -42,23 +38,11 @@ SOURCES += \
     $$PWD/networkreplyhelper.cpp  \
     $$PWD/library.cpp \
     $$PWD/libraryversion.cpp \
-    $$PWD/optimizationoutput.cpp \
-    $$PWD/astoutput.cpp \
-    $$PWD/gcctreertloutput.cpp \
-    $$PWD/llvmmachinecodeanalyzeroutput.cpp \
-    $$PWD/outputwindow.cpp \
-    $$PWD/paholeoutput.cpp \
-    $$PWD/clangtidyoutput.cpp \
-    $$PWD/x86to6502output.cpp \
-    $$PWD/llvmirview.cpp
+    $$PWD/outputwindow.cpp
 
 HEADERS += \
-    $$PWD/clangqueryoutput.h \
-    $$PWD/includewhatyouuseoutput.h \
-    $$PWD/lddoutput.h \
     $$PWD/luavm.h \
     $$PWD/networkrequesthelper.h \
-    $$PWD/readelfoutput.h \
     $$PWD/scintillaconfig.h \
     $$PWD/scopedguard.h \
     $$PWD/settings.h \
@@ -68,10 +52,6 @@ HEADERS += \
     $$PWD/networkreplyhelper.h  \
     $$PWD/library.h \
     $$PWD/libraryversion.h \
-    $$PWD/optimizationoutput.h \
-    $$PWD/astoutput.h \
-    $$PWD/gcctreertloutput.h \
-    $$PWD/llvmmachinecodeanalyzeroutput.h \
     $$PWD/outputwindow.h \
     $$PWD/language.hpp \
     $$PWD/compiler.hpp \
@@ -79,11 +59,7 @@ HEADERS += \
     $$PWD/asmlink.hpp \
     $$PWD/asmitem.hpp \
     $$PWD/backendinterface.hpp \
-    $$PWD/optimizationitem.hpp \
-    $$PWD/paholeoutput.h \
-    $$PWD/clangtidyoutput.h \
-    $$PWD/x86to6502output.h \
-    $$PWD/llvmirview.h
+    $$PWD/optimizationitem.hpp
 
 
 RESOURCES += \

@@ -1,5 +1,5 @@
 TEMPLATE      = lib
-CONFIG       += plugin static
+CONFIG       += plugin static c++17
 QT           += widgets
 TARGET        = $$qtLibraryTarget(runner_rextester)
 DESTDIR       = $$OUT_PWD/../../../plugins

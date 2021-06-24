@@ -1,5 +1,5 @@
 TEMPLATE      = lib
-CONFIG       += plugin static
+CONFIG       += plugin static c++17
 QT           += widgets
 TARGET        = $$qtLibraryTarget(option_optimization)
 DESTDIR       = $$OUT_PWD/../../../plugins
@@ -10,7 +10,9 @@ CONFIG += install_ok  # Do not cargo-cult this!
 uikit: CONFIG += debug_and_release
 
 HEADERS += \
+    optimizationoutput.h \
     optimizationplugin.h
 
 SOURCES += \
+    optimizationoutput.cpp \
     optimizationplugin.cpp

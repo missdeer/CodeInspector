@@ -8,7 +8,6 @@
 #include <QMap>
 
 #include "ScintillaEdit.h"
-#include "godboltagent.h"
 #include "llvmiritem.hpp"
 #include "scintillaconfig.h"
 
