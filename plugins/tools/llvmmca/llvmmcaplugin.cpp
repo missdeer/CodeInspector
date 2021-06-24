@@ -1,4 +1,5 @@
 #include "llvmmcaplugin.h"
+#include "llvmmachinecodeanalyzeroutput.h"
 
 LLVMMCAPlugin::LLVMMCAPlugin(QObject *parent) : QObject(parent)
 {
@@ -22,6 +23,5 @@ bool LLVMMCAPlugin::hasResult(const QJsonObject &docObj) const
 
 QWidget *LLVMMCAPlugin::createOutputWidget(QWidget *parent)
 {
-    Q_UNUSED(parent);
-    return nullptr;
+    return new LLVMMachineCodeAnalyzerOutput(parent);
 }

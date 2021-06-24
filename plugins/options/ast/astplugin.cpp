@@ -1,4 +1,5 @@
 #include "astplugin.h"
+#include "astoutput.h"
 
 AstPlugin::AstPlugin(QObject *parent) : QObject(parent)
 {
@@ -22,6 +23,5 @@ bool AstPlugin::hasResult(const QJsonObject &docObj) const
 
 QWidget *AstPlugin::createOutputWidget(QWidget *parent)
 {
-    Q_UNUSED(parent);
-    return nullptr;
+    return new ASTOutput(parent);
 }

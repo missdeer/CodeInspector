@@ -1,4 +1,5 @@
 #include "llvmirplugin.h"
+#include "llvmirview.h"
 
 LLVMIRPlugin::LLVMIRPlugin(QObject *parent) : QObject(parent)
 {
@@ -22,6 +23,5 @@ bool LLVMIRPlugin::hasResult(const QJsonObject &docObj) const
 
 QWidget *LLVMIRPlugin::createOutputWidget(QWidget *parent)
 {
-    Q_UNUSED(parent);
-    return nullptr;
+    return new LLVMIRView(parent);
 }

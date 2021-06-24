@@ -1,4 +1,5 @@
 #include "includewhatyouuseplugin.h"
+#include "includewhatyouuseoutput.h"
 
 IncludeWhatYouUsePlugin::IncludeWhatYouUsePlugin(QObject *parent) : QObject(parent)
 {
@@ -22,6 +23,5 @@ bool IncludeWhatYouUsePlugin::hasResult(const QJsonObject &docObj) const
 
 QWidget *IncludeWhatYouUsePlugin::createOutputWidget(QWidget *parent)
 {
-    Q_UNUSED(parent);
-    return nullptr;
+    return new IncludeWhatYouUseOutput(parent);
 }

@@ -1,4 +1,5 @@
 #include "gcctreertlplugin.h"
+#include "gcctreertloutput.h"
 
 GCCTreeRTLPlugin::GCCTreeRTLPlugin(QObject *parent) : QObject(parent)
 {
@@ -22,6 +23,5 @@ bool GCCTreeRTLPlugin::hasResult(const QJsonObject &docObj) const
 
 QWidget *GCCTreeRTLPlugin::createOutputWidget(QWidget *parent)
 {
-    Q_UNUSED(parent);
-    return nullptr;
+    return new GCCTreeRTLOutput(parent);
 }

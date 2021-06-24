@@ -1,4 +1,5 @@
 #include "readelfplugin.h"
+#include "readelfoutput.h"
 
 ReadELFPlugin::ReadELFPlugin(QObject *parent) : QObject(parent)
 {
@@ -22,6 +23,5 @@ bool ReadELFPlugin::hasResult(const QJsonObject &docObj) const
 
 QWidget *ReadELFPlugin::createOutputWidget(QWidget *parent)
 {
-    Q_UNUSED(parent);
-    return nullptr;
+    return new ReadElfOutput(parent);
 }

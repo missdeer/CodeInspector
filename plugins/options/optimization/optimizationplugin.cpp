@@ -1,4 +1,5 @@
 #include "optimizationplugin.h"
+#include "optimizationoutput.h"
 
 OptimizationPlugin::OptimizationPlugin(QObject *parent) : QObject(parent)
 {
@@ -22,6 +23,5 @@ bool OptimizationPlugin::hasResult(const QJsonObject &docObj) const
 
 QWidget *OptimizationPlugin::createOutputWidget(QWidget *parent)
 {
-    Q_UNUSED(parent);
-    return nullptr;
+    return new OptimizationOutput(parent);
 }

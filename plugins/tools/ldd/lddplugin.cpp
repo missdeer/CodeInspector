@@ -1,4 +1,5 @@
 #include "lddplugin.h"
+#include "lddoutput.h"
 
 LDDPlugin::LDDPlugin(QObject *parent) : QObject(parent)
 {
@@ -22,6 +23,5 @@ bool LDDPlugin::hasResult(const QJsonObject &docObj) const
 
 QWidget *LDDPlugin::createOutputWidget(QWidget *parent)
 {
-    Q_UNUSED(parent);
-    return nullptr;
+    return new LddOutput(parent);
 }

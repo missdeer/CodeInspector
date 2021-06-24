@@ -1,4 +1,5 @@
 #include "clangqueryplugin.h"
+#include "clangqueryoutput.h"
 
 ClangQueryPlugin::ClangQueryPlugin(QObject *parent) : QObject(parent)
 {
@@ -22,6 +23,5 @@ bool ClangQueryPlugin::hasResult(const QJsonObject &docObj) const
 
 QWidget *ClangQueryPlugin::createOutputWidget(QWidget *parent)
 {
-    Q_UNUSED(parent);
-    return nullptr;
+    return new ClangQueryOutput(parent);
 }

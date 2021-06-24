@@ -1,4 +1,5 @@
 #include "clangtidyplugin.h"
+#include "clangtidyoutput.h"
 
 ClangTidyPlugin::ClangTidyPlugin(QObject *parent) : QObject(parent)
 {
@@ -22,6 +23,5 @@ bool ClangTidyPlugin::hasResult(const QJsonObject &docObj) const
 
 QWidget *ClangTidyPlugin::createOutputWidget(QWidget *parent)
 {
-    Q_UNUSED(parent);
-    return nullptr;
+    return new ClangTidyOutput(parent);
 }

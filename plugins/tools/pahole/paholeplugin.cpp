@@ -1,4 +1,5 @@
 #include "paholeplugin.h"
+#include "paholeoutput.h"
 
 PaholePlugin::PaholePlugin(QObject *parent) : QObject(parent)
 {
@@ -22,6 +23,5 @@ bool PaholePlugin::hasResult(const QJsonObject &docObj) const
 
 QWidget *PaholePlugin::createOutputWidget(QWidget *parent)
 {
-    Q_UNUSED(parent);
-    return nullptr;
+    return new PaholeOutput(parent);
 }
