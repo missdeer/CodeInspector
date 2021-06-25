@@ -17,9 +17,9 @@ bool ClangTidyPlugin::isSessionEnabled() const
     return false;
 }
 
-bool ClangTidyPlugin::hasResult(const QJsonObject &docObj) const
+bool ClangTidyPlugin::hasResult(const QJsonObject &docObj, QString &stdOut, QString &stdErr) const
 {
-    return PluginBase::hasToolResult(docObj, "clangtidytrunk");
+    return PluginBase::hasToolResult(docObj, "clangtidytrunk", stdOut, stdErr);
 }
 
 QWidget *ClangTidyPlugin::createOutputWidget(QWidget *parent)

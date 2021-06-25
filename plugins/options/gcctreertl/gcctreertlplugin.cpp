@@ -16,7 +16,7 @@ bool GCCTreeRTLPlugin::isSessionEnabled() const
     return false;
 }
 
-bool GCCTreeRTLPlugin::hasResult(const QJsonObject &docObj) const
+bool GCCTreeRTLPlugin::hasResult(const QJsonObject &docObj, QString& stdOut, QString& stdErr) const
 {
     QJsonValue gccDumpOutputVal = docObj["gccDumpOutput"];
     return gccDumpOutputVal.isObject();

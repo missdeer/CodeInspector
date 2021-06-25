@@ -17,9 +17,9 @@ bool IncludeWhatYouUsePlugin::isSessionEnabled() const
     return false;
 }
 
-bool IncludeWhatYouUsePlugin::hasResult(const QJsonObject &docObj) const
+bool IncludeWhatYouUsePlugin::hasResult(const QJsonObject &docObj, QString &stdOut, QString &stdErr) const
 {
-    return PluginBase::hasToolResult(docObj, "iwyu");
+    return PluginBase::hasToolResult(docObj, "iwyu", stdOut, stdErr);
 }
 
 QWidget *IncludeWhatYouUsePlugin::createOutputWidget(QWidget *parent)

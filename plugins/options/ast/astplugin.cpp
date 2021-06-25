@@ -16,7 +16,7 @@ bool AstPlugin::isSessionEnabled() const
     return false;
 }
 
-bool AstPlugin::hasResult(const QJsonObject &docObj) const
+bool AstPlugin::hasResult(const QJsonObject &docObj, QString& stdOut, QString& stdErr) const
 {
     QJsonValue astOutputVal = docObj["astOutput"];
     return astOutputVal.isString();

@@ -17,9 +17,9 @@ bool ReadELFPlugin::isSessionEnabled() const
     return false;
 }
 
-bool ReadELFPlugin::hasResult(const QJsonObject &docObj) const
+bool ReadELFPlugin::hasResult(const QJsonObject &docObj, QString &stdOut, QString &stdErr) const
 {
-    return PluginBase::hasToolResult(docObj, "readelf");
+    return PluginBase::hasToolResult(docObj, "readelf", stdOut, stdErr);
 }
 
 QWidget *ReadELFPlugin::createOutputWidget(QWidget *parent)

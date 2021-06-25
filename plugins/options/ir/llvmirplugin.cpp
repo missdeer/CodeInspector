@@ -16,7 +16,7 @@ bool LLVMIRPlugin::isSessionEnabled() const
     return false;
 }
 
-bool LLVMIRPlugin::hasResult(const QJsonObject &docObj) const
+bool LLVMIRPlugin::hasResult(const QJsonObject &docObj, QString& stdOut, QString& stdErr) const
 {
     QJsonValue hasIrOutputVal = docObj["hasIrOutput"];
     if (hasIrOutputVal.isBool() && hasIrOutputVal.toBool())

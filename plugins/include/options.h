@@ -8,11 +8,11 @@ QT_FORWARD_DECLARE_CLASS(QWidget);
 class OptionInterface
 {
 public:
-    virtual ~OptionInterface()                                            = default;
-    virtual bool     isCompilerSupported(const QString &compilerId) const = 0;
-    virtual bool     isSessionEnabled() const                             = 0;
-    virtual bool     hasResult(const QJsonObject &jsonObj) const          = 0;
-    virtual QWidget *createOutputWidget(QWidget *parent = nullptr) = 0;
+    virtual ~OptionInterface()                                                                    = default;
+    virtual bool     isCompilerSupported(const QString &compilerId) const                         = 0;
+    virtual bool     isSessionEnabled() const                                                     = 0;
+    virtual bool     hasResult(const QJsonObject &docObj, QString &stdOut, QString &stdErr) const = 0;
+    virtual QWidget *createOutputWidget(QWidget *parent = nullptr)                                = 0;
 };
 
 QT_BEGIN_NAMESPACE

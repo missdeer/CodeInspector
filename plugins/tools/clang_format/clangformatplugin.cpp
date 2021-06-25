@@ -15,7 +15,7 @@ bool ClangFormatPlugin::isSessionEnabled() const
     return false;
 }
 
-bool ClangFormatPlugin::hasResult(const QJsonObject &docObj) const
+bool ClangFormatPlugin::hasResult(const QJsonObject &docObj, QString& stdOut, QString& stdErr) const
 {
     return false;
 }

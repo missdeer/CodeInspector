@@ -17,9 +17,9 @@ bool PaholePlugin::isSessionEnabled() const
     return false;
 }
 
-bool PaholePlugin::hasResult(const QJsonObject &docObj) const
+bool PaholePlugin::hasResult(const QJsonObject &docObj, QString &stdOut, QString &stdErr) const
 {
-    return PluginBase::hasToolResult(docObj, "pahole");
+    return PluginBase::hasToolResult(docObj, "pahole", stdOut, stdErr);
 }
 
 QWidget *PaholePlugin::createOutputWidget(QWidget *parent)

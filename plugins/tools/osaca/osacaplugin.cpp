@@ -15,7 +15,7 @@ bool OSACAPlugin::isSessionEnabled() const
     return false;
 }
 
-bool OSACAPlugin::hasResult(const QJsonObject &docObj) const
+bool OSACAPlugin::hasResult(const QJsonObject &docObj, QString& stdOut, QString& stdErr) const
 {
     return false;
 }

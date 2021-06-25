@@ -16,7 +16,7 @@ bool OptimizationPlugin::isSessionEnabled() const
     return false;
 }
 
-bool OptimizationPlugin::hasResult(const QJsonObject &docObj) const
+bool OptimizationPlugin::hasResult(const QJsonObject &docObj, QString &stdOut, QString &stdErr) const
 {
     QJsonValue optOutputVal = docObj["optOutput"];
     return optOutputVal.isArray();

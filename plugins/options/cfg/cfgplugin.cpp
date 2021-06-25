@@ -15,7 +15,7 @@ bool CfgPlugin::isSessionEnabled() const
     return false;
 }
 
-bool CfgPlugin::hasResult(const QJsonObject &docObj) const
+bool CfgPlugin::hasResult(const QJsonObject &docObj, QString& stdOut, QString& stdErr) const
 {
     return false;
 }

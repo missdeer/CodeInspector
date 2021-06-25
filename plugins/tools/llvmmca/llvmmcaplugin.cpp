@@ -17,9 +17,9 @@ bool LLVMMCAPlugin::isSessionEnabled() const
     return false;
 }
 
-bool LLVMMCAPlugin::hasResult(const QJsonObject &docObj) const
+bool LLVMMCAPlugin::hasResult(const QJsonObject &docObj, QString &stdOut, QString &stdErr) const
 {
-    return PluginBase::hasToolResult(docObj, "llvm-mca");
+    return PluginBase::hasToolResult(docObj, "llvm-mca", stdOut, stdErr);
 }
 
 QWidget *LLVMMCAPlugin::createOutputWidget(QWidget *parent)

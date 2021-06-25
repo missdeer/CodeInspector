@@ -19,7 +19,7 @@ public:
 
     [[nodiscard]] bool     isCompilerSupported(const QString &compilerId) const override;
     [[nodiscard]] bool     isSessionEnabled() const override;
-    [[nodiscard]] bool     hasResult(const QJsonObject &docObj) const override;
+    [[nodiscard]] bool     hasResult(const QJsonObject &docObj, QString &stdOut, QString &stdErr) const override;
     [[nodiscard]] QWidget *createOutputWidget(QWidget *parent = nullptr) override;
 
 signals:

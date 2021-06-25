@@ -17,9 +17,9 @@ bool X86To6502Plugin::isSessionEnabled() const
     return false;
 }
 
-bool X86To6502Plugin::hasResult(const QJsonObject &docObj) const
+bool X86To6502Plugin::hasResult(const QJsonObject &docObj, QString &stdOut, QString &stdErr) const
 {
-    return PluginBase::hasToolResult(docObj, "x86to6502");
+    return PluginBase::hasToolResult(docObj, "x86to6502", stdOut, stdErr);
 }
 
 QWidget *X86To6502Plugin::createOutputWidget(QWidget *parent)
