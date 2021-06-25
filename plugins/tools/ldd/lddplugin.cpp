@@ -1,5 +1,6 @@
 #include "lddplugin.h"
 #include "lddoutput.h"
+#include "pluginbase.h"
 
 LDDPlugin::LDDPlugin(QObject *parent) : QObject(parent)
 {
@@ -18,7 +19,7 @@ bool LDDPlugin::isSessionEnabled() const
 
 bool LDDPlugin::hasResult(const QJsonObject &docObj) const
 {
-    return false;
+    return PluginBase::hasToolResult(docObj, "ldd");
 }
 
 QWidget *LDDPlugin::createOutputWidget(QWidget *parent)

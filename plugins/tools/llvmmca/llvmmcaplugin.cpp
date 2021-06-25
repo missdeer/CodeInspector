@@ -1,5 +1,6 @@
 #include "llvmmcaplugin.h"
 #include "llvmmachinecodeanalyzeroutput.h"
+#include "pluginbase.h"
 
 LLVMMCAPlugin::LLVMMCAPlugin(QObject *parent) : QObject(parent)
 {
@@ -18,7 +19,7 @@ bool LLVMMCAPlugin::isSessionEnabled() const
 
 bool LLVMMCAPlugin::hasResult(const QJsonObject &docObj) const
 {
-    return false;
+    return PluginBase::hasToolResult(docObj, "llvm-mca");
 }
 
 QWidget *LLVMMCAPlugin::createOutputWidget(QWidget *parent)

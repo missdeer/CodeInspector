@@ -1,5 +1,6 @@
 #include "paholeplugin.h"
 #include "paholeoutput.h"
+#include "pluginbase.h"
 
 PaholePlugin::PaholePlugin(QObject *parent) : QObject(parent)
 {
@@ -18,7 +19,7 @@ bool PaholePlugin::isSessionEnabled() const
 
 bool PaholePlugin::hasResult(const QJsonObject &docObj) const
 {
-    return false;
+    return PluginBase::hasToolResult(docObj, "pahole");
 }
 
 QWidget *PaholePlugin::createOutputWidget(QWidget *parent)

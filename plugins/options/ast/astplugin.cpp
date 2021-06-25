@@ -18,7 +18,8 @@ bool AstPlugin::isSessionEnabled() const
 
 bool AstPlugin::hasResult(const QJsonObject &docObj) const
 {
-    return false;
+    QJsonValue astOutputVal = docObj["astOutput"];
+    return astOutputVal.isString();
 }
 
 QWidget *AstPlugin::createOutputWidget(QWidget *parent)

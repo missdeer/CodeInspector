@@ -18,6 +18,12 @@ bool LLVMIRPlugin::isSessionEnabled() const
 
 bool LLVMIRPlugin::hasResult(const QJsonObject &docObj) const
 {
+    QJsonValue hasIrOutputVal = docObj["hasIrOutput"];
+    if (hasIrOutputVal.isBool() && hasIrOutputVal.toBool())
+    {
+        QJsonValue irOutputVal = docObj["irOutput"];
+        return irOutputVal.isArray();
+    }
     return false;
 }
 

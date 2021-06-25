@@ -18,7 +18,8 @@ bool GCCTreeRTLPlugin::isSessionEnabled() const
 
 bool GCCTreeRTLPlugin::hasResult(const QJsonObject &docObj) const
 {
-    return false;
+    QJsonValue gccDumpOutputVal = docObj["gccDumpOutput"];
+    return gccDumpOutputVal.isObject();
 }
 
 QWidget *GCCTreeRTLPlugin::createOutputWidget(QWidget *parent)

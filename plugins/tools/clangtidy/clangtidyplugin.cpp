@@ -1,5 +1,6 @@
 #include "clangtidyplugin.h"
 #include "clangtidyoutput.h"
+#include "pluginbase.h"
 
 ClangTidyPlugin::ClangTidyPlugin(QObject *parent) : QObject(parent)
 {
@@ -18,7 +19,7 @@ bool ClangTidyPlugin::isSessionEnabled() const
 
 bool ClangTidyPlugin::hasResult(const QJsonObject &docObj) const
 {
-    return false;
+    return PluginBase::hasToolResult(docObj, "clangtidytrunk");
 }
 
 QWidget *ClangTidyPlugin::createOutputWidget(QWidget *parent)

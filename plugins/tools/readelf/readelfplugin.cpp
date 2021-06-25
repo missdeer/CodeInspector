@@ -1,4 +1,5 @@
 #include "readelfplugin.h"
+#include "pluginbase.h"
 #include "readelfoutput.h"
 
 ReadELFPlugin::ReadELFPlugin(QObject *parent) : QObject(parent)
@@ -18,7 +19,7 @@ bool ReadELFPlugin::isSessionEnabled() const
 
 bool ReadELFPlugin::hasResult(const QJsonObject &docObj) const
 {
-    return false;
+    return PluginBase::hasToolResult(docObj, "readelf");
 }
 
 QWidget *ReadELFPlugin::createOutputWidget(QWidget *parent)

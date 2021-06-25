@@ -1,5 +1,6 @@
 #include "includewhatyouuseplugin.h"
 #include "includewhatyouuseoutput.h"
+#include "pluginbase.h"
 
 IncludeWhatYouUsePlugin::IncludeWhatYouUsePlugin(QObject *parent) : QObject(parent)
 {
@@ -18,7 +19,7 @@ bool IncludeWhatYouUsePlugin::isSessionEnabled() const
 
 bool IncludeWhatYouUsePlugin::hasResult(const QJsonObject &docObj) const
 {
-    return false;
+    return PluginBase::hasToolResult(docObj, "iwyu");
 }
 
 QWidget *IncludeWhatYouUsePlugin::createOutputWidget(QWidget *parent)

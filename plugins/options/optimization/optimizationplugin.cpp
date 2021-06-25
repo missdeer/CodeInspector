@@ -18,7 +18,8 @@ bool OptimizationPlugin::isSessionEnabled() const
 
 bool OptimizationPlugin::hasResult(const QJsonObject &docObj) const
 {
-    return false;
+    QJsonValue optOutputVal = docObj["optOutput"];
+    return optOutputVal.isArray();
 }
 
 QWidget *OptimizationPlugin::createOutputWidget(QWidget *parent)
