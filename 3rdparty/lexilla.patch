@@ -1,19 +1,35 @@
 diff --git a/include/SciLexer.h b/include/SciLexer.h
-index 618534fa..78d8345e 100644
+index 618534fa..9ec118c2 100644
 --- a/include/SciLexer.h
 +++ b/include/SciLexer.h
-@@ -146,6 +146,10 @@
+@@ -146,6 +146,26 @@
  #define SCLEX_RAKU 131
  #define SCLEX_FSHARP 132
  #define SCLEX_JULIA 133
++#define SCLEX_AHK 200
++#define SCLEX_TEXINFO 202
++#define SCLEX_SRT 204
++#define SCLEX_SMALI 205
++#define SCLEX_GRAPHVIZ 206
++#define SCLEX_VIM 207
++#define SCLEX_JAVA 208
 +#define SCLEX_LLVM 209
 +#define SCLEX_KOTLIN 210
++#define SCLEX_JAVASCRIPT 211
 +#define SCLEX_WASM 213
++#define SCLEX_TOML 214
++#define SCLEX_GN 215
++#define SCLEX_GO 216
++#define SCLEX_DART 217
 +#define SCLEX_SWIFT 218
++#define SCLEX_HAXE 219
++#define SCLEX_GROOVY 220
++#define SCLEX_JAM 221
++#define SCLEX_AWK 222
  #define SCLEX_AUTOMATIC 1000
  #define SCE_P_DEFAULT 0
  #define SCE_P_COMMENTLINE 1
-@@ -2000,6 +2004,100 @@
+@@ -2000,6 +2020,124 @@
  #define SCE_FSHARP_QUOTATION 17
  #define SCE_FSHARP_ATTRIBUTE 18
  #define SCE_FSHARP_FORMAT_SPEC 19
@@ -80,6 +96,30 @@ index 618534fa..78d8345e 100644
 +#define SCE_WASM_WORD 10
 +#define SCE_WASM_KEYWORD 11
 +#define SCE_WASM_TYPE 12
++#define SCE_GO_DEFAULT 0
++#define SCE_GO_COMMENTLINE 1
++#define SCE_GO_COMMENTBLOCK 2
++#define SCE_GO_TASKMARKERLINE 4
++#define SCE_GO_TASKMARKER 5
++#define SCE_GO_STRING 6
++#define SCE_GO_CHARACTER 7
++#define SCE_GO_ESCAPECHAR 8
++#define SCE_GO_RAW_STRING 9
++#define SCE_GO_NUMBER 10
++#define SCE_GO_OPERATOR 11
++#define SCE_GO_OPERATOR2 12
++#define SCE_GO_LABEL 13
++#define SCE_GO_IDENTIFIER 14
++#define SCE_GO_WORD 15
++#define SCE_GO_WORD2 16
++#define SCE_GO_BUILTIN_FUNC 17
++#define SCE_GO_TYPE 18
++#define SCE_GO_STRUCT 19
++#define SCE_GO_INTERFACE 20
++#define SCE_GO_CONSTANT 21
++#define SCE_GO_FUNCTION 22
++#define SCE_GO_FUNCTION_DEFINE 23
++#define SCE_GO_FORMAT_SPECIFIER 24
 +#define SCE_SWIFT_DEFAULT 0
 +#define SCE_SWIFT_COMMENTLINE 1
 +#define SCE_SWIFT_COMMENTLINEDOC 2
@@ -502,7 +542,7 @@ index 50eedb7c..134e213a 100644
  // Simple case functions for ASCII supersets.
  
 diff --git a/lexlib/LexAccessor.h b/lexlib/LexAccessor.h
-index 331c501f..35d4cab6 100644
+index 331c501f..3bd08394 100644
 --- a/lexlib/LexAccessor.h
 +++ b/lexlib/LexAccessor.h
 @@ -8,6 +8,12 @@
@@ -518,7 +558,17 @@ index 331c501f..35d4cab6 100644
  namespace Lexilla {
  
  enum class EncodingType { eightBit, unicode, dbcs };
-@@ -181,6 +187,22 @@ public:
+@@ -80,6 +86,9 @@ public:
+ 	Scintilla::IDocument *MultiByteAccess() const noexcept {
+ 		return pAccess;
+ 	}
++	int GetCharacterAndWidth(Sci_Position position, Sci_Position *pWidth) const noexcept {
++		return pAccess->GetCharacterAndWidth(position, pWidth);
++	}
+ 	/** Safe version of operator[], returning a defined value for invalid position. */
+ 	char SafeGetCharAt(Sci_Position position, char chDefault=' ') {
+ 		if (position < startPos || position >= endPos) {
+@@ -181,6 +190,22 @@ public:
  	void ChangeLexerState(Sci_Position start, Sci_Position end) {
  		pAccess->ChangeLexerState(start, end);
  	}
@@ -541,7 +591,7 @@ index 331c501f..35d4cab6 100644
  };
  
  struct LexicalClass {
-@@ -190,6 +212,181 @@ struct LexicalClass {
+@@ -190,6 +215,201 @@ struct LexicalClass {
  	const char *description;
  };
  
@@ -549,6 +599,26 @@ index 331c501f..35d4cab6 100644
 +	return (ch == ' ') || ((ch >= 0x09) && (ch <= 0x0d));
 +}
 +
++Sci_Position LexSkipWhiteSpace(Sci_Position startPos, Sci_Position endPos, LexAccessor &styler) noexcept;
++Sci_Position LexSkipWhiteSpace(Sci_Position startPos, Sci_Position endPos, LexAccessor &styler, bool IsStreamCommentStyle(int) noexcept) noexcept;
++Sci_Position LexSkipWhiteSpace(Sci_Position startPos, Sci_Position endPos, LexAccessor &styler,
++	bool IsStreamCommentStyle(int), const CharacterSet &charSet) noexcept;
++bool IsLexSpaceToEOL(LexAccessor &styler, Sci_Position startPos) noexcept;
++
++Sci_PositionU LexGetRange(Sci_Position startPos, LexAccessor &styler, bool IsWordChar(int) noexcept, char *s, Sci_PositionU len) noexcept;
++Sci_PositionU LexGetRangeLowered(Sci_Position startPos, LexAccessor &styler, bool IsWordChar(int) noexcept, char *s, Sci_PositionU len) noexcept;
++Sci_PositionU LexGetRange(Sci_Position startPos, LexAccessor &styler, const CharacterSet &charSet, char *s, Sci_PositionU len) noexcept;
++Sci_PositionU LexGetRangeLowered(Sci_Position startPos, LexAccessor &styler, const CharacterSet &charSet, char *s, Sci_PositionU len) noexcept;
++
++inline unsigned char LexGetPrevChar(Sci_Position endPos, LexAccessor &styler) noexcept {
++	do {
++		--endPos;
++		const unsigned char ch = styler.SafeGetCharAt(endPos);
++		if (!IsWhiteSpace(ch)) {
++			return ch;
++		}
++	} while (true);
++}
 +inline unsigned char LexGetNextChar(Sci_Position startPos, LexAccessor &styler) noexcept {
 +	do {
 +		const unsigned char ch = styler[startPos];
@@ -1003,7 +1073,7 @@ index ca564ec4..bcad18ca 100644
 +}
 \ No newline at end of file
 diff --git a/lexlib/StyleContext.h b/lexlib/StyleContext.h
-index a6c6f9f4..0e0ba0a9 100644
+index a6c6f9f4..f64d0aee 100644
 --- a/lexlib/StyleContext.h
 +++ b/lexlib/StyleContext.h
 @@ -15,7 +15,9 @@ namespace Lexilla {
@@ -1035,10 +1105,28 @@ index a6c6f9f4..0e0ba0a9 100644
  	bool Match(const char *s) {
  		if (ch != static_cast<unsigned char>(*s))
  			return false;
-@@ -208,12 +222,35 @@ public:
+@@ -208,12 +222,53 @@ public:
  		}
  		return true;
  	}
++	void SeekTo(Sci_PositionU startPos) noexcept {
++		currentPos = startPos;
++		chPrev = 0;
++		if (!multiByteAccess) {
++			ch = static_cast<unsigned char>(styler[startPos]);
++			chNext = static_cast<unsigned char>(styler.SafeGetCharAt(startPos + 1));
++		} else {
++			ch =  styler.GetCharacterAndWidth(startPos, &widthNext);
++			width = widthNext;
++			chNext = styler.GetCharacterAndWidth(startPos + width, &widthNext);
++		}
++		atLineEnd = startPos >= lineStartNext - (currentLine < lineDocEnd);
++	}
++	void Advance(Sci_Position nb) noexcept {
++		if (nb) {
++			SeekTo(currentPos + nb);
++		}
++	}
 +	int GetDocNextChar(bool ignoreCurrent = false) const noexcept {
 +		if (!ignoreCurrent && !IsWhiteSpace(ch)) {
 +			return ch;
@@ -1683,7 +1771,7 @@ index 07ae573b..edd27e90 100644
 -
 -#endif
 diff --git a/src/Lexilla.cxx b/src/Lexilla.cxx
-index cd4b2361..821e0016 100644
+index cd4b2361..8e66b395 100644
 --- a/src/Lexilla.cxx
 +++ b/src/Lexilla.cxx
 @@ -12,7 +12,7 @@
@@ -1695,11 +1783,12 @@ index cd4b2361..821e0016 100644
  #define CALLING_CONVENTION __stdcall
  #else
  #define EXPORT_FUNCTION __attribute__((visibility("default")))
-@@ -158,7 +158,10 @@ extern LexerModule lmVisualProlog;
+@@ -158,7 +158,11 @@ extern LexerModule lmVisualProlog;
  extern LexerModule lmX12;
  extern LexerModule lmXML;
  extern LexerModule lmYAML;
 -
++extern LexerModule lmGo;
 +extern LexerModule lmLLVM;
 +extern LexerModule lmSwift;
 +extern LexerModule lmKotlin;
@@ -1707,10 +1796,11 @@ index cd4b2361..821e0016 100644
  //--Autogenerated -- end of automatically generated section
  
  namespace {
-@@ -304,6 +307,10 @@ void AddEachLexer() {
+@@ -304,6 +308,11 @@ void AddEachLexer() {
  		&lmX12,
  		&lmXML,
  		&lmYAML,
++		&lmGo,
 +		&lmLLVM,
 +		&lmKotlin,
 +		&lmSwift,
