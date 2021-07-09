@@ -510,7 +510,7 @@ constexpr int GetLineCommentState(int lineState) noexcept {
 
 void FoldGoDoc(Sci_PositionU startPos, Sci_Position lengthDoc, int initStyle, LexerWordList, Accessor &styler) {
 	const Sci_PositionU endPos = startPos + lengthDoc;
-	Sci_Line lineCurrent = styler.GetLine(startPos);
+	auto lineCurrent = styler.GetLine(startPos);
 	int levelCurrent = SC_FOLDLEVELBASE;
 	int lineCommentPrev = 0;
 	if (lineCurrent > 0) {
@@ -525,7 +525,7 @@ void FoldGoDoc(Sci_PositionU startPos, Sci_Position lengthDoc, int initStyle, Le
 	int levelNext = levelCurrent;
 	int lineCommentCurrent = GetLineCommentState(styler.GetLineState(lineCurrent));
 	Sci_PositionU lineStartNext = styler.LineStart(lineCurrent + 1);
-	Sci_PositionU lineEndPos = sci::min(lineStartNext, endPos) - 1;
+	Sci_PositionU lineEndPos = std::min(lineStartNext, endPos) - 1;
 
 	int styleNext = styler.StyleAt(startPos);
 	int style = initStyle;
@@ -582,7 +582,7 @@ void FoldGoDoc(Sci_PositionU startPos, Sci_Position lengthDoc, int initStyle, Le
 
 			lineCurrent++;
 			lineStartNext = styler.LineStart(lineCurrent + 1);
-			lineEndPos = sci::min(lineStartNext, endPos) - 1;
+			lineEndPos = std::min(lineStartNext, endPos) - 1;
 			levelCurrent = levelNext;
 			lineCommentPrev = lineCommentCurrent;
 			lineCommentCurrent = lineCommentNext;
