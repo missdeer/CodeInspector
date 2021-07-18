@@ -6,7 +6,7 @@
 
 namespace PluginBase
 {
-    bool hasToolResult(const QJsonObject &docObj, const QString &name, QString &stdOut, QString &stdErr)
+    inline bool hasToolResult(const QJsonObject &docObj, const QString &name, QString &stdOut, QString &stdErr)
     {
         QJsonValue toolsVal = docObj["tools"];
         if (!toolsVal.isArray())

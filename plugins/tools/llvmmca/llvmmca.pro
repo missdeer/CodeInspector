@@ -10,9 +10,9 @@ CONFIG += install_ok  # Do not cargo-cult this!
 uikit: CONFIG += debug_and_release
 
 HEADERS += \
-    llvmmachinecodeanalyzeroutput.h \
-    llvmmcaplugin.h
+    $$PWD/llvmmachinecodeanalyzeroutput.h \
+    $$PWD/llvmmcaplugin.h
 
 SOURCES += \
-    llvmmachinecodeanalyzeroutput.cpp \
-    llvmmcaplugin.cpp
+    $$PWD/llvmmachinecodeanalyzeroutput.cpp \
+    $$PWD/llvmmcaplugin.cpp

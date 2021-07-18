@@ -10,9 +10,9 @@ CONFIG += install_ok  # Do not cargo-cult this!
 uikit: CONFIG += debug_and_release
 
 HEADERS += \
-    optimizationoutput.h \
-    optimizationplugin.h
+    $$PWD/optimizationoutput.h \
+    $$PWD/optimizationplugin.h
 
 SOURCES += \
-    optimizationoutput.cpp \
-    optimizationplugin.cpp
+    $$PWD/optimizationoutput.cpp \
+    $$PWD/optimizationplugin.cpp

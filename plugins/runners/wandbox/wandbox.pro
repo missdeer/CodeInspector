@@ -10,7 +10,7 @@ CONFIG += install_ok  # Do not cargo-cult this!
 uikit: CONFIG += debug_and_release
 
 HEADERS += \
-    wandboxplugin.h
+    $$PWD/wandboxplugin.h
 
 SOURCES += \
-    wandboxplugin.cpp
+    $$PWD/wandboxplugin.cpp

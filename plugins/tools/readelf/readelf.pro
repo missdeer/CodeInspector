@@ -10,9 +10,9 @@ CONFIG += install_ok  # Do not cargo-cult this!
 uikit: CONFIG += debug_and_release
 
 HEADERS += \
-    readelfoutput.h \
-    readelfplugin.h
+    $$PWD/readelfoutput.h \
+    $$PWD/readelfplugin.h
 
 SOURCES += \
-    readelfoutput.cpp \
-    readelfplugin.cpp
+    $$PWD/readelfoutput.cpp \
+    $$PWD/readelfplugin.cpp

@@ -36,17 +36,6 @@ public slots:
 private slots:
     void onNeedCompile();
     void onCompiled();
-    void onHasGccDumpOutput();
-    void onHasLLVMMCAOutput();
-    void onHasOptimizationOutput();
-    void onHasPaholeOutput();
-    void onHasClangTidyOutput();
-    void onHasASTOutput();
-    void onHasLLVMIROutput();
-    void onHasLddOutput();
-    void onHasX86To6502Output();
-    void onHasReadElfOutput();
-    void onHasIncludeWhatYouUseOutput();
     void onDelayCompile();
     void onToggleOutput();
     void onActionBinaryTriggered();
@@ -59,20 +48,6 @@ private slots:
     void onActionDemangleTriggered();
     void onCurrentCompilerArgumentsChanged();
     void onCurrentCompilerChanged(const QString &compilerName);
-
-    void onRequestLLVMMCA();
-    void onRequestAST();
-    void onRequestLLVMIR();
-    void onRequestOptimization();
-    void onRequestGCCTreeRTL();
-    void onRequestPahole();
-    void onRequestClangTidy();
-    void onRequestClangQuery();
-    void onRequestLdd();
-    void onRequestReadElf();
-    void onRequestX86To6502();
-    void onRequestIncludeWhatYouUse();
-    void onRefreshGCCDumpOutput(QString pass, bool gccTree, bool rtl);
 
 private:
     CodeEditor *            m_codeEditor;

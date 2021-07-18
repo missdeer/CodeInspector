@@ -10,9 +10,9 @@ CONFIG += install_ok  # Do not cargo-cult this!
 uikit: CONFIG += debug_and_release
 
 HEADERS += \
-    clangqueryoutput.h \
-    clangqueryplugin.h
+    $$PWD/clangqueryoutput.h \
+    $$PWD/clangqueryplugin.h
 
 SOURCES += \
-    clangqueryoutput.cpp \
-    clangqueryplugin.cpp
+    $$PWD/clangqueryoutput.cpp \
+    $$PWD/clangqueryplugin.cpp

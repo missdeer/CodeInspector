@@ -10,7 +10,7 @@ CONFIG += install_ok  # Do not cargo-cult this!
 uikit: CONFIG += debug_and_release
 
 HEADERS += \
-    rextesterplugin.h
+    $$PWD/rextesterplugin.h
 
 SOURCES += \
-    rextesterplugin.cpp
+    $$PWD/rextesterplugin.cpp

@@ -10,9 +10,9 @@ CONFIG += install_ok  # Do not cargo-cult this!
 uikit: CONFIG += debug_and_release
 
 HEADERS += \
-    llvmirplugin.h \
-    llvmirview.h
+    $$PWD/llvmirplugin.h \
+    $$PWD/llvmirview.h
 
 SOURCES += \
-    llvmirplugin.cpp \
-    llvmirview.cpp
+    $$PWD/llvmirplugin.cpp \
+    $$PWD/llvmirview.cpp

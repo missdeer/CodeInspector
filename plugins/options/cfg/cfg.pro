@@ -10,7 +10,7 @@ CONFIG += install_ok  # Do not cargo-cult this!
 uikit: CONFIG += debug_and_release
 
 HEADERS += \
-    cfgplugin.h
+    $$PWD/cfgplugin.h
 
 SOURCES += \
-    cfgplugin.cpp
+    $$PWD/cfgplugin.cpp

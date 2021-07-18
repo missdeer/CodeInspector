@@ -10,9 +10,9 @@ CONFIG += install_ok  # Do not cargo-cult this!
 uikit: CONFIG += debug_and_release
 
 HEADERS += \
-    clangtidyoutput.h \
-    clangtidyplugin.h
+    $$PWD/clangtidyoutput.h \
+    $$PWD/clangtidyplugin.h
 
 SOURCES += \
-    clangtidyoutput.cpp \
-    clangtidyplugin.cpp
+    $$PWD/clangtidyoutput.cpp \
+    $$PWD/clangtidyplugin.cpp

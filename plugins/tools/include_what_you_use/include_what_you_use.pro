@@ -10,9 +10,9 @@ CONFIG += install_ok  # Do not cargo-cult this!
 uikit: CONFIG += debug_and_release
 
 HEADERS += \
-    includewhatyouuseoutput.h \
-    includewhatyouuseplugin.h
+    $$PWD/includewhatyouuseoutput.h \
+    $$PWD/includewhatyouuseplugin.h
 
 SOURCES += \
-    includewhatyouuseoutput.cpp \
-    includewhatyouuseplugin.cpp
+    $$PWD/includewhatyouuseoutput.cpp \
+    $$PWD/includewhatyouuseplugin.cpp

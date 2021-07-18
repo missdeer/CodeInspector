@@ -10,7 +10,7 @@ CONFIG += install_ok  # Do not cargo-cult this!
 uikit: CONFIG += debug_and_release
 
 HEADERS += \
-    psvstudioplugin.h
+    $$PWD/psvstudioplugin.h
 
 SOURCES += \
-    psvstudioplugin.cpp
+    $$PWD/psvstudioplugin.cpp

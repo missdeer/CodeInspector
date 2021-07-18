@@ -9,7 +9,7 @@ win32-msvc: {
 
 TARGET = CodeInspector
 TEMPLATE = app
-CONFIG += c++17 
+CONFIG += c++17 sdk_no_version_check
 
 include($$PWD/../core/core.pri)
 

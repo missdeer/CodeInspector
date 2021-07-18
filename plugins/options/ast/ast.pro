@@ -10,9 +10,9 @@ CONFIG += install_ok  # Do not cargo-cult this!
 uikit: CONFIG += debug_and_release
 
 HEADERS += \
-    astoutput.h \
-    astplugin.h
+    $$PWD/astoutput.h \
+    $$PWD/astplugin.h
 
 SOURCES += \
-    astoutput.cpp \
-    astplugin.cpp
+    $$PWD/astoutput.cpp \
+    $$PWD/astplugin.cpp

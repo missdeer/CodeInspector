@@ -28,8 +28,9 @@ SessionWidget::SessionWidget(QWidget *parent) : QWidget(parent)
 
     connect(m_codeEditorPane, &CodeEditorPane::currentLanguageChanged, m_compilationTabWidget, &CompilationTabWidget::onLanguageChanged);
 
-    connect(
-        ciApp, &CodeInspectorApp::compilerListReady, [=]() { m_compilationTabWidget->onLanguageChanged(m_codeEditorPane->currentLanguageName()); });
+    connect(ciApp, &CodeInspectorApp::compilerListReady, [this]() {
+        m_compilationTabWidget->onLanguageChanged(m_codeEditorPane->currentLanguageName());
+    });
 }
 
 void SessionWidget::initialize()
@@ -37,11 +38,17 @@ void SessionWidget::initialize()
     m_codeEditorPane->initialize();
 }
 
-void SessionWidget::open(const QString &fileName) {}
+void SessionWidget::open(const QString &fileName)
+{
+    Q_UNUSED(fileName);
+}
 
 void SessionWidget::save() {}
 
-void SessionWidget::save(const QString &fileName) {}
+void SessionWidget::save(const QString &fileName)
+{
+    Q_UNUSED(fileName);
+}
 
 bool SessionWidget::isSaved()
 {

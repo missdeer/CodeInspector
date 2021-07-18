@@ -10,7 +10,7 @@ CONFIG += install_ok  # Do not cargo-cult this!
 uikit: CONFIG += debug_and_release
 
 HEADERS += \
-    clangformatplugin.h
+    $$PWD/clangformatplugin.h
 
 SOURCES += \
-    clangformatplugin.cpp
+    $$PWD/clangformatplugin.cpp

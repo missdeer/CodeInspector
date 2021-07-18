@@ -10,9 +10,9 @@ CONFIG += install_ok  # Do not cargo-cult this!
 uikit: CONFIG += debug_and_release
 
 HEADERS += \
-    lddoutput.h \
-    lddplugin.h
+    $$PWD/lddoutput.h \
+    $$PWD/lddplugin.h
 
 SOURCES += \
-    lddoutput.cpp \
-    lddplugin.cpp
+    $$PWD/lddoutput.cpp \
+    $$PWD/lddplugin.cpp
