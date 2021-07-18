@@ -1,4 +1,4 @@
-
+#include <QPainter>
 
 #include "comboboxdelegate.h"
 

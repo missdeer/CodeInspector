@@ -2,7 +2,8 @@
 #define COMBOBOXDELEGATE_H
 
 #include <QItemDelegate>
-#include <QPainter>
+
+QT_FORWARD_DECLARE_CLASS(QPainter);
 
 class ComboBoxDelegate : public QItemDelegate
 {

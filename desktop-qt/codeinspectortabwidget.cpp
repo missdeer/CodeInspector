@@ -12,6 +12,8 @@ CodeInspectorTabWidget::CodeInspectorTabWidget(QWidget *parent) : QTabWidget(par
 
     m_codeInspector->initialize();
     addTab(m_codeInspector, QIcon(":/resource/image/tab/inspector.png"), tr("Inspector"));
+
+    // TODO: create tabs from plugins
 }
 
 void CodeInspectorTabWidget::setCodeInspectorAsmItems(const AsmItemList &items, bool binary, QMap<int, intptr_t> &markerMap)
