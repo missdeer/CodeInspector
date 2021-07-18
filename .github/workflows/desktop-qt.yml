@@ -55,8 +55,13 @@ jobs:
           git apply ..\scintillua.patch
           cd ..\lexilla
           git apply ..\lexilla.patch
-          copy ..\lexilla-patch\Lex*.cxx lexers\
+          copy ..\lexilla-patch\LexGo.cxx lexers\
+          copy ..\lexilla-patch\LexKotlin.cxx lexers\
+          copy ..\lexilla-patch\LexLLVM.cxx lexers\
+          copy ..\lexilla-patch\LexSwift.cxx lexers\
+          copy ..\lexilla-patch\LexWASM.cxx lexers\
           copy ..\lexilla-patch\*.h lexlib\
+          copy ..\lexilla-patch\LexAccessor.cxx lexlib\
           cd ..\zlib
           git apply ..\zlib.patch
           cd ..\..
@@ -134,8 +139,13 @@ jobs:
           git apply ..\scintillua.patch
           cd ..\lexilla
           git apply ..\lexilla.patch
-          copy ..\lexilla-patch\Lex*.cxx lexers\
+          copy ..\lexilla-patch\LexGo.cxx lexers\
+          copy ..\lexilla-patch\LexKotlin.cxx lexers\
+          copy ..\lexilla-patch\LexLLVM.cxx lexers\
+          copy ..\lexilla-patch\LexSwift.cxx lexers\
+          copy ..\lexilla-patch\LexWASM.cxx lexers\
           copy ..\lexilla-patch\*.h lexlib\
+          copy ..\lexilla-patch\LexAccessor.cxx lexlib\
           cd ..\zlib
           git apply ..\zlib.patch
           cd ..\..
@@ -251,8 +261,13 @@ jobs:
           git apply ..\scintillua.patch
           cd ..\lexilla
           git apply ..\lexilla.patch
-          copy ..\lexilla-patch\Lex*.cxx lexers\
+          copy ..\lexilla-patch\LexGo.cxx lexers\
+          copy ..\lexilla-patch\LexKotlin.cxx lexers\
+          copy ..\lexilla-patch\LexLLVM.cxx lexers\
+          copy ..\lexilla-patch\LexSwift.cxx lexers\
+          copy ..\lexilla-patch\LexWASM.cxx lexers\
           copy ..\lexilla-patch\*.h lexlib\
+          copy ..\lexilla-patch\LexAccessor.cxx lexlib\
           cd ..\zlib
           git apply ..\zlib.patch
           cd ..\..
@@ -313,8 +328,9 @@ jobs:
           git apply ../scintillua.patch
           cd ../lexilla
           git apply ../lexilla.patch
-          cp ../lexilla-patch/Lex*.cxx lexers/
+          cp ../lexilla-patch/LexGo.cxx ../lexilla-patch/LexKotlin.cxx ../lexilla-patch/LexLLVM.cxx ../lexilla-patch/LexSwift.cxx ../lexilla-patch/LexWASM.cxx lexers/
           cp ../lexilla-patch/*.h lexlib/
+          cp ../lexilla-patch/LexAccessor.cxx lexlib/
           cd ../zlib
           git apply ../zlib.patch
           cd ../..
