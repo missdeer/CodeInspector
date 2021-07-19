@@ -36,6 +36,15 @@ include_directories(../../include
         ../../../3rdparty/scintilla/src
         ../../../3rdparty/scintilla/lexlib
         ../../../3rdparty/scintilla/include
+        ../../../3rdparty/lexilla/lexlib
+        ../../../3rdparty/lexilla/include
+        ../../../core
+        ${Qt5_DIR}/include
+        ${Qt5_DIR}/include/QtCore
+        ${Qt5_DIR}/include/QtGui
+        ${Qt5_DIR}/include/QtWidgets
+        ${Qt5_DIR}/include/QtNetwork
+        ${Qt5_DIR}/include/QtXml
         )
 
 

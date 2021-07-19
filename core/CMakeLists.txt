@@ -2,14 +2,9 @@ cmake_minimum_required(VERSION 3.15)
 project(core)
 
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_PREFIX_PATH "D:\\Qt\\5.15.2\\msvc2019_64")
 
 find_package(Qt5 COMPONENTS Widgets Core Gui Network Xml REQUIRED)
 
-# Find includes in corresponding build directories
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-# Instruct CMake to run moc automatically when needed.
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON) # if you have any .ui files
 set(CMAKE_AUTORCC ON) # if you have any .qrc files
@@ -38,6 +33,12 @@ include_directories(../desktop-qt
         ../3rdparty/scintillua
         ../3rdparty/lua
         ../3rdparty/lpeg
+        ${Qt5_DIR}/include
+        ${Qt5_DIR}/include/QtCore
+        ${Qt5_DIR}/include/QtGui
+        ${Qt5_DIR}/include/QtWidgets
+        ${Qt5_DIR}/include/QtNetwork
+        ${Qt5_DIR}/include/QtXml
         )
 
 file(GLOB
@@ -145,5 +146,3 @@ add_library(core
         ${SOURCES}
         ${RESOURCES}
         )
-
-target_include_directories (core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.15)
 project(x86to6502)
 
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 find_package(Qt5 COMPONENTS Widgets Core Gui Network Xml REQUIRED)
 
@@ -34,8 +33,15 @@ include_directories(../../include
         ../../../3rdparty/scintilla/qt/ScintillaEditBase
         ../../../3rdparty/scintilla/include
         ../../../3rdparty/scintilla/src
-        ../../../3rdparty/scintilla/lexlib
-        ../../../3rdparty/scintilla/include
+        ../../../3rdparty/lexilla/lexlib
+        ../../../3rdparty/lexilla/include
+        ../../../core
+        ${Qt5_DIR}/include
+        ${Qt5_DIR}/include/QtCore
+        ${Qt5_DIR}/include/QtGui
+        ${Qt5_DIR}/include/QtWidgets
+        ${Qt5_DIR}/include/QtNetwork
+        ${Qt5_DIR}/include/QtXml
         )
 
 

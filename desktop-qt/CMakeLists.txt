@@ -119,4 +119,7 @@ if (APPLE)
     target_link_libraries(CodeInspector z)
 endif()
 
-target_link_libraries(CodeInspector Qt5::Widgets Qt5::Gui Qt5::Core Qt5::Network Qt5::Xml core plugins)
+target_link_libraries(CodeInspector Qt::Widgets Qt::Gui Qt::Core Qt::Network Qt::Xml core
+        ast cfg gcctreertl ir optimization
+        rextester wandbox
+        clang_format clang_query clangtidy include_what_you_use ldd llvmmca osaca pahole psv_studio readelf strings x86to6502)
