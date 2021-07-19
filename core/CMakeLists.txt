@@ -33,12 +33,12 @@ include_directories(../desktop-qt
         ../3rdparty/scintillua
         ../3rdparty/lua
         ../3rdparty/lpeg
-        ${Qt5_DIR}/include
-        ${Qt5_DIR}/include/QtCore
-        ${Qt5_DIR}/include/QtGui
-        ${Qt5_DIR}/include/QtWidgets
-        ${Qt5_DIR}/include/QtNetwork
-        ${Qt5_DIR}/include/QtXml
+        ${CMAKE_PREFIX_PATH}/include
+        ${CMAKE_PREFIX_PATH}/include/QtCore
+        ${CMAKE_PREFIX_PATH}/include/QtGui
+        ${CMAKE_PREFIX_PATH}/include/QtWidgets
+        ${CMAKE_PREFIX_PATH}/include/QtNetwork
+        ${CMAKE_PREFIX_PATH}/include/QtXml
         )
 
 file(GLOB
@@ -74,6 +74,7 @@ file(GLOB
         scintilla_src
         ../3rdparty/scintilla/src/*.cxx
         ../3rdparty/scintillua/*.cxx
+        ../3rdparty/lexilla/src/*.cxx
         ../3rdparty/lexilla/lexers/*.cxx
         ../3rdparty/lexilla/lexlib/*.cxx
         ../3rdparty/scintilla/qt/ScintillaEdit/*.cpp
@@ -123,7 +124,7 @@ set(lua_src
 
 file(GLOB
         lpeg_src
-        ../3rdparty/lpeg/*.cpp
+        ../3rdparty/lpeg/*.c
         )
 
 set(SOURCES

@@ -27,6 +27,7 @@ add_compile_definitions(SCINTILLA_QT=1
         _CRT_SECURE_NO_DEPRECATE=1
         SCI_STATIC_LINK=1
         EXPORT_IMPORT_API=
+        QT_STATICPLUGIN=
         )
 
 include_directories(../../include
@@ -39,12 +40,12 @@ include_directories(../../include
         ../../../3rdparty/lexilla/lexlib
         ../../../3rdparty/lexilla/include
         ../../../core
-        ${Qt5_DIR}/include
-        ${Qt5_DIR}/include/QtCore
-        ${Qt5_DIR}/include/QtGui
-        ${Qt5_DIR}/include/QtWidgets
-        ${Qt5_DIR}/include/QtNetwork
-        ${Qt5_DIR}/include/QtXml
+        ${CMAKE_PREFIX_PATH}/include
+        ${CMAKE_PREFIX_PATH}/include/QtCore
+        ${CMAKE_PREFIX_PATH}/include/QtGui
+        ${CMAKE_PREFIX_PATH}/include/QtWidgets
+        ${CMAKE_PREFIX_PATH}/include/QtNetwork
+        ${CMAKE_PREFIX_PATH}/include/QtXml
         )
 
 
