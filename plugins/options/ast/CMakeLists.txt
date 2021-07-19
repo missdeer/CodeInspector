@@ -16,6 +16,12 @@ set(CMAKE_AUTORCC ON) # if you have any .qrc files
 # Add compiler flags for building executables (-fPIE)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
 
+set(CMAKE_PREFIX_PATH ${PREFIX_PATH})
+message(STATUS "CMAKE_PREFIX_PATH" ${CMAKE_PREFIX_PATH})
+
+include_directories (${PROJECT_SOURCE_DIR})
+include_directories (${PROJECT_BINARY_DIR})
+
 add_compile_definitions(SCINTILLA_QT=1
         SCI_LEXER=1
         _CRT_SECURE_NO_DEPRECATE=1
