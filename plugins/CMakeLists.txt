@@ -16,6 +16,6 @@ set(CMAKE_AUTORCC ON) # if you have any .qrc files
 # Add compiler flags for building executables (-fPIE)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
 
-add_subdirectory(core)
-add_subdirectory(plugins)
-add_subdirectory(desktop-qt)
+add_subdirectory(options)
+add_subdirectory(runners)
+add_subdirectory(tools)
