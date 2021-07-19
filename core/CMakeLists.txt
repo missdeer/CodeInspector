@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.15)
-project(core)
+project(core VERSION 1.0.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt5 COMPONENTS Widgets Core Gui Network Xml REQUIRED)
 
@@ -9,7 +10,6 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON) # if you have any .ui files
 set(CMAKE_AUTORCC ON) # if you have any .qrc files
 
-set(CMAKE_PREFIX_PATH ${PREFIX_PATH})
 message(STATUS "CMAKE_PREFIX_PATH" ${CMAKE_PREFIX_PATH})
 
 include_directories (${PROJECT_SOURCE_DIR})

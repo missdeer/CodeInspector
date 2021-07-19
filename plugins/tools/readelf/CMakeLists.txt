@@ -1,13 +1,11 @@
 cmake_minimum_required(VERSION 3.15)
-project(readelf)
+project(readelf VERSION 1.0.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt5 COMPONENTS Widgets Core Gui Network Xml REQUIRED)
 
-# Find includes in corresponding build directories
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Instruct CMake to run moc automatically when needed.
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON) # if you have any .ui files
@@ -16,7 +14,6 @@ set(CMAKE_AUTORCC ON) # if you have any .qrc files
 # Add compiler flags for building executables (-fPIE)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
 
-set(CMAKE_PREFIX_PATH ${PREFIX_PATH})
 message(STATUS "CMAKE_PREFIX_PATH" ${CMAKE_PREFIX_PATH})
 
 include_directories (${PROJECT_SOURCE_DIR})
