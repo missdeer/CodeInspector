@@ -10,10 +10,9 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON) # if you have any .ui files
 set(CMAKE_AUTORCC ON) # if you have any .qrc files
 
-message(STATUS "CMAKE_PREFIX_PATH" ${CMAKE_PREFIX_PATH})
 
-include_directories (${PROJECT_SOURCE_DIR})
-include_directories (${PROJECT_BINARY_DIR})
+include_directories(${PROJECT_SOURCE_DIR})
+include_directories(${PROJECT_BINARY_DIR})
 
 add_compile_definitions(SCINTILLA_QT=1
         SCI_LEXER=1
@@ -33,12 +32,9 @@ include_directories(../desktop-qt
         ../3rdparty/scintillua
         ../3rdparty/lua
         ../3rdparty/lpeg
-        ${CMAKE_PREFIX_PATH}/include
-        ${CMAKE_PREFIX_PATH}/include/QtCore
-        ${CMAKE_PREFIX_PATH}/include/QtGui
-        ${CMAKE_PREFIX_PATH}/include/QtWidgets
-        ${CMAKE_PREFIX_PATH}/include/QtNetwork
-        ${CMAKE_PREFIX_PATH}/include/QtXml
+        ${Qt5Widgets_INCLUDE_DIRS}
+        ${Qt5Network_INCLUDE_DIRS}
+        ${Qt5Xml_INCLUDE_DIRS}
         )
 
 file(GLOB
@@ -58,17 +54,13 @@ set(core_headers
         ${Headers}
         )
 
-if (WIN32)
-    include_directories(
-            ../3rdparty/zlib
-    )
-    file(GLOB
-            zlib_src
-            ../3rdparty/zlib/*.c
-            )
-else()
-    file(GLOB zlib_src)
-endif()
+include_directories(
+        ../3rdparty/zlib
+)
+file(GLOB
+        zlib_src
+        ../3rdparty/zlib/*.c
+        )
 
 file(GLOB
         scintilla_src
@@ -126,6 +118,8 @@ file(GLOB
         lpeg_src
         ../3rdparty/lpeg/*.c
         )
+
+message(STATUS ${lua_src} ${zlib_src})
 
 set(SOURCES
         ${core_src}

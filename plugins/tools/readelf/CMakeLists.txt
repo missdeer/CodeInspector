@@ -14,10 +14,9 @@ set(CMAKE_AUTORCC ON) # if you have any .qrc files
 # Add compiler flags for building executables (-fPIE)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
 
-message(STATUS "CMAKE_PREFIX_PATH" ${CMAKE_PREFIX_PATH})
 
-include_directories (${PROJECT_SOURCE_DIR})
-include_directories (${PROJECT_BINARY_DIR})
+include_directories(${PROJECT_SOURCE_DIR})
+include_directories(${PROJECT_BINARY_DIR})
 
 add_compile_definitions(SCINTILLA_QT=1
         SCI_LEXER=1
@@ -25,6 +24,11 @@ add_compile_definitions(SCINTILLA_QT=1
         SCI_STATIC_LINK=1
         EXPORT_IMPORT_API=
         QT_STATICPLUGIN=
+        )
+
+add_definitions(${Qt5Widgets_DEFINITIONS}
+        ${Qt5Network_DEFINITIONS}
+        ${Qt5Xml_DEFINITIONS}
         )
 
 include_directories(../../include
@@ -35,12 +39,9 @@ include_directories(../../include
         ../../../3rdparty/lexilla/lexlib
         ../../../3rdparty/lexilla/include
         ../../../core
-        ${CMAKE_PREFIX_PATH}/include
-        ${CMAKE_PREFIX_PATH}/include/QtCore
-        ${CMAKE_PREFIX_PATH}/include/QtGui
-        ${CMAKE_PREFIX_PATH}/include/QtWidgets
-        ${CMAKE_PREFIX_PATH}/include/QtNetwork
-        ${CMAKE_PREFIX_PATH}/include/QtXml
+        ${Qt5Widgets_INCLUDE_DIRS}
+        ${Qt5Network_INCLUDE_DIRS}
+        ${Qt5Xml_INCLUDE_DIRS}
         )
 
 
@@ -68,4 +69,4 @@ add_library(readelf
         ${SOURCES}
         )
 
-target_include_directories (readelf PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(readelf PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

@@ -4,7 +4,7 @@ project(CodeInspector VERSION 1.0.0 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt5 COMPONENTS Widgets Core Gui Network Xml REQUIRED)
+find_package(Qt5 COMPONENTS Widgets Network Xml REQUIRED)
 
 # Instruct CMake to run moc automatically when needed.
 set(CMAKE_AUTOMOC ON)
@@ -14,10 +14,9 @@ set(CMAKE_AUTORCC ON) # if you have any .qrc files
 # Add compiler flags for building executables (-fPIE)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
 
-message(STATUS "CMAKE_PREFIX_PATH" ${CMAKE_PREFIX_PATH})
 
-include_directories (${PROJECT_SOURCE_DIR})
-include_directories (${PROJECT_BINARY_DIR})
+include_directories(${PROJECT_SOURCE_DIR})
+include_directories(${PROJECT_BINARY_DIR})
 
 add_compile_definitions(SCINTILLA_QT=1
         SCI_LEXER=1
@@ -111,8 +110,9 @@ if (APPLE)
             CodeInspector
             PROPERTIES
             RESOURCE "./CodeInspector.icns"
+            WIN32_EXECUTABLE TRUE
+            MACOSX_BUNDLE TRUE
     )
-    set_target_properties(CodeInspector PROPERTIES BUNDLE TRUE)
     target_link_libraries(CodeInspector z)
 endif()
 
