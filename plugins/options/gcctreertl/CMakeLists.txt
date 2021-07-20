@@ -4,7 +4,7 @@ project(gcctreertl VERSION 1.0.0)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt5 COMPONENTS Widgets Core Gui Network Xml REQUIRED)
+find_package(Qt5 COMPONENTS Widgets Network Xml REQUIRED)
 
 # Instruct CMake to run moc automatically when needed.
 set(CMAKE_AUTOMOC ON)

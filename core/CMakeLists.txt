@@ -4,12 +4,11 @@ project(core VERSION 1.0.0)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt5 COMPONENTS Widgets Core Gui Network Xml REQUIRED)
+find_package(Qt5 COMPONENTS Widgets Network Xml REQUIRED)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON) # if you have any .ui files
 set(CMAKE_AUTORCC ON) # if you have any .qrc files
-
 
 include_directories(${PROJECT_SOURCE_DIR})
 include_directories(${PROJECT_BINARY_DIR})
@@ -57,6 +56,7 @@ set(core_headers
 include_directories(
         ../3rdparty/zlib
 )
+
 file(GLOB
         zlib_src
         ../3rdparty/zlib/*.c
@@ -118,8 +118,6 @@ file(GLOB
         lpeg_src
         ../3rdparty/lpeg/*.c
         )
-
-message(STATUS ${lua_src} ${zlib_src})
 
 set(SOURCES
         ${core_src}
