@@ -23,18 +23,30 @@ QNetworkAccessManager &CodeInspectorApp::networkAccessManager()
 
 void CodeInspectorApp::initialize()
 {
-    QByteArray content;
+    QByteArray    content;
+    const QString defaultConfigurationPath = ":/resource/configurations.json";
     auto       path = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/configurations.json";
-    bool       res  = false;
-
-    if (loadConfigurationRawContent(path, content))
-        res = parseConfiguration(content);
-    if (!res)
+    QFileInfo     fi(defaultConfigurationPath);
+    QFileInfo     fi2(path);
+    if (!QFile::exists(path) || fi.lastModified() > fi2.lastModified())
     {
-        content.clear();
-        const QString defaultConfigurationPath = ":/resource/configurations.json";
-        loadConfigurationRawContent(defaultConfigurationPath, content);
-        parseConfiguration(content);
+        QFile::copy(defaultConfigurationPath, path);
+#if defined(LOGS_ENABLED)
+        qDebug() << __FUNCTION__ << __LINE__ << "use default configuration";
+#endif
+    }
+
+    if (!loadConfigurationRawContent(path, content))
+    {
+#if defined(LOGS_ENABLED)
+        qWarning() << __FUNCTION__ << __LINE__ << "loading configuration failed";
+#endif
+    }
+    if (!parseConfiguration(content))
+    {
+#if defined(LOGS_ENABLED)
+        qWarning() << __FUNCTION__ << __LINE__ << "parsing configuration failed";
+#endif
     }
     requestConfigurations();
 }

@@ -42,6 +42,8 @@ FORMS += \
 RESOURCES += \ 
     $$PWD/image.qrc
 
+CONFIG(debug, debug|release) : DEFINES += LOGS_ENABLED=1
+
 win32-msvc* {
     QMAKE_CXXFLAGS_RELEASE += /Zi
     QMAKE_LFLAGS_RELEASE += /DEBUG

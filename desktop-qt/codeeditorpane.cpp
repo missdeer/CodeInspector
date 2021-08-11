@@ -60,6 +60,9 @@ void CodeEditorPane::updateLanguageList()
     for (int i = 0; i < languages.length(); i++)
     {
         const auto &language = languages[i];
+#if defined(LOGS_ENABLED)
+        qDebug() << __FUNCTION__ << __LINE__ << language->name;
+#endif
         int         index    = m_cbLanguageList->findText(language->name);
         if (index < 0)
         {
