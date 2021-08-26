@@ -32,20 +32,20 @@ void CodeInspectorApp::initialize()
     {
         QFile::copy(defaultConfigurationPath, path);
 #if defined(LOGS_ENABLED)
-        qDebug() << __FUNCTION__ << __LINE__ << "use default configuration";
+        qDebug() << Q_FUNC_INFO << __LINE__ << "use default configuration";
 #endif
     }
 
     if (!loadConfigurationRawContent(path, content))
     {
 #if defined(LOGS_ENABLED)
-        qWarning() << __FUNCTION__ << __LINE__ << "loading configuration failed";
+        qWarning() << Q_FUNC_INFO << __LINE__ << "loading configuration failed";
 #endif
     }
     if (!parseConfiguration(content))
     {
 #if defined(LOGS_ENABLED)
-        qWarning() << __FUNCTION__ << __LINE__ << "parsing configuration failed";
+        qWarning() << Q_FUNC_INFO << __LINE__ << "parsing configuration failed";
 #endif
     }
     requestConfigurations();
@@ -54,7 +54,7 @@ void CodeInspectorApp::initialize()
 void CodeInspectorApp::requestLanguageList()
 {
 #if defined(LOGS_ENABLED)
-    qDebug() << __FUNCTION__;
+    qDebug() << Q_FUNC_INFO;
 #endif
     QString         requestUrl = g_settings->apiBaseURL() + "/api/languages";
     QNetworkRequest request    = NetworkRequestHelper::NewRequest(requestUrl);
@@ -68,7 +68,7 @@ void CodeInspectorApp::requestLanguageList()
 LanguageList &CodeInspectorApp::getLanguageList()
 {
 #if defined(LOGS_ENABLED)
-    qDebug() << __FUNCTION__;
+    qDebug() << Q_FUNC_INFO;
 #endif
     if (m_languageList.empty())
     {
@@ -86,7 +86,7 @@ LanguageList &CodeInspectorApp::getLanguageList()
 CompilerListPtr CodeInspectorApp::getCompilerList(const QString &languageName)
 {
 #if defined(LOGS_ENABLED)
-    qDebug() << __FUNCTION__ << languageName << m_compilerMap.size();
+    qDebug() << Q_FUNC_INFO << languageName << m_compilerMap.size();
 #endif
     auto it = m_compilerMap.find(languageName);
     if (m_compilerMap.end() == it)
@@ -120,7 +120,7 @@ CompilerPtr CodeInspectorApp::getCompiler(const QString &language, const QString
 void CodeInspectorApp::requestCompilerList(const QString &language)
 {
 #if defined(LOGS_ENABLED)
-    qDebug() << __FUNCTION__;
+    qDebug() << Q_FUNC_INFO;
 #endif
     QString         requestUrl = g_settings->apiBaseURL() + "/api/inspectors/" + getLanguageId(language);
     QNetworkRequest request    = NetworkRequestHelper::NewRequest(requestUrl);
@@ -135,7 +135,7 @@ void CodeInspectorApp::requestCompilerList(const QString &language)
 bool CodeInspectorApp::storeCompilerList(const QString &name, const QByteArray &content)
 {
 #if defined(LOGS_ENABLED)
-    qDebug() << __FUNCTION__;
+    qDebug() << Q_FUNC_INFO;
 #endif
     QString d = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/compilerlist";
     QDir    dir(d);
@@ -166,7 +166,7 @@ bool CodeInspectorApp::storeCompilerList(const QString &name, const QByteArray &
 bool CodeInspectorApp::loadCompilerList(const QString &name, QByteArray &content)
 {
 #if defined(LOGS_ENABLED)
-    qDebug() << __FUNCTION__;
+    qDebug() << Q_FUNC_INFO;
 #endif
     QString d    = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
     QString path = QString("%1/compilerlist/%2").arg(d, name);
@@ -183,7 +183,7 @@ bool CodeInspectorApp::loadCompilerList(const QString &name, QByteArray &content
 bool CodeInspectorApp::parseCompilerListFromJSON(const QString &language, const QByteArray &content)
 {
 #if defined(LOGS_ENABLED)
-    qDebug() << __FUNCTION__;
+    qDebug() << Q_FUNC_INFO;
 #endif
     QJsonDocument doc = QJsonDocument::fromJson(content);
 
@@ -260,7 +260,7 @@ bool CodeInspectorApp::parseCompilerListFromJSON(const QString &language, const 
 bool CodeInspectorApp::parseCompilerListFromConfiguration(QJsonArray &array)
 {
 #if defined(LOGS_ENABLED)
-    qDebug() << __FUNCTION__;
+    qDebug() << Q_FUNC_INFO;
 #endif
     CompilerListPtr compilerList;
     for (auto a : array)
@@ -316,7 +316,7 @@ bool CodeInspectorApp::parseCompilerListFromConfiguration(QJsonArray &array)
 bool CodeInspectorApp::storeLanguageList(const QByteArray &content)
 {
 #if defined(LOGS_ENABLED)
-    qDebug() << __FUNCTION__;
+    qDebug() << Q_FUNC_INFO;
 #endif
     QString d = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
     QDir    dir(d);
@@ -347,7 +347,7 @@ bool CodeInspectorApp::storeLanguageList(const QByteArray &content)
 bool CodeInspectorApp::loadLanguageList(QByteArray &content)
 {
 #if defined(LOGS_ENABLED)
-    qDebug() << __FUNCTION__;
+    qDebug() << Q_FUNC_INFO;
 #endif
     QString path = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/languages";
     if (!QFile::exists(path))
@@ -368,7 +368,7 @@ bool CodeInspectorApp::loadLanguageList(QByteArray &content)
 bool CodeInspectorApp::parseLanguageListFromJSON(const QByteArray &content)
 {
 #if defined(LOGS_ENABLED)
-    qDebug() << __FUNCTION__;
+    qDebug() << Q_FUNC_INFO;
 #endif
     QJsonDocument doc = QJsonDocument::fromJson(content);
 
@@ -434,7 +434,7 @@ bool CodeInspectorApp::parseLanguageListFromJSON(const QByteArray &content)
 bool CodeInspectorApp::parseLanguageListFromConfiguration(QJsonObject &obj)
 {
 #if defined(LOGS_ENABLED)
-    qDebug() << __FUNCTION__;
+    qDebug() << Q_FUNC_INFO;
 #endif
     m_languageList.clear();
     for (auto v : obj)
@@ -486,7 +486,7 @@ bool CodeInspectorApp::parseLanguageListFromConfiguration(QJsonObject &obj)
 bool CodeInspectorApp::parseLibListFromConfiguration(QJsonObject &obj)
 {
 #if defined(LOGS_ENABLED)
-    qDebug() << __FUNCTION__;
+    qDebug() << Q_FUNC_INFO;
 #endif
     m_libs.clear();
     auto languagesId = obj.keys();
@@ -556,7 +556,7 @@ bool CodeInspectorApp::parseLibListFromConfiguration(QJsonObject &obj)
 bool CodeInspectorApp::parseDefaultCompilerFromConfiguration(QJsonObject &obj)
 {
 #if defined(LOGS_ENABLED)
-    qDebug() << __FUNCTION__;
+    qDebug() << Q_FUNC_INFO;
 #endif
     auto languages = obj.keys();
     m_defaultCompiler.clear();
@@ -618,7 +618,7 @@ QString CodeInspectorApp::getExampleContent(const QString &languageName, const Q
 const QString &CodeInspectorApp::getDefaultCompilerName(const QString &languageName)
 {
 #if defined(LOGS_ENABLED)
-    qDebug() << __FUNCTION__ << languageName;
+    qDebug() << Q_FUNC_INFO << languageName;
 #endif
     static QString emptyString;
     auto           languageId = getLanguageId(languageName);
@@ -636,7 +636,7 @@ const QString &CodeInspectorApp::getDefaultCompilerName(const QString &languageN
 void CodeInspectorApp::requestConfigurations()
 {
 #if defined(LOGS_ENABLED)
-    qDebug() << __FUNCTION__;
+    qDebug() << Q_FUNC_INFO;
 #endif
     quint64 value = QRandomGenerator::global()->generate64();
     QUrl    requestUrl("https://cdn.jsdelivr.net/gh/missdeer/codeinspector@master/core/resource/configurations.json?hash=" + QString::number(value));
@@ -651,7 +651,7 @@ void CodeInspectorApp::requestConfigurations()
 bool CodeInspectorApp::storeConfiguration(const QByteArray &content)
 {
 #if defined(LOGS_ENABLED)
-    qDebug() << __FUNCTION__;
+    qDebug() << Q_FUNC_INFO;
 #endif
     QString d = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
     QDir    dir(d);
@@ -682,7 +682,7 @@ bool CodeInspectorApp::storeConfiguration(const QByteArray &content)
 bool CodeInspectorApp::loadConfigurationRawContent(const QString &path, QByteArray &content)
 {
 #if defined(LOGS_ENABLED)
-    qDebug() << __FUNCTION__;
+    qDebug() << Q_FUNC_INFO;
 #endif
     QFile f(path);
     if (!f.open(QIODevice::ReadOnly))
@@ -703,7 +703,7 @@ bool CodeInspectorApp::loadConfigurationRawContent(const QString &path, QByteArr
 bool CodeInspectorApp::parseConfiguration(const QByteArray &content)
 {
 #if defined(LOGS_ENABLED)
-    qDebug() << __FUNCTION__;
+    qDebug() << Q_FUNC_INFO;
 #endif
     QJsonDocument doc = QJsonDocument::fromJson(content);
     if (!doc.isObject())
@@ -745,7 +745,7 @@ const QString &CodeInspectorApp::getExample(const QString &language) const
 void CodeInspectorApp::onLanguageListRequestFinished()
 {
 #if defined(LOGS_ENABLED)
-    qDebug() << __FUNCTION__;
+    qDebug() << Q_FUNC_INFO;
 #endif
     auto *reply = qobject_cast<NetworkReplyHelper *>(sender());
     reply->deleteLater();
@@ -759,14 +759,14 @@ void CodeInspectorApp::onLanguageListRequestFinished()
 void CodeInspectorApp::onConfigurationRequestFinished()
 {
 #if defined(LOGS_ENABLED)
-    qDebug() << __FUNCTION__;
+    qDebug() << Q_FUNC_INFO;
 #endif
     auto *reply = qobject_cast<NetworkReplyHelper *>(sender());
     reply->deleteLater();
 
     QByteArray &content = reply->content();
 #if defined(LOGS_ENABLED)
-    qDebug() << __FUNCTION__ << QString(content).left(256);
+    qDebug() << Q_FUNC_INFO << QString(content).left(256);
 #endif
     if (parseConfiguration(content))
         storeConfiguration(content);
@@ -775,7 +775,7 @@ void CodeInspectorApp::onConfigurationRequestFinished()
 void CodeInspectorApp::switchLanguage(const QString &language)
 {
 #if defined(LOGS_ENABLED)
-    qDebug() << __FUNCTION__ << m_compilerMap.size();
+    qDebug() << Q_FUNC_INFO << m_compilerMap.size();
 #endif
     auto it = m_compilerMap.find(language);
     if (m_compilerMap.end() != it && !it.value()->isEmpty())
@@ -797,7 +797,7 @@ void CodeInspectorApp::switchLanguage(const QString &language)
 void CodeInspectorApp::onCompilerListRequestFinished()
 {
 #if defined(LOGS_ENABLED)
-    qDebug() << __FUNCTION__;
+    qDebug() << Q_FUNC_INFO;
 #endif
     auto *reply = qobject_cast<NetworkReplyHelper *>(sender());
     reply->deleteLater();
@@ -820,7 +820,7 @@ void CodeInspectorApp::onCompilerListRequestFinished()
 bool CodeInspectorApp::canCompile(const QString &language, const QString &compiler)
 {
 #if defined(LOGS_ENABLED)
-    qDebug() << __FUNCTION__ << language << compiler;
+    qDebug() << Q_FUNC_INFO << language << compiler;
 #endif
     if (m_compilerMap.find(language) == m_compilerMap.end())
         return false;

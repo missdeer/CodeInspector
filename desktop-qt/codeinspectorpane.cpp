@@ -230,7 +230,7 @@ void CodeInspectorPane::onNeedCompile()
     if (!ciApp->canCompile(m_languageName, m_compilerList->itemData(m_compilerList->currentIndex(), CURName).toString()))
         return;
 #if defined(LOGS_ENABLED)
-    qDebug() << __FUNCTION__;
+    qDebug() << Q_FUNC_INFO;
 #endif
     Q_ASSERT(m_codeEditor);
     CompileInfo ci;
@@ -286,7 +286,7 @@ void CodeInspectorPane::onNeedCompile()
 void CodeInspectorPane::onCompiled()
 {
 #if defined(LOGS_ENABLED)
-    qDebug() << __FUNCTION__;
+    qDebug() << Q_FUNC_INFO;
 #endif
     auto content = m_backend->getAsmContent();
 
@@ -307,7 +307,7 @@ void CodeInspectorPane::onCompiled()
 void CodeInspectorPane::onDelayCompile()
 {
 #if defined(LOGS_ENABLED)
-    qDebug() << __FUNCTION__;
+    qDebug() << Q_FUNC_INFO;
 #endif
     if (m_timer->isActive())
         m_timer->stop();

@@ -21,7 +21,7 @@ void GodboltAgent::initialize(BackendInterface *backend, const QString &baseURL)
 void GodboltAgent::compile(const CompileInfo &ci)
 {
 #if defined(LOGS_ENABLED)
-    qDebug() << __FUNCTION__;
+    qDebug() << Q_FUNC_INFO;
 #endif
     auto compilerList = m_backend->getCompilerList(ci.language);
 
@@ -148,7 +148,7 @@ void GodboltAgent::compile(const CompileInfo &ci)
 void GodboltAgent::onCompileRequestFinished()
 {
 #if defined(LOGS_ENABLED)
-    qDebug() << __FUNCTION__;
+    qDebug() << Q_FUNC_INFO;
 #endif
     m_compileStderr.clear();
     m_compileStdout.clear();

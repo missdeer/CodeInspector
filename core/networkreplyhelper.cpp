@@ -103,7 +103,7 @@ void NetworkReplyHelper::onErrorOccurred(QNetworkReply::NetworkError code)
     {
         m_errMsg.append(m_reply->errorString() + "\n");
 #if defined(LOGS_ENABLED)
-        qDebug() << __FUNCTION__ << m_errMsg;
+        qDebug() << Q_FUNC_INFO << m_errMsg;
 #endif
         emit errorMessage(code, m_errMsg);
     }

@@ -61,7 +61,7 @@ void CodeEditorPane::updateLanguageList()
     {
         const auto &language = languages[i];
 #if defined(LOGS_ENABLED)
-        qDebug() << __FUNCTION__ << __LINE__ << language->name;
+        qDebug() << Q_FUNC_INFO << __LINE__ << language->name;
 #endif
         int         index    = m_cbLanguageList->findText(language->name);
         if (index < 0)
@@ -77,7 +77,7 @@ void CodeEditorPane::updateLanguageList()
 void CodeEditorPane::onCurrentLanguageChanged(const QString &text)
 {
 #if defined(LOGS_ENABLED)
-    qDebug() << __FUNCTION__ << __LINE__ << text;
+    qDebug() << Q_FUNC_INFO << __LINE__ << text;
 #endif
     if (m_cbLanguageList->count() > 1)
         g_settings->setDefaultLanguageIndex(m_cbLanguageList->currentIndex());
