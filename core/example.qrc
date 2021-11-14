@@ -66,5 +66,11 @@
         <file>resource/example/python/pass.py</file>
         <file>resource/example/nim/square.nim</file>
         <file>resource/example/kotlin/square.kt</file>
+        <file>resource/example/circle/default.cpp</file>
+        <file>resource/example/cpp_for_opencl/default.clcpp</file>
+        <file>resource/example/crystal/default.cr</file>
+        <file>resource/example/openclc/default.cl</file>
+        <file>resource/example/ruby/default.rb</file>
+        <file>resource/example/scala/default.scala</file>
     </qresource>
 </RCC>
