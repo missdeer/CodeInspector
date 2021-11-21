@@ -1,5 +1,6 @@
 #include <QAction>
 #include <QComboBox>
+#include <QFile>
 #include <QHBoxLayout>
 #include <QIcon>
 #include <QMenu>
@@ -66,7 +67,9 @@ void CodeEditorPane::updateLanguageList()
         int         index    = m_cbLanguageList->findText(language->name);
         if (index < 0)
         {
-            m_cbLanguageList->insertItem(i, QIcon(QString(":/resource/image/language/%1.png").arg(language->id)), language->name);
+            auto iconPath = QString(":/resource/image/language/%1.png").arg(language->id);
+            qDebug() << iconPath << QFile::exists(iconPath) << language->name;
+            m_cbLanguageList->insertItem(i, QIcon(iconPath), language->name);
         }
     }
     connect(m_cbLanguageList, &QComboBox::currentTextChanged, this, &CodeEditorPane::onCurrentLanguageChanged);
