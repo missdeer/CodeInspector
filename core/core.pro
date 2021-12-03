@@ -5,7 +5,8 @@ DESTDIR       = $$OUT_PWD/../libs
 QT           += core gui widgets xml network
 
 lessThan(QT_MAJOR_VERSION, 5): error("Qt 5 or higher is required")
-greaterThan(QT_MAJOR_VERSION, 5): QT += core5compat
+equals(QT_MAJOR_VERSION, 6): QT += core5compat
+
 win32-msvc: {
     MSVC_VER = $$(VisualStudioVersion)
     lessThan(MSVC_VER, 14.1): error("Compiler supports C++17 is required")
