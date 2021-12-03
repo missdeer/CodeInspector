@@ -1,4 +1,5 @@
 #include <QAction>
+#include <QActionGroup>
 #include <QComboBox>
 #include <QHBoxLayout>
 #include <QIcon>
