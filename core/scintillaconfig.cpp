@@ -283,16 +283,15 @@ void ScintillaConfig::applyLexer(const QString &configPath, const QString &lang)
     if (!file.open(QIODevice::ReadOnly))
         return;
     QString errMsg;
-    int     errLine;
-    if (!doc.setContent(&file, &errMsg, &errLine))
+    int     errLine, errColumn;
+    if (!doc.setContent(&file, &errMsg, &errLine, &errColumn))
     {
 #if defined(LOGS_ENABLED)
-        qDebug() << "parsing xml document failed:" << configPath << errMsg << errLine;
+        qDebug() << "parsing xml document failed:" << configPath << errMsg << errLine << errColumn;
 #endif
-        file.close();
         return;
     }
-    file.close();
+
     QDomElement docElem       = doc.documentElement();
     QDomElement languagesElem = docElem.firstChildElement("Languages");
 
@@ -319,16 +318,14 @@ void ScintillaConfig::applyThemeStyle(const QString &themePath, const QString &l
     if (!file.open(QIODevice::ReadOnly))
         return;
     QString errMsg;
-    int     errLine;
-    if (!doc.setContent(&file, &errMsg, &errLine))
+    int     errLine, errColumn;
+    if (!doc.setContent(&file, &errMsg, &errLine, &errColumn))
     {
 #if defined(LOGS_ENABLED)
-        qDebug() << "parsing xml document failed:" << themePath << errMsg << errLine;
+        qDebug() << "parsing xml document failed:" << themePath << errMsg << errLine << errColumn;
 #endif
-        file.close();
         return;
     }
-    file.close();
 
     QDomElement docElem = doc.documentElement();
 
