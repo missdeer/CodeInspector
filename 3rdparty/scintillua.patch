@@ -1,7 +1,16 @@
 diff --git a/LexLPeg.cxx b/LexLPeg.cxx
-index eb96f4a..8589bf3 100644
+index eb96f4a..5f67bac 100644
 --- a/LexLPeg.cxx
 +++ b/LexLPeg.cxx
+@@ -802,7 +802,7 @@ void SCI_METHOD LexerLPeg::Fold(
+ }
+ 
+ Sci_Position SCI_METHOD LexerLPeg::PropertySet(const char *key, const char *value) {
+-  props.Set(key, value);
++  props.Set(key, value, strlen(key), strlen(value));
+   if (strcmp(key, LexerHomeKey) == 0 && lexerNames.empty())
+     ReadLexerNames(value); // not using SCI_CREATELOADER private call
+   if (reinit && (strcmp(key, LexerHomeKey) == 0 || strcmp(key, LexerNameKey) == 0)) Init();
 @@ -939,11 +939,16 @@ LexerModule lmLPeg(SCLEX_LPEG, LexerLPeg::LexerFactoryLPeg, "lpeg");
  #define EXPORT_FUNCTION __declspec(dllexport)
  #define CALLING_CONVENTION __stdcall
