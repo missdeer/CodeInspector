@@ -44,5 +44,6 @@
         <file>resource/image/language/circle.png</file>
         <file>resource/image/language/cpp_for_opencl.png</file>
         <file>resource/image/language/openclc.png</file>
+        <file>resource/image/language/erlang.png</file>
     </qresource>
 </RCC>

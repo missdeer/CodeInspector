@@ -72,5 +72,6 @@
         <file>resource/example/openclc/default.cl</file>
         <file>resource/example/ruby/default.rb</file>
         <file>resource/example/scala/default.scala</file>
+        <file>resource/example/erlang/default.erl</file>
     </qresource>
 </RCC>
