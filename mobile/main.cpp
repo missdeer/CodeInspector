@@ -1,4 +1,7 @@
 #include "stdafx.h"
+
+#include <QApplication>
+
 #include "mainwindow.h"
 #include "settings.h"
 

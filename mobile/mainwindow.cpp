@@ -1,12 +1,17 @@
 #include "stdafx.h"
-#include <QQmlEngine>
+
+#include <QDir>
 #include <QQmlContext>
-#include "codeinspector.h"
+#include <QQmlEngine>
+#include <QSplitter>
+#include <QTimer>
+
+#include "mainwindow.h"
 #include "codeeditor.h"
+#include "codeinspector.h"
 #include "outputwindow.h"
 #include "qmldialog.h"
 #include "settings.h"
-#include "mainwindow.h"
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) :

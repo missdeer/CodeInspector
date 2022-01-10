@@ -5,8 +5,7 @@ greaterThan(QT_MINOR_VERSION, 10): CONFIG += qtquickcompiler
 
 TARGET = CodeInspector
 TEMPLATE = app
-CONFIG += c++11 precompile_header
-PRECOMPILED_HEADER = stdafx.h
+CONFIG += c++17 precompile_header
 
 include($$PWD/../core/core.pri)
 
