@@ -1,8 +1,8 @@
 QT       += core gui widgets
 
-CONFIG += c++1z
+CONFIG += c++latest
 
-VERSION = 5.0.2
+VERSION = 5.2.2
 
 SOURCES += \
     $$files($$PWD/scintilla/qt/ScintillaEdit/*.cpp, false)  \

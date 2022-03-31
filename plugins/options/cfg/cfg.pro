@@ -1,5 +1,5 @@
 TEMPLATE      = lib
-CONFIG       += plugin static c++17
+CONFIG       += plugin static c++latest
 QT           += widgets
 TARGET        = $$qtLibraryTarget(option_cfg)
 DESTDIR       = $$OUT_PWD/../../../plugins
