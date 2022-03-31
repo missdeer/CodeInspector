@@ -28,11 +28,17 @@ void GodboltAgent::compile(const CompileInfo &ci)
     QJsonObject compilerOptionsObj;
     compilerOptionsObj.insert("produceCfg", false);
     if (m_compilerOptions & CO_AST)
+    {
         compilerOptionsObj.insert("produceAst", true);
+    }
     if (m_compilerOptions & CO_OPTIMIZATION)
+    {
         compilerOptionsObj.insert("produceOptInfo", true);
+    }
     if (m_compilerOptions & CO_LLVMIR)
+    {
         compilerOptionsObj.insert("produceIr", true);
+    }
     if (m_compilerOptions & CO_GCCTREERTL)
     {
         QJsonObject produceGccDumpObj;
@@ -110,9 +116,9 @@ void GodboltAgent::compile(const CompileInfo &ci)
         {"libraryCode", ci.functions},
         {"execute", false},
     };
-    for (const auto &f : filterMap)
+    for (const auto &filter : filterMap)
     {
-        filtersObj.insert(f.key, f.value);
+        filtersObj.insert(filter.key, filter.value);
     }
 
     QJsonObject optionsObj;
@@ -120,7 +126,9 @@ void GodboltAgent::compile(const CompileInfo &ci)
     optionsObj.insert("compilerOptions", QJsonValue::fromVariant(compilerOptionsObj));
     optionsObj.insert("filters", QJsonValue::fromVariant(filtersObj));
     if (!toolsArray.isEmpty())
+    {
         optionsObj.insert("tools", QJsonValue::fromVariant(toolsArray));
+    }
 
     QJsonObject rootObj;
     rootObj.insert("source", QString(ci.source));

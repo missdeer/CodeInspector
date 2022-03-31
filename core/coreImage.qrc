@@ -45,5 +45,10 @@
         <file>resource/image/language/cpp_for_opencl.png</file>
         <file>resource/image/language/openclc.png</file>
         <file>resource/image/language/erlang.png</file>
+        <file>resource/image/language/csharp.png</file>
+        <file>resource/image/language/dart.png</file>
+        <file>resource/image/language/fsharp.png</file>
+        <file>resource/image/language/typescript.png</file>
+        <file>resource/image/language/vb.png</file>
     </qresource>
 </RCC>

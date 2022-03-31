@@ -14,7 +14,7 @@
 #include "outputwindow.h"
 #include "settings.h"
 
-CodeEditorPane::CodeEditorPane(QWidget *parent) : QWidget(parent)
+CodeEditorPane::CodeEditorPane(QWidget *parent) : QWidget(parent), m_codeEditor(new CodeEditor(this)), m_cbLanguageList(new QComboBox(this))
 {
     auto *mainLayout = new QVBoxLayout();
     setLayout(mainLayout);
@@ -25,7 +25,6 @@ CodeEditorPane::CodeEditorPane(QWidget *parent) : QWidget(parent)
     topBarLayout->setContentsMargins(0, 0, 0, 0);
     topBarLayout->setSpacing(1);
 
-    m_cbLanguageList = new QComboBox(this);
     topBarLayout->addWidget(m_cbLanguageList);
     m_cbLanguageList->clear();
 #if defined(Q_OS_WIN)
@@ -46,7 +45,6 @@ CodeEditorPane::CodeEditorPane(QWidget *parent) : QWidget(parent)
 
     mainLayout->addLayout(topBarLayout);
 
-    m_codeEditor = new CodeEditor(this);
     m_codeEditor->initialize();
 
     mainLayout->addWidget(m_codeEditor);
@@ -84,7 +82,9 @@ void CodeEditorPane::onCurrentLanguageChanged(const QString &text)
     qDebug() << Q_FUNC_INFO << __LINE__ << text;
 #endif
     if (m_cbLanguageList->count() > 1)
+    {
         g_settings->setDefaultLanguageIndex(m_cbLanguageList->currentIndex());
+    }
     emit currentLanguageChanged(text);
     bool show = makeLibariesMenu();
     m_btnLibraries->setVisible(show);
@@ -95,7 +95,7 @@ void CodeEditorPane::onCurrentLanguageChanged(const QString &text)
     m_codeEditor->setLanguage(text);
     if (!show)
     {
-        auto content = ciApp->getExample(text);
+        const auto &content = ciApp->getExample(text);
         m_codeEditor->setContent(content);
         return;
     }
@@ -105,7 +105,7 @@ void CodeEditorPane::onCurrentLanguageChanged(const QString &text)
         auto actions = m_menuExamples->actions();
         if (!actions.isEmpty())
         {
-            auto action = actions.at(0);
+            auto *action = actions.at(0);
             emit action->triggered();
         }
     }
@@ -213,11 +213,13 @@ bool CodeEditorPane::makeExamplesMenu()
     }
     auto examples = ciApp->getExampleList(m_cbLanguageList->currentText());
     if (examples.isEmpty())
-        return false;
-    m_menuExamples = new QMenu(this);
-    for (const auto &e : examples)
     {
-        auto *action = m_menuExamples->addAction(e);
+        return false;
+    }
+    m_menuExamples = new QMenu(this);
+    for (const auto &example : examples)
+    {
+        auto *action = m_menuExamples->addAction(example);
         connect(action, &QAction::triggered, this, &CodeEditorPane::onExampleTriggered);
     }
     return true;

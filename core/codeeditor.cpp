@@ -1,5 +1,3 @@
-
-
 #include "codeeditor.h"
 #include "ScintillaTypes.h"
 
@@ -21,18 +19,20 @@ void CodeEditor::initialize()
 
 void CodeEditor::onLinesAdded(Scintilla::Position /*linesAdded*/)
 {
-    ScintillaEdit *sci        = qobject_cast<ScintillaEdit *>(sender());
+    auto          *sci        = qobject_cast<ScintillaEdit *>(sender());
     sptr_t         line_count = sci->lineCount();
     sptr_t         left       = sci->marginLeft() + 2;
     sptr_t         right      = sci->marginRight() + 2;
     sptr_t         width      = left + right + sci->textWidth(STYLE_LINENUMBER, QString("%1").arg(line_count).toStdString().c_str());
     if (width > sci->marginWidthN(0))
+    {
         sci->setMarginWidthN(0, width);
+    }
 }
 
 void CodeEditor::onMarginClicked(Scintilla::Position position, Scintilla::KeyMod /*modifiers*/, int margin)
 {
-    ScintillaEdit *sci = qobject_cast<ScintillaEdit *>(sender());
+    auto *sci = qobject_cast<ScintillaEdit *>(sender());
     if (sci->marginTypeN(margin) == SC_MARGIN_SYMBOL)
     {
         sptr_t maskN = sci->marginMaskN(margin);
@@ -57,9 +57,12 @@ void CodeEditor::onModified(Scintilla::ModificationFlags type,
                             Scintilla::FoldLevel /*foldNow*/,
                             Scintilla::FoldLevel /*foldPrev*/)
 {
-    if ((int)type & (int)(Scintilla::ModificationFlags::InsertText | Scintilla::ModificationFlags::DeleteText | Scintilla::ModificationFlags::Undo |
-                          Scintilla::ModificationFlags::Redo | Scintilla::ModificationFlags::MultilineUndoRedo))
+    if (static_cast<int>(type) &
+        (int)(Scintilla::ModificationFlags::InsertText | Scintilla::ModificationFlags::DeleteText | Scintilla::ModificationFlags::Undo |
+              Scintilla::ModificationFlags::Redo | Scintilla::ModificationFlags::MultilineUndoRedo))
+    {
         emit contentModified();
+    }
 }
 
 void CodeEditor::setLanguage(const QString &lang)
@@ -79,8 +82,8 @@ void CodeEditor::setLanguage(const QString &lang)
 
 void CodeEditor::setContent(const QString &content)
 {
-    auto b = content.toUtf8();
-    setContent(b);
+    auto barr = content.toUtf8();
+    setContent(barr);
 }
 
 void CodeEditor::setContent(const QByteArray &content)
@@ -101,10 +104,10 @@ void CodeEditor::setMarkerColor(const QMap<int, intptr_t> &markerColor)
 {
     m_sc.initMarkers();
 
-    QMapIterator<int, intptr_t> it(markerColor);
-    while (it.hasNext())
+    QMapIterator<int, intptr_t> iter(markerColor);
+    while (iter.hasNext())
     {
-        it.next();
-        markerAdd(it.key() - 1, it.value());
+        iter.next();
+        markerAdd(iter.key() - 1, iter.value());
     }
 }
