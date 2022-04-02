@@ -31,7 +31,7 @@ jobs:
           version: ${{ matrix.qt_ver }}
           target: ${{ matrix.qt_target }}
           arch: ${{ matrix.qt_arch }}
-          modules: "qtcore5compat"
+          modules: "core5compat"
                     
       - uses: msys2/setup-msys2@v2
         with:
@@ -67,7 +67,7 @@ jobs:
         env:
           vc_arch: ${{ matrix.msvc_arch }}
         run: |
-          call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" %vc_arch%
+          call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" %vc_arch%
           set PATH=%PATH%;%CD%\jom
           cd 3rdparty\scintilla\qt\ScintillaEdit
           python WidgetGen.py
@@ -101,7 +101,7 @@ jobs:
           version: ${{ matrix.qt_ver }}
           target: ${{ matrix.qt_target }}
           arch: ${{ matrix.qt_arch }}
-          modules: "qtcore5compat"
+          modules: "core5compat"
                     
       - uses: msys2/setup-msys2@v2
         with:
@@ -146,7 +146,7 @@ jobs:
         env:
           vc_arch: ${{ matrix.msvc_arch }}
         run: |
-          call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" %vc_arch%
+          call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" %vc_arch%
           set PATH=%PATH%;%CD%\llvm\bin;%CD%\jom
           cd 3rdparty\scintilla\qt\ScintillaEdit
           python WidgetGen.py
@@ -282,7 +282,7 @@ jobs:
         uses: jurplel/install-qt-action@v2
         with:
           version: ${{ matrix.qt_ver }}
-          modules: "qtcore5compat"
+          modules: "core5compat"
         
       - uses: actions/checkout@v2
         with:
