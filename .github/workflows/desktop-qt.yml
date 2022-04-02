@@ -31,7 +31,7 @@ jobs:
           version: ${{ matrix.qt_ver }}
           target: ${{ matrix.qt_target }}
           arch: ${{ matrix.qt_arch }}
-          modules: "qtcore5compat"
+          modules: "qt5compat qtimageformats"
           aqtversion: '==2.0.6'
                     
       - uses: msys2/setup-msys2@v2
@@ -102,7 +102,7 @@ jobs:
           version: ${{ matrix.qt_ver }}
           target: ${{ matrix.qt_target }}
           arch: ${{ matrix.qt_arch }}
-          modules: "qtcore5compat"
+          modules: "qt5compat qtimageformats"
           aqtversion: '==2.0.6'
                     
       - uses: msys2/setup-msys2@v2
@@ -284,7 +284,7 @@ jobs:
         uses: jurplel/install-qt-action@v2
         with:
           version: ${{ matrix.qt_ver }}
-          modules: "qtcore5compat"
+          modules: "qt5compat qtimageformats"
           aqtversion: '==2.0.6'
         
       - uses: actions/checkout@v2
