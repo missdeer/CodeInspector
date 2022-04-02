@@ -13,7 +13,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        qt_ver: [6.2.0]
+        qt_ver: [6.2.4]
         qt_target: [desktop]
         qt_arch: [win64_msvc2019_64]
         include:
@@ -50,8 +50,6 @@ jobs:
         run: |
           cd 3rdparty\scintillua
           git apply ..\scintillua.patch
-          cd ..\zlib
-          git apply ..\zlib.patch
           cd ..\..
       
       - name: Set up jom
@@ -83,7 +81,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        qt_ver: [6.2.0]
+        qt_ver: [6.2.4]
         qt_target: [desktop]
         qt_arch: [win64_msvc2019_64]
         include:
@@ -121,8 +119,6 @@ jobs:
         run: |
           cd 3rdparty\scintillua
           git apply ..\scintillua.patch
-          cd ..\zlib
-          git apply ..\zlib.patch
           cd ..\..
           
       - name: Set up clang for Windows
@@ -275,7 +271,7 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest]
-        qt_ver: [6.2.0]
+        qt_ver: [6.2.4]
         qt_arch: [clang_64]
     env:
       targetName: CodeInspector
