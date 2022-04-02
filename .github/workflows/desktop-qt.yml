@@ -13,7 +13,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        qt_ver: [6.2.4]
+        qt_ver: [6.2.0]
         qt_target: [desktop]
         qt_arch: [win64_msvc2019_64]
         include:
@@ -31,7 +31,7 @@ jobs:
           version: ${{ matrix.qt_ver }}
           target: ${{ matrix.qt_target }}
           arch: ${{ matrix.qt_arch }}
-          modules: "core5compat"
+          modules: "qtcore5compat"
           aqtversion: '==2.0.6'
                     
       - uses: msys2/setup-msys2@v2
@@ -83,7 +83,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        qt_ver: [6.2.4]
+        qt_ver: [6.2.0]
         qt_target: [desktop]
         qt_arch: [win64_msvc2019_64]
         include:
@@ -102,7 +102,7 @@ jobs:
           version: ${{ matrix.qt_ver }}
           target: ${{ matrix.qt_target }}
           arch: ${{ matrix.qt_arch }}
-          modules: "core5compat"
+          modules: "qtcore5compat"
           aqtversion: '==2.0.6'
                     
       - uses: msys2/setup-msys2@v2
@@ -275,7 +275,7 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest]
-        qt_ver: [6.2.4]
+        qt_ver: [6.2.0]
         qt_arch: [clang_64]
     env:
       targetName: CodeInspector
@@ -284,7 +284,7 @@ jobs:
         uses: jurplel/install-qt-action@v2
         with:
           version: ${{ matrix.qt_ver }}
-          modules: "core5compat"
+          modules: "qtcore5compat"
           aqtversion: '==2.0.6'
         
       - uses: actions/checkout@v2
