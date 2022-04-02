@@ -13,7 +13,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        qt_ver: [5.15.2]
+        qt_ver: [6.2.4]
         qt_target: [desktop]
         qt_arch: [win64_msvc2019_64, win32_msvc2019]
         include:
@@ -55,13 +55,6 @@ jobs:
           git apply ..\scintillua.patch
           cd ..\lexilla
           git apply ..\lexilla.patch
-          copy ..\lexilla-patch\LexGo.cxx lexers\
-          copy ..\lexilla-patch\LexKotlin.cxx lexers\
-          copy ..\lexilla-patch\LexLLVM.cxx lexers\
-          copy ..\lexilla-patch\LexSwift.cxx lexers\
-          copy ..\lexilla-patch\LexWASM.cxx lexers\
-          copy ..\lexilla-patch\*.h lexlib\
-          copy ..\lexilla-patch\LexAccessor.cxx lexlib\
           cd ..\zlib
           git apply ..\zlib.patch
           cd ..\..
@@ -95,7 +88,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        qt_ver: [5.15.2]
+        qt_ver: [6.2.4]
         qt_target: [desktop]
         qt_arch: [win64_msvc2019_64, win32_msvc2019]
         include:
@@ -139,13 +132,6 @@ jobs:
           git apply ..\scintillua.patch
           cd ..\lexilla
           git apply ..\lexilla.patch
-          copy ..\lexilla-patch\LexGo.cxx lexers\
-          copy ..\lexilla-patch\LexKotlin.cxx lexers\
-          copy ..\lexilla-patch\LexLLVM.cxx lexers\
-          copy ..\lexilla-patch\LexSwift.cxx lexers\
-          copy ..\lexilla-patch\LexWASM.cxx lexers\
-          copy ..\lexilla-patch\*.h lexlib\
-          copy ..\lexilla-patch\LexAccessor.cxx lexlib\
           cd ..\zlib
           git apply ..\zlib.patch
           cd ..\..
@@ -261,13 +247,6 @@ jobs:
           git apply ..\scintillua.patch
           cd ..\lexilla
           git apply ..\lexilla.patch
-          copy ..\lexilla-patch\LexGo.cxx lexers\
-          copy ..\lexilla-patch\LexKotlin.cxx lexers\
-          copy ..\lexilla-patch\LexLLVM.cxx lexers\
-          copy ..\lexilla-patch\LexSwift.cxx lexers\
-          copy ..\lexilla-patch\LexWASM.cxx lexers\
-          copy ..\lexilla-patch\*.h lexlib\
-          copy ..\lexilla-patch\LexAccessor.cxx lexlib\
           cd ..\zlib
           git apply ..\zlib.patch
           cd ..\..
@@ -307,7 +286,7 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest]
-        qt_ver: [5.15.2]
+        qt_ver: [6.2.4]
         qt_arch: [clang_64]
     env:
       targetName: CodeInspector
@@ -328,9 +307,6 @@ jobs:
           git apply ../scintillua.patch
           cd ../lexilla
           git apply ../lexilla.patch
-          cp ../lexilla-patch/LexGo.cxx ../lexilla-patch/LexKotlin.cxx ../lexilla-patch/LexLLVM.cxx ../lexilla-patch/LexSwift.cxx ../lexilla-patch/LexWASM.cxx lexers/
-          cp ../lexilla-patch/*.h lexlib/
-          cp ../lexilla-patch/LexAccessor.cxx lexlib/
           cd ../zlib
           git apply ../zlib.patch
           cd ../..
