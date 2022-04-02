@@ -35,7 +35,6 @@ jobs:
           version: ${{ matrix.qt_ver }}
           target: ${{ matrix.qt_target }}
           arch: ${{ matrix.qt_arch }}
-          aqtversion: '>=0.9.0'
                     
       - uses: msys2/setup-msys2@v2
         with:
@@ -53,8 +52,6 @@ jobs:
         run: |
           cd 3rdparty\scintillua
           git apply ..\scintillua.patch
-          cd ..\lexilla
-          git apply ..\lexilla.patch
           cd ..\zlib
           git apply ..\zlib.patch
           cd ..\..
@@ -112,7 +109,6 @@ jobs:
           version: ${{ matrix.qt_ver }}
           target: ${{ matrix.qt_target }}
           arch: ${{ matrix.qt_arch }}
-          aqtversion: '>=0.9.0'
                     
       - uses: msys2/setup-msys2@v2
         with:
@@ -130,8 +126,6 @@ jobs:
         run: |
           cd 3rdparty\scintillua
           git apply ..\scintillua.patch
-          cd ..\lexilla
-          git apply ..\lexilla.patch
           cd ..\zlib
           git apply ..\zlib.patch
           cd ..\..
@@ -305,8 +299,6 @@ jobs:
         run: |
           cd 3rdparty/scintillua
           git apply ../scintillua.patch
-          cd ../lexilla
-          git apply ../lexilla.patch
           cd ../zlib
           git apply ../zlib.patch
           cd ../..
