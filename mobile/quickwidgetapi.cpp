@@ -363,12 +363,12 @@ void QuickWidgetAPI::appendLib(QQmlListProperty<Library> *list, Library *p)
     reinterpret_cast< QuickWidgetAPI* >(list->data)->appendLib(p);
 }
 
-int QuickWidgetAPI::libCount(QQmlListProperty<Library> *list)
+qsizetype QuickWidgetAPI::libCount(QQmlListProperty<Library> *list)
 {
     return reinterpret_cast< QuickWidgetAPI* >(list->data)->libCount();
 }
 
-Library *QuickWidgetAPI::lib(QQmlListProperty<Library> *list, int index)
+Library *QuickWidgetAPI::lib(QQmlListProperty<Library> *list, qsizetype index)
 {
     return reinterpret_cast< QuickWidgetAPI* >(list->data)->lib(index);
 }

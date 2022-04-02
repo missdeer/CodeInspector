@@ -163,8 +163,8 @@ private:
     LibraryListPtr m_libs;
 
     static void appendLib(QQmlListProperty<Library>* list, Library* p);
-    static int libCount(QQmlListProperty<Library>* list);
-    static Library *lib(QQmlListProperty<Library>* list, int index);
+    static qsizetype libCount(QQmlListProperty<Library> *list);
+    static Library  *lib(QQmlListProperty<Library> *list, qsizetype index);
     static void clearLibs(QQmlListProperty<Library>* list);
 
     void appendLib(Library* p);
