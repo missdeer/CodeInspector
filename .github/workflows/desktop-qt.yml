@@ -13,7 +13,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        qt_ver: [6.2.4]
+        qt_ver: [6.3.0]
         qt_target: [desktop]
         qt_arch: [win64_msvc2019_64]
         include:
@@ -81,7 +81,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        qt_ver: [6.2.4]
+        qt_ver: [6.3.0]
         qt_target: [desktop]
         qt_arch: [win64_msvc2019_64]
         include:
@@ -159,19 +159,11 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        qt_arch: [mingw64_qt5-gcc, mingw32_qt5-gcc, mingw64_qt5-static-gcc, mingw32_qt5-static-gcc, mingw64_qt5-clang, mingw32_qt5-clang]
+        qt_arch: [mingw64_qt5-gcc, mingw64_qt5-static-gcc, mingw64_qt5-clang, mingw64_qt6-gcc, mingw64_qt6-static-gcc, mingw64_qt6-clang]
         include:
           - qt_arch: mingw64_qt5-gcc
             mingw_arch: MINGW64 
             mingw_prefix: mingw-w64-x86_64
-            toolchains: gcc
-            mkspec: win32-g++
-            qt_build: qt5
-            qmake: qmake.exe
-            windeployqt: windeployqt.exe
-          - qt_arch: mingw32_qt5-gcc
-            mingw_arch: MINGW32
-            mingw_prefix: mingw-w64-i686
             toolchains: gcc
             mkspec: win32-g++
             qt_build: qt5
@@ -185,14 +177,6 @@ jobs:
             qt_build: qt5-static
             qmake: /mingw64/qt5-static/bin/qmake.exe
             windeployqt: ls.exe
-          - qt_arch: mingw32_qt5-static-gcc
-            mingw_arch: MINGW32
-            mingw_prefix: mingw-w64-i686
-            toolchains: gcc
-            mkspec: win32-g++
-            qt_build: qt5-static
-            qmake: /mingw32/qt5-static/bin/qmake.exe
-            windeployqt: ls.exe
           - qt_arch: mingw64_qt5-clang
             mingw_arch: MINGW64 
             mingw_prefix: mingw-w64-x86_64
@@ -201,13 +185,29 @@ jobs:
             qt_build: qt5
             qmake: qmake.exe
             windeployqt: windeployqt.exe
-          - qt_arch: mingw32_qt5-clang
-            mingw_arch: MINGW32
-            mingw_prefix: mingw-w64-i686
+          - qt_arch: mingw64_qt6-gcc
+            mingw_arch: MINGW64 
+            mingw_prefix: mingw-w64-x86_64
+            toolchains: gcc
+            mkspec: win32-g++
+            qt_build: qt6
+            qmake: qmake6.exe
+            windeployqt: windeployqt.exe
+          - qt_arch: mingw64_qt6-static-gcc
+            mingw_arch: MINGW64 
+            mingw_prefix: mingw-w64-x86_64
+            toolchains: gcc
+            mkspec: win32-g++
+            qt_build: qt6-static
+            qmake: /mingw64/qt6-static/bin/qmake6.exe
+            windeployqt: ls.exe
+          - qt_arch: mingw64_qt6-clang
+            mingw_arch: MINGW64 
+            mingw_prefix: mingw-w64-x86_64
             toolchains: clang
             mkspec: win32-clang-g++
-            qt_build: qt5
-            qmake: qmake.exe
+            qt_build: qt6
+            qmake: qmake6.exe
             windeployqt: windeployqt.exe
     env:
       targetName: CodeInspector
@@ -271,7 +271,7 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest]
-        qt_ver: [6.2.4]
+        qt_ver: [6.3.0]
         qt_arch: [clang_64]
     env:
       targetName: CodeInspector
