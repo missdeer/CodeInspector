@@ -13,7 +13,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        qt_ver: [6.3.0]
+        qt_ver: [6.3.1]
         qt_target: [desktop]
         qt_arch: [win64_msvc2019_64]
         include:
@@ -81,7 +81,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        qt_ver: [6.3.0]
+        qt_ver: [6.3.1]
         qt_target: [desktop]
         qt_arch: [win64_msvc2019_64]
         include:
@@ -263,7 +263,7 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest]
-        qt_ver: [6.3.0]
+        qt_ver: [6.3.1]
         qt_arch: [clang_64]
     env:
       targetName: CodeInspector
