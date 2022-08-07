@@ -9,7 +9,7 @@ QByteArray gUncompress(const QByteArray &data)
     if (data.size() <= 4)
     {
         qWarning("gUncompress: Input data is truncated");
-        return QByteArray();
+        return data;
     }
 
     QByteArray result;
@@ -28,7 +28,7 @@ QByteArray gUncompress(const QByteArray &data)
 
     ret = inflateInit2(&strm, 15 + 32); // gzip decoding
     if (ret != Z_OK)
-        return QByteArray();
+        return data;
 
     // run inflate()
     do
@@ -46,7 +46,7 @@ QByteArray gUncompress(const QByteArray &data)
         case Z_DATA_ERROR:
         case Z_MEM_ERROR:
             (void)inflateEnd(&strm);
-            return QByteArray();
+            return data;
         }
 
         result.append(out, CHUNK_SIZE - strm.avail_out);
@@ -126,11 +126,7 @@ void NetworkReplyHelper::onFinished()
 #endif
     if (contentEncoding == "gzip" || contentEncoding == "deflate")
     {
-        auto content = gUncompress(m_content);
-        if (!content.isEmpty())
-        {
-            m_content = content;
-        }
+        m_content = gUncompress(m_content);
     }
 
 #if defined(LOGS_ENABLED)
