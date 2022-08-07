@@ -69,7 +69,7 @@ add_executable(CodeInspector
 if (APPLE)
     set(MACOSX_BUNDLE true)
     set(MACOSX_BUNDLE_BUNDLE_NAME CodeInspector)
-    set(MACOSX_BUNDLE_GUI_IDENTIFIER "info.minidump.codeinspector")
+    set(MACOSX_BUNDLE_GUI_IDENTIFIER "com.ismisv.codeinspector")
     set(MACOSX_BUNDLE_ICON_FILE "CodeInspector.icns")
     set(MACOSX_BUNDLE_INFO_STRING "Code Inspector")
     set(MACOSX_BUNDLE_LONG_VERSION_STRING "1.0.0.1")
@@ -84,7 +84,6 @@ if (APPLE)
             WIN32_EXECUTABLE TRUE
             MACOSX_BUNDLE TRUE
     )
-    target_link_libraries(CodeInspector PRIVATE z)
 endif()
 
 target_link_libraries(CodeInspector PRIVATE Qt::Widgets Qt::Network Qt::Xml
