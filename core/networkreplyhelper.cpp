@@ -82,7 +82,9 @@ NetworkReplyHelper::~NetworkReplyHelper()
     if (m_timeoutTimer)
     {
         if (m_timeoutTimer->isActive())
+        {
             m_timeoutTimer->stop();
+        }
         delete m_timeoutTimer;
         m_timeoutTimer = nullptr;
     }
@@ -93,7 +95,9 @@ void NetworkReplyHelper::onDownloadProgress(qint64 bytesReceived, qint64 bytesTo
     Q_UNUSED(bytesReceived);
     Q_UNUSED(bytesTotal);
     if (m_timeoutTimer && m_timeoutTimer->isActive())
+    {
         m_timeoutTimer->start();
+    }
 }
 
 void NetworkReplyHelper::onErrorOccurred(QNetworkReply::NetworkError code)
@@ -103,7 +107,7 @@ void NetworkReplyHelper::onErrorOccurred(QNetworkReply::NetworkError code)
     {
         m_errMsg.append(m_reply->errorString() + "\n");
 #if defined(LOGS_ENABLED)
-        qDebug() << Q_FUNC_INFO << m_errMsg;
+        qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << m_errMsg;
 #endif
         emit errorMessage(code, m_errMsg);
     }
@@ -112,16 +116,25 @@ void NetworkReplyHelper::onErrorOccurred(QNetworkReply::NetworkError code)
 void NetworkReplyHelper::onFinished()
 {
     if (m_timeoutTimer)
+    {
         m_timeoutTimer->stop();
+    }
 
     auto contentEncoding = m_reply->rawHeader("Content-Encoding");
+#if defined(LOGS_ENABLED)
+    qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << " finished: " << contentEncoding << QString(m_content).left(256) << "\n";
+#endif
     if (contentEncoding == "gzip" || contentEncoding == "deflate")
     {
-        m_content = gUncompress(m_content);
+        auto content = gUncompress(m_content);
+        if (!content.isEmpty())
+        {
+            m_content = content;
+        }
     }
 
 #if defined(LOGS_ENABLED)
-    qDebug() << this << " finished: " << QString(m_content).left(256) << "\n";
+    qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << " finished: " << QString(m_content).left(256) << "\n";
 #endif
     emit done();
 }
@@ -131,7 +144,7 @@ void NetworkReplyHelper::onSslErrors(const QList<QSslError> &errors)
     Q_FOREACH (const QSslError &e, errors)
     {
 #if defined(LOGS_ENABLED)
-        qDebug() << "ssl error:" << e.errorString();
+        qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "ssl error:" << e.errorString();
 #endif
         m_errMsg.append(e.errorString() + "\n");
     }
@@ -142,7 +155,9 @@ void NetworkReplyHelper::onUploadProgress(qint64 bytesSent, qint64 bytesTotal)
     Q_UNUSED(bytesSent);
     Q_UNUSED(bytesTotal);
     if (m_timeoutTimer && m_timeoutTimer->isActive())
+    {
         m_timeoutTimer->start();
+    }
 }
 
 void NetworkReplyHelper::onReadyRead()
@@ -158,10 +173,12 @@ void NetworkReplyHelper::onReadyRead()
 void NetworkReplyHelper::onTimeout()
 {
 #if defined(LOGS_ENABLED)
-    qDebug() << "network request timeout";
+    qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "network request timeout";
 #endif
     if (m_reply && m_reply->isRunning())
+    {
         m_reply->abort();
+    }
 }
 
 QVariant NetworkReplyHelper::data() const
@@ -177,7 +194,9 @@ void NetworkReplyHelper::setData(const QVariant &data)
 void NetworkReplyHelper::setTimeout(int milliseconds)
 {
     if (!m_reply->isRunning())
+    {
         return;
+    }
     if (!m_timeoutTimer)
     {
         m_timeoutTimer = new QTimer;
