@@ -26,7 +26,7 @@ class CodeInspectorPane : public QWidget
 public:
     explicit CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent = nullptr);
     void initialize();
-    void setCompilerList(CompilerListPtr cl);
+    void setCompilerList(const CompilerListPtr &compilerList);
     void setCurrentLanguage(const QString &languageName);
 signals:
     void currentCompilerChanged(QString);

@@ -25,10 +25,23 @@ enum CompilerUserRole
 };
 
 CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
-    : QWidget(parent)
-    , m_codeEditor(codeEditor)
-    , m_backend(new GodboltAgent(ciApp->networkAccessManager(), this))
-    , m_timer(new QTimer)
+    : QWidget(parent),
+      m_codeEditor(codeEditor),
+      m_compilerList(new QComboBox(this)),
+      m_compilerArguments(new QLineEdit(this)),
+      m_codeInspectorTabWidget(new CodeInspectorTabWidget(this)),
+      m_output(new OutputWindow(this)),
+      m_backend(new GodboltAgent(ciApp->networkAccessManager(), this)),
+      m_splitter(new QSplitter(Qt::Vertical, this)),
+      m_timer(new QTimer),
+      m_btnBinrary(new QPushButton(this)),
+      m_btnLabel(new QPushButton(this)),
+      m_btnFunctions(new QPushButton(this)),
+      m_btnDirectives(new QPushButton(this)),
+      m_btnComments(new QPushButton(this)),
+      m_btnTrim(new QPushButton(this)),
+      m_btnIntel(new QPushButton(this)),
+      m_btnDemangle(new QPushButton(this))
 {
     auto *mainLayout = new QVBoxLayout();
     setLayout(mainLayout);
@@ -39,19 +52,16 @@ CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
     topBarLayout->setContentsMargins(0, 0, 0, 0);
     topBarLayout->setSpacing(1);
 
-    m_compilerList = new QComboBox(this);
     topBarLayout->addWidget(m_compilerList);
 #if defined(Q_OS_WIN)
     m_compilerList->setMaxVisibleItems(100);
 #endif
     m_compilerList->setItemDelegate(new ComboBoxDelegate);
 
-    m_compilerArguments = new QLineEdit(this);
     m_compilerArguments->setPlaceholderText(tr("Build Options"));
     m_compilerArguments->setClearButtonEnabled(true);
     topBarLayout->addWidget(m_compilerArguments);
 
-    m_btnBinrary = new QPushButton(this);
     m_btnBinrary->setIcon(QIcon(":/resource/image/binary.png"));
     m_btnBinrary->setToolTip(tr("Compile to binary and disassemble the output"));
     m_btnBinrary->setCheckable(true);
@@ -59,7 +69,6 @@ CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
     connect(m_btnBinrary, &QPushButton::clicked, this, &CodeInspectorPane::onActionBinaryTriggered);
     topBarLayout->addWidget(m_btnBinrary);
 
-    m_btnLabel = new QPushButton(this);
     m_btnLabel->setIcon(QIcon(":/resource/image/label.png"));
     m_btnLabel->setToolTip(tr("Filter unused labels from the output"));
     m_btnLabel->setCheckable(true);
@@ -67,7 +76,6 @@ CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
     connect(m_btnLabel, &QPushButton::clicked, this, &CodeInspectorPane::onActionLabelTriggered);
     topBarLayout->addWidget(m_btnLabel);
 
-    m_btnFunctions = new QPushButton(this);
     m_btnFunctions->setIcon(QIcon(":/resource/image/function.png"));
     m_btnFunctions->setToolTip(tr("Filter functions from other libraries from the output"));
     m_btnFunctions->setCheckable(true);
@@ -75,7 +83,6 @@ CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
     connect(m_btnFunctions, &QPushButton::clicked, this, &CodeInspectorPane::onActionFunctionsTriggered);
     topBarLayout->addWidget(m_btnFunctions);
 
-    m_btnDirectives = new QPushButton(this);
     m_btnDirectives->setIcon(QIcon(":/resource/image/directives.png"));
     m_btnDirectives->setToolTip(tr("Filter all assembler directives from the output"));
     m_btnDirectives->setCheckable(true);
@@ -83,7 +90,6 @@ CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
     connect(m_btnDirectives, &QPushButton::clicked, this, &CodeInspectorPane::onActionDirectivesTriggered);
     topBarLayout->addWidget(m_btnDirectives);
 
-    m_btnComments = new QPushButton(this);
     m_btnComments->setIcon(QIcon(":/resource/image/comment.png"));
     m_btnComments->setToolTip(tr("Remove all lines which are only comments from the output"));
     m_btnComments->setCheckable(true);
@@ -91,7 +97,6 @@ CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
     connect(m_btnComments, &QPushButton::clicked, this, &CodeInspectorPane::onActionCommentsTriggered);
     topBarLayout->addWidget(m_btnComments);
 
-    m_btnTrim = new QPushButton(this);
     m_btnTrim->setIcon(QIcon(":/resource/image/trim.png"));
     m_btnTrim->setToolTip(tr("Trim intra-line whitespace"));
     m_btnTrim->setCheckable(true);
@@ -99,7 +104,6 @@ CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
     connect(m_btnTrim, &QPushButton::clicked, this, &CodeInspectorPane::onActionTrimTriggered);
     topBarLayout->addWidget(m_btnTrim);
 
-    m_btnIntel = new QPushButton(this);
     m_btnIntel->setIcon(QIcon(":/resource/image/intel.png"));
     m_btnIntel->setToolTip(tr("Output disassembly in Intel syntax"));
     m_btnIntel->setCheckable(true);
@@ -107,7 +111,6 @@ CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
     connect(m_btnIntel, &QPushButton::clicked, this, &CodeInspectorPane::onActionIntelTriggered);
     topBarLayout->addWidget(m_btnIntel);
 
-    m_btnDemangle = new QPushButton(this);
     m_btnDemangle->setIcon(QIcon(":/resource/image/demangle.png"));
     m_btnDemangle->setToolTip(tr("Demangle output"));
     m_btnDemangle->setCheckable(true);
@@ -119,10 +122,8 @@ CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
     topBarLayout->setStretch(1, 1);
     mainLayout->addLayout(topBarLayout);
 
-    m_splitter = new QSplitter(Qt::Vertical, this);
     mainLayout->addWidget(m_splitter);
 
-    m_codeInspectorTabWidget = new CodeInspectorTabWidget(this);
     m_splitter->addWidget(m_codeInspectorTabWidget);
 
     auto *outputPane = new QWidget(this);
@@ -136,7 +137,7 @@ CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
     outputPaneLayout->setSpacing(0);
     outputPane->setLayout(outputPaneLayout);
 
-    m_btnToggleOutput = new QPushButton(QIcon(":/resource/image/errmsg.png"), "");
+    m_btnToggleOutput = new QPushButton(QIcon(":/resource/image/errmsg.png"), "", this);
     m_btnToggleOutput->setIconSize(QSize(32, 32));
     m_btnToggleOutput->setFlat(true);
     m_btnToggleOutput->setToolTip(tr("Toggle output window"));
@@ -145,7 +146,6 @@ CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
 
     outputPaneLayout->addLayout(outputBarLayout);
 
-    m_output = new OutputWindow(this);
     m_output->initialize();
     outputPaneLayout->addWidget(m_output);
     m_output->setVisible(false);
@@ -153,7 +153,7 @@ CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
     m_splitter->addWidget(outputPane);
 
     m_splitter->setSizes(QList<int>() << 4096 << 0);
-    auto h = m_splitter->handle(1);
+    auto *h = m_splitter->handle(1);
     h->setEnabled(false);
 
     m_backend->initialize(ciApp, g_settings->apiBaseURL());
@@ -168,17 +168,17 @@ CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
 
 void CodeInspectorPane::initialize() {}
 
-void CodeInspectorPane::setCompilerList(CompilerListPtr cl)
+void CodeInspectorPane::setCompilerList(const CompilerListPtr &compilerList)
 {
     m_compilerList->clear();
     auto *      model = new QStandardItemModel;
     QStringList groupNames;
-    for (const auto &c : qAsConst(*cl))
+    for (const auto &compiler : qAsConst(*compilerList))
     {
-        auto gn = c->groupName.isEmpty() ? c->group.toUpper() : c->groupName.toUpper();
-        if (!groupNames.contains(gn))
+        auto groupName = compiler->groupName.isEmpty() ? compiler->group.toUpper() : compiler->groupName.toUpper();
+        if (!groupNames.contains(groupName))
         {
-            groupNames.append(gn);
+            groupNames.append(groupName);
         }
     }
 
@@ -194,7 +194,7 @@ void CodeInspectorPane::setCompilerList(CompilerListPtr cl)
         item->setFont(font);
         model->appendRow(item);
 
-        for (const auto &compiler : qAsConst(*cl))
+        for (const auto &compiler : qAsConst(*compilerList))
         {
             if (compiler->groupName.toUpper() == groupName || compiler->group.toUpper() == groupName)
             {
@@ -210,12 +210,14 @@ void CodeInspectorPane::setCompilerList(CompilerListPtr cl)
     m_compilerList->setModel(model);
     if (m_compilerList->count())
     {
-        auto c = ciApp->getDefaultCompilerName(m_languageName);
-        if (!c.isEmpty())
+        auto compiler = ciApp->getDefaultCompilerName(m_languageName);
+        if (!compiler.isEmpty())
         {
-            int index = m_compilerList->findData(c, Qt::UserRole + 1);
+            int index = m_compilerList->findData(compiler, Qt::UserRole + 1);
             if (index >= 0)
+            {
                 m_compilerList->setCurrentIndex(index);
+            }
         }
     }
 }
@@ -228,7 +230,9 @@ void CodeInspectorPane::setCurrentLanguage(const QString &languageName)
 void CodeInspectorPane::onNeedCompile()
 {
     if (!ciApp->canCompile(m_languageName, m_compilerList->itemData(m_compilerList->currentIndex(), CURName).toString()))
+    {
         return;
+    }
 #if defined(LOGS_ENABLED)
     qDebug() << Q_FUNC_INFO;
 #endif
@@ -236,7 +240,9 @@ void CodeInspectorPane::onNeedCompile()
     CompileInfo ci;
     ci.source = m_codeEditor->getText(m_codeEditor->textLength() + 1);
     if (ci.source.isEmpty())
+    {
         return;
+    }
     CompilerPtr compiler      = ciApp->getCompiler(m_languageName, m_compilerList->itemData(m_compilerList->currentIndex(), CURName).toString());
     QStringList userArguments = {
         m_compilerArguments->text(),
@@ -253,7 +259,9 @@ void CodeInspectorPane::onNeedCompile()
                 {
                     auto paths = ver->getPath();
                     for (const auto &path : paths)
+                    {
                         userArguments.append(compiler->includeFlag + path);
+                    }
                 }
             }
         }

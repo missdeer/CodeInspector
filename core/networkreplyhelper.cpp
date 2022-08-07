@@ -14,7 +14,7 @@ QByteArray gUncompress(const QByteArray &data)
 
     QByteArray result;
 
-    int              ret;
+    int              ret = 0;
     z_stream         strm;
     static const int CHUNK_SIZE = 1024;
     char             out[CHUNK_SIZE];
@@ -28,7 +28,9 @@ QByteArray gUncompress(const QByteArray &data)
 
     ret = inflateInit2(&strm, 15 + 32); // gzip decoding
     if (ret != Z_OK)
+    {
         return data;
+    }
 
     // run inflate()
     do
@@ -137,12 +139,12 @@ void NetworkReplyHelper::onFinished()
 
 void NetworkReplyHelper::onSslErrors(const QList<QSslError> &errors)
 {
-    Q_FOREACH (const QSslError &e, errors)
+    Q_FOREACH (const QSslError &err, errors)
     {
 #if defined(LOGS_ENABLED)
-        qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "ssl error:" << e.errorString();
+        qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "ssl error:" << err.errorString();
 #endif
-        m_errMsg.append(e.errorString() + "\n");
+        m_errMsg.append(err.errorString() + "\n");
     }
 }
 

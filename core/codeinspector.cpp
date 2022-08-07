@@ -1,5 +1,3 @@
-
-
 #include "codeinspector.h"
 
 CodeInspector::CodeInspector(QWidget *parent) : ScintillaEdit(parent), m_sc(this) {}
@@ -49,8 +47,10 @@ void CodeInspector::setAsmItems(const AsmItemList &items, bool binary, QMap<int,
                 markerAdd(i, markerIndex);
 
                 markerIndex++;
-                if (markerIndex == 12)
+                if (markerIndex == markerMap.size())
+                {
                     markerIndex = 0;
+                }
             }
             else
             {
@@ -95,7 +95,9 @@ void CodeInspector::setAsmItems(const AsmItemList &items, bool binary, QMap<int,
     }
 
     if (textLength)
+    {
         setMarginWidthN(1, textLength);
+    }
 
     if (!binary)
     {
@@ -104,7 +106,9 @@ void CodeInspector::setAsmItems(const AsmItemList &items, bool binary, QMap<int,
         auto   b     = QString::number(lineCount()).toUtf8();
         sptr_t width = left + right + textWidth(STYLE_LINENUMBER, b.data());
         if (width > 32)
+        {
             setMarginWidthN(0, width);
+        }
     }
     else
     {
