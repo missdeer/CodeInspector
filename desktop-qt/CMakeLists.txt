@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Network Xml LinguistTools)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Network Xml LinguistTools)
+find_package(Qt6 COMPONENTS Core5Compat REQUIRED)
 
 # Instruct CMake to run moc automatically when needed.
 set(CMAKE_AUTOMOC ON)
@@ -55,38 +56,44 @@ set(desktop_src
         ./codeinspectorapp.cpp
         )
 
-add_executable(CodeInspector
-        WIN32
-        MACOSX_BUNDLE
-        ./CodeInspector.rc
-        ./CodeInspector.icns
-        ${desktop_headers}
-        ${desktop_src}
-        ${desktop_qrc}
-        ${desktop_ui}
+IF(${QT_VERSION_MAJOR} GREATER_EQUAL 6)        
+        qt_add_executable(CodeInspector
+                ./CodeInspector.rc
+                ./CodeInspector.icns
+                ${desktop_headers}
+                ${desktop_src}
+                ${desktop_qrc}
+                ${desktop_ui}
+                )
+ELSE()
+        add_executable(CodeInspector
+                ./CodeInspector.rc
+                ./CodeInspector.icns
+                ${desktop_headers}
+                ${desktop_src}
+                ${desktop_qrc}
+                ${desktop_ui}
+                )
+ENDIF()
+
+set_target_properties(CodeInspector PROPERTIES
+        WIN32_EXECUTABLE ON
+        MACOSX_BUNDLE ON
         )
 
 if (APPLE)
-    set(MACOSX_BUNDLE true)
-    set(MACOSX_BUNDLE_BUNDLE_NAME CodeInspector)
-    set(MACOSX_BUNDLE_GUI_IDENTIFIER "com.ismisv.codeinspector")
-    set(MACOSX_BUNDLE_ICON_FILE "CodeInspector.icns")
-    set(MACOSX_BUNDLE_INFO_STRING "Code Inspector")
-    set(MACOSX_BUNDLE_LONG_VERSION_STRING "1.0.0.1")
-    set(MACOSX_BUNDLE_SHORT_VERSION_STRING "1.0")
-    set(MACOSX_BUNDLE_BUNDLE_VERSION "1.0")
-
     set_source_files_properties("${CMAKE_CURRENT_SOURCE_DIR}/CodeInspector.icns" PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
-    set_target_properties(
-            CodeInspector
-            PROPERTIES
+    set_target_properties(CodeInspector PROPERTIES
             RESOURCE "./CodeInspector.icns"
-            WIN32_EXECUTABLE TRUE
-            MACOSX_BUNDLE TRUE
+            MACOSX_BUNDLE_BUNDLE_NAME CodeInspector
+            MACOSX_BUNDLE_GUI_IDENTIFIER "com.ismisv.codeinspector"
+            MACOSX_BUNDLE_ICON_FILE "CodeInspector.icns"
+            MACOSX_BUNDLE_INFO_STRING "Code Inspector"
     )
 endif()
 
-target_link_libraries(CodeInspector PRIVATE Qt::Widgets Qt::Network Qt::Xml
+target_link_libraries(CodeInspector PRIVATE 
+        Qt::Widgets Qt::Network Qt::Xml Qt::Core5Compat
         core
         ast cfg gcctreertl ir optimization
         rextester wandbox
