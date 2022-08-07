@@ -6,3 +6,5 @@ cp cmakes/CMakeLists.txt.scintilla scintilla/CMakeLists.txt
 cp cmakes/CMakeLists.txt.scintillua scintillua/CMakeLists.txt
 cd zlib
 git apply ../cmakes/zlib.patch
+cd ../scintillua
+git apply ../scintillua.patch
