@@ -27,3 +27,29 @@ target_include_directories (scintillua PUBLIC
     ${CMAKE_CURRENT_BINARY_DIR} 
     ${CMAKE_CURRENT_SOURCE_DIR}
     )
+
+file(GLOB
+    lexers_res
+    ${CMAKE_CURRENT_SOURCE_DIR}/lexers/*.lua
+    )
+
+foreach(file ${lexers_res})
+    file(RELATIVE_PATH relative_path ${CMAKE_CURRENT_SOURCE_DIR} ${file})
+    list(APPEND lexers ${relative_path})
+endforeach()
+
+file(GLOB
+    theme_res
+    ${CMAKE_CURRENT_SOURCE_DIR}/lexers/themes/*.lua
+    )
+
+foreach(file ${theme_res})
+    file(RELATIVE_PATH relative_path ${CMAKE_CURRENT_SOURCE_DIR} ${file})
+    list(APPEND themes ${relative_path})
+endforeach()
+
+qt_add_resources(
+    scintillua "scintillua"
+    PREFIX "/scintillua"
+    FILES ${lexers} ${themes}
+)
