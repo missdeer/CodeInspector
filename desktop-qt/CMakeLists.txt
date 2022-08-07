@@ -4,16 +4,13 @@ project(CodeInspector VERSION 1.0.0)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt5 COMPONENTS Widgets Network Xml REQUIRED)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Network Xml LinguistTools)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Network Xml LinguistTools)
 
 # Instruct CMake to run moc automatically when needed.
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON) # if you have any .ui files
 set(CMAKE_AUTORCC ON) # if you have any .qrc files
-
-# Add compiler flags for building executables (-fPIE)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
-
 
 include_directories(${PROJECT_SOURCE_DIR})
 include_directories(${PROJECT_BINARY_DIR})
@@ -25,35 +22,14 @@ add_compile_definitions(SCINTILLA_QT=1
         EXPORT_IMPORT_API=
         )
 
-include_directories(../core
-        ../3rdparty/scintilla/qt/ScintillaEdit
-        ../3rdparty/scintilla/qt/ScintillaEditBase
-        ../3rdparty/scintilla/include
-        ../3rdparty/scintilla/src
-        ../3rdparty/lexilla/lexlib
-        ../3rdparty/lexilla/include
-        )
-
 file(GLOB
         desktop_qrc
         ./*.qrc
         )
 
-qt5_add_resources(RESOURCES
-        ${desktop_qrc}
-        )
-
 file(GLOB
         desktop_ui
         ./*.ui
-        )
-
-set(core_headers
-        ../core/codeeditor.h
-        ../core/codeinspector.h
-        ../core/library.h
-        ../core/libraryversion.h
-        ../core/luavm.h
         )
 
 set(desktop_headers
@@ -67,7 +43,7 @@ set(desktop_headers
         ./sessionwidget.h
         )
 
-set(SOURCES
+set(desktop_src
         ./main.cpp
         ./mainwindow.cpp
         ./comboboxdelegate.cpp
@@ -79,20 +55,15 @@ set(SOURCES
         ./codeinspectorapp.cpp
         )
 
-qt5_wrap_ui (UIS  ${desktop_ui})
-
-qt5_wrap_cpp(SOURCES
-        ${desktop_headers}
-        )
-
 add_executable(CodeInspector
         WIN32
         MACOSX_BUNDLE
         ./CodeInspector.rc
         ./CodeInspector.icns
-        ${UIS}
-        ${SOURCES}
-        ${RESOURCES}
+        ${desktop_headers}
+        ${desktop_src}
+        ${desktop_qrc}
+        ${desktop_ui}
         )
 
 if (APPLE)
@@ -113,10 +84,10 @@ if (APPLE)
             WIN32_EXECUTABLE TRUE
             MACOSX_BUNDLE TRUE
     )
-    target_link_libraries(CodeInspector z)
+    target_link_libraries(CodeInspector PRIVATE z)
 endif()
 
-target_link_libraries(CodeInspector Qt::Widgets Qt::Network Qt::Xml
+target_link_libraries(CodeInspector PRIVATE Qt::Widgets Qt::Network Qt::Xml
         core
         ast cfg gcctreertl ir optimization
         rextester wandbox

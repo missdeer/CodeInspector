@@ -4,7 +4,8 @@ project(x86to6502 VERSION 1.0.0)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt5 COMPONENTS Widgets Network Xml REQUIRED)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Network Xml LinguistTools)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Network Xml LinguistTools)
 
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -14,38 +15,10 @@ set(CMAKE_AUTOUIC ON) # if you have any .ui files
 set(CMAKE_AUTORCC ON) # if you have any .qrc files
 
 # Add compiler flags for building executables (-fPIE)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
 
 
 include_directories(${PROJECT_SOURCE_DIR})
 include_directories(${PROJECT_BINARY_DIR})
-
-add_compile_definitions(SCINTILLA_QT=1
-        SCI_LEXER=1
-        _CRT_SECURE_NO_DEPRECATE=1
-        SCI_STATIC_LINK=1
-        EXPORT_IMPORT_API=
-        QT_STATICPLUGIN=
-        )
-
-add_definitions(${Qt5Widgets_DEFINITIONS}
-        ${Qt5Network_DEFINITIONS}
-        ${Qt5Xml_DEFINITIONS}
-        )
-
-include_directories(../../include
-        ../../../3rdparty/scintilla/qt/ScintillaEdit
-        ../../../3rdparty/scintilla/qt/ScintillaEditBase
-        ../../../3rdparty/scintilla/include
-        ../../../3rdparty/scintilla/src
-        ../../../3rdparty/lexilla/lexlib
-        ../../../3rdparty/lexilla/include
-        ../../../core
-        ${Qt5Widgets_INCLUDE_DIRS}
-        ${Qt5Network_INCLUDE_DIRS}
-        ${Qt5Xml_INCLUDE_DIRS}
-        )
-
 
 file(GLOB
         headers
@@ -55,20 +28,12 @@ file(GLOB
 file(GLOB
         src
         ./*.cpp
-        ./*.cpp
-        ./*.cpp
         )
 
-set(SOURCES
-        ${src}
-        )
+qt_add_plugin(x86to6502 STATIC CLASS_NAME X86To6502Plugin)
 
-qt5_wrap_cpp(SOURCES
-        ${headers}
-        )
+target_sources(x86to6502 PRIVATE ${src} ${headers})
 
-add_library(x86to6502
-        ${SOURCES}
-        )
+target_link_libraries(x86to6502 PRIVATE core plugins scintilla Qt::Widgets)
 
 target_include_directories(x86to6502 PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

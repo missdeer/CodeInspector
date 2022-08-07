@@ -4,6 +4,7 @@ project(CodeInspector VERSION 1.0.0)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+
 add_subdirectory(ast)
 add_subdirectory(cfg)
 add_subdirectory(gcctreertl)
