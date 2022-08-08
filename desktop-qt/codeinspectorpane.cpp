@@ -238,7 +238,12 @@ void CodeInspectorPane::onNeedCompile()
 #endif
     Q_ASSERT(m_codeEditor);
     CompileInfo ci;
-    ci.source = m_codeEditor->getText(m_codeEditor->textLength() + 1);
+    auto        length = m_codeEditor->textLength();
+    if (length == 0)
+    {
+        return;
+    }
+    ci.source = m_codeEditor->getText(length);
     if (ci.source.isEmpty())
     {
         return;
