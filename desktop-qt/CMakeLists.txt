@@ -56,16 +56,20 @@ set(desktop_src
         ./codeinspectorapp.cpp
         )
 
-IF(${QT_VERSION_MAJOR} GREATER_EQUAL 6)        
+IF(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
+        qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/translations/CodeInspector_zh_CN.ts)
         qt_add_executable(CodeInspector
+                MANUAL_FINALIZATION
                 ./CodeInspector.rc
                 ./CodeInspector.icns
                 ${desktop_headers}
                 ${desktop_src}
                 ${desktop_qrc}
                 ${desktop_ui}
+                ${QM_FILES}
                 )
 ELSE()
+        qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/translations/CodeInspector_zh_CN.ts) 
         add_executable(CodeInspector
                 ./CodeInspector.rc
                 ./CodeInspector.icns
@@ -73,6 +77,7 @@ ELSE()
                 ${desktop_src}
                 ${desktop_qrc}
                 ${desktop_ui}
+                ${QM_FILES}
                 )
 ENDIF()
 
@@ -98,3 +103,7 @@ target_link_libraries(CodeInspector PRIVATE
         ast cfg gcctreertl ir optimization
         rextester wandbox
         clang_format clang_query clangtidy include_what_you_use ldd llvmmca osaca pahole psv_studio readelf strings x86to6502)
+
+if(QT_VERSION_MAJOR EQUAL 6)
+    qt_finalize_executable(CodeInspector)
+endif()
