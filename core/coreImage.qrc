@@ -57,7 +57,6 @@
         <file>resource/image/language/carbon.svg</file>
         <file>resource/image/language/circt.svg</file>
         <file>resource/image/language/crystal.svg</file>
-        <file>resource/image/language/cuda.svg</file>
         <file>resource/image/language/d.svg</file>
         <file>resource/image/language/dart.svg</file>
         <file>resource/image/language/erlang.svg</file>
@@ -68,8 +67,6 @@
         <file>resource/image/language/mlir.svg</file>
         <file>resource/image/language/nim.svg</file>
         <file>resource/image/language/ocaml.svg</file>
-        <file>resource/image/language/openclc.svg</file>
-        <file>resource/image/language/pascal.svg</file>
         <file>resource/image/language/pony.svg</file>
         <file>resource/image/language/python.svg</file>
         <file>resource/image/language/ruby.svg</file>
@@ -79,5 +76,11 @@
         <file>resource/image/language/swift.svg</file>
         <file>resource/image/language/typescript.svg</file>
         <file>resource/image/language/zig.svg</file>
+        <file>resource/image/language/cuda-black.svg</file>
+        <file>resource/image/language/cuda-white.svg</file>
+        <file>resource/image/language/openclc-black.svg</file>
+        <file>resource/image/language/openclc-white.svg</file>
+        <file>resource/image/language/pascal-black.svg</file>
+        <file>resource/image/language/pascal-white.svg</file>
     </qresource>
 </RCC>
