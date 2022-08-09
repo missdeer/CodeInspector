@@ -66,7 +66,15 @@ void CodeEditorPane::updateLanguageList()
         int         index    = m_cbLanguageList->findText(language->name);
         if (index < 0)
         {
-            auto iconPath = QString(":/resource/image/language/%1.png").arg(language->id);
+            auto iconPath = QString(":/resource/image/language/%1.svg").arg(language->id);
+            if (!QFile::exists(iconPath))
+            {
+                iconPath = QString(":/resource/image/language/%1-black.svg").arg(language->id);
+                if (!QFile::exists(iconPath))
+                {
+                    iconPath = QString(":/resource/image/language/%1.png").arg(language->id);
+                }
+            }
             qDebug() << iconPath << QFile::exists(iconPath) << language->name;
             m_cbLanguageList->insertItem(i, QIcon(iconPath), language->name);
         }
