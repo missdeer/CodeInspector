@@ -73,6 +73,10 @@ void CodeEditorPane::updateLanguageList()
                 if (!QFile::exists(iconPath))
                 {
                     iconPath = QString(":/resource/image/language/%1.png").arg(language->id);
+                    if (!QFile::exists(iconPath))
+                    {
+                        iconPath = QStringLiteral(":/CodeInspector.png");
+                    }
                 }
             }
             qDebug() << iconPath << QFile::exists(iconPath) << language->name;
