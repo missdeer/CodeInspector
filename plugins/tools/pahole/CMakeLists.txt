@@ -13,9 +13,15 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON) # if you have any .ui files
 set(CMAKE_AUTORCC ON) # if you have any .qrc files
 
-
 include_directories(${PROJECT_SOURCE_DIR})
 include_directories(${PROJECT_BINARY_DIR})
+
+add_compile_definitions(SCINTILLA_QT=1
+        SCI_LEXER=1
+        _CRT_SECURE_NO_DEPRECATE=1
+        SCI_STATIC_LINK=1
+        EXPORT_IMPORT_API=
+        )
 
 file(GLOB
         headers
