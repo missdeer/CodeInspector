@@ -7,6 +7,7 @@ VERSION = 5.2.2
 SOURCES += \
     $$files($$PWD/scintilla/qt/ScintillaEdit/*.cpp, false)  \
     $$files($$PWD/scintilla/qt/ScintillaEditBase/*.cpp, false) \
+    $$PWD/scintilla/src/ChangeHistory.cxx \
     $$PWD/scintilla/src/XPM.cxx \
     $$PWD/scintilla/src/ViewStyle.cxx \
     $$PWD/scintilla/src/UniqueString.cxx \
@@ -40,6 +41,7 @@ SOURCES += \
     $$PWD/scintilla/src/AutoComplete.cxx
 
 HEADERS += \
+    $$files($$PWD/scintilla/src/*.h, false)  \
     $$files($$PWD/scintilla/qt/ScintillaEdit/*.h, false)  \
     $$files($$PWD/scintilla/qt/ScintillaEditBase/*.h, false)
 

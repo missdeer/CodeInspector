@@ -1,4 +1,4 @@
-QT       += core gui widgets xml network
+QT       += core gui widgets xml network svg
 
 lessThan(QT_MAJOR_VERSION, 5): error("Qt 5 or higher is required")
 equals(QT_MAJOR_VERSION, 6): QT += core5compat

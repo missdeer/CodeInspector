@@ -14,7 +14,7 @@ void Settings::initialize()
 
 void Settings::save()
 {
-    QSettings settings(QSettings::IniFormat, QSettings::UserScope, "minidump.info", "CodeInspector");
+    QSettings settings(QSettings::IniFormat, QSettings::UserScope, "IsmISV", "CodeInspector");
     settings.setValue("rememberLastSession", m_rememberLastSession);
     settings.setValue("autoRefreshInterval", m_autoRefreshInterval);
     settings.setValue("editorZoomFactor", m_editorZoomFactor);
@@ -38,7 +38,7 @@ void Settings::save()
 
 void Settings::load()
 {
-    QSettings settings(QSettings::IniFormat, QSettings::UserScope, "minidump.info", "CodeInspector");
+    QSettings settings(QSettings::IniFormat, QSettings::UserScope, "IsmISV", "CodeInspector");
     m_rememberLastSession  = settings.value("rememberLastSession", true).toBool();
     m_binary               = settings.value("binary", false).toBool();
     m_label                = settings.value("label", true).toBool();
@@ -59,7 +59,7 @@ void Settings::load()
     m_codeEditorTheme         = settings.value("codeEditorTheme", QVariant("Default")).toString();
     m_codeInspectorFontFamily = settings.value("codeInspectorFontFamily", QVariant("Source Code Pro")).toString();
     m_codeInspectorTheme      = settings.value("codeInspectorTheme", QVariant("Default")).toString();
-    m_apiBaseURL              = settings.value("apiBaseURL", "https://godbolt.org").toString();
+    m_apiBaseURL              = settings.value("apiBaseURL", "https://compiler-explorer.com").toString();
     m_sslRequired             = settings.value("sslRequired", true).toBool();
 }
 
