@@ -1,3 +1,5 @@
+#include <functional>
+
 #include <QDateTime>
 #include <QDir>
 #include <QDomDocument>
@@ -476,37 +478,23 @@ void ScintillaConfig::applyStyle(const QDomElement &styleElem)
     if (styleElem.hasAttribute("fontStyle"))
     {
         uint fontStyle = styleElem.attribute("fontStyle").toUInt();
-        if (fontStyle & 0x01)
+
+        static std::map<unsigned char, std::function<void(sptr_t, bool)>> styleSetterMap = {
+            {0x01, [this](sptr_t styleId, bool value) { m_sci->styleSetBold(styleId, value); }},
+            {0x02, [this](sptr_t styleId, bool value) { m_sci->styleSetItalic(styleId, value); }},
+            {0x04, [this](sptr_t styleId, bool value) { m_sci->styleSetUnderline(styleId, value); }},
+            {0x08, [this](sptr_t styleId, bool value) { m_sci->styleSetVisible(styleId, value); }},
+            {0x10, [this](sptr_t styleId, bool value) { m_sci->styleSetCase(styleId, value); }},
+            {0x20, [this](sptr_t styleId, bool value) { m_sci->styleSetEOLFilled(styleId, value); }},
+            {0x40, [this](sptr_t styleId, bool value) { m_sci->styleSetHotSpot(styleId, value); }},
+            {0x80, [this](sptr_t styleId, bool value) { m_sci->styleSetChangeable(styleId, value); }},
+        };
+        for (auto &[key, setter] : styleSetterMap)
         {
-            m_sci->styleSetBold(styleId, true);
-        }
-        if (fontStyle & 0x02)
-        {
-            m_sci->styleSetItalic(styleId, true);
-        }
-        if (fontStyle & 0x04)
-        {
-            m_sci->styleSetUnderline(styleId, true);
-        }
-        if (fontStyle & 0x08)
-        {
-            m_sci->styleSetVisible(styleId, true);
-        }
-        if (fontStyle & 0x10)
-        {
-            m_sci->styleSetCase(styleId, true);
-        }
-        if (fontStyle & 0x20)
-        {
-            m_sci->styleSetEOLFilled(styleId, true);
-        }
-        if (fontStyle & 0x40)
-        {
-            m_sci->styleSetHotSpot(styleId, true);
-        }
-        if (fontStyle & 0x80)
-        {
-            m_sci->styleSetChangeable(styleId, true);
+            if (fontStyle & key)
+            {
+                setter(styleId, true);
+            }
         }
     }
 
