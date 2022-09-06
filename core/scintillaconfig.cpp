@@ -8,7 +8,7 @@
 
 #include "scintillaconfig.h"
 #include "ILexer.h"
-#include "LexLPeg.h"
+#include "Scintillua.h"
 #include "Lexilla.h"
 #include "ScintillaEdit.h"
 #include "settings.h"
@@ -246,7 +246,7 @@ void ScintillaConfig::applyLexer(const QString &configPath, const QString &lang)
     void *lexerId = CreateLexer(lexer.toStdString().c_str());
     if (!lexerId)
     {
-        m_sci->setILexer((sptr_t)Scintillua::CreateLexer(NULL));
+        m_sci->setILexer((sptr_t)ScintilluaNS::CreateLexer(NULL));
 
         auto lexersPath = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/lexers";
         QDir dir(lexersPath);
@@ -254,8 +254,8 @@ void ScintillaConfig::applyLexer(const QString &configPath, const QString &lang)
             dir.mkpath(lexersPath + "/themes");
         extractScintilluaLexers(lexersPath);
 
-        Scintillua::SetLibraryProperty("lpeg.home", QDir::toNativeSeparators(lexersPath).toUtf8().data());
-        Scintillua::SetLibraryProperty("lpeg.color.theme", "scite");
+        ScintilluaNS::SetLibraryProperty("lpeg.home", QDir::toNativeSeparators(lexersPath).toUtf8().data());
+        ScintilluaNS::SetLibraryProperty("lpeg.color.theme", "scite");
 
         langMap.insert({{"c", "ansi_c"}, {"d", "dmd"}, {"ocaml", "caml"}});
         if (langMap.contains(lexer))
@@ -263,7 +263,7 @@ void ScintillaConfig::applyLexer(const QString &configPath, const QString &lang)
             lexer = langMap.value(lexer);
         }
 
-        lexerId = Scintillua::CreateLexer(lexer.toStdString().c_str());
+        lexerId = ScintilluaNS::CreateLexer(lexer.toStdString().c_str());
 #if defined(LOGS_ENABLED)
         qDebug() << Q_FUNC_INFO << __LINE__ << "scintillua lexer:" << lexer << lexerId;
 #endif
