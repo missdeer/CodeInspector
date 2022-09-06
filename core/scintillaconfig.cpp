@@ -8,9 +8,9 @@
 
 #include "scintillaconfig.h"
 #include "ILexer.h"
-#include "Scintillua.h"
 #include "Lexilla.h"
 #include "ScintillaEdit.h"
+#include "Scintillua.h"
 #include "settings.h"
 
 void ScintillaConfig::initScintilla()
@@ -85,7 +85,7 @@ void ScintillaConfig::initScintilla()
     m_sci->setCodePage(SC_CP_UTF8);
     m_sci->setWordChars("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_");
     m_sci->setZoom(1);
-    m_sci->setWhitespaceChars(NULL);
+    m_sci->setWhitespaceChars(nullptr);
     m_sci->setMouseDwellTime(2500);
 
     m_sci->setSavePoint();
@@ -94,7 +94,9 @@ void ScintillaConfig::initScintilla()
     // apply global settings
     QString themePath = ":/resource/sci/themes/" % g_settings->codeEditorTheme() % ".xml";
     if (!QFile::exists(themePath))
+    {
         themePath = ":/resource/sci/themes/Default.xml";
+    }
     applyThemeStyle(themePath, "cpp");
 }
 
@@ -143,7 +145,9 @@ void ScintillaConfig::initLexerStyle(const QString &lang)
     // apply language specified settings
     QString themePath = ":/resource/sci/themes/" % g_settings->codeEditorTheme() % ".xml";
     if (!QFile::exists(themePath))
+    {
         themePath = ":/resource/sci/themes/Default.xml";
+    }
     applyThemeStyle(themePath, lexer);
 
     // read configurations from langs.model.xml
@@ -246,12 +250,14 @@ void ScintillaConfig::applyLexer(const QString &configPath, const QString &lang)
     void *lexerId = CreateLexer(lexer.toStdString().c_str());
     if (!lexerId)
     {
-        m_sci->setILexer((sptr_t)ScintilluaNS::CreateLexer(NULL));
+        m_sci->setILexer((sptr_t)ScintilluaNS::CreateLexer(nullptr));
 
         auto lexersPath = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/lexers";
         QDir dir(lexersPath);
         if (!dir.exists(lexersPath + "/themes"))
+        {
             dir.mkpath(lexersPath + "/themes");
+        }
         extractScintilluaLexers(lexersPath);
 
         ScintilluaNS::SetLibraryProperty("lpeg.home", QDir::toNativeSeparators(lexersPath).toUtf8().data());
@@ -281,9 +287,12 @@ void ScintillaConfig::applyLexer(const QString &configPath, const QString &lang)
     QDomDocument doc;
     QFile        file(configPath);
     if (!file.open(QIODevice::ReadOnly))
+    {
         return;
+    }
     QString errMsg;
-    int     errLine, errColumn;
+    int     errLine   = 0;
+    int     errColumn = 0;
     if (!doc.setContent(&file, &errMsg, &errLine, &errColumn))
     {
 #if defined(LOGS_ENABLED)
@@ -297,7 +306,9 @@ void ScintillaConfig::applyLexer(const QString &configPath, const QString &lang)
 
     QDomElement langElem = languagesElem.firstChildElement("Language");
     while (!langElem.isNull() && langElem.attribute("name") != lexer && langElem.attribute("name") != lang.toLower())
+    {
         langElem = langElem.nextSiblingElement("Language");
+    }
     QDomElement keywordElem = langElem.firstChildElement("Keywords");
     int         keywordSet  = 0;
     while (!keywordElem.isNull())
@@ -316,9 +327,12 @@ void ScintillaConfig::applyThemeStyle(const QString &themePath, const QString &l
     QDomDocument doc;
     QFile        file(themePath);
     if (!file.open(QIODevice::ReadOnly))
+    {
         return;
+    }
     QString errMsg;
-    int     errLine, errColumn;
+    int     errLine   = 0;
+    int     errColumn = 0;
     if (!doc.setContent(&file, &errMsg, &errLine, &errColumn))
     {
 #if defined(LOGS_ENABLED)
@@ -335,18 +349,26 @@ void ScintillaConfig::applyThemeStyle(const QString &themePath, const QString &l
          styleElem             = styleElem.nextSiblingElement("WidgetStyle"))
     {
         if (styleElem.attribute("styleID").toInt() == 0)
+        {
             applyGlobalStyle(styleElem);
+        }
         else
+        {
             applyStyle(styleElem);
+        }
     }
 
     QDomElement lexerStylesElem = docElem.firstChildElement("LexerStyles");
     QDomElement lexerTypeElem   = lexerStylesElem.firstChildElement("LexerType");
     while (!lexerTypeElem.isNull() && lexerTypeElem.attribute("name") != lang)
+    {
         lexerTypeElem = lexerTypeElem.nextSiblingElement("LexerType");
+    }
 
     if (lexerTypeElem.isNull())
+    {
         return;
+    }
 
     for (QDomElement styleElem = lexerTypeElem.firstChildElement("WordsStyle"); !styleElem.isNull();
          styleElem             = styleElem.nextSiblingElement("WordsStyle"))
@@ -379,11 +401,11 @@ void ScintillaConfig::extractScintilluaLexers(const QString &lexersPath)
         QString localFileName = lexersPath + "/themes/" + info.fileName();
         if (!QFile::exists(localFileName) || QFileInfo(localFileName).lastModified() < info.lastModified())
         {
-            QFile from(info.filePath());
-            QFile to(localFileName);
-            if (from.open(QIODevice::ReadOnly) && to.open(QIODevice::WriteOnly | QIODevice::Truncate))
+            QFile fromFile(info.filePath());
+            QFile toFile(localFileName);
+            if (fromFile.open(QIODevice::ReadOnly) && toFile.open(QIODevice::WriteOnly | QIODevice::Truncate))
             {
-                to.write(from.readAll());
+                toFile.write(fromFile.readAll());
             }
         }
     }
@@ -391,8 +413,8 @@ void ScintillaConfig::extractScintilluaLexers(const QString &lexersPath)
 
 void ScintillaConfig::applyStyle(const QDomElement &styleElem)
 {
-    int id = styleElem.attribute("styleID").toInt();
-    m_sci->styleSetFore(id, 0x0);
+    int styleId = styleElem.attribute("styleID").toInt();
+    m_sci->styleSetFore(styleId, 0x0);
     if (styleElem.hasAttribute("fgColor"))
     {
         QString foreColor = styleElem.attribute("fgColor");
@@ -400,19 +422,19 @@ void ScintillaConfig::applyStyle(const QDomElement &styleElem)
         {
             int color = foreColor.toLong(nullptr, 16);
             color     = ((color & 0xFF0000) >> 16) | (color & 0xFF00) | ((color & 0xFF) << 16);
-            m_sci->styleSetFore(id, color);
+            m_sci->styleSetFore(styleId, color);
         }
     }
 
-    m_sci->styleSetBack(id, 0xFFFFFF);
-    if (id == 33 && styleElem.hasAttribute("bgColor")) // line number margin
+    m_sci->styleSetBack(styleId, 0xFFFFFF);
+    if (styleId == 33 && styleElem.hasAttribute("bgColor")) // line number margin
     {
         QString backColor = styleElem.attribute("bgColor");
         if (!backColor.isEmpty())
         {
             int color = backColor.toLong(nullptr, 16);
             color     = ((color & 0xFF0000) >> 16) | (color & 0xFF00) | ((color & 0xFF) << 16);
-            m_sci->styleSetBack(id, color);
+            m_sci->styleSetBack(styleId, color);
         }
     }
 
@@ -438,36 +460,54 @@ void ScintillaConfig::applyStyle(const QDomElement &styleElem)
     {
         if (families.contains(f))
         {
-            m_sci->styleSetFont(id, f.toStdString().c_str());
+            m_sci->styleSetFont(styleId, f.toStdString().c_str());
             break;
         }
     }
 
     if (styleElem.hasAttribute("fontName"))
     {
-        if (id != 0 && id != 32 && !fontName.isEmpty() && families.contains(fontName))
-            m_sci->styleSetFont(id, fontName.toStdString().c_str());
+        if (styleId != 0 && styleId != 32 && !fontName.isEmpty() && families.contains(fontName))
+        {
+            m_sci->styleSetFont(styleId, fontName.toStdString().c_str());
+        }
     }
 
     if (styleElem.hasAttribute("fontStyle"))
     {
         uint fontStyle = styleElem.attribute("fontStyle").toUInt();
         if (fontStyle & 0x01)
-            m_sci->styleSetBold(id, true);
+        {
+            m_sci->styleSetBold(styleId, true);
+        }
         if (fontStyle & 0x02)
-            m_sci->styleSetItalic(id, true);
+        {
+            m_sci->styleSetItalic(styleId, true);
+        }
         if (fontStyle & 0x04)
-            m_sci->styleSetUnderline(id, true);
+        {
+            m_sci->styleSetUnderline(styleId, true);
+        }
         if (fontStyle & 0x08)
-            m_sci->styleSetVisible(id, true);
+        {
+            m_sci->styleSetVisible(styleId, true);
+        }
         if (fontStyle & 0x10)
-            m_sci->styleSetCase(id, true);
+        {
+            m_sci->styleSetCase(styleId, true);
+        }
         if (fontStyle & 0x20)
-            m_sci->styleSetEOLFilled(id, true);
+        {
+            m_sci->styleSetEOLFilled(styleId, true);
+        }
         if (fontStyle & 0x40)
-            m_sci->styleSetHotSpot(id, true);
+        {
+            m_sci->styleSetHotSpot(styleId, true);
+        }
         if (fontStyle & 0x80)
-            m_sci->styleSetChangeable(id, true);
+        {
+            m_sci->styleSetChangeable(styleId, true);
+        }
     }
 
 #if defined(Q_OS_WIN)
@@ -475,12 +515,14 @@ void ScintillaConfig::applyStyle(const QDomElement &styleElem)
 #else
     const int defaultFontSize = 14;
 #endif
-    m_sci->styleSetSize(id, defaultFontSize);
+    m_sci->styleSetSize(styleId, defaultFontSize);
     if (styleElem.hasAttribute("fontSize"))
     {
         QString fontSize = styleElem.attribute("fontSize");
         if (!fontSize.isEmpty())
-            m_sci->styleSetSize(id, std::max(defaultFontSize, fontSize.toInt()));
+        {
+            m_sci->styleSetSize(styleId, std::max(defaultFontSize, fontSize.toInt()));
+        }
     }
 }
 
