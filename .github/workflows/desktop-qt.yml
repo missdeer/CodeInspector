@@ -224,16 +224,7 @@ jobs:
           cd 3rdparty\scintillua
           git apply ..\scintillua.patch
           cd ..\..
-          
-      - name: Set up clang for Windows
-        shell: cmd
-        run: |
-          mkdir llvm
-          cd llvm
-          curl.exe -o LLVM.exe -L ${{ matrix.clang_link }}
-          7z.exe x LLVM.exe
-          cd ..
-      
+                
       - name: Set up jom
         shell: cmd
         run: |
@@ -243,7 +234,7 @@ jobs:
           7z.exe x jom.zip
           cd ..
           
-      - name: build-msvc
+      - name: build-intel-msvc
         shell: cmd
         env:
           vc_arch: ${{ matrix.msvc_arch }}
