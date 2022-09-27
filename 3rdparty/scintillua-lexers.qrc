@@ -1,9 +1,9 @@
 <RCC>
     <qresource prefix="/">
-        <file>scintillua/lexers/themes/curses.lua</file>
-        <file>scintillua/lexers/themes/dark.lua</file>
-        <file>scintillua/lexers/themes/light.lua</file>
-        <file>scintillua/lexers/themes/scite.lua</file>
+        <file>scintillua/themes/curses.properties</file>
+        <file>scintillua/themes/dark.properties</file>
+        <file>scintillua/themes/light.properties</file>
+        <file>scintillua/themes/scite.properties</file>
         <file>scintillua/lexers/actionscript.lua</file>
         <file>scintillua/lexers/ada.lua</file>
         <file>scintillua/lexers/ansi_c.lua</file>
@@ -148,5 +148,11 @@
         <file>scintillua/lexers/xtend.lua</file>
         <file>scintillua/lexers/yaml.lua</file>
         <file>scintillua/lexers/zig.lua</file>
+        <file>scintillua/lexers/gemini.lua</file>
+        <file>scintillua/lexers/git-rebase.lua</file>
+        <file>scintillua/lexers/hare.lua</file>
+        <file>scintillua/lexers/output.lua</file>
+        <file>scintillua/lexers/rpmspec.lua</file>
+        <file>scintillua/lexers/strace.lua</file>
     </qresource>
 </RCC>
