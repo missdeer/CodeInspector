@@ -10,8 +10,8 @@ on:
       - 'LICENSE'
 
 env:
-  WINDOWS_BASEKIT_URL: https://registrationcenter-download.intel.com/akdlm/IRC_NAS/18674/w_BaseKit_p_2022.2.0.252_offline.exe
-  WINDOWS_HPCKIT_URL: https://registrationcenter-download.intel.com/akdlm/IRC_NAS/18680/w_HPCKit_p_2022.2.0.173_offline.exe
+  WINDOWS_BASEKIT_URL: https://registrationcenter-download.intel.com/akdlm/irc_nas/18851/w_BaseKit_p_2022.3.0.9573_offline.exe
+  WINDOWS_HPCKIT_URL: https://registrationcenter-download.intel.com/akdlm/irc_nas/18857/w_HPCKit_p_2022.3.0.9564_offline.exe
   WINDOWS_CPP_COMPONENTS: intel.oneapi.win.cpp-compiler
   WINDOWS_DPCPP_COMPONENTS: intel.oneapi.win.dpcpp-compiler
       
@@ -238,9 +238,10 @@ jobs:
         env:
           vc_arch: ${{ matrix.msvc_arch }}
         run: |
+          dir "C:\Program Files (x86)\Intel\oneAPI\compiler"
           call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" %vc_arch%
-          call "C:\Program Files (x86)\Intel\oneAPI\compiler\2022.1.0\env\vars.bat"
-          set PATH="C:\Program Files (x86)\Intel\oneAPI\compiler\2022.1.0\windows\bin-llvm\";%CD%\jom;%PATH%
+          call "C:\Program Files (x86)\Intel\oneAPI\compiler\2022.3.0\env\vars.bat"
+          set PATH="C:\Program Files (x86)\Intel\oneAPI\compiler\2022.3.0\windows\bin-llvm\";%CD%\jom;%PATH%
           cd 3rdparty\scintilla\qt\ScintillaEdit
           python WidgetGen.py
           cd ..\..\..\..
