@@ -21,7 +21,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        qt_ver: [6.3.2]
+        qt_ver: [6.4.0]
         qt_target: [desktop]
         qt_arch: [win64_msvc2019_64]
         include:
@@ -40,7 +40,7 @@ jobs:
           target: ${{ matrix.qt_target }}
           arch: ${{ matrix.qt_arch }}
           modules: "qt5compat qtimageformats"
-          aqtversion: '==2.1.0'
+          aqtversion: '==3.0.1'
                     
       - uses: msys2/setup-msys2@v2
         with:
@@ -90,7 +90,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        qt_ver: [6.3.2]
+        qt_ver: [6.4.0]
         qt_target: [desktop]
         qt_arch: [win64_msvc2019_64]
         include:
@@ -98,7 +98,7 @@ jobs:
             msvc_arch: x64
             qt_arch_install: msvc2019_64
             mingw_arch: MINGW64 
-            clang_link: https://github.com/llvm/llvm-project/releases/download/llvmorg-14.0.0/LLVM-14.0.0-win64.exe
+            clang_link: https://github.com/llvm/llvm-project/releases/download/llvmorg-15.0.2/LLVM-15.0.2-win64.exe
     env:
       targetName: CodeInspector
       
@@ -110,7 +110,7 @@ jobs:
           target: ${{ matrix.qt_target }}
           arch: ${{ matrix.qt_arch }}
           modules: "qt5compat qtimageformats"
-          aqtversion: '==2.1.0'
+          aqtversion: '==3.0.1'
                     
       - uses: msys2/setup-msys2@v2
         with:
@@ -169,7 +169,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        qt_ver: [6.3.2]
+        qt_ver: [6.4.0]
         qt_target: [desktop]
         qt_arch: [win64_msvc2019_64]
         include:
@@ -177,7 +177,6 @@ jobs:
             msvc_arch: x64
             qt_arch_install: msvc2019_64
             mingw_arch: MINGW64 
-            clang_link: https://github.com/llvm/llvm-project/releases/download/llvmorg-14.0.0/LLVM-14.0.0-win64.exe
     env:
       targetName: CodeInspector
       
@@ -189,7 +188,7 @@ jobs:
           target: ${{ matrix.qt_target }}
           arch: ${{ matrix.qt_arch }}
           modules: "qt5compat qtimageformats"
-          aqtversion: '==2.1.0'
+          aqtversion: '==3.0.1'
                     
       - name: cache intel install
         id: cache-install
@@ -378,7 +377,7 @@ jobs:
         with:
           version: ${{ matrix.qt_ver }}
           modules: "qt5compat qtimageformats"
-          aqtversion: '==2.1.0'
+          aqtversion: '==3.0.1'
         
       - uses: actions/checkout@v2
         with:
