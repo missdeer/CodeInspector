@@ -209,7 +209,10 @@ jobs:
           
       - name: restore registry on cache hit
         if: steps.cache-install.outputs.cache-hit == 'true'
-        run: scripts/restore_registry.bat $COMPILER_VERSION
+        run:  |
+          git clone --depth=1 https://github.com/oneapi-src/oneapi-ci.git oneapi-ci
+          cd oneapi-ci
+          scripts/restore_registry.bat ${{ env.COMPILER_VERSION }}
         
       - uses: msys2/setup-msys2@v2
         with:
