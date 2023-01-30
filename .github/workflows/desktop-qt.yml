@@ -356,7 +356,17 @@ jobs:
           cp mingwdeployqt.exe /${{ matrix.mingw_arch }}/bin/
           cd ../..
 
-      - name: patch 
+      - name: copy CMakeLists.txt
+        shell: msys2 {0}
+        run: |
+          cd 3rdparty
+          cp cmakes/CMakeLists.txt.lexilla lexilla/CMakeLists.txt
+          cp cmakes/CMakeLists.txt.lua lua/CMakeLists.txt
+          cp cmakes/CMakeLists.txt.lpeg lpeg/CMakeLists.txt
+          cp cmakes/CMakeLists.txt.scintilla scintilla/CMakeLists.txt
+          cp cmakes/CMakeLists.txt.scintillua scintillua/CMakeLists.txt
+
+      - name: patch 3rdparty
         shell: cmd
         run: |
           cd 3rdparty\scintillua
@@ -416,9 +426,15 @@ jobs:
           ref: ${{ github.head_ref }}
           submodules: true
       
-      - name: patch scintillua
+      - name: patch 3rdparty
         run: |
-          cd 3rdparty/scintillua
+          cd 3rdparty
+          cp cmakes/CMakeLists.txt.lexilla lexilla/CMakeLists.txt
+          cp cmakes/CMakeLists.txt.lua lua/CMakeLists.txt
+          cp cmakes/CMakeLists.txt.lpeg lpeg/CMakeLists.txt
+          cp cmakes/CMakeLists.txt.scintilla scintilla/CMakeLists.txt
+          cp cmakes/CMakeLists.txt.scintillua scintillua/CMakeLists.txt
+          cd scintillua
           git apply ../scintillua.patch
           cd ../zlib
           git apply ../zlib.patch
