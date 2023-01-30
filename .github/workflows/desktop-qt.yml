@@ -341,7 +341,19 @@ jobs:
           ref: ${{ github.head_ref }}
           fetch-depth: 1
           submodules: true
-      
+          
+      - name: Build mingwdeployqt
+        shell: msys2 {0}
+        run: |
+          git clone https://github.com/missdeer/mingwdeployqt.git
+          cd mingwdeployqt
+          mkdir build
+          cd build
+          env PATH=$PATH:/${{ matrix.mingw_arch }}/bin:/${{ matrix.mingw_arch }}/${{ matrix.qt_build }}/bin cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=${{ matrix.c }} -DCMAKE_CXX_COMPILER=${{ matrix.cxx }} -G Ninja ..
+          ninja
+          cp mingwdeployqt.exe /${{ matrix.mingw_arch }}/bin/
+          cd ../..
+
       - name: patch 
         shell: cmd
         run: |
@@ -365,8 +377,9 @@ jobs:
         run: |
           mkdir build
           cd build
-          env PATH=$PATH:/${{ matrix.mingw_arch }}/bin cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=${{ matrix.c }} -DCMAKE_CXX_COMPILER=${{ matrix.cxx }} -G Ninja ..
+          env PATH=$PATH:/${{ matrix.mingw_arch }}/bin:/${{ matrix.mingw_arch }}/${{ matrix.qt_build }}/bin cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=${{ matrix.c }} -DCMAKE_CXX_COMPILER=${{ matrix.cxx }} -G Ninja ..
           env PATH=$PATH:/${{ matrix.mingw_arch }}/bin ninja
+          env PATH=$PATH:/${{ matrix.mingw_arch }}/bin mingwdeployqt.exe ${env:targetName}'.exe'
           ls -l
           ls -l desktop-qt
           cd ..
@@ -417,8 +430,8 @@ jobs:
           cd ../../../..
           mkdir build
           cd build
-          cmake -G Ninja -DCMAKE_BUILD_TYPE=Release ..
-          ninja
+          cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ ..
+          make -j `sysctl -n hw.logicalcpu`
           cd ..
           
       - name: package
