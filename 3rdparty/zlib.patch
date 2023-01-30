@@ -1,39 +1,13 @@
-diff --git a/gzlib.c b/gzlib.c
-index dddaf26..68e67fb 100644
---- a/gzlib.c
-+++ b/gzlib.c
-@@ -2,6 +2,8 @@
-  * Copyright (C) 2004-2019 Mark Adler
-  * For conditions of distribution and use, see copyright notice in zlib.h
-  */
-+#include <fcntl.h>
-+#include <unistd.h>
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index b412dc7..e018e32 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -151,6 +151,8 @@ add_library(zlib SHARED ${ZLIB_SRCS} ${ZLIB_DLL_SRCS} ${ZLIB_PUBLIC_HDRS} ${ZLIB
+ add_library(zlibstatic STATIC ${ZLIB_SRCS} ${ZLIB_PUBLIC_HDRS} ${ZLIB_PRIVATE_HDRS})
+ set_target_properties(zlib PROPERTIES DEFINE_SYMBOL ZLIB_DLL)
+ set_target_properties(zlib PROPERTIES SOVERSION 1)
++target_include_directories(zlib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
++target_include_directories(zlibstatic PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
  
- #include "gzguts.h"
- 
-diff --git a/gzread.c b/gzread.c
-index 884c9bf..c10fdb9 100644
---- a/gzread.c
-+++ b/gzread.c
-@@ -2,6 +2,8 @@
-  * Copyright (C) 2004-2017 Mark Adler
-  * For conditions of distribution and use, see copyright notice in zlib.h
-  */
-+#include <fcntl.h>
-+#include <unistd.h>
- 
- #include "gzguts.h"
- 
-diff --git a/gzwrite.c b/gzwrite.c
-index a8ffc8f..05a8512 100644
---- a/gzwrite.c
-+++ b/gzwrite.c
-@@ -2,6 +2,8 @@
-  * Copyright (C) 2004-2019 Mark Adler
-  * For conditions of distribution and use, see copyright notice in zlib.h
-  */
-+#include <fcntl.h>
-+#include <unistd.h>
- 
- #include "gzguts.h"
- 
+ if(NOT CYGWIN)
+     # This property causes shared libraries on Linux to have the full version
