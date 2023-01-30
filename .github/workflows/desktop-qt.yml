@@ -54,6 +54,16 @@ jobs:
           ref: ${{ github.head_ref }}
           submodules: true
       
+      - name: copy CMakeLists.txt
+        shell: msys2 {0}
+        run: |
+          cd 3rdparty
+          cp cmakes/CMakeLists.txt.lexilla lexilla/CMakeLists.txt
+          cp cmakes/CMakeLists.txt.lua lua/CMakeLists.txt
+          cp cmakes/CMakeLists.txt.lpeg lpeg/CMakeLists.txt
+          cp cmakes/CMakeLists.txt.scintilla scintilla/CMakeLists.txt
+          cp cmakes/CMakeLists.txt.scintillua scintillua/CMakeLists.txt
+
       - name: patch
         shell: cmd
         run: |
@@ -123,6 +133,16 @@ jobs:
           ref: ${{ github.head_ref }}
           submodules: true
       
+      - name: copy CMakeLists.txt
+        shell: msys2 {0}
+        run: |
+          cd 3rdparty
+          cp cmakes/CMakeLists.txt.lexilla lexilla/CMakeLists.txt
+          cp cmakes/CMakeLists.txt.lua lua/CMakeLists.txt
+          cp cmakes/CMakeLists.txt.lpeg lpeg/CMakeLists.txt
+          cp cmakes/CMakeLists.txt.scintilla scintilla/CMakeLists.txt
+          cp cmakes/CMakeLists.txt.scintillua scintillua/CMakeLists.txt
+
       - name: patch 
         shell: cmd
         run: |
@@ -223,6 +243,16 @@ jobs:
           ref: ${{ github.head_ref }}
           submodules: true
       
+      - name: copy CMakeLists.txt
+        shell: msys2 {0}
+        run: |
+          cd 3rdparty
+          cp cmakes/CMakeLists.txt.lexilla lexilla/CMakeLists.txt
+          cp cmakes/CMakeLists.txt.lua lua/CMakeLists.txt
+          cp cmakes/CMakeLists.txt.lpeg lpeg/CMakeLists.txt
+          cp cmakes/CMakeLists.txt.scintilla scintilla/CMakeLists.txt
+          cp cmakes/CMakeLists.txt.scintillua scintillua/CMakeLists.txt
+
       - name: patch 
         shell: cmd
         run: |
