@@ -401,9 +401,9 @@ jobs:
         run: |
           mkdir build
           cd build
-          env PATH=$PATH:/${{ matrix.mingw_arch }}/bin:/${{ matrix.mingw_arch }}/${{ matrix.qt_build }}/bin cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=${{ matrix.c }} -DCMAKE_CXX_COMPILER=${{ matrix.cxx }} -DQT_DIR=${{ matrix.qt_dir }} -DCMAKE_PREFIX_PATH=${{ matrix.cmake_prefix_path }} -G Ninja ..
-          env PATH=$PATH:/${{ matrix.mingw_arch }}/bin ninja
-          env PATH=$PATH:/${{ matrix.mingw_arch }}/bin mingwdeployqt.exe ${env:targetName}'.exe'
+          env PATH=/${{ matrix.mingw_arch }}/bin:/${{ matrix.mingw_arch }}/${{ matrix.qt_build }}/bin cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=${{ matrix.c }} -DCMAKE_CXX_COMPILER=${{ matrix.cxx }} -DQT_DIR=${{ matrix.qt_dir }} -DCMAKE_PREFIX_PATH=${{ matrix.cmake_prefix_path }} -G Ninja ..
+          env PATH=/${{ matrix.mingw_arch }}/bin ninja
+          env PATH=/${{ matrix.mingw_arch }}/bin mingwdeployqt.exe ${env:targetName}'.exe'
           ls -l
           ls -l desktop-qt
           cd ..
