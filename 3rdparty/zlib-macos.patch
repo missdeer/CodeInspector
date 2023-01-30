@@ -1,0 +1,39 @@
+diff --git a/gzlib.c b/gzlib.c
+index 55da46a..ff3dad0 100644
+--- a/gzlib.c
++++ b/gzlib.c
+@@ -2,6 +2,8 @@
+  * Copyright (C) 2004-2019 Mark Adler
+  * For conditions of distribution and use, see copyright notice in zlib.h
+  */
++#include <fcntl.h>
++#include <unistd.h>
+ 
+ #include "gzguts.h"
+ 
+diff --git a/gzread.c b/gzread.c
+index dd77381..e71063e 100644
+--- a/gzread.c
++++ b/gzread.c
+@@ -2,6 +2,8 @@
+  * Copyright (C) 2004-2017 Mark Adler
+  * For conditions of distribution and use, see copyright notice in zlib.h
+  */
++#include <fcntl.h>
++#include <unistd.h>
+ 
+ #include "gzguts.h"
+ 
+diff --git a/gzwrite.c b/gzwrite.c
+index eb8a0e5..a18111f 100644
+--- a/gzwrite.c
++++ b/gzwrite.c
+@@ -2,6 +2,8 @@
+  * Copyright (C) 2004-2019 Mark Adler
+  * For conditions of distribution and use, see copyright notice in zlib.h
+  */
++#include <fcntl.h>
++#include <unistd.h>
+ 
+ #include "gzguts.h"
+ 
