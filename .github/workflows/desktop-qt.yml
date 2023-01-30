@@ -69,17 +69,10 @@ jobs:
         run: |
           cd 3rdparty\scintillua
           git apply ..\scintillua.patch
+          cd ..\zlib
+          git apply ..\zlib.patch
           cd ..\..
       
-      - name: Set up jom
-        shell: cmd
-        run: |
-          mkdir jom
-          cd jom
-          curl.exe -o jom.zip -L https://download.qt.io/official_releases/jom/jom_1_1_3.zip
-          7z.exe x jom.zip
-          cd ..
-          
       - name: build-msvc
         shell: cmd
         env:
@@ -148,6 +141,8 @@ jobs:
         run: |
           cd 3rdparty\scintillua
           git apply ..\scintillua.patch
+          cd ..\zlib
+          git apply ..\zlib.patch
           cd ..\..
           
       - name: Set up clang for Windows
@@ -158,16 +153,7 @@ jobs:
           curl.exe -o LLVM.exe -L ${{ matrix.clang_link }}
           7z.exe x LLVM.exe
           cd ..
-      
-      - name: Set up jom
-        shell: cmd
-        run: |
-          mkdir jom
-          cd jom
-          curl.exe -o jom.zip -L https://download.qt.io/official_releases/jom/jom_1_1_3.zip
-          7z.exe x jom.zip
-          cd ..
-          
+                
       - name: build-msvc
         shell: cmd
         env:
@@ -258,17 +244,10 @@ jobs:
         run: |
           cd 3rdparty\scintillua
           git apply ..\scintillua.patch
+          cd ..\zlib
+          git apply ..\zlib.patch
           cd ..\..
                 
-      - name: Set up jom
-        shell: cmd
-        run: |
-          mkdir jom
-          cd jom
-          curl.exe -o jom.zip -L https://download.qt.io/official_releases/jom/jom_1_1_3.zip
-          7z.exe x jom.zip
-          cd ..
-          
       - name: build-intel-msvc
         shell: cmd
         env:
