@@ -82,9 +82,8 @@ jobs:
           cd ..\..\..\..
           mkdir build
           cd build
-          qmake -r CONFIG+=release CONFIG+=qtquickcompiler ..\${{ env.targetName }}.pro
-          if exist %CD%\jom\jom.exe jom.exe -j %NUMBER_OF_PROCESSORS%
-          if not exist %CD%\jom\jom.exe nmake
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl -G Ninja ..
+          ninja
           cd ..
           
   win32-clang-msvc:
@@ -161,9 +160,8 @@ jobs:
           cd ..\..\..\..
           mkdir build
           cd build
-          qmake -r -spec win32-clang-msvc CONFIG+=release CONFIG+=qtquickcompiler ..\${{ env.targetName }}.pro
-          if exist %CD%\jom\jom.exe jom.exe -j %NUMBER_OF_PROCESSORS%
-          if not exist %CD%\jom\jom.exe nmake
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang-cl -DCMAKE_CXX_COMPILER=clang-cl -G Ninja ..
+          ninja
           cd ..
           
   win32-intel-msvc:
@@ -255,9 +253,8 @@ jobs:
           cd ..\..\..\..
           mkdir build
           cd build
-          qmake -r -spec win32-clang-msvc CONFIG+=release CONFIG+=qtquickcompiler ..\${{ env.targetName }}.pro
-          if exist %CD%\jom\jom.exe jom.exe -j %NUMBER_OF_PROCESSORS%
-          if not exist %CD%\jom\jom.exe nmake
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icx -G Ninja ..
+          ninja
           cd ..
           
   win32-mingw:
