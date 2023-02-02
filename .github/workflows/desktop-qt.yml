@@ -35,11 +35,13 @@ jobs:
       
     steps:
       - name: Install Qt
-        uses: jurplel/install-qt-action@v2
+        uses: jurplel/install-qt-action@v3
         with:
           version: ${{ matrix.qt_ver }}
           target: ${{ matrix.qt_target }}
           arch: ${{ matrix.qt_arch }}
+          cache: 'true'
+          cache-key-prefix: 'install-qt-action-${{ matrix.qt_arch }}-${{ matrix.qt_ver }}'
           modules: "qt5compat qtimageformats"
           aqtversion: '==3.0.1'
                     
@@ -107,11 +109,13 @@ jobs:
       
     steps:
       - name: Install Qt
-        uses: jurplel/install-qt-action@v2
+        uses: jurplel/install-qt-action@v3
         with:
           version: ${{ matrix.qt_ver }}
           target: ${{ matrix.qt_target }}
           arch: ${{ matrix.qt_arch }}
+          cache: 'true'
+          cache-key-prefix: 'install-qt-action-${{ matrix.qt_arch }}-${{ matrix.qt_ver }}'
           modules: "qt5compat qtimageformats"
           aqtversion: '==3.0.1'
                     
@@ -187,11 +191,13 @@ jobs:
       
     steps:
       - name: Install Qt
-        uses: jurplel/install-qt-action@v2
+        uses: jurplel/install-qt-action@v3
         with:
           version: ${{ matrix.qt_ver }}
           target: ${{ matrix.qt_target }}
           arch: ${{ matrix.qt_arch }}
+          cache: 'true'
+          cache-key-prefix: 'install-qt-action-${{ matrix.qt_arch }}-${{ matrix.qt_ver }}'
           modules: "qt5compat qtimageformats"
           aqtversion: '==3.0.1'
                     
@@ -270,7 +276,6 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        qt_arch: [mingw64_qt6-gcc, mingw64_qt6-clang, mingw64_qt6-static-gcc, mingw64_qt6-static-clang]
         include:
           - qt_arch: mingw64_qt6-gcc
             mingw_arch: MINGW64 
@@ -296,7 +301,7 @@ jobs:
             toolchains: gcc
             c: gcc
             cxx: g++
-            qt_build: qt6
+            qt_build: qt6-static
             qt_dir: /mingw64/qt6-static/lib/cmake/Qt6
             cmake_prefix_path: /mingw64/qt6-static
           - qt_arch: mingw64_qt6-static-clang
@@ -305,7 +310,7 @@ jobs:
             toolchains: clang
             c: clang
             cxx: clang++
-            qt_build: qt6
+            qt_build: qt6-static
             qt_dir: /clang64/qt6-static/lib/cmake/Qt6
             cmake_prefix_path: /clang64/qt6-static
     env:
@@ -386,9 +391,11 @@ jobs:
       targetName: CodeInspector
     steps:
       - name: Install Qt
-        uses: jurplel/install-qt-action@v2
+        uses: jurplel/install-qt-action@v3
         with:
           version: ${{ matrix.qt_ver }}
+          cache: 'true'
+          cache-key-prefix: 'install-qt-action-${{ matrix.qt_arch }}-${{ matrix.qt_ver }}'
           modules: "qt5compat qtimageformats"
           aqtversion: '==3.0.1'
         
