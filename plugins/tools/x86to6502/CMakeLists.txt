@@ -34,7 +34,13 @@ file(GLOB
         ./*.cpp
         )
 
-qt_add_plugin(${PROJECT_NAME} STATIC CLASS_NAME X86To6502Plugin)
+
+IF(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
+        qt_add_plugin(${PROJECT_NAME} STATIC CLASS_NAME X86To6502Plugin)
+ELSE()
+        add_library(${PROJECT_NAME} STATIC)
+        target_compile_definitions(${PROJECT_NAME} PUBLIC  QT_STATICPLUGIN)
+ENDIF()
 
 target_sources(${PROJECT_NAME} PRIVATE ${src} ${headers})
 
