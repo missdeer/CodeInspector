@@ -313,6 +313,42 @@ jobs:
             qt_build: qt6-static
             qt_dir: /clang64/qt6-static/lib/cmake/Qt6
             cmake_prefix_path: /clang64/qt6-static
+          - qt_arch: mingw64_qt5-ucrt-gcc
+            mingw_arch: UCRT64
+            mingw_prefix: mingw-w64-ucrt-x86_64
+            toolchains: gcc
+            c: gcc
+            cxx: g++
+            qt_build: qt5
+            qt_dir: /ucrt64/lib/cmake/Qt5
+            cmake_prefix_path: /ucrt64
+          - qt_arch: mingw64_qt5-clang
+            mingw_arch: CLANG64
+            mingw_prefix: mingw-w64-clang-x86_64
+            toolchains: clang
+            c: clang
+            cxx: clang++
+            qt_build: qt5
+            qt_dir: /clang64/lib/cmake/Qt5
+            cmake_prefix_path: /clang64
+          - qt_arch: mingw64_qt5-static-ucrt-gcc
+            mingw_arch: UCRT64
+            mingw_prefix: mingw-w64-ucrt-x86_64
+            toolchains: gcc
+            c: gcc
+            cxx: g++
+            qt_build: qt5-static
+            qt_dir: /ucrt64/qt5-static/lib/cmake/Qt5
+            cmake_prefix_path: /ucrt64/qt5-static
+          - qt_arch: mingw64_qt5-static-clang
+            mingw_arch: CLANG64
+            mingw_prefix: mingw-w64-clang-x86_64
+            toolchains: clang
+            c: clang
+            cxx: clang++
+            qt_build: qt5-static
+            qt_dir: /clang64/qt5-static/lib/cmake/Qt5
+            cmake_prefix_path: /clang64/qt5-static
     env:
       targetName: CodeInspector
       
