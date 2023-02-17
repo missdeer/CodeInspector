@@ -1,8 +1,8 @@
 diff --git a/Scintillua.cxx b/Scintillua.cxx
-index e0bbf8f..5e3cd2c 100644
+index 8da36ae..e01dad2 100644
 --- a/Scintillua.cxx
 +++ b/Scintillua.cxx
-@@ -523,20 +523,22 @@ const char *Scintillua::PropertyGet(const char *key) { return props.Get(key); }
+@@ -518,20 +518,22 @@ const char *Scintillua::PropertyGet(const char *key) { return props.Get(key); }
  
  const char *Scintillua::GetName() { return name.c_str(); }
  
@@ -31,7 +31,7 @@ index e0bbf8f..5e3cd2c 100644
  
  EXPORT_FUNCTION int CALLING_CONVENTION GetLexerCount() { return 1; }
  
-@@ -572,6 +574,4 @@ EXPORT_FUNCTION Scintilla::ILexer5 *CALLING_CONVENTION CreateLexer(const char *n
+@@ -567,6 +569,4 @@ EXPORT_FUNCTION Scintilla::ILexer5 *CALLING_CONVENTION CreateLexer(const char *n
  EXPORT_FUNCTION const char *CALLING_CONVENTION GetCreateLexerError() {
    return errorMessage.c_str();
  }
