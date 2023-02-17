@@ -17,13 +17,13 @@ file(GLOB
         ./*.cxx
 )
         
-add_library(scintillua STATIC ${scintillua_src})
+add_library(${PROJECT_NAME} STATIC ${scintillua_src})
 
-target_link_libraries(scintillua PRIVATE 
+target_link_libraries(${PROJECT_NAME} PRIVATE
         lua scintilla lexilla lpeg
         )
 
-target_include_directories (scintillua PUBLIC 
+target_include_directories (${PROJECT_NAME} PUBLIC
     ${CMAKE_CURRENT_BINARY_DIR} 
     ${CMAKE_CURRENT_SOURCE_DIR}
     )
@@ -49,7 +49,7 @@ foreach(file ${theme_res})
 endforeach()
 
 qt_add_resources(
-    scintillua "scintillua"
+    ${PROJECT_NAME} "scintillua"
     PREFIX "/scintillua"
     FILES ${lexers} ${themes}
 )

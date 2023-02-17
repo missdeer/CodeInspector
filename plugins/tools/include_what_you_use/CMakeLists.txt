@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Network Xml LinguistTools)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Network Xml LinguistTools)
 
 # Instruct CMake to run moc automatically when needed.
@@ -34,9 +34,9 @@ file(GLOB
         ./*.cpp
         )
 
-qt_add_plugin(include_what_you_use STATIC CLASS_NAME IncludeWhatYouUsePlugin)
+qt_add_plugin(${PROJECT_NAME} STATIC CLASS_NAME IncludeWhatYouUsePlugin)
 
-target_sources(include_what_you_use PRIVATE ${src} ${headers})
+target_sources(${PROJECT_NAME} PRIVATE ${src} ${headers})
 
-target_include_directories(include_what_you_use PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-target_link_libraries(include_what_you_use PRIVATE core plugins scintilla Qt::Widgets)
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_link_libraries(${PROJECT_NAME} PRIVATE core plugins scintilla Qt::Widgets)

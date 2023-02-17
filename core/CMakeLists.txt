@@ -4,9 +4,11 @@ project(core VERSION 1.0.0)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Network Xml LinguistTools)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Network Xml LinguistTools)
-find_package(Qt6 COMPONENTS Core5Compat REQUIRED)
+if(Qt6_FOUND)
+        find_package(Qt6 COMPONENTS Core5Compat REQUIRED)
+endif()
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON) # if you have any .ui files
@@ -44,7 +46,7 @@ add_library(core
         ${core_qrc}
         )
 
-target_link_libraries(core PUBLIC
+target_link_libraries(${PROJECT_NAME} PUBLIC
         zlibstatic
         lua
         lpeg
@@ -54,7 +56,12 @@ target_link_libraries(core PUBLIC
         Qt::Widgets
         Qt::Network
         Qt::Xml
-        Qt::Core5Compat
         )
 
-target_include_directories(core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
+if(Qt6_FOUND)
+        target_link_libraries(${PROJECT_NAME} PUBLIC
+                Qt::Core5Compat
+                )
+endif()
+
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})

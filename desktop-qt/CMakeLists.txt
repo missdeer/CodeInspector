@@ -4,9 +4,11 @@ project(CodeInspector VERSION 1.0.0)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Network Xml LinguistTools)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Network Xml LinguistTools)
-find_package(Qt6 COMPONENTS Core5Compat REQUIRED)
+if(Qt6_FOUND)
+        find_package(Qt6 COMPONENTS Core5Compat REQUIRED)
+endif()
 
 # Instruct CMake to run moc automatically when needed.
 set(CMAKE_AUTOMOC ON)
@@ -58,7 +60,7 @@ set(desktop_src
 
 IF(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/translations/CodeInspector_zh_CN.ts)
-        qt_add_executable(CodeInspector
+        qt_add_executable(${PROJECT_NAME}
                 MANUAL_FINALIZATION
                 ./CodeInspector.rc
                 ./CodeInspector.icns
@@ -70,7 +72,7 @@ IF(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
                 )
 ELSE()
         qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/translations/CodeInspector_zh_CN.ts) 
-        add_executable(CodeInspector
+        add_executable(${PROJECT_NAME}
                 ./CodeInspector.rc
                 ./CodeInspector.icns
                 ${desktop_headers}
@@ -81,14 +83,14 @@ ELSE()
                 )
 ENDIF()
 
-set_target_properties(CodeInspector PROPERTIES
+set_target_properties(${PROJECT_NAME} PROPERTIES
         WIN32_EXECUTABLE ON
         MACOSX_BUNDLE ON
         )
 
 if (APPLE)
     set_source_files_properties("${CMAKE_CURRENT_SOURCE_DIR}/CodeInspector.icns" PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
-    set_target_properties(CodeInspector PROPERTIES
+    set_target_properties(${PROJECT_NAME} PROPERTIES
             RESOURCE "./CodeInspector.icns"
             MACOSX_BUNDLE_BUNDLE_NAME CodeInspector
             MACOSX_BUNDLE_GUI_IDENTIFIER "com.ismisv.codeinspector"
@@ -97,13 +99,19 @@ if (APPLE)
     )
 endif()
 
-target_link_libraries(CodeInspector PRIVATE 
-        Qt::Widgets Qt::Network Qt::Xml Qt::Core5Compat
+target_link_libraries(${PROJECT_NAME} PRIVATE
+        Qt::Widgets Qt::Network Qt::Xml
         core
         ast cfg gcctreertl ir optimization
         rextester wandbox
         clang_format clang_query clangtidy include_what_you_use ldd llvmmca osaca pahole psv_studio readelf strings x86to6502)
 
+if(Qt6_FOUND)
+        target_link_libraries(${PROJECT_NAME} PUBLIC
+                Qt::Core5Compat
+                )
+endif()
+
 if(QT_VERSION_MAJOR EQUAL 6)
-    qt_finalize_executable(CodeInspector)
+    qt_finalize_executable(${PROJECT_NAME})
 endif()

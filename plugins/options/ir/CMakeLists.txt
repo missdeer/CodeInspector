@@ -4,8 +4,7 @@ project(ir VERSION 1.0.0)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Network Xml LinguistTools)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Network Xml LinguistTools)
 
 # Instruct CMake to run moc automatically when needed.
@@ -34,10 +33,10 @@ file(GLOB
         ./*.cpp
         )
 
-qt_add_plugin(ir STATIC CLASS_NAME LLVMIRPlugin)
+qt_add_plugin(${PROJECT_NAME} STATIC CLASS_NAME LLVMIRPlugin)
 
-target_sources(ir PRIVATE ${src} ${headers})
+target_sources(${PROJECT_NAME} PRIVATE ${src} ${headers})
 
-target_link_libraries(ir PRIVATE core plugins scintilla Qt::Widgets)
+target_link_libraries(${PROJECT_NAME} PRIVATE core plugins scintilla Qt::Widgets)
 
-target_include_directories(ir PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

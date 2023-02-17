@@ -9,8 +9,8 @@ file(GLOB
         ./*.c
         )
 
-add_library(lpeg STATIC ${lpeg_src})
+add_library(${PROJECT_NAME} STATIC ${lpeg_src})
 
-target_link_libraries(lpeg PRIVATE lua)
+target_link_libraries(${PROJECT_NAME} PRIVATE lua)
 
-target_include_directories (lpeg PUBLIC ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories (${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR})

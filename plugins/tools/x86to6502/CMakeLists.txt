@@ -4,7 +4,7 @@ project(x86to6502 VERSION 1.0.0)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Network Xml LinguistTools)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Network Xml LinguistTools)
 
 # Find includes in corresponding build directories
@@ -34,10 +34,10 @@ file(GLOB
         ./*.cpp
         )
 
-qt_add_plugin(x86to6502 STATIC CLASS_NAME X86To6502Plugin)
+qt_add_plugin(${PROJECT_NAME} STATIC CLASS_NAME X86To6502Plugin)
 
-target_sources(x86to6502 PRIVATE ${src} ${headers})
+target_sources(${PROJECT_NAME} PRIVATE ${src} ${headers})
 
-target_link_libraries(x86to6502 PRIVATE core plugins scintilla Qt::Widgets)
+target_link_libraries(${PROJECT_NAME} PRIVATE core plugins scintilla Qt::Widgets)
 
-target_include_directories(x86to6502 PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
