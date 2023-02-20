@@ -22,14 +22,19 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        qt_ver: [6.4.2]
         qt_target: [desktop]
         qt_arch: [win64_msvc2019_64]
         include:
-          - qt_arch: win64_msvc2019_64
+          - qt_ver: 6.4.2
+            qt_modules: "qt5compat qtimageformats"
             msvc_arch: x64
             qt_arch_install: msvc2019_64
-            mingw_arch: MINGW64 
+            mingw_arch: MINGW64
+          - qt_ver: 5.15.2
+            qt_modules: ""
+            msvc_arch: x64
+            qt_arch_install: msvc2019_64
+            mingw_arch: MINGW64
     env:
       targetName: CodeInspector
       
@@ -42,7 +47,7 @@ jobs:
           arch: ${{ matrix.qt_arch }}
           cache: 'true'
           cache-key-prefix: 'install-qt-action-${{ matrix.qt_arch }}-${{ matrix.qt_ver }}'
-          modules: "qt5compat qtimageformats"
+          modules: ${{ matrix.qt_modules }}
           aqtversion: '==3.0.1'
                     
       - uses: msys2/setup-msys2@v2
@@ -95,14 +100,20 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        qt_ver: [6.4.2]
         qt_target: [desktop]
         qt_arch: [win64_msvc2019_64]
         include:
-          - qt_arch: win64_msvc2019_64
+          - qt_ver: 6.4.2
+            qt_modules: "qt5compat qtimageformats"
             msvc_arch: x64
             qt_arch_install: msvc2019_64
-            mingw_arch: MINGW64 
+            mingw_arch: MINGW64
+            clang_link: https://github.com/llvm/llvm-project/releases/download/llvmorg-15.0.7/LLVM-15.0.7-win64.exe
+          - qt_ver: 5.15.2
+            qt_modules: ""
+            msvc_arch: x64
+            qt_arch_install: msvc2019_64
+            mingw_arch: MINGW64
             clang_link: https://github.com/llvm/llvm-project/releases/download/llvmorg-15.0.7/LLVM-15.0.7-win64.exe
     env:
       targetName: CodeInspector
@@ -116,7 +127,7 @@ jobs:
           arch: ${{ matrix.qt_arch }}
           cache: 'true'
           cache-key-prefix: 'install-qt-action-${{ matrix.qt_arch }}-${{ matrix.qt_ver }}'
-          modules: "qt5compat qtimageformats"
+          modules: ${{ matrix.qt_modules }}
           aqtversion: '==3.0.1'
                     
       - uses: msys2/setup-msys2@v2
@@ -178,14 +189,19 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        qt_ver: [6.4.2]
         qt_target: [desktop]
-        qt_arch: [win64_msvc2019_64]
+        qt_arch : [win64_msvc2019_64]
         include:
-          - qt_arch: win64_msvc2019_64
+          - qt_ver: 6.4.2
+            qt_modules: "qt5compat qtimageformats"
             msvc_arch: x64
             qt_arch_install: msvc2019_64
             mingw_arch: MINGW64 
+          - qt_ver: 5.15.2
+            qt_modules: ""
+            msvc_arch: x64
+            qt_arch_install: msvc2019_64
+            mingw_arch: MINGW64
     env:
       targetName: CodeInspector
       
@@ -198,7 +214,7 @@ jobs:
           arch: ${{ matrix.qt_arch }}
           cache: 'true'
           cache-key-prefix: 'install-qt-action-${{ matrix.qt_arch }}-${{ matrix.qt_ver }}'
-          modules: "qt5compat qtimageformats"
+          modules: ${{ matrix.qt_modules }}
           aqtversion: '==3.0.1'
                     
       - name: cache intel install
