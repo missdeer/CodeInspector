@@ -23,7 +23,7 @@ jobs:
     strategy:
       matrix:
         toolset: [cl, icx, clang-cl]
-        qt_ver: [6.4.2, 5.15.2]
+        qt_ver: [6.6.1, 5.15.2]
         qt_target: [desktop]
         qt_arch: [win64_msvc2019_64]
         msvc_arch: [x64]
@@ -31,25 +31,25 @@ jobs:
         mingw_arch: [MINGW64]
         include:
           - toolset: cl
-            qt_ver: 6.4.2
+            qt_ver: 6.6.1
             qt_modules: "qt5compat qtimageformats"
           - toolset: cl
             qt_ver: 5.15.2
             qt_modules: ""
           - toolset: icx
-            qt_ver: 6.4.2
+            qt_ver: 6.6.1
             qt_modules: "qt5compat qtimageformats"
           - toolset: icx
             qt_ver: 5.15.2
             qt_modules: ""
           - toolset: clang-cl
-            qt_ver: 6.4.2
+            qt_ver: 6.6.1
             qt_modules: "qt5compat qtimageformats"
-            clang_link: https://github.com/llvm/llvm-project/releases/download/llvmorg-15.0.7/LLVM-15.0.7-win64.exe
+            clang_link: https://github.com/llvm/llvm-project/releases/download/llvmorg-17.0.5/LLVM-17.0.5-win64.exe
           - toolset: clang-cl
             qt_ver: 5.15.2
             qt_modules: ""
-            clang_link: https://github.com/llvm/llvm-project/releases/download/llvmorg-15.0.7/LLVM-15.0.7-win64.exe
+            clang_link: https://github.com/llvm/llvm-project/releases/download/llvmorg-17.0.5/LLVM-17.0.5-win64.exe
     env:
       targetName: CodeInspector
       
@@ -295,7 +295,7 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest]
-        qt_ver: [6.4.2]
+        qt_ver: [6.6.1]
         qt_arch: [clang_64]
     env:
       targetName: CodeInspector
