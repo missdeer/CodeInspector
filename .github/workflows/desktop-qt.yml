@@ -144,7 +144,7 @@ jobs:
           mkdir build
           cd build
           cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=${{ matrix.toolset }} -DCMAKE_CXX_COMPILER=${{ matrix.toolset }} -G Ninja ..
-          ninja
+          cmake --build . --parallel --verbose
           cd ..
           
   win32-mingw:
@@ -297,7 +297,7 @@ jobs:
           mkdir build
           cd build
           env MSYSTEM=${{ matrix.mingw_arch }} PATH=/${{ matrix.mingw_arch }}/bin:/${{ matrix.mingw_arch }}/${{ matrix.qt_build }}/bin:/usr/bin:$PATH cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=${{ matrix.c }} -DCMAKE_CXX_COMPILER=${{ matrix.cxx }} -DQT_DIR=${{ matrix.qt_dir }} -DCMAKE_PREFIX_PATH=${{ matrix.cmake_prefix_path }} -G Ninja ..
-          env MSYSTEM=${{ matrix.mingw_arch }} PATH=/${{ matrix.mingw_arch }}/bin:/usr/bin:$PATH ninja
+          env MSYSTEM=${{ matrix.mingw_arch }} PATH=/${{ matrix.mingw_arch }}/bin:/usr/bin:$PATH cmake --build . --parallel --verbose
           env MSYSTEM=${{ matrix.mingw_arch }} PATH=/${{ matrix.mingw_arch }}/bin:/usr/bin:$PATH mingwdeployqt.exe desktop-qt/CodeInspector.exe
           
   macOS:
@@ -346,8 +346,8 @@ jobs:
           cd ../../../..
           mkdir build
           cd build
-          cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ ..
-          make -j `sysctl -n hw.logicalcpu`
+          cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ ..
+          cmake --build . --parallel --verbose
           cd ..
           
       - name: package
