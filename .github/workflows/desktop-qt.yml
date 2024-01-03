@@ -214,6 +214,15 @@ jobs:
             qt_build: qt5-static
             qt_dir: /ucrt64/qt5-static/lib/cmake/Qt5
             cmake_prefix_path: /ucrt64/qt5-static
+          - qt_arch: mingw64_qt5-static-gcc
+            mingw_arch: MINGW64
+            mingw_prefix: mingw-w64-x86_64
+            toolchains: gcc
+            c: gcc
+            cxx: g++
+            qt_build: qt5-static
+            qt_dir: /mingw64/qt5-static/lib/cmake/Qt5
+            cmake_prefix_path: /mingw64/qt5-static
           - qt_arch: mingw64_qt5-static-clang
             mingw_arch: CLANG64
             mingw_prefix: mingw-w64-clang-x86_64
