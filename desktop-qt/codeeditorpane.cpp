@@ -190,7 +190,7 @@ bool CodeEditorPane::makeLibariesMenu()
     if (!libraries)
         return false;
     m_menuLibraries = new QMenu(this);
-    for (const auto &l : qAsConst(*libraries))
+    for (const auto &l : std::as_const(*libraries))
     {
         const auto &versions = l->getVersions();
         if (versions.isEmpty())
