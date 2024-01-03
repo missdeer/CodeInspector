@@ -341,6 +341,7 @@ jobs:
       
       - name: build macos
         run: |
+          brew install ninja
           cd 3rdparty/scintilla/qt/ScintillaEdit
           python WidgetGen.py
           cd ../../../..
