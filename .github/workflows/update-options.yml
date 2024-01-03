@@ -1,4 +1,4 @@
-name: Update Options
+﻿name: Update Options
 
 on:
   schedule:
@@ -27,7 +27,7 @@ jobs:
         - name: update
           run: |
             cd core/resource
-            curl -sSL -o configurations.json https://godbolt.org/client-options.js
+            curl -sSL -o configurations.json https://www.compiler-explorer.com/client-options.js
             j=`cat configurations.json`
             findstr="="
             rest=${j#*$findstr}
