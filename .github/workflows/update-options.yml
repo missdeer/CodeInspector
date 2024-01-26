@@ -33,7 +33,8 @@ jobs:
             rest=${j#*$findstr}
             echo ${rest::-1} > configurations.json
             git commit -m "auto update configurations at $(date)" configurations.json
+            cd -
             git submodule update --remote
-            git commit -m "auto update submodules at $(date)" 3rdparty
+            git status | grep 'new commits' | awk '{print $2}' | while read dir; do git commit -m "auto update submodule at $(date)" $dir; done
             git push -f origin master
       
