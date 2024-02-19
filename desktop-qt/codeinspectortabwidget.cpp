@@ -34,18 +34,20 @@ void CodeInspectorTabWidget::onCustomContextMenuRequested(const QPoint &pos)
     menu.exec(mapToGlobal(pos));
 }
 
-void CodeInspectorTabWidget::removePage(QWidget **w)
+void CodeInspectorTabWidget::removePage(QWidget **ppWidget)
 {
-    if (!*w)
-        return;
-
-    for (int i = 0; i < count(); i++)
+    if (!*ppWidget)
     {
-        if (widget(i) == *w)
+        return;
+    }
+
+    for (int index = 0; index < count(); index++)
+    {
+        if (widget(index) == *ppWidget)
         {
-            removeTab(i);
-            delete *w;
-            *w = nullptr;
+            removeTab(index);
+            delete *ppWidget;
+            *ppWidget = nullptr;
             break;
         }
     }

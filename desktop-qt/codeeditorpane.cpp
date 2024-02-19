@@ -63,16 +63,16 @@ void CodeEditorPane::updateLanguageList()
 #if defined(LOGS_ENABLED)
         qDebug() << Q_FUNC_INFO << __LINE__ << language->name;
 #endif
-        int         index    = m_cbLanguageList->findText(language->name);
+        int index = m_cbLanguageList->findText(language->name);
         if (index < 0)
         {
-            auto iconPath = QString(":/resource/image/language/%1.svg").arg(language->id);
+            auto iconPath = QStringLiteral(":/resource/image/language/%1.svg").arg(language->id);
             if (!QFile::exists(iconPath))
             {
-                iconPath = QString(":/resource/image/language/%1-black.svg").arg(language->id);
+                iconPath = QStringLiteral(":/resource/image/language/%1-black.svg").arg(language->id);
                 if (!QFile::exists(iconPath))
                 {
-                    iconPath = QString(":/resource/image/language/%1.png").arg(language->id);
+                    iconPath = QStringLiteral(":/resource/image/language/%1.png").arg(language->id);
                     if (!QFile::exists(iconPath))
                     {
                         iconPath = QStringLiteral(":/CodeInspector.png");
@@ -118,7 +118,7 @@ void CodeEditorPane::onCurrentLanguageChanged(const QString &text)
         if (!actions.isEmpty())
         {
             auto *action = actions.at(0);
-            emit action->triggered();
+            emit  action->triggered();
         }
     }
 }
@@ -164,17 +164,19 @@ void CodeEditorPane::onLibraryVersionTriggered()
     auto *action    = qobject_cast<QAction *>(sender());
     auto  libraries = ciApp->getLibraryList(m_cbLanguageList->currentText());
     if (!libraries)
-        return;
-    auto libraryName = action->data().toString();
-    auto it          = std::find_if(libraries->begin(), libraries->end(), [&libraryName](const LibraryPtr l) { return l->getName() == libraryName; });
-    if (libraries->end() != it)
     {
-        const auto  l        = *it;
-        const auto &versions = l->getVersions();
+        return;
+    }
+    auto libraryName = action->data().toString();
+    auto iter = std::find_if(libraries->begin(), libraries->end(), [&libraryName](const LibraryPtr &lib) { return lib->getName() == libraryName; });
+    if (libraries->end() != iter)
+    {
+        const auto &lib      = *iter;
+        const auto &versions = lib->getVersions();
         QString     version  = action->text();
-        for (const auto &v : versions)
+        for (const auto &ver : versions)
         {
-            v->setSelected(v->getVersion() == version);
+            ver->setSelected(ver->getVersion() == version);
         }
     }
 }
@@ -188,28 +190,32 @@ bool CodeEditorPane::makeLibariesMenu()
     }
     auto libraries = ciApp->getLibraryList(m_cbLanguageList->currentText());
     if (!libraries)
-        return false;
-    m_menuLibraries = new QMenu(this);
-    for (const auto &l : std::as_const(*libraries))
     {
-        const auto &versions = l->getVersions();
+        return false;
+    }
+    m_menuLibraries = new QMenu(this);
+    for (const auto &lib : std::as_const(*libraries))
+    {
+        const auto &versions = lib->getVersions();
         if (versions.isEmpty())
+        {
             continue;
-        auto *ag = new QActionGroup(this);
-        ag->setExclusive(true);
-        QMenu *  menu   = m_menuLibraries->addMenu(l->getName());
+        }
+        auto *actionGroup = new QActionGroup(this);
+        actionGroup->setExclusive(true);
+        QMenu   *menu   = m_menuLibraries->addMenu(lib->getName());
         QAction *action = menu->addAction(" - ");
         connect(action, &QAction::triggered, this, &CodeEditorPane::onLibraryVersionTriggered);
-        ag->addAction(action);
-        action->setData(l->getName());
+        actionGroup->addAction(action);
+        action->setData(lib->getName());
         action->setCheckable(true);
         action->setChecked(true);
-        for (const auto &v : versions)
+        for (const auto &version : versions)
         {
-            QAction *action = menu->addAction(v->getVersion());
-            action->setData(l->getName());
+            QAction *action = menu->addAction(version->getVersion());
+            action->setData(lib->getName());
             action->setCheckable(true);
-            ag->addAction(action);
+            actionGroup->addAction(action);
             connect(action, &QAction::triggered, this, &CodeEditorPane::onLibraryVersionTriggered);
         }
     }

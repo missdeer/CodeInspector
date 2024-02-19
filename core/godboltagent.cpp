@@ -14,7 +14,7 @@ GodboltAgent::GodboltAgent(QNetworkAccessManager &nam, QObject *parent) : QObjec
 
 void GodboltAgent::initialize(BackendInterface *backend, const QString &baseURL)
 {
-    m_backend = backend;
+    m_backend    = backend;
     m_apiBaseURL = baseURL;
 }
 
@@ -26,77 +26,77 @@ void GodboltAgent::compile(const CompileInfo &ci)
     auto compilerList = m_backend->getCompilerList(ci.language);
 
     QJsonObject compilerOptionsObj;
-    compilerOptionsObj.insert("produceCfg", false);
+    compilerOptionsObj.insert(QStringLiteral("produceCfg"), false);
     if (m_compilerOptions & CO_AST)
     {
-        compilerOptionsObj.insert("produceAst", true);
+        compilerOptionsObj.insert(QStringLiteral("produceAst"), true);
     }
     if (m_compilerOptions & CO_OPTIMIZATION)
     {
-        compilerOptionsObj.insert("produceOptInfo", true);
+        compilerOptionsObj.insert(QStringLiteral("produceOptInfo"), true);
     }
     if (m_compilerOptions & CO_LLVMIR)
     {
-        compilerOptionsObj.insert("produceIr", true);
+        compilerOptionsObj.insert(QStringLiteral("produceIr"), true);
     }
     if (m_compilerOptions & CO_GCCTREERTL)
     {
         QJsonObject produceGccDumpObj;
-        produceGccDumpObj.insert("opened", true);
-        produceGccDumpObj.insert("pass", m_selectedGCCDumpPass);
-        produceGccDumpObj.insert("treeDump", m_gccTreeEnabled);
-        produceGccDumpObj.insert("rtlDump", m_rtlEnabled);
-        compilerOptionsObj.insert("produceGccDump", QJsonValue::fromVariant(produceGccDumpObj));
+        produceGccDumpObj.insert(QStringLiteral("opened"), true);
+        produceGccDumpObj.insert(QStringLiteral("pass"), m_selectedGCCDumpPass);
+        produceGccDumpObj.insert(QStringLiteral("treeDump"), m_gccTreeEnabled);
+        produceGccDumpObj.insert(QStringLiteral("rtlDump"), m_rtlEnabled);
+        compilerOptionsObj.insert(QStringLiteral("produceGccDump"), QJsonValue::fromVariant(produceGccDumpObj));
     }
 
     QJsonArray toolsArray;
     if (m_compilerOptions & CO_LLVMMCA)
     {
         QJsonObject toolObj;
-        toolObj.insert("id", "llvm-mcatrunk");
-        toolObj.insert("args", m_llvmMCAOptions);
+        toolObj.insert(QStringLiteral("id"), "llvm-mcatrunk");
+        toolObj.insert(QStringLiteral("args"), m_llvmMCAOptions);
         toolsArray.append(QJsonValue::fromVariant(toolObj));
     }
     if (m_compilerOptions & CO_CLANGTIDY)
     {
         QJsonObject toolObj;
-        toolObj.insert("id", "clangtidytrunk");
-        toolObj.insert("args", m_clangTidyOptions);
+        toolObj.insert(QStringLiteral("id"), "clangtidytrunk");
+        toolObj.insert(QStringLiteral("args"), m_clangTidyOptions);
         toolsArray.append(QJsonValue::fromVariant(toolObj));
     }
     if (m_compilerOptions & CO_PAHOLE)
     {
         QJsonObject toolObj;
-        toolObj.insert("id", "pahole");
-        toolObj.insert("args", m_paholeOptions);
+        toolObj.insert(QStringLiteral("id"), "pahole");
+        toolObj.insert(QStringLiteral("args"), m_paholeOptions);
         toolsArray.append(QJsonValue::fromVariant(toolObj));
     }
     if (m_compilerOptions & CO_READELF)
     {
         QJsonObject toolObj;
-        toolObj.insert("id", "readelf");
-        toolObj.insert("args", m_readElfOptions);
+        toolObj.insert(QStringLiteral("id"), "readelf");
+        toolObj.insert(QStringLiteral("args"), m_readElfOptions);
         toolsArray.append(QJsonValue::fromVariant(toolObj));
     }
     if (m_compilerOptions & CO_LDD)
     {
         QJsonObject toolObj;
-        toolObj.insert("id", "ldd");
-        toolObj.insert("args", m_lddOptions);
+        toolObj.insert(QStringLiteral("id"), "ldd");
+        toolObj.insert(QStringLiteral("args"), m_lddOptions);
         toolsArray.append(QJsonValue::fromVariant(toolObj));
     }
     if (m_compilerOptions & CO_X86TO6502)
     {
         QJsonObject toolObj;
-        toolObj.insert("id", "x86to6502");
-        toolObj.insert("args", m_x86To6502Options);
+        toolObj.insert(QStringLiteral("id"), "x86to6502");
+        toolObj.insert(QStringLiteral("args"), m_x86To6502Options);
         toolsArray.append(QJsonValue::fromVariant(toolObj));
     }
     if (m_compilerOptions & CO_INCLUDE_WHAT_YOU_USE)
     {
         QJsonObject toolObj;
-        toolObj.insert("id", "iwyu");
-        toolObj.insert("args", m_includeWhatYouUseOptions);
+        toolObj.insert(QStringLiteral("id"), "iwyu");
+        toolObj.insert(QStringLiteral("args"), m_includeWhatYouUseOptions);
         toolsArray.append(QJsonValue::fromVariant(toolObj));
     }
 
@@ -106,15 +106,15 @@ void GodboltAgent::compile(const CompileInfo &ci)
         QString     key;
         const bool &value;
     } filterMap[] = {
-        {"binary", ci.binary},
-        {"labels", ci.labels},
-        {"trim", ci.trim},
-        {"directives", ci.directives},
-        {"intel", ci.intel},
-        {"commentOnly", ci.commentOnly},
-        {"demangle", ci.demangle},
-        {"libraryCode", ci.functions},
-        {"execute", false},
+        {QStringLiteral("binary"), ci.binary},
+        {QStringLiteral("labels"), ci.labels},
+        {QStringLiteral("trim"), ci.trim},
+        {QStringLiteral("directives"), ci.directives},
+        {QStringLiteral("intel"), ci.intel},
+        {QStringLiteral("commentOnly"), ci.commentOnly},
+        {QStringLiteral("demangle"), ci.demangle},
+        {QStringLiteral("libraryCode"), ci.functions},
+        {QStringLiteral("execute"), false},
     };
     for (const auto &filter : filterMap)
     {
@@ -122,24 +122,24 @@ void GodboltAgent::compile(const CompileInfo &ci)
     }
 
     QJsonObject optionsObj;
-    optionsObj.insert("userArguments", ci.userArguments);
-    optionsObj.insert("compilerOptions", QJsonValue::fromVariant(compilerOptionsObj));
-    optionsObj.insert("filters", QJsonValue::fromVariant(filtersObj));
+    optionsObj.insert(QStringLiteral("userArguments"), ci.userArguments);
+    optionsObj.insert(QStringLiteral("compilerOptions"), QJsonValue::fromVariant(compilerOptionsObj));
+    optionsObj.insert(QStringLiteral("filters"), QJsonValue::fromVariant(filtersObj));
     if (!toolsArray.isEmpty())
     {
-        optionsObj.insert("tools", QJsonValue::fromVariant(toolsArray));
+        optionsObj.insert(QStringLiteral("tools"), QJsonValue::fromVariant(toolsArray));
     }
 
     QJsonObject rootObj;
-    rootObj.insert("source", QString(ci.source));
-    rootObj.insert("compiler", m_backend->getCompilerId(compilerList, ci.compiler));
-    rootObj.insert("options", QJsonValue::fromVariant(optionsObj));
+    rootObj.insert(QStringLiteral("source"), QString(ci.source));
+    rootObj.insert(QStringLiteral("compiler"), m_backend->getCompilerId(compilerList, ci.compiler));
+    rootObj.insert(QStringLiteral("options"), QJsonValue::fromVariant(optionsObj));
 
     QString         requestUrl = m_apiBaseURL + "/api/compiler/" + m_backend->getCompilerId(compilerList, ci.compiler) + "/compile";
     QNetworkRequest request    = NetworkRequestHelper::NewRequest(requestUrl);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    request.setRawHeader("Referer", "https://godbolt.org/");
-    request.setRawHeader("X-Requested-With", "XMLHttpRequest");
+    request.setRawHeader(QByteArrayLiteral("Referer"), "https://compiler-explorer.com/");
+    request.setRawHeader(QByteArrayLiteral("X-Requested-With"), "XMLHttpRequest");
 
     QJsonDocument doc;
     doc.setObject(rootObj);
@@ -214,7 +214,7 @@ void GodboltAgent::onCompileRequestFinished()
 #endif
     QJsonObject docObj = doc.object();
 
-    QJsonValue codeVal = docObj["code"];
+    QJsonValue codeVal = docObj[QStringLiteral("code")];
     if (!codeVal.isDouble())
     {
 #if defined(LOGS_ENABLED)
@@ -223,7 +223,7 @@ void GodboltAgent::onCompileRequestFinished()
         return;
     }
 
-    QJsonValue stdoutVal = docObj["stdout"];
+    QJsonValue stdoutVal = docObj[QStringLiteral("stdout")];
     if (!stdoutVal.isArray())
     {
 #if defined(LOGS_ENABLED)
@@ -236,10 +236,10 @@ void GodboltAgent::onCompileRequestFinished()
     for (auto se : stdoutArray)
     {
         QJsonObject soo = se.toObject();
-        m_compileStderr.append(soo["text"].toString() + "\n");
+        m_compileStderr.append(soo[QStringLiteral("text")].toString() + "\n");
     }
 
-    QJsonValue stderrVal = docObj["stderr"];
+    QJsonValue stderrVal = docObj[QStringLiteral("stderr")];
     if (!stderrVal.isArray())
     {
 #if defined(LOGS_ENABLED)
@@ -252,10 +252,10 @@ void GodboltAgent::onCompileRequestFinished()
     for (auto se : stderrArray)
     {
         QJsonObject seo = se.toObject();
-        m_compileStderr.append(seo["text"].toString() + "\n");
+        m_compileStderr.append(seo[QStringLiteral("text")].toString() + "\n");
     }
 
-    QJsonValue asmVal = docObj["asm"];
+    QJsonValue asmVal = docObj[QStringLiteral("asm")];
     if (!asmVal.isArray())
     {
 #if defined(LOGS_ENABLED)
@@ -264,23 +264,27 @@ void GodboltAgent::onCompileRequestFinished()
         return;
     }
     QJsonArray asmArray = asmVal.toArray();
-    for (auto a : asmArray)
+    for (auto asmArrElem : asmArray)
     {
-        QJsonObject o = a.toObject();
+        QJsonObject asmArrElemObj = asmArrElem.toObject();
         AsmItemPtr  asmItem(new AsmItem);
-        asmItem->text = o["text"].toString();
-        if (o["source"].isDouble())
-            asmItem->source = o["source"].toInt();
-        else if (o["source"].isObject())
+        asmItem->text = asmArrElemObj[QStringLiteral("text")].toString();
+        if (asmArrElemObj[QStringLiteral("source")].isDouble())
         {
-            QJsonObject srcObj = o["source"].toObject();
-            asmItem->source    = srcObj["line"].toInt();
+            asmItem->source = asmArrElemObj[QStringLiteral("source")].toInt();
         }
-        if (o["address"].isDouble())
-            asmItem->address = o["address"].toInt();
-        if (o["opcodes"].isArray())
+        else if (asmArrElemObj[QStringLiteral("source")].isObject())
         {
-            QJsonArray opcodes = o["opcodes"].toArray();
+            QJsonObject srcObj = asmArrElemObj[QStringLiteral("source")].toObject();
+            asmItem->source    = srcObj[QStringLiteral("line")].toInt();
+        }
+        if (asmArrElemObj[QStringLiteral("address")].isDouble())
+        {
+            asmItem->address = asmArrElemObj[QStringLiteral("address")].toInt();
+        }
+        if (asmArrElemObj[QStringLiteral("opcodes")].isArray())
+        {
+            QJsonArray opcodes = asmArrElemObj[QStringLiteral("opcodes")].toArray();
             for (auto opcode : opcodes)
             {
                 QString op = opcode.toString();
@@ -288,16 +292,16 @@ void GodboltAgent::onCompileRequestFinished()
                 asmItem->opcodes.append(op.toInt(&ok, 16));
             }
         }
-        if (o["links"].isArray())
+        if (asmArrElemObj[QStringLiteral("links")].isArray())
         {
-            QJsonArray links = o["links"].toArray();
+            QJsonArray links = asmArrElemObj[QStringLiteral("links")].toArray();
             for (auto link : links)
             {
                 QJsonObject l = link.toObject();
                 AsmLinkPtr  asmLink(new AsmLink);
-                asmLink->offset = l["offset"].toInt();
-                asmLink->length = l["length"].toInt();
-                asmLink->to     = l["to"].toInt();
+                asmLink->offset = l[QStringLiteral("offset")].toInt();
+                asmLink->length = l[QStringLiteral("length")].toInt();
+                asmLink->to     = l[QStringLiteral("to")].toInt();
                 asmItem->links.push_back(asmLink);
             }
         }
@@ -306,7 +310,7 @@ void GodboltAgent::onCompileRequestFinished()
         m_asmContent.append(asmItem->text + "\n");
     }
 
-    QJsonValue optOutputVal = docObj["optOutput"];
+    QJsonValue optOutputVal = docObj[QStringLiteral("optOutput")];
     if (optOutputVal.isArray())
     {
         QJsonArray optOutputArray = optOutputVal.toArray();
@@ -316,28 +320,28 @@ void GodboltAgent::onCompileRequestFinished()
             {
                 QJsonObject         ooo = oo.toObject();
                 OptimizationItemPtr oi(new OptimizationItem);
-                oi->pass     = ooo["Pass"].toString();
-                oi->name     = ooo["Name"].toString();
-                oi->type     = ooo["optType"].toString();
-                oi->function = ooo["Function"].toString();
-                oi->display  = ooo["displayString"].toString();
+                oi->pass     = ooo[QStringLiteral("Pass")].toString();
+                oi->name     = ooo[QStringLiteral("Name")].toString();
+                oi->type     = ooo[QStringLiteral("optType")].toString();
+                oi->function = ooo[QStringLiteral("Function")].toString();
+                oi->display  = ooo[QStringLiteral("displayString")].toString();
                 m_optimizationItems.push_back(oi);
             }
         }
         emit hasOptimizationOutput();
     }
 
-    QJsonValue astOutputVal = docObj["astOutput"];
+    QJsonValue astOutputVal = docObj[QStringLiteral("astOutput")];
     if (astOutputVal.isString())
     {
         m_astOutput = astOutputVal.toString();
         emit hasASTOutput();
     }
 
-    QJsonValue hasIrOutputVal = docObj["hasIrOutput"];
+    QJsonValue hasIrOutputVal = docObj[QStringLiteral("hasIrOutput")];
     if (hasIrOutputVal.isBool() && hasIrOutputVal.toBool())
     {
-        QJsonValue irOutputVal = docObj["irOutput"];
+        QJsonValue irOutputVal = docObj[QStringLiteral("irOutput")];
         if (irOutputVal.isArray())
         {
             QJsonArray irOutputArr = irOutputVal.toArray();
@@ -345,44 +349,52 @@ void GodboltAgent::onCompileRequestFinished()
             {
                 QJsonObject   o = a.toObject();
                 LLVMIRItemPtr ir(new LLVMIRItem);
-                ir->text = o["text"].toString();
-                if (o["scope"].isString())
-                    ir->scope = o["scope"].toString();
-                if (o["source"].isObject())
+                ir->text = o[QStringLiteral("text")].toString();
+                if (o[QStringLiteral("scope")].isString())
                 {
-                    auto so = o["source"].toObject();
-                    if (so["file"].isString())
-                        ir->sourceFile = so["file"].toString();
-                    if (so["line"].isDouble())
-                        ir->sourceLine = so["line"].toInt();
+                    ir->scope = o[QStringLiteral("scope")].toString();
+                }
+                if (o[QStringLiteral("source")].isObject())
+                {
+                    auto so = o[QStringLiteral("source")].toObject();
+                    if (so[QStringLiteral("file")].isString())
+                    {
+                        ir->sourceFile = so[QStringLiteral("file")].toString();
+                    }
+                    if (so[QStringLiteral("line")].isDouble())
+                    {
+                        ir->sourceLine = so[QStringLiteral("line")].toInt();
+                    }
                 }
                 m_llvmIRItems.push_back(ir);
                 m_llvmIRContent.append(ir->text + "\n");
             }
             if (!m_llvmIRItems.empty())
+            {
                 emit hasLLVMIROutput();
+            }
         }
     }
 
-    QJsonValue gccDumpOutputVal = docObj["gccDumpOutput"];
+    QJsonValue gccDumpOutputVal = docObj[QStringLiteral("gccDumpOutput")];
     if (gccDumpOutputVal.isObject())
     {
         QJsonObject gccDumpOutputObj    = gccDumpOutputVal.toObject();
-        QJsonValue  gccDumpOutputAllVal = gccDumpOutputObj["all"];
+        QJsonValue  gccDumpOutputAllVal = gccDumpOutputObj[QStringLiteral("all")];
         if (gccDumpOutputAllVal.isArray())
         {
             QJsonArray gccDumpOutputAllArray = gccDumpOutputAllVal.toArray();
-            for (auto a : gccDumpOutputAllArray)
+            for (auto arrElem : gccDumpOutputAllArray)
             {
-                m_gccDumpAllPasses.append(a.toString());
+                m_gccDumpAllPasses.append(arrElem.toString());
             }
         }
-        QJsonValue currentPassOutputVal = gccDumpOutputObj["currentPassOutput"];
+        QJsonValue currentPassOutputVal = gccDumpOutputObj[QStringLiteral("currentPassOutput")];
         if (currentPassOutputVal.isString())
         {
             m_currentGCCDumpPassOutput = currentPassOutputVal.toString();
         }
-        QJsonValue selectedPassVal = gccDumpOutputObj["selectedPass"];
+        QJsonValue selectedPassVal = gccDumpOutputObj[QStringLiteral("selectedPass")];
         if (selectedPassVal.isString())
         {
             m_selectedGCCDumpPass = selectedPassVal.toString();
@@ -390,27 +402,29 @@ void GodboltAgent::onCompileRequestFinished()
         emit hasGccDumpOutput();
     }
 
-    QJsonValue toolsVal = docObj["tools"];
+    QJsonValue toolsVal = docObj[QStringLiteral("tools")];
     if (toolsVal.isArray())
     {
         QJsonArray toolsArray = toolsVal.toArray();
-        for (auto t : toolsArray)
+        for (auto toolArrElem : toolsArray)
         {
-            if (!t.isObject())
+            if (!toolArrElem.isObject())
+            {
                 continue;
+            }
             QString     toolStdout;
             QString     toolStderr;
-            QJsonObject toolObj   = t.toObject();
-            QJsonValue  stderrVal = toolObj["stderr"];
+            QJsonObject toolObj   = toolArrElem.toObject();
+            QJsonValue  stderrVal = toolObj[QStringLiteral("stderr")];
             if (stderrVal.isArray())
             {
                 QJsonArray stderrArray = stderrVal.toArray();
-                for (auto e : stderrArray)
+                for (auto errElem : stderrArray)
                 {
-                    if (e.isObject())
+                    if (errElem.isObject())
                     {
-                        QJsonObject errObj  = e.toObject();
-                        QJsonValue  textVal = errObj["text"];
+                        QJsonObject errObj  = errElem.toObject();
+                        QJsonValue  textVal = errObj[QStringLiteral("text")];
                         if (textVal.isString())
                         {
                             toolStderr.append(textVal.toString() + "\n");
@@ -418,16 +432,16 @@ void GodboltAgent::onCompileRequestFinished()
                     }
                 }
             }
-            QJsonValue stdoutVal = toolObj["stdout"];
+            QJsonValue stdoutVal = toolObj[QStringLiteral("stdout")];
             if (stdoutVal.isArray())
             {
                 QJsonArray stdoutArray = stdoutVal.toArray();
-                for (auto o : stdoutArray)
+                for (auto outArrElem : stdoutArray)
                 {
-                    if (o.isObject())
+                    if (outArrElem.isObject())
                     {
-                        QJsonObject outObj  = o.toObject();
-                        QJsonValue  textVal = outObj["text"];
+                        QJsonObject outObj  = outArrElem.toObject();
+                        QJsonValue  textVal = outObj[QStringLiteral("text")];
                         if (textVal.isString())
                         {
                             toolStdout.append(textVal.toString() + "\n");
@@ -436,44 +450,44 @@ void GodboltAgent::onCompileRequestFinished()
                 }
             }
 
-            QString id = toolObj["id"].toString();
-            if (id == "clang-tidy")
+            QString id = toolObj[QStringLiteral("id")].toString();
+            if (id == QStringLiteral("clang-tidy"))
             {
                 m_clangTidyStderr = toolStderr;
                 m_clangTidyStdout = toolStdout;
                 emit hasClangTidyOutput();
             }
-            else if (id == "llvm-mca")
+            else if (id == QStringLiteral("llvm-mca"))
             {
                 m_llvmMCAStdout = toolStdout;
                 m_llvmMCAStderr = toolStderr;
                 emit hasLLVMMCAOutput();
             }
-            else if (id == "pahole")
+            else if (id == QStringLiteral("pahole"))
             {
                 m_paholeStderr = toolStderr;
                 m_paholeStdout = toolStdout;
                 emit hasPaholeOutput();
             }
-            else if (id == "ldd")
+            else if (id == QStringLiteral("ldd"))
             {
                 m_lddStderr = toolStderr;
                 m_lddStdout = toolStdout;
                 emit hasLddOutput();
             }
-            else if (id == "x86to6502")
+            else if (id == QStringLiteral("x86to6502"))
             {
                 m_x86To6502Stderr = toolStderr;
                 m_x86To6502Stdout = toolStdout;
                 emit hasX86To6502Output();
             }
-            else if (id == "readelf")
+            else if (id == QStringLiteral("readelf"))
             {
                 m_readElfStderr = toolStderr;
                 m_readElfStdout = toolStdout;
                 emit hasReadElfOutput();
             }
-            else if (id == "iwyu")
+            else if (id == QStringLiteral("iwyu"))
             {
                 m_includeWhatYouUseStderr = toolStderr;
                 m_includeWhatYouUseStdout = toolStdout;

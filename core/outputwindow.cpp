@@ -8,7 +8,7 @@ void OutputWindow::initialize()
 {
     m_sc.initScintilla();
     m_sc.inttOuputWindowMargins();
-    m_sc.initLexerStyle("cpp");
+    m_sc.initLexerStyle(QStringLiteral("cpp"));
 
     setReadOnly(true);
 }

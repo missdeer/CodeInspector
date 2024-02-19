@@ -19,11 +19,11 @@ void CodeEditor::initialize()
 
 void CodeEditor::onLinesAdded(Scintilla::Position /*linesAdded*/)
 {
-    auto          *sci        = qobject_cast<ScintillaEdit *>(sender());
-    sptr_t         line_count = sci->lineCount();
-    sptr_t         left       = sci->marginLeft() + 2;
-    sptr_t         right      = sci->marginRight() + 2;
-    sptr_t         width      = left + right + sci->textWidth(STYLE_LINENUMBER, QString("%1").arg(line_count).toStdString().c_str());
+    auto  *sci        = qobject_cast<ScintillaEdit *>(sender());
+    sptr_t line_count = sci->lineCount();
+    sptr_t left       = sci->marginLeft() + 2;
+    sptr_t right      = sci->marginRight() + 2;
+    sptr_t width      = left + right + sci->textWidth(STYLE_LINENUMBER, QString("%1").arg(line_count).toStdString().c_str());
     if (width > sci->marginWidthN(0))
     {
         sci->setMarginWidthN(0, width);
@@ -58,8 +58,8 @@ void CodeEditor::onModified(Scintilla::ModificationFlags type,
                             Scintilla::FoldLevel /*foldPrev*/)
 {
     if (static_cast<int>(type) &
-        (int)(Scintilla::ModificationFlags::InsertText | Scintilla::ModificationFlags::DeleteText | Scintilla::ModificationFlags::Undo |
-              Scintilla::ModificationFlags::Redo | Scintilla::ModificationFlags::MultilineUndoRedo))
+        static_cast<int>(Scintilla::ModificationFlags::InsertText | Scintilla::ModificationFlags::DeleteText | Scintilla::ModificationFlags::Undo |
+                         Scintilla::ModificationFlags::Redo | Scintilla::ModificationFlags::MultilineUndoRedo))
     {
         emit contentModified();
     }

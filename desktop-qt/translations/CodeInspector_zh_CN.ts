@@ -148,8 +148,8 @@
 <context>
     <name>CompilationTabWidget</name>
     <message>
-        <location filename="../compilationtabwidget.cpp" line="50"/>
-        <location filename="../compilationtabwidget.cpp" line="62"/>
+        <location filename="../compilationtabwidget.cpp" line="52"/>
+        <location filename="../compilationtabwidget.cpp" line="64"/>
         <source>New Compiler</source>
         <translation type="unfinished"></translation>
     </message>
@@ -363,113 +363,97 @@ Multiple compilers are supported.
         <location filename="../mainwindow.ui" line="14"/>
         <location filename="../../mobile/mainwindow.ui" line="78"/>
         <location filename="../../cmake-build/desktop-qt/CodeInspector_autogen/include/ui_mainwindow.h" line="139"/>
-        <location filename="../../cmake-build-msvc/desktop-qt/CodeInspector_autogen/include/ui_mainwindow.h" line="139"/>
-        <location filename="../mainwindow.cpp" line="63"/>
+        <location filename="../mainwindow.cpp" line="67"/>
         <source>CodeInspector</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="57"/>
         <location filename="../../cmake-build/desktop-qt/CodeInspector_autogen/include/ui_mainwindow.h" line="160"/>
-        <location filename="../../cmake-build-msvc/desktop-qt/CodeInspector_autogen/include/ui_mainwindow.h" line="160"/>
         <source>&amp;File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="68"/>
         <location filename="../../cmake-build/desktop-qt/CodeInspector_autogen/include/ui_mainwindow.h" line="161"/>
-        <location filename="../../cmake-build-msvc/desktop-qt/CodeInspector_autogen/include/ui_mainwindow.h" line="161"/>
         <source>&amp;Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="80"/>
         <location filename="../../cmake-build/desktop-qt/CodeInspector_autogen/include/ui_mainwindow.h" line="162"/>
-        <location filename="../../cmake-build-msvc/desktop-qt/CodeInspector_autogen/include/ui_mainwindow.h" line="162"/>
         <source>toolBar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="98"/>
         <location filename="../../cmake-build/desktop-qt/CodeInspector_autogen/include/ui_mainwindow.h" line="140"/>
-        <location filename="../../cmake-build-msvc/desktop-qt/CodeInspector_autogen/include/ui_mainwindow.h" line="140"/>
         <source>&amp;New</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="101"/>
         <location filename="../../cmake-build/desktop-qt/CodeInspector_autogen/include/ui_mainwindow.h" line="142"/>
-        <location filename="../../cmake-build-msvc/desktop-qt/CodeInspector_autogen/include/ui_mainwindow.h" line="142"/>
         <source>Ctrl+N</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="110"/>
         <location filename="../../cmake-build/desktop-qt/CodeInspector_autogen/include/ui_mainwindow.h" line="144"/>
-        <location filename="../../cmake-build-msvc/desktop-qt/CodeInspector_autogen/include/ui_mainwindow.h" line="144"/>
         <source>&amp;Open...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="113"/>
         <location filename="../../cmake-build/desktop-qt/CodeInspector_autogen/include/ui_mainwindow.h" line="146"/>
-        <location filename="../../cmake-build-msvc/desktop-qt/CodeInspector_autogen/include/ui_mainwindow.h" line="146"/>
         <source>Ctrl+O</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="122"/>
         <location filename="../../cmake-build/desktop-qt/CodeInspector_autogen/include/ui_mainwindow.h" line="148"/>
-        <location filename="../../cmake-build-msvc/desktop-qt/CodeInspector_autogen/include/ui_mainwindow.h" line="148"/>
         <source>&amp;Save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="125"/>
         <location filename="../../cmake-build/desktop-qt/CodeInspector_autogen/include/ui_mainwindow.h" line="150"/>
-        <location filename="../../cmake-build-msvc/desktop-qt/CodeInspector_autogen/include/ui_mainwindow.h" line="150"/>
         <source>Ctrl+S</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="134"/>
         <location filename="../../cmake-build/desktop-qt/CodeInspector_autogen/include/ui_mainwindow.h" line="152"/>
-        <location filename="../../cmake-build-msvc/desktop-qt/CodeInspector_autogen/include/ui_mainwindow.h" line="152"/>
         <source>Save As...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="143"/>
         <location filename="../../cmake-build/desktop-qt/CodeInspector_autogen/include/ui_mainwindow.h" line="153"/>
-        <location filename="../../cmake-build-msvc/desktop-qt/CodeInspector_autogen/include/ui_mainwindow.h" line="153"/>
         <source>Exit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="148"/>
         <location filename="../../cmake-build/desktop-qt/CodeInspector_autogen/include/ui_mainwindow.h" line="154"/>
-        <location filename="../../cmake-build-msvc/desktop-qt/CodeInspector_autogen/include/ui_mainwindow.h" line="154"/>
         <source>Content</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="151"/>
         <location filename="../../cmake-build/desktop-qt/CodeInspector_autogen/include/ui_mainwindow.h" line="156"/>
-        <location filename="../../cmake-build-msvc/desktop-qt/CodeInspector_autogen/include/ui_mainwindow.h" line="156"/>
         <source>F1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="156"/>
         <location filename="../../cmake-build/desktop-qt/CodeInspector_autogen/include/ui_mainwindow.h" line="158"/>
-        <location filename="../../cmake-build-msvc/desktop-qt/CodeInspector_autogen/include/ui_mainwindow.h" line="158"/>
         <source>Visit Homepage...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="165"/>
         <location filename="../../cmake-build/desktop-qt/CodeInspector_autogen/include/ui_mainwindow.h" line="159"/>
-        <location filename="../../cmake-build-msvc/desktop-qt/CodeInspector_autogen/include/ui_mainwindow.h" line="159"/>
         <source>&amp;About...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -489,36 +473,36 @@ Multiple compilers are supported.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="34"/>
-        <location filename="../mainwindow.cpp" line="94"/>
+        <location filename="../mainwindow.cpp" line="36"/>
+        <location filename="../mainwindow.cpp" line="100"/>
         <source>Save Session</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="34"/>
-        <location filename="../mainwindow.cpp" line="78"/>
-        <location filename="../mainwindow.cpp" line="94"/>
-        <location filename="../mainwindow.cpp" line="102"/>
+        <location filename="../mainwindow.cpp" line="36"/>
+        <location filename="../mainwindow.cpp" line="82"/>
+        <location filename="../mainwindow.cpp" line="100"/>
+        <location filename="../mainwindow.cpp" line="110"/>
         <source>Session Files (*.cis)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="47"/>
+        <location filename="../mainwindow.cpp" line="51"/>
         <source>Untitled %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="64"/>
-        <source>Let you know how machine understands and runs your code.&lt;br&gt;Special thanks to&lt;br&gt;&lt;strong&gt;Compiler Explorer&lt;/strong&gt;: &lt;a href=&quot;https://godbolt.org/&quot;&gt;https://godbolt.org/&lt;/a&gt;&lt;br&gt;&lt;strong&gt;Wandbox&lt;/strong&gt;: &lt;a href=&quot;https://wandbox.org/&quot;&gt;https://wandbox.org/&lt;/a&gt;&lt;br&gt;&lt;strong&gt;Rextester&lt;/strong&gt;: &lt;a href=&quot;https://rextester.com/&quot;&gt;https://rextester.com/&lt;/a&gt;</source>
+        <location filename="../mainwindow.cpp" line="68"/>
+        <source>Let you know how machine understands and runs your code.&lt;br&gt;Special thanks to&lt;br&gt;&lt;strong&gt;Compiler Explorer&lt;/strong&gt;: &lt;a href=&quot;https://compiler-explorer.com/&quot;&gt;https://compiler-explorer.com/&lt;/a&gt;&lt;br&gt;&lt;strong&gt;Wandbox&lt;/strong&gt;: &lt;a href=&quot;https://wandbox.org/&quot;&gt;https://wandbox.org/&lt;/a&gt;&lt;br&gt;&lt;strong&gt;Rextester&lt;/strong&gt;: &lt;a href=&quot;https://rextester.com/&quot;&gt;https://rextester.com/&lt;/a&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="78"/>
+        <location filename="../mainwindow.cpp" line="82"/>
         <source>Open Session</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="102"/>
+        <location filename="../mainwindow.cpp" line="110"/>
         <source>Save Session As</source>
         <translation type="unfinished"></translation>
     </message>

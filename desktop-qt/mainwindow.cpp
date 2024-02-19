@@ -20,7 +20,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_tabWidget_tabCloseRequested(int index)
 {
-    auto session = qobject_cast<SessionWidget *>(ui->tabWidget->widget(index));
+    auto *session = qobject_cast<SessionWidget *>(ui->tabWidget->widget(index));
     if (session->hasUnsavedModified())
     {
         int res =
@@ -28,12 +28,16 @@ void MainWindow::on_tabWidget_tabCloseRequested(int index)
         if (res == QMessageBox::Ok)
         {
             if (session->isSaved())
+            {
                 session->save();
+            }
             else
             {
                 QString fileName = QFileDialog::getSaveFileName(this, tr("Save Session"), QString(), tr("Session Files (*.cis)"));
                 if (!fileName.isEmpty())
+                {
                     session->save(fileName);
+                }
             }
         }
     }
@@ -42,7 +46,7 @@ void MainWindow::on_tabWidget_tabCloseRequested(int index)
 
 int MainWindow::addSessionTab()
 {
-    auto session = new SessionWidget(this);
+    auto *session = new SessionWidget(this);
     session->initialize();
     return ui->tabWidget->addTab(session, tr("Untitled %1").arg(ui->tabWidget->count() + 1));
 }
@@ -63,7 +67,7 @@ void MainWindow::on_actionAbout_triggered()
                        tr("CodeInspector"),
                        tr("Let you know how machine understands and runs your code.<br>"
                           "Special thanks to<br>"
-                          "<strong>Compiler Explorer</strong>: <a href=\"https://godbolt.org/\">https://godbolt.org/</a><br>"
+                          "<strong>Compiler Explorer</strong>: <a href=\"https://compiler-explorer.com/\">https://compiler-explorer.com/</a><br>"
                           "<strong>Wandbox</strong>: <a href=\"https://wandbox.org/\">https://wandbox.org/</a><br>"
                           "<strong>Rextester</strong>: <a href=\"https://rextester.com/\">https://rextester.com/</a>"));
 }
@@ -78,22 +82,26 @@ void MainWindow::on_actionOpenSession_triggered()
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open Session"), QString(), tr("Session Files (*.cis)"));
     if (QFile::exists(fileName))
     {
-        int  index   = addSessionTab();
-        auto session = qobject_cast<SessionWidget *>(ui->tabWidget->widget(index));
+        int   index   = addSessionTab();
+        auto *session = qobject_cast<SessionWidget *>(ui->tabWidget->widget(index));
         session->open(fileName);
     }
 }
 
 void MainWindow::on_actionSaveSession_triggered()
 {
-    auto session = qobject_cast<SessionWidget *>(ui->tabWidget->currentWidget());
+    auto *session = qobject_cast<SessionWidget *>(ui->tabWidget->currentWidget());
     if (session->isSaved())
+    {
         session->save();
+    }
     else
     {
         QString fileName = QFileDialog::getSaveFileName(this, tr("Save Session"), QString(), tr("Session Files (*.cis)"));
         if (!fileName.isEmpty())
+        {
             session->save(fileName);
+        }
     }
 }
 
@@ -101,6 +109,6 @@ void MainWindow::on_actionSaveAsSession_triggered()
 {
     QString fileName = QFileDialog::getSaveFileName(this, tr("Save Session As"), QString(), tr("Session Files (*.cis)"));
 
-    auto session = qobject_cast<SessionWidget *>(ui->tabWidget->currentWidget());
+    auto *session = qobject_cast<SessionWidget *>(ui->tabWidget->currentWidget());
     session->save(fileName);
 }

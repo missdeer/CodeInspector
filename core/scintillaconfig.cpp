@@ -99,7 +99,7 @@ void ScintillaConfig::initScintilla()
     {
         themePath = ":/resource/sci/themes/Default.xml";
     }
-    applyThemeStyle(themePath, "cpp");
+    applyThemeStyle(themePath, QStringLiteral("cpp"));
 }
 
 void ScintillaConfig::initEditorFolderStyle()
@@ -153,7 +153,7 @@ void ScintillaConfig::initLexerStyle(const QString &lang)
     applyThemeStyle(themePath, lexer);
 
     // read configurations from langs.model.xml
-    QString configPath = ":/resource/sci/langs.model.xml";
+    const QString configPath = ":/resource/sci/langs.model.xml";
 
     applyLexer(configPath, lexer);
 }
@@ -171,7 +171,7 @@ void ScintillaConfig::initEditorMargins()
     m_sci->setMarginMaskN(1, ~SC_MASK_FOLDERS); //~SC_MASK_FOLDERS or 0x1FFFFFF or 33554431
     m_sci->setMarginSensitiveN(1, true);
     m_sci->setMarginTypeN(2, SC_MARGIN_SYMBOL);
-    m_sci->setMarginWidthN(2, 16);
+    m_sci->setMarginWidthN(2, 12);
     m_sci->setMarginMaskN(2, SC_MASK_FOLDERS); // 0xFE000000 or -33554432
     m_sci->setMarginSensitiveN(2, true);
 
@@ -237,10 +237,10 @@ void ScintillaConfig::applyLexer(const QString &configPath, const QString &lang)
     m_sci->privateLexerCall(SCI_SETDOCPOINTER, psci);
 
     QMap<QString, QString> langMap = {
-        {"c++", "cpp"},
-        {"assembly", "asm"},
-        {"analysis", "asm"},
-        {"llvm ir", "llvm"},
+        {QStringLiteral("c++"), QStringLiteral("cpp")},
+        {QStringLiteral("assembly"), QStringLiteral("asm")},
+        {QStringLiteral("analysis"), QStringLiteral("asm")},
+        {QStringLiteral("llvm ir"), QStringLiteral("llvm")},
     };
     if (langMap.contains(lexer))
     {
@@ -265,7 +265,9 @@ void ScintillaConfig::applyLexer(const QString &configPath, const QString &lang)
         ScintilluaNS::SetLibraryProperty("lpeg.home", QDir::toNativeSeparators(lexersPath).toUtf8().data());
         ScintilluaNS::SetLibraryProperty("lpeg.color.theme", "scite");
 
-        langMap.insert({{"c", "ansi_c"}, {"d", "dmd"}, {"ocaml", "caml"}});
+        langMap.insert({{QStringLiteral("c"), QStringLiteral("ansi_c")},
+                        {QStringLiteral("d"), QStringLiteral("dmd")},
+                        {QStringLiteral("ocaml"), QStringLiteral("caml")}});
         if (langMap.contains(lexer))
         {
             lexer = langMap.value(lexer);
@@ -304,23 +306,23 @@ void ScintillaConfig::applyLexer(const QString &configPath, const QString &lang)
     }
 
     QDomElement docElem       = doc.documentElement();
-    QDomElement languagesElem = docElem.firstChildElement("Languages");
+    QDomElement languagesElem = docElem.firstChildElement(QStringLiteral("Languages"));
 
-    QDomElement langElem = languagesElem.firstChildElement("Language");
-    while (!langElem.isNull() && langElem.attribute("name") != lexer && langElem.attribute("name") != lang.toLower())
+    QDomElement langElem = languagesElem.firstChildElement(QStringLiteral("Language"));
+    while (!langElem.isNull() && langElem.attribute(QStringLiteral("name")) != lexer && langElem.attribute(QStringLiteral("name")) != lang.toLower())
     {
-        langElem = langElem.nextSiblingElement("Language");
+        langElem = langElem.nextSiblingElement(QStringLiteral("Language"));
     }
-    QDomElement keywordElem = langElem.firstChildElement("Keywords");
+    QDomElement keywordElem = langElem.firstChildElement(QStringLiteral("Keywords"));
     int         keywordSet  = 0;
     while (!keywordElem.isNull())
     {
         QString keyword = keywordElem.text();
 #if defined(LOGS_ENABLED)
-        qDebug() << keywordSet << keywordElem.attribute("name") << keyword;
+        qDebug() << keywordSet << keywordElem.attribute(QStringLiteral("name")) << keyword;
 #endif
         m_sci->setKeyWords(keywordSet++, keyword.toStdString().c_str());
-        keywordElem = keywordElem.nextSiblingElement("Keywords");
+        keywordElem = keywordElem.nextSiblingElement(QStringLiteral("Keywords"));
     }
 }
 
@@ -345,12 +347,12 @@ void ScintillaConfig::applyThemeStyle(const QString &themePath, const QString &l
 
     QDomElement docElem = doc.documentElement();
 
-    QDomElement globalStylesElem = docElem.firstChildElement("GlobalStyles");
+    QDomElement globalStylesElem = docElem.firstChildElement(QStringLiteral("GlobalStyles"));
 
-    for (QDomElement styleElem = globalStylesElem.firstChildElement("WidgetStyle"); !styleElem.isNull();
-         styleElem             = styleElem.nextSiblingElement("WidgetStyle"))
+    for (QDomElement styleElem = globalStylesElem.firstChildElement(QStringLiteral("WidgetStyle")); !styleElem.isNull();
+         styleElem             = styleElem.nextSiblingElement(QStringLiteral("WidgetStyle")))
     {
-        if (styleElem.attribute("styleID").toInt() == 0)
+        if (styleElem.attribute(QStringLiteral("styleID")).toInt() == 0)
         {
             applyGlobalStyle(styleElem);
         }
@@ -360,11 +362,11 @@ void ScintillaConfig::applyThemeStyle(const QString &themePath, const QString &l
         }
     }
 
-    QDomElement lexerStylesElem = docElem.firstChildElement("LexerStyles");
-    QDomElement lexerTypeElem   = lexerStylesElem.firstChildElement("LexerType");
-    while (!lexerTypeElem.isNull() && lexerTypeElem.attribute("name") != lang)
+    QDomElement lexerStylesElem = docElem.firstChildElement(QStringLiteral("LexerStyles"));
+    QDomElement lexerTypeElem   = lexerStylesElem.firstChildElement(QStringLiteral("LexerType"));
+    while (!lexerTypeElem.isNull() && lexerTypeElem.attribute(QStringLiteral("name")) != lang)
     {
-        lexerTypeElem = lexerTypeElem.nextSiblingElement("LexerType");
+        lexerTypeElem = lexerTypeElem.nextSiblingElement(QStringLiteral("LexerType"));
     }
 
     if (lexerTypeElem.isNull())
@@ -372,8 +374,8 @@ void ScintillaConfig::applyThemeStyle(const QString &themePath, const QString &l
         return;
     }
 
-    for (QDomElement styleElem = lexerTypeElem.firstChildElement("WordsStyle"); !styleElem.isNull();
-         styleElem             = styleElem.nextSiblingElement("WordsStyle"))
+    for (QDomElement styleElem = lexerTypeElem.firstChildElement(QStringLiteral("WordsStyle")); !styleElem.isNull();
+         styleElem             = styleElem.nextSiblingElement(QStringLiteral("WordsStyle")))
     {
         applyStyle(styleElem);
     }
@@ -396,7 +398,7 @@ void ScintillaConfig::extractScintilluaLexers(const QString &lexersPath)
             }
         }
     }
-    resDir.cd("themes");
+    resDir.cd(QStringLiteral("themes"));
     resEntryInfos = resDir.entryInfoList();
     for (const auto &info : qAsConst(resEntryInfos))
     {
@@ -415,11 +417,11 @@ void ScintillaConfig::extractScintilluaLexers(const QString &lexersPath)
 
 void ScintillaConfig::applyStyle(const QDomElement &styleElem)
 {
-    int styleId = styleElem.attribute("styleID").toInt();
+    int styleId = styleElem.attribute(QStringLiteral("styleID")).toInt();
     m_sci->styleSetFore(styleId, 0x0);
-    if (styleElem.hasAttribute("fgColor"))
+    if (styleElem.hasAttribute(QStringLiteral("fgColor")))
     {
-        QString foreColor = styleElem.attribute("fgColor");
+        QString foreColor = styleElem.attribute(QStringLiteral("fgColor"));
         if (!foreColor.isEmpty())
         {
             int color = foreColor.toLong(nullptr, 16);
@@ -429,9 +431,9 @@ void ScintillaConfig::applyStyle(const QDomElement &styleElem)
     }
 
     m_sci->styleSetBack(styleId, 0xFFFFFF);
-    if (styleId == 33 && styleElem.hasAttribute("bgColor")) // line number margin
+    if (styleId == 33 && styleElem.hasAttribute(QStringLiteral("bgColor"))) // line number margin
     {
-        QString backColor = styleElem.attribute("bgColor");
+        QString backColor = styleElem.attribute(QStringLiteral("bgColor"));
         if (!backColor.isEmpty())
         {
             int color = backColor.toLong(nullptr, 16);
@@ -440,7 +442,7 @@ void ScintillaConfig::applyStyle(const QDomElement &styleElem)
         }
     }
 
-    QString fontName = styleElem.attribute("fontName");
+    QString fontName = styleElem.attribute(QStringLiteral("fontName"));
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     QStringList families = QFontDatabase::families();
 #else
@@ -450,13 +452,13 @@ void ScintillaConfig::applyStyle(const QDomElement &styleElem)
 
     QStringList fonts = g_settings->codeEditorFontFamily().split(";");
 #if defined(Q_OS_MAC) || defined(Q_OS_IOS)
-    fonts.append("Monaco");
+    fonts.append(QStringLiteral("Monaco"));
 #elif defined(Q_OS_WIN)
-    fonts.append("Courier New");
+    fonts.append(QStringLiteral("Courier New"));
 #elif defined(Q_OS_ANDROID)
-    fonts.append("Droid Sans Mono");
+    fonts.append(QStringLiteral("Droid Sans Mono"));
 #else
-    fonts.append("Monospace");
+    fonts.append(QStringLiteral("Monospace"));
 #endif
     for (const auto &f : fonts)
     {
@@ -467,7 +469,7 @@ void ScintillaConfig::applyStyle(const QDomElement &styleElem)
         }
     }
 
-    if (styleElem.hasAttribute("fontName"))
+    if (styleElem.hasAttribute(QStringLiteral("fontName")))
     {
         if (styleId != 0 && styleId != 32 && !fontName.isEmpty() && families.contains(fontName))
         {
@@ -475,9 +477,9 @@ void ScintillaConfig::applyStyle(const QDomElement &styleElem)
         }
     }
 
-    if (styleElem.hasAttribute("fontStyle"))
+    if (styleElem.hasAttribute(QStringLiteral("fontStyle")))
     {
-        uint fontStyle = styleElem.attribute("fontStyle").toUInt();
+        uint fontStyle = styleElem.attribute(QStringLiteral("fontStyle")).toUInt();
 
         static std::map<unsigned char, std::function<void(sptr_t, bool)>> styleSetterMap = {
             {0x01, [this](sptr_t styleId, bool value) { m_sci->styleSetBold(styleId, value); }},
@@ -504,9 +506,9 @@ void ScintillaConfig::applyStyle(const QDomElement &styleElem)
     const int defaultFontSize = 14;
 #endif
     m_sci->styleSetSize(styleId, defaultFontSize);
-    if (styleElem.hasAttribute("fontSize"))
+    if (styleElem.hasAttribute(QStringLiteral("fontSize")))
     {
-        QString fontSize = styleElem.attribute("fontSize");
+        QString fontSize = styleElem.attribute(QStringLiteral("fontSize"));
         if (!fontSize.isEmpty())
         {
             m_sci->styleSetSize(styleId, std::max(defaultFontSize, fontSize.toInt()));
@@ -516,8 +518,8 @@ void ScintillaConfig::applyStyle(const QDomElement &styleElem)
 
 void ScintillaConfig::applyGlobalStyle(const QDomElement &styleElem)
 {
-    QString name = styleElem.attribute("name");
-    if (name == "Global override")
+    QString name = styleElem.attribute(QStringLiteral("name"));
+    if (name == QStringLiteral("Global override"))
     {
         applyStyle(styleElem);
     }
@@ -531,10 +533,10 @@ void ScintillaConfig::applyGlobalStyle(const QDomElement &styleElem)
     //            m_sci->setCaretLineBack(color);
     //        }
     //    }
-    if (name == "Selected text colour")
+    if (name == QStringLiteral("Selected text colour"))
     {
         int     color     = 0x808080;
-        QString backColor = styleElem.attribute("bgColor");
+        QString backColor = styleElem.attribute(QStringLiteral("bgColor"));
         if (!backColor.isEmpty())
         {
             color = backColor.toLong(nullptr, 16);
@@ -543,7 +545,7 @@ void ScintillaConfig::applyGlobalStyle(const QDomElement &styleElem)
         m_sci->setSelBack(true, color);
 
         color             = 0;
-        QString foreColor = styleElem.attribute("fgColor");
+        QString foreColor = styleElem.attribute(QStringLiteral("fgColor"));
         if (!foreColor.isEmpty())
         {
             color = foreColor.toLong(nullptr, 16);
@@ -551,10 +553,10 @@ void ScintillaConfig::applyGlobalStyle(const QDomElement &styleElem)
         }
         m_sci->setSelFore(true, color);
     }
-    if (name == "Edge colour")
+    if (name == QStringLiteral("Edge colour"))
     {
         int     color     = 0xc0c0c0;
-        QString foreColor = styleElem.attribute("fgColor");
+        QString foreColor = styleElem.attribute(QStringLiteral("fgColor"));
         if (!foreColor.isEmpty())
         {
             color = foreColor.toLong(nullptr, 16);
@@ -562,9 +564,9 @@ void ScintillaConfig::applyGlobalStyle(const QDomElement &styleElem)
         }
         m_sci->setEdgeColour(color);
     }
-    if (name == "White space symbol")
+    if (name == QStringLiteral("White space symbol"))
     {
-        QString foreColor = styleElem.attribute("fgColor");
+        QString foreColor = styleElem.attribute(QStringLiteral("fgColor"));
         if (!foreColor.isEmpty())
         {
             int color = foreColor.toLong(nullptr, 16);

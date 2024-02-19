@@ -6,7 +6,7 @@ void CodeInspector::initialize()
 {
     m_sc.initScintilla();
     m_sc.initInspectorMargins(false);
-    m_sc.initLexerStyle("asm");
+    m_sc.initLexerStyle(QStringLiteral("asm"));
 
     connect(this, &ScintillaEdit::marginClicked, this, &CodeInspector::marginClicked);
     setReadOnly(true);
@@ -33,18 +33,18 @@ void CodeInspector::setAsmItems(const AsmItemList &items, bool binary, QMap<int,
     m_sc.initMarkers();
     annotationSetVisible(ANNOTATION_HIDDEN);
 
-    for (int i = 0; i < items.length(); i++)
+    for (int index = 0; index < items.length(); index++)
     {
-        const auto &item = items.at(i);
+        const auto &item = items.at(index);
 
         if (item->source != -1)
         {
-            auto it = markerMap.find(item->source);
-            if (markerMap.end() == it)
+            auto iter = markerMap.find(item->source);
+            if (markerMap.end() == iter)
             {
                 // pick a color
                 markerMap.insert(item->source, markerIndex);
-                markerAdd(i, markerIndex);
+                markerAdd(index, markerIndex);
 
                 markerIndex++;
                 if (markerIndex == markerMap.size())
@@ -54,7 +54,7 @@ void CodeInspector::setAsmItems(const AsmItemList &items, bool binary, QMap<int,
             }
             else
             {
-                markerAdd(i, it.value());
+                markerAdd(index, iter.value());
             }
         }
 
@@ -72,9 +72,9 @@ void CodeInspector::setAsmItems(const AsmItemList &items, bool binary, QMap<int,
 
             if (!addressText.isEmpty())
             {
-                marginSetStyle(i, marginStyleId);
+                marginSetStyle(index, marginStyleId);
                 auto t = " " + addressText.toUtf8();
-                marginSetText(i, t.data());
+                marginSetText(index, t.data());
                 auto tl    = textWidth(marginStyleId, (t + " ").data());
                 textLength = std::max(tl, textLength);
             }
@@ -88,8 +88,8 @@ void CodeInspector::setAsmItems(const AsmItemList &items, bool binary, QMap<int,
                     QByteArray ba(1, opcode);
                     ts << ba.toHex() + " ";
                 }
-                annotationSetText(i, opcodeText.toUtf8().data());
-                annotationSetStyle(i, 3);
+                annotationSetText(index, opcodeText.toUtf8().data());
+                annotationSetStyle(index, 3);
             }
         }
     }
@@ -101,10 +101,10 @@ void CodeInspector::setAsmItems(const AsmItemList &items, bool binary, QMap<int,
 
     if (!binary)
     {
-        sptr_t left  = marginLeft() + 2;
-        sptr_t right = marginRight() + 2;
-        auto   b     = QString::number(lineCount()).toUtf8();
-        sptr_t width = left + right + textWidth(STYLE_LINENUMBER, b.data());
+        sptr_t left        = marginLeft() + 2;
+        sptr_t right       = marginRight() + 2;
+        auto   lineNumText = QString::number(lineCount()).toUtf8();
+        sptr_t width       = left + right + textWidth(STYLE_LINENUMBER, lineNumText.data());
         if (width > 32)
         {
             setMarginWidthN(0, width);
@@ -126,5 +126,5 @@ void CodeInspector::setAsmItems(const AsmItemList &items, bool binary, QMap<int,
 QVariant CodeInspector::inputMethodQuery(Qt::InputMethodQuery /*query*/) const
 {
     // so that it won't show input method pane on mobile device
-    return QVariant(QRectF(0, 0, 0, 0));
+    return {QRectF(0, 0, 0, 0)};
 }

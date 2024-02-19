@@ -40,7 +40,9 @@ bool LibraryVersion::getSelected() const
 void LibraryVersion::setSelected(bool value)
 {
     if (selected == value)
+    {
         return;
+    }
     selected = value;
     emit selectedChanged();
 }

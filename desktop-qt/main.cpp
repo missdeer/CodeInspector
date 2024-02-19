@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
     QApplication::setApplicationName("CodeInspector");
     QApplication::setApplicationVersion("1.0");
 
-    QApplication a(argc, argv);
+    QApplication app(argc, argv);
 
     QPixmap       pixmap(":/CodeInspector.png");
     QSplashScreen splash(pixmap);
@@ -71,16 +71,16 @@ int main(int argc, char *argv[])
     qDebug() << "there are " << staticInstances.length() << " static plugins";
 
     splash.showMessage(QObject::tr("Creating application instance..."));
-    CodeInspectorApp app;
-    ciApp = &app;
+    CodeInspectorApp appInstance;
+    ciApp = &appInstance;
 
     splash.showMessage(QObject::tr("Initializing application instance..."));
     ciApp->initialize();
 
     splash.showMessage(QObject::tr("Creating main window..."));
-    MainWindow w;
-    w.showMaximized();
+    MainWindow win;
+    win.showMaximized();
 
-    splash.finish(&w);
+    splash.finish(&win);
     return QApplication::exec();
 }

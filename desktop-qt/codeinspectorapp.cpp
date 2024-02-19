@@ -13,7 +13,7 @@
 
 CodeInspectorApp::CodeInspectorApp(QObject *parent) : QObject(parent)
 {
-    m_nam.connectToHostEncrypted("godbolt.org");
+    m_nam.connectToHostEncrypted("compiler-explorer.com");
 }
 
 QNetworkAccessManager &CodeInspectorApp::networkAccessManager()
@@ -25,7 +25,7 @@ void CodeInspectorApp::initialize()
 {
     QByteArray    content;
     const QString defaultConfigurationPath = ":/resource/configurations.json";
-    auto       path = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/configurations.json";
+    auto          path                     = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/configurations.json";
     QFileInfo     fi(defaultConfigurationPath);
     QFileInfo     fi2(path);
     if (!QFile::exists(path) || fi.lastModified() > fi2.lastModified())
@@ -76,7 +76,9 @@ LanguageList &CodeInspectorApp::getLanguageList()
         if (loadLanguageList(content))
         {
             if (parseLanguageListFromJSON(content))
+            {
                 return m_languageList;
+            }
         }
         requestLanguageList();
     }
@@ -88,33 +90,35 @@ CompilerListPtr CodeInspectorApp::getCompilerList(const QString &languageName)
 #if defined(LOGS_ENABLED)
     qDebug() << Q_FUNC_INFO << languageName << m_compilerMap.size();
 #endif
-    auto it = m_compilerMap.find(languageName);
-    if (m_compilerMap.end() == it)
+    auto iter = m_compilerMap.find(languageName);
+    if (m_compilerMap.end() == iter)
     {
-        CompilerListPtr cl(new CompilerList);
-        m_compilerMap.insert(languageName, cl);
+        CompilerListPtr compilerList(new CompilerList);
+        m_compilerMap.insert(languageName, compilerList);
         requestCompilerList(languageName);
-        return cl;
+        return compilerList;
     }
 
-    return it.value();
+    return iter.value();
 }
 
 LibraryListPtr CodeInspectorApp::getLibraryList(const QString &languageName)
 {
     auto languageId = getLanguageId(languageName);
-    auto it         = m_libs.find(languageId);
-    if (m_libs.end() != it)
-        return it.value();
+    auto iter       = m_libs.find(languageId);
+    if (m_libs.end() != iter)
+    {
+        return iter.value();
+    }
     return nullptr;
 }
 
 CompilerPtr CodeInspectorApp::getCompiler(const QString &language, const QString &compiler)
 {
     auto compilerList = m_compilerMap.find(language).value();
-    auto it           = std::find_if(compilerList->begin(), compilerList->end(), [&compiler](CompilerPtr c) { return c->name == compiler; });
-    Q_ASSERT(compilerList->end() != it);
-    return *it;
+    auto iter         = std::find_if(compilerList->begin(), compilerList->end(), [&compiler](CompilerPtr c) { return c->name == compiler; });
+    Q_ASSERT(compilerList->end() != iter);
+    return *iter;
 }
 
 void CodeInspectorApp::requestCompilerList(const QString &language)
@@ -137,11 +141,11 @@ bool CodeInspectorApp::storeCompilerList(const QString &name, const QByteArray &
 #if defined(LOGS_ENABLED)
     qDebug() << Q_FUNC_INFO;
 #endif
-    QString d = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/compilerlist";
-    QDir    dir(d);
+    QString dirPath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/compilerlist";
+    QDir    dir(dirPath);
     if (!dir.exists())
     {
-        if (!dir.mkpath(d))
+        if (!dir.mkpath(dirPath))
         {
 #if defined(LOGS_ENABLED)
             qDebug() << "creating directory failed:" << d;
@@ -149,17 +153,17 @@ bool CodeInspectorApp::storeCompilerList(const QString &name, const QByteArray &
             return false;
         }
     }
-    QString path = QString("%1/%2").arg(d, name);
-    QFile   f(path);
-    if (!f.open(QIODevice::WriteOnly))
+    const QString path = dir.absoluteFilePath(name);
+    QFile         file(path);
+    if (!file.open(QIODevice::WriteOnly))
     {
 #if defined(LOGS_ENABLED)
         qDebug() << "open file " << path << " for writting failed";
 #endif
         return false;
     }
-    f.write(content);
-    f.close();
+    file.write(content);
+    file.close();
     return true;
 }
 
@@ -168,15 +172,19 @@ bool CodeInspectorApp::loadCompilerList(const QString &name, QByteArray &content
 #if defined(LOGS_ENABLED)
     qDebug() << Q_FUNC_INFO;
 #endif
-    QString d    = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
-    QString path = QString("%1/compilerlist/%2").arg(d, name);
+    const QString dirPath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+    const QString path    = QString("%1/compilerlist/%2").arg(dirPath, name);
     if (!QFile::exists(path))
+    {
         return false;
-    QFile f(path);
-    if (!f.open(QIODevice::ReadOnly))
+    }
+    QFile file(path);
+    if (!file.open(QIODevice::ReadOnly))
+    {
         return false;
-    content = f.readAll();
-    f.close();
+    }
+    content = file.readAll();
+    file.close();
     return true;
 }
 
@@ -200,59 +208,66 @@ bool CodeInspectorApp::parseCompilerListFromJSON(const QString &language, const 
     CompilerListPtr compilerList = m_compilerMap.find(language).value();
     CompilerListPtr newCompilerList(new CompilerList);
     bool            changed = false;
-    for (auto a : cl)
+    for (auto compilerElem : cl)
     {
-        if (!a.isObject())
+        if (!compilerElem.isObject())
         {
 #if defined(LOGS_ENABLED)
             qDebug() << "compiler list item is expected to be an object:" << QString(content).left(256);
 #endif
             return false;
         }
-        QJsonObject o = a.toObject();
-        CompilerPtr c(new Compiler);
-        c->id                         = o["id"].toString();
-        c->name                       = o["name"].toString();
-        c->version                    = o["version"].toString();
-        c->includeFlag                = o["includeFlag"].toString();
-        c->group                      = o["group"].toString();
-        c->groupName                  = o["groupName"].toString();
-        c->supportsBinary             = o["supportsBinary"].toBool();
-        c->supportsExecute            = o["supportsExecute"].toBool();
-        c->supportsIntel              = o["supportsIntel"].toBool();
-        c->supportsDemangle           = o["supportsDemangle"].toBool();
-        c->supportsOptimizationOutput = o["supportsOptOutput"].toBool();
-        c->supportsAstView            = o["supportsAstView"].toBool();
-        c->supportsIrView             = o["supportsIrView"].toBool();
-        c->supportsCfg                = o["supportsCfg"].toBool();
-        if (o["supportsGccDump"].isBool())
-            c->supportsGccDump = o["supportsGccDump"].toBool();
-        newCompilerList->push_back(c);
-        auto it = std::find_if(
-            compilerList->begin(), compilerList->end(), [&c](CompilerPtr compiler) { return compiler->id == c->id && compiler->name == c->name; });
-        if (compilerList->end() == it)
+        QJsonObject compilerObj = compilerElem.toObject();
+        CompilerPtr compiler(new Compiler);
+        compiler->id                         = compilerObj[QStringLiteral("id")].toString();
+        compiler->name                       = compilerObj[QStringLiteral("name")].toString();
+        compiler->version                    = compilerObj[QStringLiteral("version")].toString();
+        compiler->includeFlag                = compilerObj[QStringLiteral("includeFlag")].toString();
+        compiler->group                      = compilerObj[QStringLiteral("group")].toString();
+        compiler->groupName                  = compilerObj[QStringLiteral("groupName")].toString();
+        compiler->supportsBinary             = compilerObj[QStringLiteral("supportsBinary")].toBool();
+        compiler->supportsExecute            = compilerObj[QStringLiteral("supportsExecute")].toBool();
+        compiler->supportsIntel              = compilerObj[QStringLiteral("supportsIntel")].toBool();
+        compiler->supportsDemangle           = compilerObj[QStringLiteral("supportsDemangle")].toBool();
+        compiler->supportsOptimizationOutput = compilerObj[QStringLiteral("supportsOptOutput")].toBool();
+        compiler->supportsAstView            = compilerObj[QStringLiteral("supportsAstView")].toBool();
+        compiler->supportsIrView             = compilerObj[QStringLiteral("supportsIrView")].toBool();
+        compiler->supportsCfg                = compilerObj[QStringLiteral("supportsCfg")].toBool();
+        if (compilerObj[QStringLiteral("supportsGccDump")].isBool())
+        {
+            compiler->supportsGccDump = compilerObj[QStringLiteral("supportsGccDump")].toBool();
+        }
+        newCompilerList->push_back(compiler);
+        auto iter = std::find_if(compilerList->begin(), compilerList->end(), [&compiler](const CompilerPtr &compilerElem) {
+            return compilerElem->id == compiler->id && compilerElem->name == compiler->name;
+        });
+        if (compilerList->end() == iter)
         {
             changed = true;
-            compilerList->push_back(c);
+            compilerList->push_back(compiler);
         }
     }
 
-    for (auto it = compilerList->begin(); it != compilerList->end();)
+    for (auto iter = compilerList->begin(); iter != compilerList->end();)
     {
-        auto findIt = std::find_if(newCompilerList->begin(), newCompilerList->end(), [&it](CompilerPtr compiler) {
-            return compiler->id == (*it)->id && compiler->name == (*it)->name;
+        auto findIt = std::find_if(newCompilerList->begin(), newCompilerList->end(), [&iter](const CompilerPtr &compiler) {
+            return compiler->id == (*iter)->id && compiler->name == (*iter)->name;
         });
         if (findIt == newCompilerList->end())
         {
             changed = true;
-            it      = compilerList->erase(it);
+            iter    = compilerList->erase(iter);
         }
         else
-            ++it;
+        {
+            ++iter;
+        }
     }
 
     if (changed)
+    {
         emit compilerListReady();
+    }
 
     return true;
 }
@@ -263,50 +278,55 @@ bool CodeInspectorApp::parseCompilerListFromConfiguration(QJsonArray &array)
     qDebug() << Q_FUNC_INFO;
 #endif
     CompilerListPtr compilerList;
-    for (auto a : array)
+    for (auto arrElem : array)
     {
-        if (!a.isObject())
+        if (!arrElem.isObject())
         {
 #if defined(LOGS_ENABLED)
             qDebug() << "compiler list item is expected to be an object";
 #endif
             return false;
         }
-        QJsonObject o          = a.toObject();
-        QString     languageId = o["lang"].toString();
+        QJsonObject arrObj     = arrElem.toObject();
+        QString     languageId = arrObj[QStringLiteral("lang")].toString();
         QString     language   = getLanguageName(languageId);
         if (m_compilerMap.find(language) != m_compilerMap.end())
+        {
             compilerList = m_compilerMap.find(language).value();
+        }
         else
         {
             compilerList = CompilerListPtr(new CompilerList);
             m_compilerMap.insert(language, compilerList);
         }
-        CompilerPtr c(new Compiler);
-        c->id                         = o["id"].toString();
-        c->name                       = o["name"].toString();
-        c->version                    = o["version"].toString();
-        c->includeFlag                = o["includeFlag"].toString();
-        c->group                      = o["group"].toString();
-        c->groupName                  = o["groupName"].toString();
-        c->supportsBinary             = o["supportsBinary"].toBool();
-        c->supportsExecute            = o["supportsExecute"].toBool();
-        c->supportsIntel              = o["supportsIntel"].toBool();
-        c->supportsDemangle           = o["supportsDemangle"].toBool();
-        c->supportsOptimizationOutput = o["supportsOptOutput"].toBool();
-        c->supportsAstView            = o["supportsAstView"].toBool();
-        c->supportsIrView             = o["supportsIrView"].toBool();
-        c->supportsCfg                = o["supportsCfg"].toBool();
-        if (o["supportsGccDump"].isBool())
-            c->supportsGccDump = o["supportsGccDump"].toBool();
-        c->group     = o["group"].toString();
-        c->groupName = o["groupName"].toString();
-
-        auto it = std::find_if(
-            compilerList->begin(), compilerList->end(), [&c](CompilerPtr compiler) { return compiler->id == c->id && compiler->name == c->name; });
-        if (compilerList->end() == it)
+        CompilerPtr compiler(new Compiler);
+        compiler->id                         = arrObj[QStringLiteral("id")].toString();
+        compiler->name                       = arrObj[QStringLiteral("name")].toString();
+        compiler->version                    = arrObj[QStringLiteral("version")].toString();
+        compiler->includeFlag                = arrObj[QStringLiteral("includeFlag")].toString();
+        compiler->group                      = arrObj[QStringLiteral("group")].toString();
+        compiler->groupName                  = arrObj[QStringLiteral("groupName")].toString();
+        compiler->supportsBinary             = arrObj[QStringLiteral("supportsBinary")].toBool();
+        compiler->supportsExecute            = arrObj[QStringLiteral("supportsExecute")].toBool();
+        compiler->supportsIntel              = arrObj[QStringLiteral("supportsIntel")].toBool();
+        compiler->supportsDemangle           = arrObj[QStringLiteral("supportsDemangle")].toBool();
+        compiler->supportsOptimizationOutput = arrObj[QStringLiteral("supportsOptOutput")].toBool();
+        compiler->supportsAstView            = arrObj[QStringLiteral("supportsAstView")].toBool();
+        compiler->supportsIrView             = arrObj[QStringLiteral("supportsIrView")].toBool();
+        compiler->supportsCfg                = arrObj[QStringLiteral("supportsCfg")].toBool();
+        if (arrObj[QStringLiteral("supportsGccDump")].isBool())
         {
-            compilerList->push_back(c);
+            compiler->supportsGccDump = arrObj[QStringLiteral("supportsGccDump")].toBool();
+        }
+        compiler->group     = arrObj[QStringLiteral("group")].toString();
+        compiler->groupName = arrObj[QStringLiteral("groupName")].toString();
+
+        auto iter = std::find_if(compilerList->begin(), compilerList->end(), [&compiler](const CompilerPtr &compilerElem) {
+            return compilerElem->id == compiler->id && compilerElem->name == compiler->name;
+        });
+        if (compilerList->end() == iter)
+        {
+            compilerList->push_back(compiler);
         }
     }
 
@@ -318,11 +338,11 @@ bool CodeInspectorApp::storeLanguageList(const QByteArray &content)
 #if defined(LOGS_ENABLED)
     qDebug() << Q_FUNC_INFO;
 #endif
-    QString d = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
-    QDir    dir(d);
+    const QString dirPath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+    QDir          dir(dirPath);
     if (!dir.exists())
     {
-        if (!dir.mkpath(d))
+        if (!dir.mkpath(dirPath))
         {
 #if defined(LOGS_ENABLED)
             qDebug() << "creating directory failed:" << d;
@@ -330,17 +350,17 @@ bool CodeInspectorApp::storeLanguageList(const QByteArray &content)
             return false;
         }
     }
-    QString path = d + "/languages";
-    QFile   f(path);
-    if (!f.open(QIODevice::WriteOnly))
+    const QString path = dirPath + "/languages";
+    QFile         file(path);
+    if (!file.open(QIODevice::WriteOnly))
     {
 #if defined(LOGS_ENABLED)
         qDebug() << "open file " << path << " for writting failed";
 #endif
         return false;
     }
-    f.write(content);
-    f.close();
+    file.write(content);
+    file.close();
     return true;
 }
 
@@ -349,19 +369,21 @@ bool CodeInspectorApp::loadLanguageList(QByteArray &content)
 #if defined(LOGS_ENABLED)
     qDebug() << Q_FUNC_INFO;
 #endif
-    QString path = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/languages";
+    const QString path = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/languages";
     if (!QFile::exists(path))
+    {
         return false;
-    QFile f(path);
-    if (!f.open(QIODevice::ReadOnly))
+    }
+    QFile file(path);
+    if (!file.open(QIODevice::ReadOnly))
     {
 #if defined(LOGS_ENABLED)
         qDebug() << "open file " << path << " for reading failed";
 #endif
         return false;
     }
-    content = f.readAll();
-    f.close();
+    content = file.readAll();
+    file.close();
     return true;
 }
 
@@ -380,12 +402,12 @@ bool CodeInspectorApp::parseLanguageListFromJSON(const QByteArray &content)
         return false;
     }
 
-    QJsonArray ll = doc.array();
+    QJsonArray langArr = doc.array();
     m_languageList.clear();
 
-    for (auto l : ll)
+    for (auto langElem : langArr)
     {
-        if (!l.isObject())
+        if (!langElem.isObject())
         {
 #if defined(LOGS_ENABLED)
             qDebug() << "language list item is expected to be an object:" << QString(content).left(256);
@@ -393,14 +415,14 @@ bool CodeInspectorApp::parseLanguageListFromJSON(const QByteArray &content)
             return false;
         }
 
-        QJsonObject o = l.toObject();
+        QJsonObject langObj = langElem.toObject();
         LanguagePtr lang(new Language);
-        lang->id              = o["id"].toString();
-        lang->name            = o["name"].toString();
-        lang->monaco          = o["monaco"].toString();
-        lang->example         = o["example"].toString();
-        lang->defaultCompiler = o["defaultCompiler"].toString();
-        QJsonArray extensions = o["extensions"].toArray();
+        lang->id              = langObj[QStringLiteral("id")].toString();
+        lang->name            = langObj[QStringLiteral("name")].toString();
+        lang->monaco          = langObj[QStringLiteral("monaco")].toString();
+        lang->example         = langObj[QStringLiteral("example")].toString();
+        lang->defaultCompiler = langObj[QStringLiteral("defaultCompiler")].toString();
+        QJsonArray extensions = langObj[QStringLiteral("extensions")].toArray();
         for (auto ext : extensions)
         {
             if (!ext.isString())
@@ -412,17 +434,17 @@ bool CodeInspectorApp::parseLanguageListFromJSON(const QByteArray &content)
             }
             lang->extensions.append(ext.toString());
         }
-        QJsonArray alias = o["alias"].toArray();
-        for (auto a : alias)
+        QJsonArray alias = langObj[QStringLiteral("alias")].toArray();
+        for (auto aliasElem : alias)
         {
-            if (!a.isString())
+            if (!aliasElem.isString())
             {
 #if defined(LOGS_ENABLED)
                 qDebug() << "alias item is expected to be a string:" << QString(content).left(256);
 #endif
                 return false;
             }
-            lang->alias.append(a.toString());
+            lang->alias.append(aliasElem.toString());
         }
 
         m_languageList.append(lang);
@@ -437,23 +459,23 @@ bool CodeInspectorApp::parseLanguageListFromConfiguration(QJsonObject &obj)
     qDebug() << Q_FUNC_INFO;
 #endif
     m_languageList.clear();
-    for (auto v : obj)
+    for (auto langElem : obj)
     {
-        if (!v.isObject())
+        if (!langElem.isObject())
         {
 #if defined(LOGS_ENABLED)
             qDebug() << "language item is expected to be an object";
 #endif
             return false;
         }
-        QJsonObject o = v.toObject();
+        QJsonObject langObj = langElem.toObject();
         LanguagePtr lang(new Language);
-        lang->id              = o["id"].toString();
-        lang->name            = o["name"].toString();
-        lang->monaco          = o["monaco"].toString();
-        lang->example         = o["example"].toString();
-        lang->defaultCompiler = o["defaultCompiler"].toString();
-        QJsonArray extensions = o["extensions"].toArray();
+        lang->id              = langObj[QStringLiteral("id")].toString();
+        lang->name            = langObj[QStringLiteral("name")].toString();
+        lang->monaco          = langObj[QStringLiteral("monaco")].toString();
+        lang->example         = langObj[QStringLiteral("example")].toString();
+        lang->defaultCompiler = langObj[QStringLiteral("defaultCompiler")].toString();
+        QJsonArray extensions = langObj[QStringLiteral("extensions")].toArray();
         for (auto ext : extensions)
         {
             if (!ext.isString())
@@ -465,17 +487,17 @@ bool CodeInspectorApp::parseLanguageListFromConfiguration(QJsonObject &obj)
             }
             lang->extensions.append(ext.toString());
         }
-        QJsonArray alias = o["alias"].toArray();
-        for (auto a : alias)
+        QJsonArray alias = langObj[QStringLiteral("alias")].toArray();
+        for (auto aliasElem : alias)
         {
-            if (!a.isString())
+            if (!aliasElem.isString())
             {
 #if defined(LOGS_ENABLED)
                 qDebug() << "alias item is expected to be a string";
 #endif
                 return false;
             }
-            lang->alias.append(a.toString());
+            lang->alias.append(aliasElem.toString());
         }
 
         m_languageList.append(lang);
@@ -518,11 +540,13 @@ bool CodeInspectorApp::parseLibListFromConfiguration(QJsonObject &obj)
             libraryList->append(library);
             auto libObj = lib.toObject();
             library->setId(libId);
-            library->setName(libObj["name"].toString());
-            library->setUrl(libObj["url"].toString());
-            if (!libObj["description"].isNull())
-                library->setDescription(libObj["description"].toString());
-            auto versions   = libObj["versions"].toObject();
+            library->setName(libObj[QStringLiteral("name")].toString());
+            library->setUrl(libObj[QStringLiteral("url")].toString());
+            if (!libObj[QStringLiteral("description")].isNull())
+            {
+                library->setDescription(libObj[QStringLiteral("description")].toString());
+            }
+            auto versions   = libObj[QStringLiteral("versions")].toObject();
             auto versionsId = versions.keys();
             for (auto &versionId : versionsId)
             {
@@ -536,15 +560,19 @@ bool CodeInspectorApp::parseLibListFromConfiguration(QJsonObject &obj)
                 }
                 auto              versionObj = version.toObject();
                 LibraryVersionPtr ver(new LibraryVersion);
-                auto              v = versionObj["version"];
+                auto              v = versionObj[QStringLiteral("version")];
                 if (v.isString())
-                    ver->setVersion(v.toString());
-                else if (v.isDouble())
-                    ver->setVersion(QString("%1").arg(v.toDouble()));
-                auto path = versionObj["path"].toArray();
-                for (auto p : path)
                 {
-                    ver->appendPath(p.toString());
+                    ver->setVersion(v.toString());
+                }
+                else if (v.isDouble())
+                {
+                    ver->setVersion(QString::number(v.toDouble()));
+                }
+                auto path = versionObj[QStringLiteral("path")].toArray();
+                for (auto pathElem : path)
+                {
+                    ver->appendPath(pathElem.toString());
                 }
                 library->appendVersion(ver);
             }
@@ -560,9 +588,9 @@ bool CodeInspectorApp::parseDefaultCompilerFromConfiguration(QJsonObject &obj)
 #endif
     auto languages = obj.keys();
     m_defaultCompiler.clear();
-    for (const auto &l : languages)
+    for (const auto &lang : languages)
     {
-        m_defaultCompiler.insert(l, obj[l].toString());
+        m_defaultCompiler.insert(lang, obj[lang].toString());
     }
 
     return !m_defaultCompiler.empty();
@@ -571,28 +599,34 @@ bool CodeInspectorApp::parseDefaultCompilerFromConfiguration(QJsonObject &obj)
 const QString &CodeInspectorApp::getLanguageId(const QString &name)
 {
     if (name.isEmpty())
+    {
         return name;
-    auto it = std::find_if(m_languageList.begin(), m_languageList.end(), [&name](LanguagePtr l) { return l->name == name; });
-    Q_ASSERT(m_languageList.end() != it);
-    return (*it)->id;
+    }
+    auto iter = std::find_if(m_languageList.begin(), m_languageList.end(), [&name](const LanguagePtr &lang) { return lang->name == name; });
+    Q_ASSERT(m_languageList.end() != iter);
+    return (*iter)->id;
 }
 
 const QString &CodeInspectorApp::getLanguageName(const QString &id)
 {
     if (id.isEmpty())
+    {
         return id;
-    auto it = std::find_if(m_languageList.begin(), m_languageList.end(), [&id](LanguagePtr l) { return l->id == id; });
-    Q_ASSERT(m_languageList.end() != it);
-    return (*it)->name;
+    }
+    auto iter = std::find_if(m_languageList.begin(), m_languageList.end(), [&id](const LanguagePtr &lang) { return lang->id == id; });
+    Q_ASSERT(m_languageList.end() != iter);
+    return (*iter)->name;
 }
 
 const QString &CodeInspectorApp::getCompilerId(CompilerListPtr compilerList, const QString &name)
 {
     if (name.isEmpty())
+    {
         return name;
-    auto it = std::find_if(compilerList->begin(), compilerList->end(), [&name](CompilerPtr c) { return c->name == name; });
-    Q_ASSERT(compilerList->end() != it);
-    return (*it)->id;
+    }
+    auto iter = std::find_if(compilerList->begin(), compilerList->end(), [&name](const CompilerPtr &compiler) { return compiler->name == name; });
+    Q_ASSERT(compilerList->end() != iter);
+    return (*iter)->id;
 }
 
 QStringList CodeInspectorApp::getExampleList(const QString &languageName)
@@ -605,14 +639,14 @@ QStringList CodeInspectorApp::getExampleList(const QString &languageName)
 QString CodeInspectorApp::getExampleContent(const QString &languageName, const QString &exampleName)
 {
     auto  languageId = getLanguageId(languageName);
-    QFile f(QString(":/resource/example/%1/%2").arg(languageId, exampleName));
-    if (f.open(QIODevice::ReadOnly))
+    QFile file(QString(":/resource/example/%1/%2").arg(languageId, exampleName));
+    if (file.open(QIODevice::ReadOnly))
     {
-        QByteArray b = f.readAll();
-        f.close();
-        return QString(b);
+        QByteArray content = file.readAll();
+        file.close();
+        return content;
     }
-    return "";
+    return {};
 }
 
 const QString &CodeInspectorApp::getDefaultCompilerName(const QString &languageName)
@@ -624,13 +658,18 @@ const QString &CodeInspectorApp::getDefaultCompilerName(const QString &languageN
     auto           languageId = getLanguageId(languageName);
     auto           langIt     = m_defaultCompiler.find(languageId);
     if (m_defaultCompiler.end() == langIt)
+    {
         return emptyString;
+    }
     auto compilerId   = langIt.value();
     auto compilerList = getCompilerList(languageName);
-    auto it           = std::find_if(compilerList->begin(), compilerList->end(), [&compilerId](CompilerPtr c) { return c->id == compilerId; });
-    if (compilerList->end() == it)
+    auto iter =
+        std::find_if(compilerList->begin(), compilerList->end(), [&compilerId](const CompilerPtr &compiler) { return compiler->id == compilerId; });
+    if (compilerList->end() == iter)
+    {
         return emptyString;
-    return (*it)->name;
+    }
+    return (*iter)->name;
 }
 
 void CodeInspectorApp::requestConfigurations()
@@ -653,11 +692,11 @@ bool CodeInspectorApp::storeConfiguration(const QByteArray &content)
 #if defined(LOGS_ENABLED)
     qDebug() << Q_FUNC_INFO;
 #endif
-    QString d = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
-    QDir    dir(d);
+    const QString dirPath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+    QDir          dir(dirPath);
     if (!dir.exists())
     {
-        if (!dir.mkpath(d))
+        if (!dir.mkpath(dirPath))
         {
 #if defined(LOGS_ENABLED)
             qDebug() << "creating directory failed:" << d;
@@ -665,17 +704,17 @@ bool CodeInspectorApp::storeConfiguration(const QByteArray &content)
             return false;
         }
     }
-    QString path = d + "/configurations.json";
-    QFile   f(path);
-    if (!f.open(QIODevice::WriteOnly))
+    const QString path = dirPath + "/configurations.json";
+    QFile         file(path);
+    if (!file.open(QIODevice::WriteOnly))
     {
 #if defined(LOGS_ENABLED)
         qDebug() << "open file " << path << " for writting failed";
 #endif
         return false;
     }
-    f.write(content);
-    f.close();
+    file.write(content);
+    file.close();
     return true;
 }
 
@@ -684,8 +723,8 @@ bool CodeInspectorApp::loadConfigurationRawContent(const QString &path, QByteArr
 #if defined(LOGS_ENABLED)
     qDebug() << Q_FUNC_INFO;
 #endif
-    QFile f(path);
-    if (!f.open(QIODevice::ReadOnly))
+    QFile file(path);
+    if (!file.open(QIODevice::ReadOnly))
     {
 #if defined(LOGS_ENABLED)
         qDebug() << "open file " << path << " for reading failed";
@@ -695,8 +734,8 @@ bool CodeInspectorApp::loadConfigurationRawContent(const QString &path, QByteArr
 #if defined(LOGS_ENABLED)
     qDebug() << "load configurations from" << path;
 #endif
-    content = f.readAll();
-    f.close();
+    content = file.readAll();
+    file.close();
     return true;
 }
 
@@ -715,13 +754,13 @@ bool CodeInspectorApp::parseConfiguration(const QByteArray &content)
     }
 
     QJsonObject obj       = doc.object();
-    QJsonObject languages = obj["languages"].toObject();
+    QJsonObject languages = obj[QStringLiteral("languages")].toObject();
     bool        ret       = parseLanguageListFromConfiguration(languages);
-    QJsonObject libs      = obj["libs"].toObject();
+    QJsonObject libs      = obj[QStringLiteral("libs")].toObject();
     ret &= parseLibListFromConfiguration(libs);
-    QJsonArray compilers = obj["compilers"].toArray();
+    QJsonArray compilers = obj[QStringLiteral("compilers")].toArray();
     ret &= parseCompilerListFromConfiguration(compilers);
-    QJsonObject defaultCompiler = obj["defaultCompiler"].toObject();
+    QJsonObject defaultCompiler = obj[QStringLiteral("defaultCompiler")].toObject();
     ret &= parseDefaultCompilerFromConfiguration(defaultCompiler);
     if (ret)
     {
@@ -734,12 +773,13 @@ bool CodeInspectorApp::parseConfiguration(const QByteArray &content)
 
 const QString &CodeInspectorApp::getExample(const QString &language) const
 {
-    auto it = std::find_if(m_languageList.begin(), m_languageList.end(), [&language](LanguagePtr l) { return l->name == language; });
-    Q_ASSERT(m_languageList.end() != it);
+    auto iter =
+        std::find_if(m_languageList.begin(), m_languageList.end(), [&language](const LanguagePtr &langElem) { return langElem->name == language; });
+    Q_ASSERT(m_languageList.end() != iter);
 #if defined(LOGS_ENABLED)
-    qDebug() << "get example:" << (*it)->example;
+    qDebug() << "get example:" << (*iter)->example;
 #endif
-    return (*it)->example;
+    return (*iter)->example;
 }
 
 void CodeInspectorApp::onLanguageListRequestFinished()
@@ -748,12 +788,15 @@ void CodeInspectorApp::onLanguageListRequestFinished()
     qDebug() << Q_FUNC_INFO;
 #endif
     auto *reply = qobject_cast<NetworkReplyHelper *>(sender());
+    Q_ASSERT(reply);
     reply->deleteLater();
 
     QByteArray &content = reply->content();
     storeLanguageList(content);
     if (parseLanguageListFromJSON(content))
+    {
         emit languageListReady();
+    }
 }
 
 void CodeInspectorApp::onConfigurationRequestFinished()
@@ -769,7 +812,9 @@ void CodeInspectorApp::onConfigurationRequestFinished()
     qDebug() << Q_FUNC_INFO << QString(content).left(256);
 #endif
     if (parseConfiguration(content))
+    {
         storeConfiguration(content);
+    }
 }
 
 void CodeInspectorApp::switchLanguage(const QString &language)
@@ -777,8 +822,8 @@ void CodeInspectorApp::switchLanguage(const QString &language)
 #if defined(LOGS_ENABLED)
     qDebug() << Q_FUNC_INFO << m_compilerMap.size();
 #endif
-    auto it = m_compilerMap.find(language);
-    if (m_compilerMap.end() != it && !it.value()->isEmpty())
+    auto iter = m_compilerMap.find(language);
+    if (m_compilerMap.end() != iter && !iter.value()->isEmpty())
     {
         emit compilerListReady();
         return;
@@ -809,7 +854,9 @@ void CodeInspectorApp::onCompilerListRequestFinished()
         storeCompilerList(name, content);
 
         if (!parseCompilerListFromJSON(name, content))
+        {
             switchLanguage(name);
+        }
     }
     else
     {
@@ -823,8 +870,11 @@ bool CodeInspectorApp::canCompile(const QString &language, const QString &compil
     qDebug() << Q_FUNC_INFO << language << compiler;
 #endif
     if (m_compilerMap.find(language) == m_compilerMap.end())
+    {
         return false;
+    }
     auto compilerList = m_compilerMap.find(language).value();
-    auto it           = std::find_if(compilerList->begin(), compilerList->end(), [&compiler](CompilerPtr c) { return c->name == compiler; });
-    return it != compilerList->end();
+    auto iter         = std::find_if(
+        compilerList->begin(), compilerList->end(), [&compiler](const CompilerPtr &compilerElem) { return compilerElem->name == compiler; });
+    return iter != compilerList->end();
 }

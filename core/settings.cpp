@@ -15,52 +15,52 @@ void Settings::initialize()
 void Settings::save()
 {
     QSettings settings(QSettings::IniFormat, QSettings::UserScope, "IsmISV", "CodeInspector");
-    settings.setValue("rememberLastSession", m_rememberLastSession);
-    settings.setValue("autoRefreshInterval", m_autoRefreshInterval);
-    settings.setValue("editorZoomFactor", m_editorZoomFactor);
-    settings.setValue("defaultLanguageIndex", m_defaultLanguageIndex);
-    settings.setValue("codeEditorFontFamily", m_codeEditorFontFamily);
-    settings.setValue("codeEditorTheme", m_codeEditorTheme);
-    settings.setValue("codeInspectorFontFamily", m_codeInspectorFontFamily);
-    settings.setValue("codeInspectorTheme", m_codeInspectorTheme);
-    settings.setValue("binary", m_binary);
-    settings.setValue("label", m_label);
-    settings.setValue("functions", m_functions);
-    settings.setValue("directives", m_directives);
-    settings.setValue("comments", m_comments);
-    settings.setValue("trim", m_trim);
-    settings.setValue("intel", m_intel);
-    settings.setValue("demangle", m_demangle);
-    settings.setValue("apiBaseURL", m_apiBaseURL);
-    settings.setValue("sslRequired", m_sslRequired);
+    settings.setValue(QStringLiteral("rememberLastSession"), m_rememberLastSession);
+    settings.setValue(QStringLiteral("autoRefreshInterval"), m_autoRefreshInterval);
+    settings.setValue(QStringLiteral("editorZoomFactor"), m_editorZoomFactor);
+    settings.setValue(QStringLiteral("defaultLanguageIndex"), m_defaultLanguageIndex);
+    settings.setValue(QStringLiteral("codeEditorFontFamily"), m_codeEditorFontFamily);
+    settings.setValue(QStringLiteral("codeEditorTheme"), m_codeEditorTheme);
+    settings.setValue(QStringLiteral("codeInspectorFontFamily"), m_codeInspectorFontFamily);
+    settings.setValue(QStringLiteral("codeInspectorTheme"), m_codeInspectorTheme);
+    settings.setValue(QStringLiteral("binary"), m_binary);
+    settings.setValue(QStringLiteral("label"), m_label);
+    settings.setValue(QStringLiteral("functions"), m_functions);
+    settings.setValue(QStringLiteral("directives"), m_directives);
+    settings.setValue(QStringLiteral("comments"), m_comments);
+    settings.setValue(QStringLiteral("trim"), m_trim);
+    settings.setValue(QStringLiteral("intel"), m_intel);
+    settings.setValue(QStringLiteral("demangle"), m_demangle);
+    settings.setValue(QStringLiteral("apiBaseURL"), m_apiBaseURL);
+    settings.setValue(QStringLiteral("sslRequired"), m_sslRequired);
     settings.sync();
 }
 
 void Settings::load()
 {
     QSettings settings(QSettings::IniFormat, QSettings::UserScope, "IsmISV", "CodeInspector");
-    m_rememberLastSession  = settings.value("rememberLastSession", true).toBool();
-    m_binary               = settings.value("binary", false).toBool();
-    m_label                = settings.value("label", true).toBool();
-    m_functions            = settings.value("functions", true).toBool();
-    m_directives           = settings.value("directives", true).toBool();
-    m_comments             = settings.value("comments", true).toBool();
-    m_trim                 = settings.value("trim", true).toBool();
-    m_intel                = settings.value("intel", true).toBool();
-    m_demangle             = settings.value("demangle", true).toBool();
-    m_defaultLanguageIndex = settings.value("defaultLanguageIndex", 0).toInt();
+    m_rememberLastSession  = settings.value(QStringLiteral("rememberLastSession"), true).toBool();
+    m_binary               = settings.value(QStringLiteral("binary"), false).toBool();
+    m_label                = settings.value(QStringLiteral("label"), true).toBool();
+    m_functions            = settings.value(QStringLiteral("functions"), true).toBool();
+    m_directives           = settings.value(QStringLiteral("directives"), true).toBool();
+    m_comments             = settings.value(QStringLiteral("comments"), true).toBool();
+    m_trim                 = settings.value(QStringLiteral("trim"), true).toBool();
+    m_intel                = settings.value(QStringLiteral("intel"), true).toBool();
+    m_demangle             = settings.value(QStringLiteral("demangle"), true).toBool();
+    m_defaultLanguageIndex = settings.value(QStringLiteral("defaultLanguageIndex"), 0).toInt();
 #if defined(Q_OS_IOS) || defined(Q_OS_ANDROID)
-    m_autoRefreshInterval = settings.value("autoRefreshInterval", 1500).toInt();
+    m_autoRefreshInterval = settings.value(QStringLiteral("autoRefreshInterval"), 1500).toInt();
 #else
-    m_autoRefreshInterval = settings.value("autoRefreshInterval", 750).toInt();
+    m_autoRefreshInterval = settings.value(QStringLiteral("autoRefreshInterval"), 750).toInt();
 #endif
-    m_editorZoomFactor        = settings.value("editorZoomFactor", 100).toInt();
-    m_codeEditorFontFamily    = settings.value("codeEditorFontFamily", QVariant("Source Code Pro")).toString();
-    m_codeEditorTheme         = settings.value("codeEditorTheme", QVariant("Default")).toString();
-    m_codeInspectorFontFamily = settings.value("codeInspectorFontFamily", QVariant("Source Code Pro")).toString();
-    m_codeInspectorTheme      = settings.value("codeInspectorTheme", QVariant("Default")).toString();
-    m_apiBaseURL              = settings.value("apiBaseURL", "https://compiler-explorer.com").toString();
-    m_sslRequired             = settings.value("sslRequired", true).toBool();
+    m_editorZoomFactor        = settings.value(QStringLiteral("editorZoomFactor"), 100).toInt();
+    m_codeEditorFontFamily    = settings.value(QStringLiteral("codeEditorFontFamily"), QVariant("Source Code Pro")).toString();
+    m_codeEditorTheme         = settings.value(QStringLiteral("codeEditorTheme"), QVariant("Default")).toString();
+    m_codeInspectorFontFamily = settings.value(QStringLiteral("codeInspectorFontFamily"), QVariant("Source Code Pro")).toString();
+    m_codeInspectorTheme      = settings.value(QStringLiteral("codeInspectorTheme"), QVariant("Default")).toString();
+    m_apiBaseURL              = settings.value(QStringLiteral("apiBaseURL"), QVariant("https://compiler-explorer.com")).toString();
+    m_sslRequired             = settings.value(QStringLiteral("sslRequired"), true).toBool();
 }
 
 const QString &Settings::codeEditorFontFamily() const

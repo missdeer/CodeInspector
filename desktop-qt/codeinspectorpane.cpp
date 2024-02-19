@@ -152,7 +152,7 @@ CodeInspectorPane::CodeInspectorPane(CodeEditor *codeEditor, QWidget *parent)
 
     m_splitter->addWidget(outputPane);
 
-    m_splitter->setSizes(QList<int>() << 4096 << 0);
+    m_splitter->setSizes({4096, 0});
     auto *h = m_splitter->handle(1);
     h->setEnabled(false);
 
@@ -171,7 +171,7 @@ void CodeInspectorPane::initialize() {}
 void CodeInspectorPane::setCompilerList(const CompilerListPtr &compilerList)
 {
     m_compilerList->clear();
-    auto *      model = new QStandardItemModel;
+    auto       *model = new QStandardItemModel;
     QStringList groupNames;
     for (const auto &compiler : std::as_const(*compilerList))
     {
@@ -290,7 +290,7 @@ void CodeInspectorPane::onNeedCompile()
     m_codeInspectorTabWidget->setCodeInspectorContent(tr("<Compiling...>"), m_btnBinrary->isChecked());
 
     storeToCache(ci.language, ci);
-    storeToCache("lastSession", ci);
+    storeToCache(QStringLiteral("lastSession"), ci);
 #if defined(LOGS_ENABLED)
     qDebug() << "store:" << ci.compiler;
 #endif
@@ -323,7 +323,9 @@ void CodeInspectorPane::onDelayCompile()
     qDebug() << Q_FUNC_INFO;
 #endif
     if (m_timer->isActive())
+    {
         m_timer->stop();
+    }
 
     m_timer->setSingleShot(true);
     m_timer->start(g_settings->autoRefreshInterval());
@@ -335,7 +337,7 @@ void CodeInspectorPane::onToggleOutput()
     m_output->setVisible(visible);
     if (!visible)
     {
-        m_splitter->setSizes(QList<int>() << 4096 << m_btnToggleOutput->height());
+        m_splitter->setSizes({4096, m_btnToggleOutput->height()});
     }
 }
 
@@ -388,11 +390,15 @@ void CodeInspectorPane::onCurrentCompilerArgumentsChanged()
 void CodeInspectorPane::onCurrentCompilerChanged(const QString &compilerName)
 {
     if (compilerName.isEmpty())
+    {
         return;
-    QString     cn       = compilerName.trimmed();
-    CompilerPtr compiler = ciApp->getCompiler(m_languageName, cn);
+    }
+    const QString cn       = compilerName.trimmed();
+    CompilerPtr   compiler = ciApp->getCompiler(m_languageName, cn);
     if (!compiler)
+    {
         return;
+    }
     m_compilerList->setToolTip(compiler->version);
     m_btnBinrary->setEnabled(compiler->supportsBinary);
     m_btnIntel->setEnabled(compiler->supportsIntel);
@@ -404,13 +410,15 @@ void CodeInspectorPane::onCurrentCompilerChanged(const QString &compilerName)
 
 void CodeInspectorPane::storeToCache(const QString &name, const CompileInfo &ci)
 {
-    QString d = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
-    QDir    dir(d);
+    QString dirPath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+    QDir    dir(dirPath);
     if (!dir.exists())
-        dir.mkpath(d);
-    QString path = QString("%1/%2").arg(d, name);
-    QFile   f(path);
-    if (!f.open(QIODevice::WriteOnly))
+    {
+        dir.mkpath(dirPath);
+    }
+    QString path = QString("%1/%2").arg(dirPath, name);
+    QFile   file(path);
+    if (!file.open(QIODevice::WriteOnly))
     {
 #if defined(LOGS_ENABLED)
         qDebug() << "open file " << path << " for writting failed";
@@ -418,7 +426,7 @@ void CodeInspectorPane::storeToCache(const QString &name, const CompileInfo &ci)
         return;
     }
 
-    QDataStream stream(&f);
+    QDataStream stream(&file);
     stream.startTransaction();
     stream.setVersion(QDataStream::Qt_4_5);
 
@@ -428,20 +436,24 @@ void CodeInspectorPane::storeToCache(const QString &name, const CompileInfo &ci)
 #if defined(LOGS_ENABLED)
     qDebug() << "commit transaction";
 #endif
-    f.close();
+    file.close();
 }
 
 bool CodeInspectorPane::restoreFromCache(const QString &name, CompileInfo &ci)
 {
-    QString d    = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
-    QString path = QString("%1/%2").arg(d, name);
+    QString dirPath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+    QString path    = QString("%1/%2").arg(dirPath, name);
     if (!QFile::exists(path))
+    {
         return false;
-    QFile f(path);
-    if (!f.open(QIODevice::ReadOnly))
+    }
+    QFile file(path);
+    if (!file.open(QIODevice::ReadOnly))
+    {
         return false;
+    }
 
-    QDataStream stream(&f);
+    QDataStream stream(&file);
     stream.setVersion(QDataStream::Qt_4_5);
 
     stream >> ci.binary >> ci.commentOnly >> ci.compiler >> ci.directives >> ci.intel >> ci.labels >> ci.language >> ci.source >> ci.trim >>
@@ -453,8 +465,10 @@ bool CodeInspectorPane::restoreFromCache(const QString &name, CompileInfo &ci)
 void CodeInspectorPane::showOutputWindow(bool show)
 {
     m_splitter->setSizes(QList<int>() << 4096 << (show ? 32 : 0));
-    auto h = m_splitter->handle(1);
-    h->setEnabled(show);
+    auto *handle = m_splitter->handle(1);
+    handle->setEnabled(show);
     if (!show)
+    {
         m_output->setVisible(false);
+    }
 }
