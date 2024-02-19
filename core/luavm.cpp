@@ -117,11 +117,12 @@ bool LuaVM::doScript(const char *script, size_t len)
     return true;
 }
 
-
 bool LuaVM::get(const QString &name, QStringList &array)
 {
     if (!m_L)
+    {
         return false;
+    }
 
     QStringList sections = name.split(".");
     if (!sections.isEmpty())
@@ -153,27 +154,29 @@ bool LuaVM::get(const QString &name, QStringList &array)
 #endif
         return false;
     }
-    
+
     size_t n = lua_rawlen(m_L, -1);
-    
+
     for (size_t i = 1; i <= n; i++)
     {
         lua_rawgeti(m_L, -1, i);
-        
-        size_t resultLen = 0;
-        const char * result = lua_tolstring(m_L, -1, &resultLen);
-        QString str = QString::fromLatin1(result, (int)resultLen);
+
+        size_t      resultLen = 0;
+        const char *result    = lua_tolstring(m_L, -1, &resultLen);
+        QString     str       = QString::fromLatin1(result, (int)resultLen);
         lua_pop(m_L, 1);
         array.append(str);
     }
-    
+
     return true;
 }
 
 bool LuaVM::get(const QString &name, double &value)
 {
     if (!m_L)
+    {
         return false;
+    }
 
     QStringList sections = name.split(".");
     if (!sections.isEmpty())
@@ -215,7 +218,9 @@ bool LuaVM::get(const QString &name, double &value)
 bool LuaVM::get(const QString &name, float &value)
 {
     if (!m_L)
+    {
         return false;
+    }
 
     QStringList sections = name.split(".");
     if (!sections.isEmpty())
@@ -257,7 +262,9 @@ bool LuaVM::get(const QString &name, float &value)
 bool LuaVM::get(const QString &name, int &value)
 {
     if (!m_L)
+    {
         return false;
+    }
 
     QStringList sections = name.split(".");
     if (!sections.isEmpty())
@@ -299,7 +306,9 @@ bool LuaVM::get(const QString &name, int &value)
 bool LuaVM::get(const QString &name, long long &value)
 {
     if (!m_L)
+    {
         return false;
+    }
 
     QStringList sections = name.split(".");
     if (!sections.isEmpty())
@@ -341,7 +350,9 @@ bool LuaVM::get(const QString &name, long long &value)
 bool LuaVM::get(const QString &name, bool &value)
 {
     if (!m_L)
+    {
         return false;
+    }
 
     QStringList sections = name.split(".");
     if (!sections.isEmpty())
@@ -383,7 +394,9 @@ bool LuaVM::get(const QString &name, bool &value)
 bool LuaVM::get(const QString &name, QString &value)
 {
     if (!m_L)
+    {
         return false;
+    }
 
     QStringList sections = name.split(".");
     if (!sections.isEmpty())
