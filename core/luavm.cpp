@@ -49,11 +49,15 @@ bool LuaVM::doFile(const char *file)
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
+#endif
         return false;
     }
 
+#if defined(LOGS_ENABLED)
     qDebug() << "parsing " << file;
+#endif
     int status = luaL_loadfile(m_L, file);
     if (status)
     {
@@ -90,11 +94,15 @@ bool LuaVM::doScript(const char *script, size_t len)
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
+#endif
         return false;
     }
 
+#if defined(LOGS_ENABLED)
     qDebug() << "evaluating script:" << script;
+#endif
     int status = luaL_loadbuffer(m_L, script, len, "theme");
     if (status)
     {
@@ -128,7 +136,7 @@ bool LuaVM::get(const QString &name, QStringList &array)
     if (sections.isEmpty())
     {
 #if defined(LOGS_ENABLED)
-        qDebug() << "empty name";
+        qCritical() << "empty name";
 #endif
         return false;
     }
@@ -138,8 +146,9 @@ bool LuaVM::get(const QString &name, QStringList &array)
         if (!lua_istable(m_L, -1))
         {
 #if defined(LOGS_ENABLED)
-            qDebug() << sections[i] << " is expected to be a table";
+            qCritical() << sections[i] << " is expected to be a table";
 #endif
+            lua_pop(m_L, i + 1);
             return false;
         }
 
@@ -150,8 +159,9 @@ bool LuaVM::get(const QString &name, QStringList &array)
     if (!lua_istable(m_L, -1))
     {
 #if defined(LOGS_ENABLED)
-        qDebug() << name << " is expected to be a table";
+        qCritical() << name << " is expected to be a table";
 #endif
+        lua_pop(m_L, sections.length());
         return false;
     }
 
@@ -163,7 +173,7 @@ bool LuaVM::get(const QString &name, QStringList &array)
 
         size_t      resultLen = 0;
         const char *result    = lua_tolstring(m_L, -1, &resultLen);
-        QString     str       = QString::fromLatin1(result, (int)resultLen);
+        QString     str       = QString::fromUtf8(result, (int)resultLen);
         lua_pop(m_L, 1);
         array.append(str);
     }
@@ -182,7 +192,7 @@ bool LuaVM::get(const QString &name, double &value)
     if (sections.isEmpty())
     {
 #if defined(LOGS_ENABLED)
-        qDebug() << "empty name";
+        qCritical() << "empty name";
 #endif
         return false;
     }
@@ -192,8 +202,9 @@ bool LuaVM::get(const QString &name, double &value)
         if (!lua_istable(m_L, -1))
         {
 #if defined(LOGS_ENABLED)
-            qDebug() << sections[i] << " is expected to be a table";
+            qCritical() << sections[i] << " is expected to be a table";
 #endif
+            lua_pop(m_L, i + 1);
             return false;
         }
 
@@ -204,8 +215,9 @@ bool LuaVM::get(const QString &name, double &value)
     if (!lua_isnumber(m_L, -1))
     {
 #if defined(LOGS_ENABLED)
-        qDebug() << name << " is expected to be a number";
+        qCritical() << name << " is expected to be a number";
 #endif
+        lua_pop(m_L, sections.length());
         return false;
     }
 
@@ -226,7 +238,7 @@ bool LuaVM::get(const QString &name, float &value)
     if (sections.isEmpty())
     {
 #if defined(LOGS_ENABLED)
-        qDebug() << "empty name";
+        qCritical() << "empty name";
 #endif
         return false;
     }
@@ -236,8 +248,9 @@ bool LuaVM::get(const QString &name, float &value)
         if (!lua_istable(m_L, -1))
         {
 #if defined(LOGS_ENABLED)
-            qDebug() << sections[i] << " is expected to be a table";
+            qCritical() << sections[i] << " is expected to be a table";
 #endif
+            lua_pop(m_L, i + 1);
             return false;
         }
 
@@ -248,8 +261,9 @@ bool LuaVM::get(const QString &name, float &value)
     if (!lua_isnumber(m_L, -1))
     {
 #if defined(LOGS_ENABLED)
-        qDebug() << name << " is expected to be a number";
+        qCritical() << name << " is expected to be a number";
 #endif
+        lua_pop(m_L, sections.length());
         return false;
     }
 
@@ -270,7 +284,7 @@ bool LuaVM::get(const QString &name, int &value)
     if (sections.isEmpty())
     {
 #if defined(LOGS_ENABLED)
-        qDebug() << "empty name";
+        qCritical() << "empty name";
 #endif
         return false;
     }
@@ -280,8 +294,9 @@ bool LuaVM::get(const QString &name, int &value)
         if (!lua_istable(m_L, -1))
         {
 #if defined(LOGS_ENABLED)
-            qDebug() << sections[i] << " is expected to be a table";
+            qCritical() << sections[i] << " is expected to be a table";
 #endif
+            lua_pop(m_L, i + 1);
             return false;
         }
 
@@ -292,8 +307,9 @@ bool LuaVM::get(const QString &name, int &value)
     if (!lua_isinteger(m_L, -1))
     {
 #if defined(LOGS_ENABLED)
-        qDebug() << name << " is expected to be an integer";
+        qCritical() << name << " is expected to be an integer";
 #endif
+        lua_pop(m_L, sections.length());
         return false;
     }
 
@@ -314,7 +330,7 @@ bool LuaVM::get(const QString &name, long long &value)
     if (sections.isEmpty())
     {
 #if defined(LOGS_ENABLED)
-        qDebug() << "empty name";
+        qCritical() << "empty name";
 #endif
         return false;
     }
@@ -324,8 +340,9 @@ bool LuaVM::get(const QString &name, long long &value)
         if (!lua_istable(m_L, -1))
         {
 #if defined(LOGS_ENABLED)
-            qDebug() << sections[i] << " is expected to be a table";
+            qCritical() << sections[i] << " is expected to be a table";
 #endif
+            lua_pop(m_L, i + 1);
             return false;
         }
 
@@ -336,8 +353,9 @@ bool LuaVM::get(const QString &name, long long &value)
     if (!lua_isinteger(m_L, -1))
     {
 #if defined(LOGS_ENABLED)
-        qDebug() << name << " is expected to be an integer";
+        qCritical() << name << " is expected to be an integer";
 #endif
+        lua_pop(m_L, sections.length());
         return false;
     }
 
@@ -358,7 +376,7 @@ bool LuaVM::get(const QString &name, bool &value)
     if (sections.isEmpty())
     {
 #if defined(LOGS_ENABLED)
-        qDebug() << "empty name";
+        qCritical() << "empty name";
 #endif
         return false;
     }
@@ -368,8 +386,9 @@ bool LuaVM::get(const QString &name, bool &value)
         if (!lua_istable(m_L, -1))
         {
 #if defined(LOGS_ENABLED)
-            qDebug() << sections[i] << " is expected to be a table";
+            qCritical() << sections[i] << " is expected to be a table";
 #endif
+            lua_pop(m_L, i + 1);
             return false;
         }
 
@@ -380,8 +399,9 @@ bool LuaVM::get(const QString &name, bool &value)
     if (!lua_isboolean(m_L, -1))
     {
 #if defined(LOGS_ENABLED)
-        qDebug() << name << " is expected to be a boolean";
+        qCritical() << name << " is expected to be a boolean";
 #endif
+        lua_pop(m_L, sections.length());
         return false;
     }
 
@@ -402,7 +422,7 @@ bool LuaVM::get(const QString &name, QString &value)
     if (sections.isEmpty())
     {
 #if defined(LOGS_ENABLED)
-        qDebug() << "empty name";
+        qCritical() << "empty name";
 #endif
         return false;
     }
@@ -412,8 +432,9 @@ bool LuaVM::get(const QString &name, QString &value)
         if (!lua_istable(m_L, -1))
         {
 #if defined(LOGS_ENABLED)
-            qDebug() << sections[i] << " is expected to be a table";
+            qCritical() << sections[i] << " is expected to be a table";
 #endif
+            lua_pop(m_L, i + 1);
             return false;
         }
 
@@ -424,14 +445,15 @@ bool LuaVM::get(const QString &name, QString &value)
     if (!lua_isstring(m_L, -1))
     {
 #if defined(LOGS_ENABLED)
-        qDebug() << name << " is expected to be a string";
+        qCritical() << name << " is expected to be a string";
 #endif
+        lua_pop(m_L, sections.length());
         return false;
     }
 
     size_t      resultLen = 0;
     const char *result    = lua_tolstring(m_L, -1, &resultLen);
-    value                 = QString::fromLatin1(result, (int)resultLen);
+    value                 = QString::fromUtf8(result, (int)resultLen);
     lua_pop(m_L, sections.length());
 
     return true;
@@ -449,7 +471,9 @@ bool LuaVM::getQStringArray(const char *name, QStringList &array)
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
+#endif
         return false;
     }
 
@@ -457,7 +481,10 @@ bool LuaVM::getQStringArray(const char *name, QStringList &array)
 
     if (!lua_istable(m_L, -1))
     {
+#if defined(LOGS_ENABLED)
         qCritical() << name << " is expected to be a table";
+#endif
+        lua_pop(m_L, 1);
         return false;
     }
 
@@ -469,7 +496,7 @@ bool LuaVM::getQStringArray(const char *name, QStringList &array)
 
         size_t      resultLen = 0;
         const char *result    = lua_tolstring(m_L, -1, &resultLen);
-        QString     str       = QString::fromLatin1(result, static_cast<int>(resultLen));
+        QString     str       = QString::fromUtf8(result, static_cast<int>(resultLen));
         lua_pop(m_L, 1);
         array.append(str);
     }
@@ -489,7 +516,9 @@ double LuaVM::getDouble(const char *name)
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
+#endif
         return 0.0;
     }
 
@@ -498,6 +527,7 @@ double LuaVM::getDouble(const char *name)
     if (!lua_isnumber(m_L, -1))
     {
         qCritical() << name << " is expected to be a number";
+        lua_pop(m_L, 1);
         return 0.0;
     }
 
@@ -519,7 +549,9 @@ float LuaVM::getFloat(const char *name)
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
+#endif
         return 0.0;
     }
 
@@ -528,6 +560,7 @@ float LuaVM::getFloat(const char *name)
     if (!lua_isnumber(m_L, -1))
     {
         qCritical() << name << " is expected to be a number";
+        lua_pop(m_L, 1);
         return 0.0;
     }
 
@@ -549,7 +582,9 @@ int LuaVM::getInt(const char *name)
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
+#endif
         return 0;
     }
 
@@ -558,6 +593,7 @@ int LuaVM::getInt(const char *name)
     if (!lua_isinteger(m_L, -1))
     {
         qCritical() << name << " is expected to be a number";
+        lua_pop(m_L, 1);
         return 0;
     }
 
@@ -579,7 +615,9 @@ long long LuaVM::getLongLong(const char *name)
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
+#endif
         return 0;
     }
 
@@ -588,6 +626,7 @@ long long LuaVM::getLongLong(const char *name)
     if (!lua_isinteger(m_L, -1))
     {
         qCritical() << name << " is expected to be a number";
+        lua_pop(m_L, 1);
         return 0;
     }
 
@@ -609,7 +648,9 @@ bool LuaVM::getBool(const char *name)
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
+#endif
         return false;
     }
 
@@ -617,7 +658,8 @@ bool LuaVM::getBool(const char *name)
 
     if (!lua_isboolean(m_L, -1))
     {
-        qDebug() << name << " is expected to be a boolean";
+        qCritical() << name << " is expected to be a boolean";
+        lua_pop(m_L, 1);
         return false;
     }
 
@@ -650,7 +692,9 @@ std::string LuaVM::getString(const char *name)
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
+#endif
         return {};
     }
 
@@ -659,6 +703,7 @@ std::string LuaVM::getString(const char *name)
     if (!lua_isstring(m_L, -1))
     {
         qCritical() << name << " is expected to be a string";
+        lua_pop(m_L, 1);
         return {};
     }
 
@@ -682,7 +727,9 @@ double LuaVM::getDouble(const char *table, const char *name)
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
+#endif
         return 0.0;
     }
 
@@ -691,6 +738,7 @@ double LuaVM::getDouble(const char *table, const char *name)
     if (!lua_istable(m_L, -1))
     {
         qCritical() << table << " is expected to be a table";
+        lua_pop(m_L, 1);
         return 0.0;
     }
 
@@ -700,12 +748,12 @@ double LuaVM::getDouble(const char *table, const char *name)
     if (!lua_isnumber(m_L, -1))
     {
         qCritical() << name << " is expected to be a number";
+        lua_pop(m_L, 2);
         return 0.0;
     }
 
     double result = lua_tonumber(m_L, -1);
-    lua_pop(m_L, 1); // remove the result
-    lua_pop(m_L, 1); // remove table
+    lua_pop(m_L, 2); // remove the result table
 
     return result;
 }
@@ -722,7 +770,9 @@ double LuaVM::getDouble(const char *t1, const char *t2, const char *name)
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
+#endif
         return 0.0;
     }
 
@@ -731,6 +781,7 @@ double LuaVM::getDouble(const char *t1, const char *t2, const char *name)
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t1 << " is expected to be a table";
+        lua_pop(m_L, 1);
         return 0.0;
     }
 
@@ -740,6 +791,7 @@ double LuaVM::getDouble(const char *t1, const char *t2, const char *name)
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t2 << " is expected to be a table";
+        lua_pop(m_L, 2);
         return 0.0;
     }
 
@@ -749,13 +801,12 @@ double LuaVM::getDouble(const char *t1, const char *t2, const char *name)
     if (!lua_isnumber(m_L, -1))
     {
         qCritical() << name << " is expected to be a number";
+        lua_pop(m_L, 3);
         return 0.0;
     }
 
     double result = lua_tonumber(m_L, -1);
-    lua_pop(m_L, 1); // remove the result
-    lua_pop(m_L, 1); // remove t2
-    lua_pop(m_L, 1); // remove t1
+    lua_pop(m_L, 3); // remove the result  t2 t1
 
     return result;
 }
@@ -772,7 +823,9 @@ double LuaVM::getDouble(const char *t1, const char *t2, const char *t3, const ch
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
+#endif
         return 0.0;
     }
 
@@ -781,6 +834,7 @@ double LuaVM::getDouble(const char *t1, const char *t2, const char *t3, const ch
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t1 << " is expected to be a table";
+        lua_pop(m_L, 1);
         return 0.0;
     }
 
@@ -790,6 +844,7 @@ double LuaVM::getDouble(const char *t1, const char *t2, const char *t3, const ch
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t2 << " is expected to be a table";
+        lua_pop(m_L, 2);
         return 0.0;
     }
 
@@ -799,6 +854,7 @@ double LuaVM::getDouble(const char *t1, const char *t2, const char *t3, const ch
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t3 << " is expected to be a table";
+        lua_pop(m_L, 3);
         return 0.0;
     }
 
@@ -808,14 +864,12 @@ double LuaVM::getDouble(const char *t1, const char *t2, const char *t3, const ch
     if (!lua_isnumber(m_L, -1))
     {
         qCritical() << name << " is expected to be a number";
+        lua_pop(m_L, 4);
         return 0.0;
     }
 
     double result = lua_tonumber(m_L, -1);
-    lua_pop(m_L, 1); // remove the result
-    lua_pop(m_L, 1); // remove t3
-    lua_pop(m_L, 1); // remove t2
-    lua_pop(m_L, 1); // remove t1
+    lua_pop(m_L, 4); // remove the result  t3  t2  t1
 
     return result;
 }
@@ -832,7 +886,9 @@ float LuaVM::getFloat(const char *table, const char *name)
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
+#endif
         return 0.0;
     }
 
@@ -841,6 +897,7 @@ float LuaVM::getFloat(const char *table, const char *name)
     if (!lua_istable(m_L, -1))
     {
         qCritical() << table << " is expected to be a table";
+        lua_pop(m_L, 1);
         return 0.0;
     }
 
@@ -850,12 +907,12 @@ float LuaVM::getFloat(const char *table, const char *name)
     if (!lua_isnumber(m_L, -1))
     {
         qCritical() << name << " is expected to be a number";
+        lua_pop(m_L, 2);
         return 0.0;
     }
 
     auto result = (float)lua_tonumber(m_L, -1);
-    lua_pop(m_L, 1); // remove the result
-    lua_pop(m_L, 1); // remove table
+    lua_pop(m_L, 2); // remove the result  table
 
     return result;
 }
@@ -872,7 +929,9 @@ float LuaVM::getFloat(const char *t1, const char *t2, const char *name)
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
+#endif
         return 0.0;
     }
 
@@ -881,6 +940,7 @@ float LuaVM::getFloat(const char *t1, const char *t2, const char *name)
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t1 << " is expected to be a table";
+        lua_pop(m_L, 1);
         return 0.0;
     }
 
@@ -890,6 +950,7 @@ float LuaVM::getFloat(const char *t1, const char *t2, const char *name)
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t2 << " is expected to be a table";
+        lua_pop(m_L, 2);
         return 0.0;
     }
 
@@ -898,14 +959,13 @@ float LuaVM::getFloat(const char *t1, const char *t2, const char *name)
 
     if (!lua_isnumber(m_L, -1))
     {
-        qDebug() << name << " is expected to be a number";
+        qCritical() << name << " is expected to be a number";
+        lua_pop(m_L, 3);
         return 0.0;
     }
 
     auto result = (float)lua_tonumber(m_L, -1);
-    lua_pop(m_L, 1); // remove the result
-    lua_pop(m_L, 1); // remove t2
-    lua_pop(m_L, 1); // remove t1
+    lua_pop(m_L, 3); // remove the result  t2  t1
 
     return result;
 }
@@ -922,7 +982,9 @@ float LuaVM::getFloat(const char *t1, const char *t2, const char *t3, const char
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
+#endif
         return 0.0;
     }
 
@@ -931,6 +993,7 @@ float LuaVM::getFloat(const char *t1, const char *t2, const char *t3, const char
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t1 << " is expected to be a table";
+        lua_pop(m_L, 1);
         return 0.0;
     }
 
@@ -940,6 +1003,7 @@ float LuaVM::getFloat(const char *t1, const char *t2, const char *t3, const char
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t2 << " is expected to be a table";
+        lua_pop(m_L, 2);
         return 0.0;
     }
 
@@ -949,6 +1013,7 @@ float LuaVM::getFloat(const char *t1, const char *t2, const char *t3, const char
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t3 << " is expected to be a table";
+        lua_pop(m_L, 3);
         return 0.0;
     }
 
@@ -958,14 +1023,12 @@ float LuaVM::getFloat(const char *t1, const char *t2, const char *t3, const char
     if (!lua_isnumber(m_L, -1))
     {
         qCritical() << name << " is expected to be a number";
+        lua_pop(m_L, 4);
         return 0.0;
     }
 
     auto result = (float)lua_tonumber(m_L, -1);
-    lua_pop(m_L, 1); // remove the result
-    lua_pop(m_L, 1); // remove t3
-    lua_pop(m_L, 1); // remove t2
-    lua_pop(m_L, 1); // remove t1
+    lua_pop(m_L, 4); // remove the result  t3  t2  t1
 
     return result;
 }
@@ -982,7 +1045,9 @@ int LuaVM::getInt(const char *table, const char *name)
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
+#endif
         return 0;
     }
 
@@ -991,6 +1056,7 @@ int LuaVM::getInt(const char *table, const char *name)
     if (!lua_istable(m_L, -1))
     {
         qCritical() << table << " is expected to be a table";
+        lua_pop(m_L, 1);
         return 0;
     }
 
@@ -1000,12 +1066,12 @@ int LuaVM::getInt(const char *table, const char *name)
     if (!lua_isinteger(m_L, -1))
     {
         qCritical() << name << " is expected to be an integer";
+        lua_pop(m_L, 2);
         return 0;
     }
 
     int result = (int)lua_tointeger(m_L, -1);
-    lua_pop(m_L, 1); // remove the result
-    lua_pop(m_L, 1); // remove table
+    lua_pop(m_L, 2); // remove the result  table
 
     return result;
 }
@@ -1022,7 +1088,9 @@ int LuaVM::getInt(const char *t1, const char *t2, const char *name)
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
+#endif
         return 0;
     }
 
@@ -1031,6 +1099,7 @@ int LuaVM::getInt(const char *t1, const char *t2, const char *name)
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t1 << " is expected to be a table";
+        lua_pop(m_L, 1);
         return 0;
     }
 
@@ -1040,6 +1109,7 @@ int LuaVM::getInt(const char *t1, const char *t2, const char *name)
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t2 << " is expected to be a table";
+        lua_pop(m_L, 2);
         return 0;
     }
 
@@ -1049,13 +1119,12 @@ int LuaVM::getInt(const char *t1, const char *t2, const char *name)
     if (!lua_isinteger(m_L, -1))
     {
         qCritical() << name << " is expected to be an integer";
+        lua_pop(m_L, 3);
         return 0;
     }
 
     int result = (int)lua_tointeger(m_L, -1);
-    lua_pop(m_L, 1); // remove the result
-    lua_pop(m_L, 1); // remove t2
-    lua_pop(m_L, 1); // remove t1
+    lua_pop(m_L, 3); // remove the result  t2  t1
 
     return result;
 }
@@ -1072,7 +1141,9 @@ int LuaVM::getInt(const char *t1, const char *t2, const char *t3, const char *na
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
+#endif
         return 0;
     }
 
@@ -1081,6 +1152,7 @@ int LuaVM::getInt(const char *t1, const char *t2, const char *t3, const char *na
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t1 << " is expected to be a table";
+        lua_pop(m_L, 1);
         return 0;
     }
 
@@ -1090,6 +1162,7 @@ int LuaVM::getInt(const char *t1, const char *t2, const char *t3, const char *na
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t2 << " is expected to be a table";
+        lua_pop(m_L, 2);
         return 0;
     }
 
@@ -1098,7 +1171,8 @@ int LuaVM::getInt(const char *t1, const char *t2, const char *t3, const char *na
 
     if (!lua_istable(m_L, -1))
     {
-        qDebug() << t3 << " is expected to be a table";
+        qCritical() << t3 << " is expected to be a table";
+        lua_pop(m_L, 3);
         return 0;
     }
 
@@ -1108,14 +1182,12 @@ int LuaVM::getInt(const char *t1, const char *t2, const char *t3, const char *na
     if (!lua_isinteger(m_L, -1))
     {
         qCritical() << name << " is expected to be an integer";
+        lua_pop(m_L, 4);
         return 0;
     }
 
     int result = (int)lua_tointeger(m_L, -1);
-    lua_pop(m_L, 1); // remove the result
-    lua_pop(m_L, 1); // remove t3
-    lua_pop(m_L, 1); // remove t2
-    lua_pop(m_L, 1); // remove t1
+    lua_pop(m_L, 4); // remove the result t3 t2 t1
 
     return result;
 }
@@ -1132,7 +1204,9 @@ long long LuaVM::getLongLong(const char *table, const char *name)
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
+#endif
         return 0;
     }
 
@@ -1141,6 +1215,7 @@ long long LuaVM::getLongLong(const char *table, const char *name)
     if (!lua_istable(m_L, -1))
     {
         qCritical() << table << " is expected to be a table";
+        lua_pop(m_L, 1);
         return 0;
     }
 
@@ -1150,12 +1225,12 @@ long long LuaVM::getLongLong(const char *table, const char *name)
     if (!lua_isinteger(m_L, -1))
     {
         qCritical() << name << " is expected to be an integer";
+        lua_pop(m_L, 2);
         return 0;
     }
 
     auto result = (long long)lua_tointeger(m_L, -1);
-    lua_pop(m_L, 1); // remove the result
-    lua_pop(m_L, 1); // remove table
+    lua_pop(m_L, 2); // remove the result table
 
     return result;
 }
@@ -1172,7 +1247,9 @@ long long LuaVM::getLongLong(const char *t1, const char *t2, const char *name)
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
+#endif
         return 0;
     }
 
@@ -1181,6 +1258,7 @@ long long LuaVM::getLongLong(const char *t1, const char *t2, const char *name)
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t1 << " is expected to be a table";
+        lua_pop(m_L, 1);
         return 0;
     }
 
@@ -1190,6 +1268,7 @@ long long LuaVM::getLongLong(const char *t1, const char *t2, const char *name)
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t2 << " is expected to be a table";
+        lua_pop(m_L, 2);
         return 0;
     }
 
@@ -1199,13 +1278,12 @@ long long LuaVM::getLongLong(const char *t1, const char *t2, const char *name)
     if (!lua_isinteger(m_L, -1))
     {
         qCritical() << name << " is expected to be an integer";
+        lua_pop(m_L, 3);
         return 0;
     }
 
     auto result = (long long)lua_tointeger(m_L, -1);
-    lua_pop(m_L, 1); // remove the result
-    lua_pop(m_L, 1); // remove t2
-    lua_pop(m_L, 1); // remove t1
+    lua_pop(m_L, 3); // remove the result t2 t1
 
     return result;
 }
@@ -1222,7 +1300,9 @@ long long LuaVM::getLongLong(const char *t1, const char *t2, const char *t3, con
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
+#endif
         return 0;
     }
 
@@ -1231,6 +1311,7 @@ long long LuaVM::getLongLong(const char *t1, const char *t2, const char *t3, con
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t1 << " is expected to be a table";
+        lua_pop(m_L, 1);
         return 0;
     }
 
@@ -1240,6 +1321,7 @@ long long LuaVM::getLongLong(const char *t1, const char *t2, const char *t3, con
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t2 << " is expected to be a table";
+        lua_pop(m_L, 2);
         return 0;
     }
 
@@ -1249,6 +1331,7 @@ long long LuaVM::getLongLong(const char *t1, const char *t2, const char *t3, con
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t3 << " is expected to be a table";
+        lua_pop(m_L, 3);
         return 0;
     }
 
@@ -1258,14 +1341,12 @@ long long LuaVM::getLongLong(const char *t1, const char *t2, const char *t3, con
     if (!lua_isinteger(m_L, -1))
     {
         qCritical() << name << " is expected to be an integer";
+        lua_pop(m_L, 4);
         return 0;
     }
 
     auto result = (long long)lua_tointeger(m_L, -1);
-    lua_pop(m_L, 1); // remove the result
-    lua_pop(m_L, 1); // remove t3
-    lua_pop(m_L, 1); // remove t2
-    lua_pop(m_L, 1); // remove t1
+    lua_pop(m_L, 4); // remove the result  t3  t2 t1
 
     return result;
 }
@@ -1282,7 +1363,9 @@ bool LuaVM::getBool(const char *table, const char *name)
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
+#endif
         return false;
     }
 
@@ -1291,6 +1374,7 @@ bool LuaVM::getBool(const char *table, const char *name)
     if (!lua_istable(m_L, -1))
     {
         qCritical() << table << " is expected to be a table";
+        lua_pop(m_L, 1);
         return false;
     }
 
@@ -1300,12 +1384,12 @@ bool LuaVM::getBool(const char *table, const char *name)
     if (!lua_isboolean(m_L, -1))
     {
         qCritical() << name << " is expected to be a boolean";
+        lua_pop(m_L, 2);
         return false;
     }
 
     int result = lua_toboolean(m_L, -1);
-    lua_pop(m_L, 1); // remove the result
-    lua_pop(m_L, 1); // remove table
+    lua_pop(m_L, 2); // remove the result  table
 
     return !!result;
 }
@@ -1322,7 +1406,9 @@ bool LuaVM::getBool(const char *t1, const char *t2, const char *name)
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
+#endif
         return false;
     }
 
@@ -1331,6 +1417,7 @@ bool LuaVM::getBool(const char *t1, const char *t2, const char *name)
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t1 << " is expected to be a table";
+        lua_pop(m_L, 1);
         return false;
     }
 
@@ -1340,6 +1427,7 @@ bool LuaVM::getBool(const char *t1, const char *t2, const char *name)
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t2 << " is expected to be a table";
+        lua_pop(m_L, 2);
         return false;
     }
 
@@ -1349,13 +1437,12 @@ bool LuaVM::getBool(const char *t1, const char *t2, const char *name)
     if (!lua_isboolean(m_L, -1))
     {
         qCritical() << name << " is expected to be a boolean";
+        lua_pop(m_L, 3);
         return false;
     }
 
     int result = lua_toboolean(m_L, -1);
-    lua_pop(m_L, 1); // remove the result
-    lua_pop(m_L, 1); // remove t2
-    lua_pop(m_L, 1); // remove t1
+    lua_pop(m_L, 3); // remove the result  t2  t1
 
     return !!result;
 }
@@ -1372,7 +1459,9 @@ bool LuaVM::getBool(const char *t1, const char *t2, const char *t3, const char *
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
+#endif
         return false;
     }
 
@@ -1381,6 +1470,7 @@ bool LuaVM::getBool(const char *t1, const char *t2, const char *t3, const char *
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t1 << " is expected to be a table";
+        lua_pop(m_L, 1);
         return false;
     }
 
@@ -1390,6 +1480,7 @@ bool LuaVM::getBool(const char *t1, const char *t2, const char *t3, const char *
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t2 << " is expected to be a table";
+        lua_pop(m_L, 2);
         return false;
     }
 
@@ -1399,6 +1490,7 @@ bool LuaVM::getBool(const char *t1, const char *t2, const char *t3, const char *
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t3 << " is expected to be a table";
+        lua_pop(m_L, 3);
         return false;
     }
 
@@ -1408,13 +1500,12 @@ bool LuaVM::getBool(const char *t1, const char *t2, const char *t3, const char *
     if (!lua_isboolean(m_L, -1))
     {
         qCritical() << name << " is expected to be a boolean";
+        lua_pop(m_L, 4);
         return false;
     }
 
     int result = lua_toboolean(m_L, -1);
-    lua_pop(m_L, 1); // remove the result
-    lua_pop(m_L, 1); // remove t2
-    lua_pop(m_L, 1); // remove t1
+    lua_pop(m_L, 4); // remove the result t3 t2 t1
 
     return !!result;
 }
@@ -1440,7 +1531,9 @@ std::string LuaVM::getString(const char *table, const char *name)
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
+#endif
         return {};
     }
 
@@ -1449,6 +1542,7 @@ std::string LuaVM::getString(const char *table, const char *name)
     if (!lua_istable(m_L, -1))
     {
         qCritical() << table << " is expected to be a table";
+        lua_pop(m_L, 1);
         return {};
     }
 
@@ -1458,14 +1552,14 @@ std::string LuaVM::getString(const char *table, const char *name)
     if (!lua_isstring(m_L, -1))
     {
         qCritical() << name << " is expected to be a string";
+        lua_pop(m_L, 2);
         return {};
     }
 
     size_t      resultLen = 0;
     const char *result    = lua_tolstring(m_L, -1, &resultLen);
     std::string str       = std::string(result, static_cast<int>(resultLen));
-    lua_pop(m_L, 1); // remove the result
-    lua_pop(m_L, 1); // remove table
+    lua_pop(m_L, 2); // remove the result  table
 
     return str;
 }
@@ -1490,7 +1584,9 @@ std::string LuaVM::getString(const char *t1, const char *t2, const char *name)
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
+#endif
         return {};
     }
 
@@ -1499,6 +1595,7 @@ std::string LuaVM::getString(const char *t1, const char *t2, const char *name)
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t1 << " is expected to be a table";
+        lua_pop(m_L, 1);
         return {};
     }
 
@@ -1508,6 +1605,7 @@ std::string LuaVM::getString(const char *t1, const char *t2, const char *name)
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t2 << " is expected to be a table";
+        lua_pop(m_L, 2);
         return {};
     }
 
@@ -1517,15 +1615,14 @@ std::string LuaVM::getString(const char *t1, const char *t2, const char *name)
     if (!lua_isstring(m_L, -1))
     {
         qCritical() << name << " is expected to be a string";
+        lua_pop(m_L, 3);
         return {};
     }
 
     size_t      resultLen = 0;
     const char *result    = lua_tolstring(m_L, -1, &resultLen);
     auto        str       = std::string(result, static_cast<int>(resultLen));
-    lua_pop(m_L, 1); // remove the result
-    lua_pop(m_L, 1); // remove t2
-    lua_pop(m_L, 1); // remove t1
+    lua_pop(m_L, 3); // remove the result  t2  t1
 
     return str;
 }
@@ -1550,7 +1647,9 @@ std::string LuaVM::getString(const char *t1, const char *t2, const char *t3, con
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
+#endif
         return {};
     }
 
@@ -1559,6 +1658,7 @@ std::string LuaVM::getString(const char *t1, const char *t2, const char *t3, con
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t1 << " is expected to be a table";
+        lua_pop(m_L, 1);
         return {};
     }
 
@@ -1568,6 +1668,7 @@ std::string LuaVM::getString(const char *t1, const char *t2, const char *t3, con
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t2 << " is expected to be a table";
+        lua_pop(m_L, 2);
         return {};
     }
 
@@ -1577,6 +1678,7 @@ std::string LuaVM::getString(const char *t1, const char *t2, const char *t3, con
     if (!lua_isstring(m_L, -1))
     {
         qCritical() << t3 << " is expected to be a string";
+        lua_pop(m_L, 3);
         return {};
     }
 
@@ -1586,16 +1688,14 @@ std::string LuaVM::getString(const char *t1, const char *t2, const char *t3, con
     if (!lua_isstring(m_L, -1))
     {
         qCritical() << name << " is expected to be a string";
+        lua_pop(m_L, 4);
         return {};
     }
 
     size_t      resultLen = 0;
     const char *result    = lua_tolstring(m_L, -1, &resultLen);
     auto        str       = std::string(result, static_cast<int>(resultLen));
-    lua_pop(m_L, 1); // remove the result
-    lua_pop(m_L, 1); // remove t3
-    lua_pop(m_L, 1); // remove t2
-    lua_pop(m_L, 1); // remove t1
+    lua_pop(m_L, 4); // remove the result t3 t2 t1
 
     return str;
 }
@@ -1612,15 +1712,9 @@ bool LuaVM::set(const char *name, double value)
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
-        return false;
-    }
-
-    lua_getglobal(m_L, name);
-
-    if (!lua_isnumber(m_L, -1))
-    {
-        qCritical() << name << " is expected to be a number";
+#endif
         return false;
     }
 
@@ -1641,7 +1735,9 @@ bool LuaVM::set(const char *t1, const char *name, double value)
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
+#endif
         return false;
     }
 
@@ -1650,6 +1746,7 @@ bool LuaVM::set(const char *t1, const char *name, double value)
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t1 << " is expected to be a table";
+        lua_pop(m_L, 1);
         return false;
     }
 
@@ -1672,7 +1769,9 @@ bool LuaVM::set(const char *t1, const char *t2, const char *name, double value)
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
+#endif
         return false;
     }
 
@@ -1681,6 +1780,7 @@ bool LuaVM::set(const char *t1, const char *t2, const char *name, double value)
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t1 << " is expected to be a table";
+        lua_pop(m_L, 1);
         return false;
     }
 
@@ -1690,14 +1790,14 @@ bool LuaVM::set(const char *t1, const char *t2, const char *name, double value)
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t2 << " is expected to be a table";
+        lua_pop(m_L, 2);
         return false;
     }
 
     lua_pushnumber(m_L, value);
     lua_setfield(m_L, -2, name);
 
-    lua_pop(m_L, 1); // remove t2
-    lua_pop(m_L, 1); // remove t1
+    lua_pop(m_L, 2); // remove t2 t1
     return true;
 }
 
@@ -1713,7 +1813,9 @@ bool LuaVM::set(const char *t1, const char *t2, const char *t3, const char *name
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
+#endif
         return false;
     }
 
@@ -1722,6 +1824,7 @@ bool LuaVM::set(const char *t1, const char *t2, const char *t3, const char *name
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t1 << " is expected to be a table";
+        lua_pop(m_L, 1);
         return false;
     }
 
@@ -1731,6 +1834,7 @@ bool LuaVM::set(const char *t1, const char *t2, const char *t3, const char *name
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t2 << " is expected to be a table";
+        lua_pop(m_L, 2);
         return false;
     }
 
@@ -1740,15 +1844,14 @@ bool LuaVM::set(const char *t1, const char *t2, const char *t3, const char *name
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t3 << " is expected to be a table";
+        lua_pop(m_L, 3);
         return false;
     }
 
     lua_pushnumber(m_L, value);
     lua_setfield(m_L, -2, name);
 
-    lua_pop(m_L, 1); // remove t3
-    lua_pop(m_L, 1); // remove t2
-    lua_pop(m_L, 1); // remove t1
+    lua_pop(m_L, 3); // remove t3  t2 t1
     return true;
 }
 
@@ -1816,15 +1919,9 @@ bool LuaVM::set(const char *name, int value)
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
-        return false;
-    }
-
-    lua_getglobal(m_L, name);
-
-    if (!lua_isinteger(m_L, -1))
-    {
-        qCritical() << name << " is expected to be an integer";
+#endif
         return false;
     }
 
@@ -1845,7 +1942,9 @@ bool LuaVM::set(const char *t1, const char *name, int value)
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
+#endif
         return false;
     }
 
@@ -1854,6 +1953,7 @@ bool LuaVM::set(const char *t1, const char *name, int value)
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t1 << " is expected to be a table";
+        lua_pop(m_L, 1);
         return false;
     }
 
@@ -1876,7 +1976,9 @@ bool LuaVM::set(const char *t1, const char *t2, const char *name, int value)
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
+#endif
         return false;
     }
 
@@ -1885,6 +1987,7 @@ bool LuaVM::set(const char *t1, const char *t2, const char *name, int value)
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t1 << " is expected to be a table";
+        lua_pop(m_L, 1);
         return false;
     }
 
@@ -1894,14 +1997,14 @@ bool LuaVM::set(const char *t1, const char *t2, const char *name, int value)
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t2 << " is expected to be a table";
+        lua_pop(m_L, 2);
         return false;
     }
 
     lua_pushinteger(m_L, value);
     lua_setfield(m_L, -2, name);
 
-    lua_pop(m_L, 1); // remove t2
-    lua_pop(m_L, 1); // remove t1
+    lua_pop(m_L, 2); // remove t2  t1
     return true;
 }
 
@@ -1917,7 +2020,9 @@ bool LuaVM::set(const char *t1, const char *t2, const char *t3, const char *name
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
+#endif
         return false;
     }
 
@@ -1926,6 +2031,7 @@ bool LuaVM::set(const char *t1, const char *t2, const char *t3, const char *name
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t1 << " is expected to be a table";
+        lua_pop(m_L, 1);
         return false;
     }
 
@@ -1935,6 +2041,7 @@ bool LuaVM::set(const char *t1, const char *t2, const char *t3, const char *name
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t2 << " is expected to be a table";
+        lua_pop(m_L, 2);
         return false;
     }
 
@@ -1944,15 +2051,14 @@ bool LuaVM::set(const char *t1, const char *t2, const char *t3, const char *name
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t3 << " is expected to be a table";
+        lua_pop(m_L, 3);
         return false;
     }
 
     lua_pushinteger(m_L, value);
     lua_setfield(m_L, -2, name);
 
-    lua_pop(m_L, 1); // remove t3
-    lua_pop(m_L, 1); // remove t2
-    lua_pop(m_L, 1); // remove t1
+    lua_pop(m_L, 3); // remove t3 t2  t1
     return true;
 }
 
@@ -1968,15 +2074,9 @@ bool LuaVM::set(const char *name, long long value)
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
-        return false;
-    }
-
-    lua_getglobal(m_L, name);
-
-    if (!lua_isinteger(m_L, -1))
-    {
-        qCritical() << name << " is expected to be an integer";
+#endif
         return false;
     }
 
@@ -1997,7 +2097,9 @@ bool LuaVM::set(const char *t1, const char *name, long long value)
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
+#endif
         return false;
     }
 
@@ -2006,6 +2108,7 @@ bool LuaVM::set(const char *t1, const char *name, long long value)
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t1 << " is expected to be a table";
+        lua_pop(m_L, 1);
         return false;
     }
 
@@ -2028,7 +2131,9 @@ bool LuaVM::set(const char *t1, const char *t2, const char *name, long long valu
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
+#endif
         return false;
     }
 
@@ -2037,6 +2142,7 @@ bool LuaVM::set(const char *t1, const char *t2, const char *name, long long valu
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t1 << " is expected to be a table";
+        lua_pop(m_L, 1);
         return false;
     }
 
@@ -2046,14 +2152,14 @@ bool LuaVM::set(const char *t1, const char *t2, const char *name, long long valu
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t2 << " is expected to be a table";
+        lua_pop(m_L, 2);
         return false;
     }
 
     lua_pushinteger(m_L, value);
     lua_setfield(m_L, -2, name);
 
-    lua_pop(m_L, 1); // remove t2
-    lua_pop(m_L, 1); // remove t1
+    lua_pop(m_L, 2); // remove t2 t1
     return true;
 }
 
@@ -2069,7 +2175,9 @@ bool LuaVM::set(const char *t1, const char *t2, const char *t3, const char *name
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
+#endif
         return false;
     }
 
@@ -2077,7 +2185,10 @@ bool LuaVM::set(const char *t1, const char *t2, const char *t3, const char *name
 
     if (!lua_istable(m_L, -1))
     {
+#if defined(LOGS_ENABLED)
         qCritical() << t1 << " is expected to be a table";
+#endif
+        lua_pop(m_L, 1); // Pop t1
         return false;
     }
 
@@ -2086,7 +2197,10 @@ bool LuaVM::set(const char *t1, const char *t2, const char *t3, const char *name
 
     if (!lua_istable(m_L, -1))
     {
+#if defined(LOGS_ENABLED)
         qCritical() << t2 << " is expected to be a table";
+#endif
+        lua_pop(m_L, 2); // Pop t1[t2], then t1
         return false;
     }
 
@@ -2095,16 +2209,18 @@ bool LuaVM::set(const char *t1, const char *t2, const char *t3, const char *name
 
     if (!lua_istable(m_L, -1))
     {
+#if defined(LOGS_ENABLED)
         qCritical() << t3 << " is expected to be a table";
+#endif
+        lua_pop(m_L, 3); // Pop t1[t2][t3], t1[t2], then t1
         return false;
     }
 
     lua_pushinteger(m_L, value);
     lua_setfield(m_L, -2, name);
 
-    lua_pop(m_L, 1); // remove t3
-    lua_pop(m_L, 1); // remove t2
-    lua_pop(m_L, 1); // remove t1
+    // Correct the number of pops to balance the stack
+    lua_pop(m_L, 3); // Pop t1[t2][t3], t1[t2], then t1
     return true;
 }
 
@@ -2120,15 +2236,9 @@ bool LuaVM::set(const char *name, bool value)
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
-        return false;
-    }
-
-    lua_getglobal(m_L, name);
-
-    if (!lua_isboolean(m_L, -1))
-    {
-        qCritical() << name << " is expected to be a boolean";
+#endif
         return false;
     }
 
@@ -2149,7 +2259,9 @@ bool LuaVM::set(const char *t1, const char *name, bool value)
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
+#endif
         return false;
     }
 
@@ -2158,6 +2270,7 @@ bool LuaVM::set(const char *t1, const char *name, bool value)
     if (!lua_istable(m_L, -1))
     {
         qCritical() << t1 << " is expected to be a table";
+        lua_pop(m_L, 1); // remove the non-table item
         return false;
     }
 
@@ -2180,7 +2293,9 @@ bool LuaVM::set(const char *t1, const char *t2, const char *name, bool value)
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
+#endif
         return false;
     }
 
@@ -2188,7 +2303,10 @@ bool LuaVM::set(const char *t1, const char *t2, const char *name, bool value)
 
     if (!lua_istable(m_L, -1))
     {
+#if defined(LOGS_ENABLED)
         qCritical() << t1 << " is expected to be a table";
+#endif
+        lua_pop(m_L, 1); // remove the non-table item
         return false;
     }
 
@@ -2197,15 +2315,17 @@ bool LuaVM::set(const char *t1, const char *t2, const char *name, bool value)
 
     if (!lua_istable(m_L, -1))
     {
+#if defined(LOGS_ENABLED)
         qCritical() << t2 << " is expected to be a table";
+#endif
+        lua_pop(m_L, 2); // remove the non-table item
         return false;
     }
 
     lua_pushboolean(m_L, value);
     lua_setfield(m_L, -2, name);
 
-    lua_pop(m_L, 1); // remove t2
-    lua_pop(m_L, 1); // remove t1
+    lua_pop(m_L, 2); // remove t2 t1
     return true;
 }
 
@@ -2221,7 +2341,9 @@ bool LuaVM::set(const char *t1, const char *t2, const char *t3, const char *name
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
+#endif
         return false;
     }
 
@@ -2229,7 +2351,10 @@ bool LuaVM::set(const char *t1, const char *t2, const char *t3, const char *name
 
     if (!lua_istable(m_L, -1))
     {
+#if defined(LOGS_ENABLED)
         qCritical() << t1 << " is expected to be a table";
+#endif
+        lua_pop(m_L, 1);
         return false;
     }
 
@@ -2238,7 +2363,10 @@ bool LuaVM::set(const char *t1, const char *t2, const char *t3, const char *name
 
     if (!lua_istable(m_L, -1))
     {
+#if defined(LOGS_ENABLED)
         qCritical() << t2 << " is expected to be a table";
+#endif
+        lua_pop(m_L, 2);
         return false;
     }
 
@@ -2247,16 +2375,17 @@ bool LuaVM::set(const char *t1, const char *t2, const char *t3, const char *name
 
     if (!lua_istable(m_L, -1))
     {
+#if defined(LOGS_ENABLED)
         qCritical() << t3 << " is expected to be a table";
+#endif
+        lua_pop(m_L, 3);
         return false;
     }
 
     lua_pushboolean(m_L, value);
     lua_setfield(m_L, -2, name);
 
-    lua_pop(m_L, 1); // remove t3
-    lua_pop(m_L, 1); // remove t2
-    lua_pop(m_L, 1); // remove t1
+    lua_pop(m_L, 3); // remove t3 t2 t1
     return true;
 }
 
@@ -2272,15 +2401,9 @@ bool LuaVM::set(const char *name, const char *value)
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
-        return false;
-    }
-
-    lua_getglobal(m_L, name);
-
-    if (!lua_isstring(m_L, -1))
-    {
-        qCritical() << name << " is expected to be a string";
+#endif
         return false;
     }
 
@@ -2301,7 +2424,9 @@ bool LuaVM::set(const char *t1, const char *name, const char *value)
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
+#endif
         return false;
     }
 
@@ -2309,7 +2434,10 @@ bool LuaVM::set(const char *t1, const char *name, const char *value)
 
     if (!lua_istable(m_L, -1))
     {
+#if defined(LOGS_ENABLED)
         qCritical() << t1 << " is expected to be a table";
+#endif
+        lua_pop(m_L, 1);
         return false;
     }
 
@@ -2332,7 +2460,9 @@ bool LuaVM::set(const char *t1, const char *t2, const char *name, const char *va
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
+#endif
         return false;
     }
 
@@ -2340,7 +2470,10 @@ bool LuaVM::set(const char *t1, const char *t2, const char *name, const char *va
 
     if (!lua_istable(m_L, -1))
     {
+#if defined(LOGS_ENABLED)
         qCritical() << t1 << " is expected to be a table";
+#endif
+        lua_pop(m_L, 1);
         return false;
     }
 
@@ -2349,15 +2482,17 @@ bool LuaVM::set(const char *t1, const char *t2, const char *name, const char *va
 
     if (!lua_istable(m_L, -1))
     {
+#if defined(LOGS_ENABLED)
         qCritical() << t2 << " is expected to be a table";
+#endif
+        lua_pop(m_L, 2);
         return false;
     }
 
     lua_pushstring(m_L, value);
     lua_setfield(m_L, -2, name);
 
-    lua_pop(m_L, 1); // remove t2
-    lua_pop(m_L, 1); // remove t1
+    lua_pop(m_L, 2); // remove t2 t1
     return true;
 }
 
@@ -2373,7 +2508,9 @@ bool LuaVM::set(const char *t1, const char *t2, const char *t3, const char *name
 {
     if (!m_L)
     {
+#if defined(LOGS_ENABLED)
         qCritical() << "lua intepreter is not ready";
+#endif
         return false;
     }
 
@@ -2381,7 +2518,10 @@ bool LuaVM::set(const char *t1, const char *t2, const char *t3, const char *name
 
     if (!lua_istable(m_L, -1))
     {
+#if defined(LOGS_ENABLED)
         qCritical() << t1 << " is expected to be a table";
+#endif
+        lua_pop(m_L, 1);
         return false;
     }
 
@@ -2390,7 +2530,10 @@ bool LuaVM::set(const char *t1, const char *t2, const char *t3, const char *name
 
     if (!lua_istable(m_L, -1))
     {
+#if defined(LOGS_ENABLED)
         qCritical() << t2 << " is expected to be a table";
+#endif
+        lua_pop(m_L, 2);
         return false;
     }
 
@@ -2399,16 +2542,17 @@ bool LuaVM::set(const char *t1, const char *t2, const char *t3, const char *name
 
     if (!lua_istable(m_L, -1))
     {
+#if defined(LOGS_ENABLED)
         qCritical() << t3 << " is expected to be a table";
+#endif
+        lua_pop(m_L, 3);
         return false;
     }
 
     lua_pushstring(m_L, value);
     lua_setfield(m_L, -2, name);
 
-    lua_pop(m_L, 1); // remove t3
-    lua_pop(m_L, 1); // remove t2
-    lua_pop(m_L, 1); // remove t1
+    lua_pop(m_L, 3); // remove t3 t2 t1
     return true;
 }
 

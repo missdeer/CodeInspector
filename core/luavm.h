@@ -249,10 +249,10 @@ template<> QStringList LuaVM::get(const QString &name)
     }
 
     QStringList sections = name.split(".");
-    if (!sections.isEmpty())
+    if (sections.isEmpty())
     {
 #if defined(LOGS_ENABLED)
-        qDebug() << "empty name";
+        qCritical() << "empty name";
 #endif
         return res;
     }
@@ -262,8 +262,9 @@ template<> QStringList LuaVM::get(const QString &name)
         if (!lua_istable(m_L, -1))
         {
 #if defined(LOGS_ENABLED)
-            qDebug() << sections[i] << " is expected to be a table";
+            qCritical() << sections[i] << " is expected to be a table";
 #endif
+            lua_pop(m_L, i + 1);
             return res;
         }
 
@@ -274,8 +275,9 @@ template<> QStringList LuaVM::get(const QString &name)
     if (!lua_istable(m_L, -1))
     {
 #if defined(LOGS_ENABLED)
-        qDebug() << name << " is expected to be a table";
+        qCritical() << name << " is expected to be a table";
 #endif
+        lua_pop(m_L, sections.length());
         return res;
     }
 
@@ -287,7 +289,7 @@ template<> QStringList LuaVM::get(const QString &name)
 
         size_t      resultLen = 0;
         const char *result    = lua_tolstring(m_L, -1, &resultLen);
-        QString     str       = QString::fromLatin1(result, (int)resultLen);
+        QString     str       = QString::fromUtf8(result, (int)resultLen);
         lua_pop(m_L, 1);
         res.append(str);
     }
@@ -303,10 +305,10 @@ template<> double LuaVM::get(const QString &name)
     }
 
     QStringList sections = name.split(".");
-    if (!sections.isEmpty())
+    if (sections.isEmpty())
     {
 #if defined(LOGS_ENABLED)
-        qDebug() << "empty name";
+        qCritical() << "empty name";
 #endif
         return 0.0;
     }
@@ -316,8 +318,9 @@ template<> double LuaVM::get(const QString &name)
         if (!lua_istable(m_L, -1))
         {
 #if defined(LOGS_ENABLED)
-            qDebug() << sections[i] << " is expected to be a table";
+            qCritical() << sections[i] << " is expected to be a table";
 #endif
+            lua_pop(m_L, i + 1);
             return 0.0;
         }
 
@@ -328,8 +331,9 @@ template<> double LuaVM::get(const QString &name)
     if (!lua_isnumber(m_L, -1))
     {
 #if defined(LOGS_ENABLED)
-        qDebug() << name << " is expected to be a number";
+        qCritical() << name << " is expected to be a number";
 #endif
+        lua_pop(m_L, sections.length());
         return 0.0;
     }
 
@@ -347,10 +351,10 @@ template<> float LuaVM::get(const QString &name)
     }
 
     QStringList sections = name.split(".");
-    if (!sections.isEmpty())
+    if (sections.isEmpty())
     {
 #if defined(LOGS_ENABLED)
-        qDebug() << "empty name";
+        qCritical() << "empty name";
 #endif
         return 0.0;
     }
@@ -360,8 +364,9 @@ template<> float LuaVM::get(const QString &name)
         if (!lua_istable(m_L, -1))
         {
 #if defined(LOGS_ENABLED)
-            qDebug() << sections[i] << " is expected to be a table";
+            qCritical() << sections[i] << " is expected to be a table";
 #endif
+            lua_pop(m_L, i + 1);
             return 0.0;
         }
 
@@ -372,8 +377,10 @@ template<> float LuaVM::get(const QString &name)
     if (!lua_isnumber(m_L, -1))
     {
 #if defined(LOGS_ENABLED)
-        qDebug() << name << " is expected to be a number";
+        qCritical() << name << " is expected to be a number";
 #endif
+        lua_pop(m_L, sections.length());
+
         return 0.0;
     }
 
@@ -391,10 +398,10 @@ template<> int LuaVM::get(const QString &name)
     }
 
     QStringList sections = name.split(".");
-    if (!sections.isEmpty())
+    if (sections.isEmpty())
     {
 #if defined(LOGS_ENABLED)
-        qDebug() << "empty name";
+        qCritical() << "empty name";
 #endif
         return 0;
     }
@@ -404,8 +411,9 @@ template<> int LuaVM::get(const QString &name)
         if (!lua_istable(m_L, -1))
         {
 #if defined(LOGS_ENABLED)
-            qDebug() << sections[i] << " is expected to be a table";
+            qCritical() << sections[i] << " is expected to be a table";
 #endif
+            lua_pop(m_L, i + 1);
             return 0;
         }
 
@@ -416,8 +424,9 @@ template<> int LuaVM::get(const QString &name)
     if (!lua_isinteger(m_L, -1))
     {
 #if defined(LOGS_ENABLED)
-        qDebug() << name << " is expected to be an integer";
+        qCritical() << name << " is expected to be an integer";
 #endif
+        lua_pop(m_L, sections.length());
         return 0;
     }
 
@@ -435,10 +444,10 @@ template<> long long LuaVM::get(const QString &name)
     }
 
     QStringList sections = name.split(".");
-    if (!sections.isEmpty())
+    if (sections.isEmpty())
     {
 #if defined(LOGS_ENABLED)
-        qDebug() << "empty name";
+        qCritical() << "empty name";
 #endif
         return 0;
     }
@@ -448,8 +457,9 @@ template<> long long LuaVM::get(const QString &name)
         if (!lua_istable(m_L, -1))
         {
 #if defined(LOGS_ENABLED)
-            qDebug() << sections[i] << " is expected to be a table";
+            qCritical() << sections[i] << " is expected to be a table";
 #endif
+            lua_pop(m_L, i + 1);
             return 0.0;
         }
 
@@ -460,8 +470,9 @@ template<> long long LuaVM::get(const QString &name)
     if (!lua_isinteger(m_L, -1))
     {
 #if defined(LOGS_ENABLED)
-        qDebug() << name << " is expected to be an integer";
+        qCritical() << name << " is expected to be an integer";
 #endif
+        lua_pop(m_L, sections.length());
         return 0.0;
     }
 
@@ -479,10 +490,10 @@ template<> bool LuaVM::get(const QString &name)
     }
 
     QStringList sections = name.split(".");
-    if (!sections.isEmpty())
+    if (sections.isEmpty())
     {
 #if defined(LOGS_ENABLED)
-        qDebug() << "empty name";
+        qCritical() << "empty name";
 #endif
         return false;
     }
@@ -492,8 +503,9 @@ template<> bool LuaVM::get(const QString &name)
         if (!lua_istable(m_L, -1))
         {
 #if defined(LOGS_ENABLED)
-            qDebug() << sections[i] << " is expected to be a table";
+            qCritical() << sections[i] << " is expected to be a table";
 #endif
+            lua_pop(m_L, i + 1);
             return false;
         }
 
@@ -504,8 +516,9 @@ template<> bool LuaVM::get(const QString &name)
     if (!lua_isboolean(m_L, -1))
     {
 #if defined(LOGS_ENABLED)
-        qDebug() << name << " is expected to be a boolean";
+        qCritical() << name << " is expected to be a boolean";
 #endif
+        lua_pop(m_L, sections.length());
         return false;
     }
 
@@ -523,10 +536,10 @@ template<> QString LuaVM::get(const QString &name)
     }
 
     QStringList sections = name.split(".");
-    if (!sections.isEmpty())
+    if (sections.isEmpty())
     {
 #if defined(LOGS_ENABLED)
-        qDebug() << "empty name";
+        qCritical() << "empty name";
 #endif
         return {};
     }
@@ -536,8 +549,9 @@ template<> QString LuaVM::get(const QString &name)
         if (!lua_istable(m_L, -1))
         {
 #if defined(LOGS_ENABLED)
-            qDebug() << sections[i] << " is expected to be a table";
+            qCritical() << sections[i] << " is expected to be a table";
 #endif
+            lua_pop(m_L, i + 1);
             return {};
         }
 
@@ -548,14 +562,15 @@ template<> QString LuaVM::get(const QString &name)
     if (!lua_isstring(m_L, -1))
     {
 #if defined(LOGS_ENABLED)
-        qDebug() << name << " is expected to be a string";
+        qCritical() << name << " is expected to be a string";
 #endif
+        lua_pop(m_L, sections.length());
         return {};
     }
 
     size_t      resultLen = 0;
     const char *result    = lua_tolstring(m_L, -1, &resultLen);
-    QString     str       = QString::fromLatin1(result, (int)resultLen);
+    QString     str       = QString::fromUtf8(result, (int)resultLen);
     lua_pop(m_L, sections.length());
 
     return str;
