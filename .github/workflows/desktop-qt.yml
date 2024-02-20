@@ -93,8 +93,6 @@ jobs:
         run: |
           cd 3rdparty\scintillua
           git apply ..\scintillua.patch
-          cd ..\zlib
-          git apply ..\zlib.patch
           cd ..\..
       
       - name: Set up clang for Windows
@@ -283,8 +281,6 @@ jobs:
           git apply ..\scintillua.patch
           cd ..\lexilla
           git apply ..\lexilla.patch
-          cd ..\zlib
-          git apply ..\zlib.patch
           cd ..\..
 
       - name: prepare Scintilla
@@ -338,7 +334,6 @@ jobs:
           cd scintillua
           git apply ../scintillua.patch
           cd ../zlib
-          git apply ../zlib.patch
           git apply ../zlib-macos.patch
           cd ../..
       
