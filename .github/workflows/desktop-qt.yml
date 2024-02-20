@@ -333,8 +333,6 @@ jobs:
           cp cmakes/CMakeLists.txt.scintillua scintillua/CMakeLists.txt
           cd scintillua
           git apply ../scintillua.patch
-          cd ../zlib
-          git apply ../zlib-macos.patch
           cd ../..
       
       - name: build macos
