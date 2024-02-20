@@ -125,7 +125,7 @@ bool LuaVM::get(const QString &name, QStringList &array)
     }
 
     QStringList sections = name.split(".");
-    if (!sections.isEmpty())
+    if (sections.isEmpty())
     {
 #if defined(LOGS_ENABLED)
         qDebug() << "empty name";
@@ -179,7 +179,7 @@ bool LuaVM::get(const QString &name, double &value)
     }
 
     QStringList sections = name.split(".");
-    if (!sections.isEmpty())
+    if (sections.isEmpty())
     {
 #if defined(LOGS_ENABLED)
         qDebug() << "empty name";
@@ -223,7 +223,7 @@ bool LuaVM::get(const QString &name, float &value)
     }
 
     QStringList sections = name.split(".");
-    if (!sections.isEmpty())
+    if (sections.isEmpty())
     {
 #if defined(LOGS_ENABLED)
         qDebug() << "empty name";
@@ -267,7 +267,7 @@ bool LuaVM::get(const QString &name, int &value)
     }
 
     QStringList sections = name.split(".");
-    if (!sections.isEmpty())
+    if (sections.isEmpty())
     {
 #if defined(LOGS_ENABLED)
         qDebug() << "empty name";
@@ -311,7 +311,7 @@ bool LuaVM::get(const QString &name, long long &value)
     }
 
     QStringList sections = name.split(".");
-    if (!sections.isEmpty())
+    if (sections.isEmpty())
     {
 #if defined(LOGS_ENABLED)
         qDebug() << "empty name";
@@ -355,7 +355,7 @@ bool LuaVM::get(const QString &name, bool &value)
     }
 
     QStringList sections = name.split(".");
-    if (!sections.isEmpty())
+    if (sections.isEmpty())
     {
 #if defined(LOGS_ENABLED)
         qDebug() << "empty name";
@@ -370,7 +370,7 @@ bool LuaVM::get(const QString &name, bool &value)
 #if defined(LOGS_ENABLED)
             qDebug() << sections[i] << " is expected to be a table";
 #endif
-            return 0.0;
+            return false;
         }
 
         lua_pushstring(m_L, sections[i + 1].toStdString().c_str());
@@ -399,7 +399,7 @@ bool LuaVM::get(const QString &name, QString &value)
     }
 
     QStringList sections = name.split(".");
-    if (!sections.isEmpty())
+    if (sections.isEmpty())
     {
 #if defined(LOGS_ENABLED)
         qDebug() << "empty name";
