@@ -27,7 +27,7 @@ jobs:
     strategy:
       matrix:
         toolset: [cl, icx, clang-cl]
-        qt_ver: [6.6.1, 5.15.2]
+        qt_ver: [6.6.2, 5.15.2]
         qt_target: [desktop]
         qt_arch: [win64_msvc2019_64]
         msvc_arch: [x64]
@@ -35,7 +35,7 @@ jobs:
         mingw_arch: [MINGW64]
         include:
           - toolset: cl
-            qt_ver: 6.6.1
+            qt_ver: 6.6.2
             qt_modules: "qt5compat qtimageformats"
           - toolset: cl
             qt_ver: 5.15.2
@@ -65,7 +65,7 @@ jobs:
           cache: 'true'
           cache-key-prefix: 'install-qt-action-${{ matrix.qt_arch }}-${{ matrix.qt_ver }}'
           modules: ${{ matrix.qt_modules }}
-          aqtversion: '==3.0.1'
+          aqtversion: '==3.3.0'
                     
       - uses: msys2/setup-msys2@v2
         with:
