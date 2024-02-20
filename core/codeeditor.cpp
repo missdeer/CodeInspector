@@ -23,7 +23,7 @@ void CodeEditor::onLinesAdded(Scintilla::Position /*linesAdded*/)
     sptr_t line_count = sci->lineCount();
     sptr_t left       = sci->marginLeft() + 2;
     sptr_t right      = sci->marginRight() + 2;
-    sptr_t width      = left + right + sci->textWidth(STYLE_LINENUMBER, QString("%1").arg(line_count).toStdString().c_str());
+    sptr_t width      = left + right + sci->textWidth(STYLE_LINENUMBER, std::to_string(line_count).c_str());
     if (width > sci->marginWidthN(0))
     {
         sci->setMarginWidthN(0, width);
