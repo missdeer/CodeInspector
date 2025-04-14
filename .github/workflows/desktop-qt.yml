@@ -19,7 +19,7 @@ env:
   COMPILER_VERSION: 2024.0.0
   TBB_VERSION: 2021.11.0
   VS_VER: vs2022
-  CLANG_LINK: https://github.com/llvm/llvm-project/releases/download/llvmorg-17.0.6/LLVM-17.0.6-win64.exe
+  CLANG_LINK: https://github.com/llvm/llvm-project/releases/download/llvmorg-20.1.2/LLVM-20.1.2-win64.exe
       
 jobs:
   win32-msvc:
@@ -27,7 +27,7 @@ jobs:
     strategy:
       matrix:
         toolset: [cl, icx, clang-cl]
-        qt_ver: [6.6.2, 5.15.2]
+        qt_ver: [6.9.0, 5.15.2]
         qt_target: [desktop]
         qt_arch: [win64_msvc2019_64]
         msvc_arch: [x64]
@@ -35,19 +35,19 @@ jobs:
         mingw_arch: [MINGW64]
         include:
           - toolset: cl
-            qt_ver: 6.6.2
+            qt_ver: 6.9.0
             qt_modules: "qt5compat qtimageformats"
           - toolset: cl
             qt_ver: 5.15.2
             qt_modules: ""
           - toolset: icx
-            qt_ver: 6.6.2
+            qt_ver: 6.9.0
             qt_modules: "qt5compat qtimageformats"
           - toolset: icx
             qt_ver: 5.15.2
             qt_modules: ""
           - toolset: clang-cl
-            qt_ver: 6.6.2
+            qt_ver: 6.9.0
             qt_modules: "qt5compat qtimageformats"
           - toolset: clang-cl
             qt_ver: 5.15.2
@@ -207,33 +207,6 @@ jobs:
             qt_build: qt5
             qt_dir: /clang64/lib/cmake/Qt5
             cmake_prefix_path: /clang64
-          - qt_arch: mingw64_qt5-static-ucrt-gcc
-            mingw_arch: UCRT64
-            mingw_prefix: mingw-w64-ucrt-x86_64
-            toolchains: gcc
-            c: gcc
-            cxx: g++
-            qt_build: qt5-static
-            qt_dir: /ucrt64/qt5-static/lib/cmake/Qt5
-            cmake_prefix_path: /ucrt64/qt5-static
-          - qt_arch: mingw64_qt5-static-gcc
-            mingw_arch: MINGW64
-            mingw_prefix: mingw-w64-x86_64
-            toolchains: gcc
-            c: gcc
-            cxx: g++
-            qt_build: qt5-static
-            qt_dir: /mingw64/qt5-static/lib/cmake/Qt5
-            cmake_prefix_path: /mingw64/qt5-static
-          - qt_arch: mingw64_qt5-static-clang
-            mingw_arch: CLANG64
-            mingw_prefix: mingw-w64-clang-x86_64
-            toolchains: clang
-            c: clang
-            cxx: clang++
-            qt_build: qt5-static
-            qt_dir: /clang64/qt5-static/lib/cmake/Qt5
-            cmake_prefix_path: /clang64/qt5-static
     env:
       targetName: CodeInspector
       
@@ -304,7 +277,7 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest]
-        qt_ver: [6.6.2]
+        qt_ver: [6.9.0]
         qt_arch: [clang_64]
     env:
       targetName: CodeInspector
